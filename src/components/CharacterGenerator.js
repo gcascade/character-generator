@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, Container, CssBaseline, Paper, Typography } from '@mui/material';
 import Character from './Character';
 
 const races = ['Human', 'Elf', 'Dwarf', 'Orc'];
@@ -26,11 +27,24 @@ const CharacterGenerator = () => {
   };
 
   return (
-    <div>
-      <h1>RPG Character Generator</h1>
-      <button onClick={generateNewCharacter}>Generate Character</button>
-      <Character character={character} />
-    </div>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+        <Typography component="h1" variant="h5" align="center">
+          RPG Character Generator
+        </Typography>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={generateNewCharacter}
+          style={{ marginTop: '20px' }}
+        >
+          Generate Character
+        </Button>
+        <Character character={character} />
+      </Paper>
+    </Container>
   );
 };
 

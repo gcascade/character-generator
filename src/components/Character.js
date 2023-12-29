@@ -1,13 +1,16 @@
 import React from 'react';
+import { Card, CardContent, Typography } from '@mui/material';
 
 const Character = ({ character }) => {
   return (
-    <div>
-      <h2>{character.name}</h2>
-      <p><strong>Race:</strong> {character.race}</p>
-      <p><strong>Class:</strong> {character.characterClass}</p>
-      <p><strong>Description:</strong> {character.description}</p>
-    </div>
+    <Card>
+      <CardContent>
+        <Typography variant="h5">{character.name}</Typography>
+        <Typography variant="body1"><strong>Race:</strong> {character.race}</Typography>
+        <Typography variant="body1"><strong>Class:</strong> {character.characterClass}</Typography>
+        <Typography variant="body1"><strong>Description:</strong> {character.description}</Typography>
+      </CardContent>
+    </Card>
   );
 };
 
