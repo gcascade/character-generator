@@ -1,5 +1,6 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Character from "./Character";
 
 describe("Character", () => {
@@ -51,5 +52,27 @@ describe("Character", () => {
     const button = screen.getByText("New Character");
     fireEvent.click(button);
     expect(mockOnGenerate).toHaveBeenCalled();
+  });
+
+  test("applies theme colors correctly to card", () => {
+    const theme = createTheme();
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
+    );
+
+    const card = screen.getByTestId("character-card");
+    expect(card).toHaveStyle(
+      `background-color: ${theme.palette.background.paper}`
+    );
+    expect(card).toHaveStyle(`color: ${theme.palette.text.primary}`);
+  });
+
+  test("applies hover effects correctly to card", () => {
+    render(<Character character={mockCharacter} onGenerate={() => {}} />);
+    const card = screen.getByTestId("character-card");
+    fireEvent.mouseOver(card);
+    expect(card).toHaveStyle("box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)");
   });
 });

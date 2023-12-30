@@ -9,6 +9,18 @@ describe("CharacterGenerator", () => {
     render(<CharacterGenerator />);
   });
 
+  test("renders RPG Character Generator title", () => {
+    render(<CharacterGenerator />);
+    const title = screen.getByText("RPG Character Generator");
+    expect(title).toBeInTheDocument();
+  });
+
+  test("renders initial character on load", () => {
+    render(<CharacterGenerator />);
+    const initialCharacter = screen.getByText(/Character\d+/).textContent;
+    expect(initialCharacter).toMatch(/Character\d+/);
+  });
+
   test("generateRandomCharacter function creates a character with correct properties", () => {
     const character = generateRandomCharacter();
     expect(character).toHaveProperty("name");

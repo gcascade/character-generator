@@ -1,6 +1,13 @@
 import React, { useState } from "react";
-import { Container, CssBaseline, Paper, Typography } from "@mui/material";
+import {
+  Container,
+  CssBaseline,
+  Paper,
+  Typography,
+  ThemeProvider,
+} from "@mui/material";
 import Character from "./Character";
+import theme from "../themes/themes";
 
 const races = ["Human", "Elf", "Dwarf", "Orc"];
 const classes = ["Warrior", "Mage", "Rogue", "Cleric"];
@@ -76,15 +83,29 @@ const CharacterGenerator = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
-        <Typography component="h1" variant="h5" align="center">
-          RPG Character Generator
-        </Typography>
-        <Character character={character} onGenerate={generateNewCharacter} />
-      </Paper>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container
+        component="main"
+        maxWidth="xs"
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          padding: "24px",
+        }}
+      >
+        <CssBaseline />
+        <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
+          <Typography
+            component="h1"
+            variant="h5"
+            align="center"
+            sx={{ color: theme.palette.text.primary }}
+          >
+            RPG Character Generator
+          </Typography>
+          <Character character={character} onGenerate={generateNewCharacter} />
+        </Paper>
+      </Container>
+    </ThemeProvider>
   );
 };
 
