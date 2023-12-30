@@ -1,5 +1,5 @@
-import React from 'react';
-import CharacterGenerator from './CharacterGenerator';
+import React from "react";
+import CharacterGenerator from "./CharacterGenerator";
 
 function App() {
   return (
