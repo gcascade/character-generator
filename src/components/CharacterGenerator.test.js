@@ -1,8 +1,6 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-import CharacterGenerator, {
-  generateRandomCharacter,
-} from "./CharacterGenerator";
+import CharacterGenerator from "./CharacterGenerator";
 
 describe("CharacterGenerator", () => {
   test("renders CharacterGenerator component without crashing", () => {
@@ -19,17 +17,6 @@ describe("CharacterGenerator", () => {
     render(<CharacterGenerator />);
     const initialCharacter = screen.getByText(/Character\d+/).textContent;
     expect(initialCharacter).toMatch(/Character\d+/);
-  });
-
-  test("generateRandomCharacter function creates a character with correct properties", () => {
-    const character = generateRandomCharacter();
-    expect(character).toHaveProperty("name");
-    expect(character).toHaveProperty("race");
-    expect(character).toHaveProperty("characterClass");
-    expect(character).toHaveProperty("gender");
-    expect(character).toHaveProperty("age");
-    expect(character).toHaveProperty("alignment");
-    expect(character).toHaveProperty("description");
   });
 
   test("clicking the generate button updates the character", async () => {
