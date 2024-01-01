@@ -15,17 +15,19 @@ describe("CharacterGenerator", () => {
 
   test("renders initial character on load", () => {
     render(<CharacterGenerator />);
-    const initialCharacter = screen.getByText(/Character\d+/).textContent;
+    const initialCharacters = screen.getAllByText(/Character\d+/);
+    const initialCharacter = initialCharacters[0].textContent;
     expect(initialCharacter).toMatch(/Character\d+/);
   });
 
   test("clicking the generate button updates the character", async () => {
     render(<CharacterGenerator />);
     const button = screen.getByText("New Character");
-    const initialCharacter = screen.getByText(/Character\d+/).textContent;
+    const initialCharacter = screen.getAllByText(/Character\d+/)[0].textContent;
     fireEvent.click(button);
     await waitFor(() => {
-      const updatedCharacter = screen.getByText(/Character\d+/).textContent;
+      const updatedCharacter =
+        screen.getAllByText(/Character\d+/)[0].textContent;
       expect(initialCharacter).not.toEqual(updatedCharacter);
     });
   });

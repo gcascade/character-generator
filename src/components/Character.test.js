@@ -24,10 +24,15 @@ describe("Character", () => {
   });
 
   test("displays character properties correctly", () => {
-    render(<Character character={mockCharacter} onGenerate={() => {}} />);
-    expect(screen.getByText("Test Character")).toBeInTheDocument();
+    const { container } = render(
+      <Character character={mockCharacter} onGenerate={() => {}} />
+    );
+    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+    const title = container.querySelector(".MuiCardHeader-title");
+    expect(title).toHaveTextContent("Test Character");
 
     const properties = [
+      "Name: Test Character",
       "Race: Elf",
       "Class: Warrior",
       "Gender: Male",
@@ -73,6 +78,62 @@ describe("Character", () => {
     render(<Character character={mockCharacter} onGenerate={() => {}} />);
     const card = screen.getByTestId("character-card");
     fireEvent.mouseOver(card);
-    expect(card).toHaveStyle("box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)");
+    expect(card).toHaveStyle(
+      "box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)"
+    );
+  });
+
+  test("renders character portrait component when not on mobile", () => {
+    const theme = createTheme();
+    window.matchMedia = jest.fn().mockImplementation((query) => {
+      return {
+        matches: false, // not mobile
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      };
+    });
+
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
+    );
+
+    const cardMedia = screen.getByAltText(
+      `${mockCharacter.race} ${mockCharacter.characterClass}`
+    );
+    expect(cardMedia).toBeInTheDocument();
+  });
+
+  test("does not render character portrait on mobile", () => {
+    const theme = createTheme();
+    window.matchMedia = jest.fn().mockImplementation((query) => {
+      return {
+        matches: true, // mobile
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      };
+    });
+
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
+    );
+
+    const cardMedia = screen.queryByAltText(
+      `${mockCharacter.race} ${mockCharacter.characterClass}`
+    );
+    expect(cardMedia).not.toBeInTheDocument();
   });
 });
