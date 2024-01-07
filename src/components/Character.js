@@ -94,6 +94,9 @@ const Character = ({ character, onGenerate }) => {
           <strong>Last Name:</strong> {character.lastName}
         </CharacterTypography>
         <CharacterTypography>
+          <strong>Epithet:</strong> {character.epithet}
+        </CharacterTypography>
+        <CharacterTypography>
           <strong>Race:</strong> {character.race}
         </CharacterTypography>
         <CharacterTypography>

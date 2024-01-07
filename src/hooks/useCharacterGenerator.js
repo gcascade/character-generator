@@ -1,8 +1,35 @@
 import { useState, useCallback } from "react";
 import characterNames from "../data/characterNames.json";
 
+const MIN_AGE = 15;
+
 const useCharacterGenerator = () => {
-  const races = ["Human", "Elf", "Dwarf", "Orc"];
+  const races = [
+    {
+      name: "Human",
+      maxAge: 100,
+      background:
+        "Born into a diverse society, adapting to various cultures and professions.",
+    },
+    {
+      name: "Elf",
+      maxAge: 200,
+      background:
+        "An ancient race with a deep connection to nature and a profound appreciation for art and beauty.",
+    },
+    {
+      name: "Dwarf",
+      maxAge: 400,
+      background:
+        "Hailing from underground realms, skilled in craftsmanship and known for their resilience.",
+    },
+    {
+      name: "Orc",
+      maxAge: 80,
+      background:
+        "A proud and fierce warrior, living by the strong bonds of their tribal community.",
+    },
+  ];
   const classes = ["Warrior", "Mage", "Rogue", "Cleric"];
   const genders = ["Male", "Female", "Non-binary"];
   const alignments = [
@@ -27,15 +54,6 @@ const useCharacterGenerator = () => {
       "A devoted follower of divine forces, serving as a healer and protector of the faithful.",
   };
 
-  const raceBackgrounds = {
-    Human:
-      "Born into a diverse society, adapting to various cultures and professions.",
-    Elf: "An ancient race with a deep connection to nature and a profound appreciation for art and beauty.",
-    Dwarf:
-      "Hailing from underground realms, skilled in craftsmanship and known for their resilience.",
-    Orc: "A proud and fierce warrior, living by the strong bonds of their tribal community.",
-  };
-
   const getRandomItem = (array) =>
     array[Math.floor(Math.random() * array.length)];
 
@@ -44,16 +62,12 @@ const useCharacterGenerator = () => {
     const randomClass = getRandomItem(classes);
     const randomGender = getRandomItem(genders);
 
-    let firstnamesForGender = [];
-    const { firstName, lastName } = characterNames;
+    const { firstName, lastName, epithet } = characterNames;
 
-    if (firstName) {
-      if (randomGender === "Non-binary") {
-        firstnamesForGender = firstName["Male"].concat(firstName["Female"]);
-      } else {
-        firstnamesForGender = firstName[randomGender];
-      }
-    }
+    const firstnamesForGender =
+      randomGender === "Non-binary"
+        ? firstName["Male"].concat(firstName["Female"])
+        : firstName[randomGender];
 
     const randomFirstName =
       firstnamesForGender && firstnamesForGender.length > 0
@@ -61,11 +75,13 @@ const useCharacterGenerator = () => {
         : `Character${Math.floor(Math.random() * 1000)}`;
 
     const randomLastName = getRandomItem(lastName);
-    const randomAge = Math.floor(Math.random() * 100) + 15;
+    const randomEpithet = getRandomItem(epithet);
+    const randomAge =
+      Math.floor(Math.random() * randomRace.maxAge - MIN_AGE) + MIN_AGE;
     const randomAlignment = getRandomItem(alignments);
 
-    const raceDescription = `A ${randomRace.toLowerCase()} with a rich cultural heritage. ${
-      raceBackgrounds[randomRace]
+    const raceDescription = `A ${randomRace.name.toLowerCase()} with a rich cultural heritage. ${
+      randomRace.background
     }`;
     const classDescription = `Skilled in the ways of ${randomClass.toLowerCase()}, ready to face any challenge. ${
       classBackgrounds[randomClass]
@@ -79,7 +95,8 @@ const useCharacterGenerator = () => {
     return {
       firstName: randomFirstName,
       lastName: randomLastName,
-      race: randomRace,
+      epithet: randomEpithet,
+      race: randomRace.name,
       characterClass: randomClass,
       gender: randomGender,
       age: randomAge,

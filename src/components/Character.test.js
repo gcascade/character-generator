@@ -7,6 +7,7 @@ describe("Character", () => {
   const mockCharacter = {
     firstName: "Test",
     lastName: "Character",
+    epithet: "The Great",
     race: "Elf",
     characterClass: "Warrior",
     gender: "Male",
@@ -35,6 +36,7 @@ describe("Character", () => {
     const properties = [
       "First Name: Test",
       "Last Name: Character",
+      "Epithet: The Great",
       "Race: Elf",
       "Class: Warrior",
       "Gender: Male",
