@@ -10,7 +10,21 @@ import {
   CardHeader,
   useMediaQuery,
 } from "@mui/material";
+import { Male, Female, Transgender } from "@mui/icons-material";
 import "./Character.css";
+
+const getGenderIcon = (gender) => {
+  switch (gender) {
+    case "Male":
+      return <Male sx={{ color: "blue" }} />;
+    case "Female":
+      return <Female sx={{ color: "pink" }} />;
+    case "Non-binary":
+      return <Transgender sx={{ color: "purple" }} />;
+    default:
+      return null;
+  }
+};
 
 const CharacterTypography = ({ children }) => {
   const theme = useTheme();
@@ -37,9 +51,22 @@ const Character = ({ character, onGenerate }) => {
       }}
     >
       <CardHeader
-        title={character.name}
+        title={
+          <span data-testid="character-name">{`${character.firstName} ${character.lastName}`}</span>
+        }
         titleTypographyProps={{ align: "center", variant: "h4" }}
-        subheader={`${character.race} ${character.characterClass}`}
+        subheader={
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {character.race} {character.characterClass}
+            {getGenderIcon(character.gender)}
+          </div>
+        }
         subheaderTypographyProps={{ align: "center", variant: "subtitle1" }}
       />
       {!isMobile && (
@@ -61,7 +88,10 @@ const Character = ({ character, onGenerate }) => {
       )}
       <CardContent>
         <CharacterTypography>
-          <strong>Name:</strong> {character.name}
+          <strong>First Name:</strong> {character.firstName}
+        </CharacterTypography>
+        <CharacterTypography>
+          <strong>Last Name:</strong> {character.lastName}
         </CharacterTypography>
         <CharacterTypography>
           <strong>Race:</strong> {character.race}

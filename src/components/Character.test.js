@@ -5,7 +5,8 @@ import Character from "./Character";
 
 describe("Character", () => {
   const mockCharacter = {
-    name: "Test Character",
+    firstName: "Test",
+    lastName: "Character",
     race: "Elf",
     characterClass: "Warrior",
     gender: "Male",
@@ -32,7 +33,8 @@ describe("Character", () => {
     expect(title).toHaveTextContent("Test Character");
 
     const properties = [
-      "Name: Test Character",
+      "First Name: Test",
+      "Last Name: Character",
       "Race: Elf",
       "Class: Warrior",
       "Gender: Male",

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import characterNames from "../data/characterNames.json";
 
 const useCharacterGenerator = () => {
   const races = ["Human", "Elf", "Dwarf", "Orc"];
@@ -35,14 +36,33 @@ const useCharacterGenerator = () => {
     Orc: "A proud and fierce warrior, living by the strong bonds of their tribal community.",
   };
 
+  const getRandomItem = (array) =>
+    array[Math.floor(Math.random() * array.length)];
+
   const generateRandomCharacter = () => {
-    const randomName = `Character${Math.floor(Math.random() * 1000)}`;
-    const randomRace = races[Math.floor(Math.random() * races.length)];
-    const randomClass = classes[Math.floor(Math.random() * classes.length)];
-    const randomGender = genders[Math.floor(Math.random() * genders.length)];
+    const randomRace = getRandomItem(races);
+    const randomClass = getRandomItem(classes);
+    const randomGender = getRandomItem(genders);
+
+    let firstnamesForGender = [];
+    const { firstName, lastName } = characterNames;
+
+    if (firstName) {
+      if (randomGender === "Non-binary") {
+        firstnamesForGender = firstName["Male"].concat(firstName["Female"]);
+      } else {
+        firstnamesForGender = firstName[randomGender];
+      }
+    }
+
+    const randomFirstName =
+      firstnamesForGender && firstnamesForGender.length > 0
+        ? getRandomItem(firstnamesForGender)
+        : `Character${Math.floor(Math.random() * 1000)}`;
+
+    const randomLastName = getRandomItem(lastName);
     const randomAge = Math.floor(Math.random() * 100) + 15;
-    const randomAlignment =
-      alignments[Math.floor(Math.random() * alignments.length)];
+    const randomAlignment = getRandomItem(alignments);
 
     const raceDescription = `A ${randomRace.toLowerCase()} with a rich cultural heritage. ${
       raceBackgrounds[randomRace]
@@ -57,7 +77,8 @@ const useCharacterGenerator = () => {
     const randomDescription = `${raceDescription} ${classDescription} ${genderDescription} ${ageDescription} ${alignmentDescription}`;
 
     return {
-      name: randomName,
+      firstName: randomFirstName,
+      lastName: randomLastName,
       race: randomRace,
       characterClass: randomClass,
       gender: randomGender,
@@ -70,9 +91,9 @@ const useCharacterGenerator = () => {
   const useRandomCharacter = () => {
     const [character, setCharacter] = useState(generateRandomCharacter());
 
-    const generateNewCharacter = () => {
+    const generateNewCharacter = useCallback(() => {
       setCharacter(generateRandomCharacter());
-    };
+    }, []);
 
     return { character, generateNewCharacter };
   };
