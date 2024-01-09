@@ -25,3 +25,15 @@
   margin: 0;
   padding: 5px;
 }
+
+.gender-icon {
+  color: blue;
+}
+
+.gender-icon.female {
+  color: pink;
+}
+
+.gender-icon.non-binary {
+  color: purple;
+}

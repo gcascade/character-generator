@@ -13,12 +13,37 @@ const replacePlaceholders = (str, character) => {
     .replace(/{{epithet}}/g, epithet);
 };
 
-const generateBackground = ({ firstName, lastName, epithet }) => {
+const generateBackground = (character) => {
+  const {
+    firstName,
+    lastName,
+    epithet,
+    characterClass,
+    gender,
+    race,
+    alignment,
+  } = character;
+
+  const backgroundsFiltered = backgrounds.filter(
+    (b) =>
+      b.characterClass === characterClass &&
+      b.alignment === alignment &&
+      b.gender === gender &&
+      b.race === race
+  );
+
+  const background =
+    backgroundsFiltered.length > 0
+      ? backgroundsFiltered[
+          Math.floor(Math.random() * backgroundsFiltered.length)
+        ]
+      : backgrounds[0];
+
   return {
-    content: backgrounds[0].content.map((paragraph) =>
+    content: background.content.map((paragraph) =>
       replacePlaceholders(paragraph, { firstName, lastName, epithet })
     ),
-    title: replacePlaceholders(backgrounds[0].title, {
+    title: replacePlaceholders(background.title, {
       firstName,
       lastName,
       epithet,

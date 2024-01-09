@@ -1,7 +1,7 @@
 [
   {
     "alignment": "Lawful Good",
-    "class": "Warrior",
+    "characterClass": "Warrior",
     "content": [
       "In the sun-kissed realm of Eldoria, {{firstName}} {{lastName}} emerged as a paragon of honor and virtue. Born into the esteemed House of Lightwell, {{firstName}} was raised on tales of chivalry, bravery, and the unwavering commitment to justice. From an early age, he displayed an innate sense of duty, driven by a desire to protect the innocent and uphold the principles of righteousness.",
       "As a scion of House Lightwell, {{firstName}} underwent rigorous training in the martial arts and the code of knighthood. His prowess with the blade and unwavering adherence to the principles of Law and Good earned him the title of the Knight of Noble Valor. Clad in gleaming armor adorned with the emblem of a radiant sun, {{firstName}} became a symbol of hope and inspiration for the people of Eldoria.",
@@ -12,5 +12,20 @@
     "gender": "Male",
     "race": "Human",
     "title": "{{firstName}} {{lastName}} - {{epithet}}"
+  },
+  {
+    "alignment": "Lawful Good",
+    "characterClass": "Warrior",
+    "content": [
+      "In the realm of Valeria, a kingdom renowned for its unwavering commitment to justice and honor, {{firstName}} {{lastName}} emerged as a valiant warrior. Hailing from a noble lineage, {{firstName}} was instilled with a deep sense of duty and a commitment to uphold the principles that governed the kingdom.",
+      "From a young age, {{firstName}} displayed exceptional skill in combat and an unwavering dedication to the ideals of righteousness. His training in the royal academy further honed his abilities, and he quickly rose through the ranks of the kingdom's military, earning the respect of both peers and superiors.",
+      "{{firstName}} became a symbol of justice on the battlefield, leading campaigns against marauding monsters and defending the kingdom from external threats. His sword, infused with the power of his convictions, struck down evildoers and protected the innocent.",
+      "Beyond the battlefield, {{firstName}} was known for his charitable deeds and commitment to the welfare of Valeria's citizens. He actively participated in community service, ensuring that the less fortunate had access to education and healthcare.",
+      "Despite the challenges he faced, {{firstName}} remained resolute in his commitment to the principles of justice. His integrity, coupled with his prowess in combat, earned him the title of \"{{epithet}}\" among the people of Valeria.",
+      "As {{firstName}} continues his journey, he carries the weight of responsibility on his shoulders, always striving to be a beacon of hope and justice in a world that sometimes succumbs to darkness. His story is etched in the annals of Valeria, a testament to the enduring strength of righteousness in the face of adversity."
+    ],
+    "gender": "Male",
+    "race": "Human",
+    "title": "{{epithet}} of Valeria"
   }
 ]

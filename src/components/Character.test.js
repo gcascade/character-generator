@@ -13,7 +13,10 @@ describe("Character", () => {
     gender: "Male",
     age: "100",
     alignment: "Neutral",
-    description: "Test description",
+    background: {
+      title: "Test Background Title",
+      content: ["Test Background Content"],
+    },
   };
 
   const hasText = (node, text) => node.textContent === text;
@@ -42,7 +45,6 @@ describe("Character", () => {
       "Gender: Male",
       "Age: 100",
       "Alignment: Neutral",
-      "Description: Test description",
     ];
 
     properties.forEach((property) => {
@@ -52,6 +54,18 @@ describe("Character", () => {
             hasText(node, property) && childrenDontHaveText(node, property)
         )
       ).toBeInTheDocument();
+    });
+  });
+
+  test("displays character background correctly", () => {
+    render(<Character character={mockCharacter} onGenerate={() => {}} />);
+
+    const backgroundTitle = screen.getByText(mockCharacter.background.title);
+    expect(backgroundTitle).toBeInTheDocument();
+
+    mockCharacter.background.content.forEach((content) => {
+      const backgroundContent = screen.getByText(content);
+      expect(backgroundContent).toBeInTheDocument();
     });
   });
 

@@ -14,13 +14,15 @@ import { Male, Female, Transgender } from "@mui/icons-material";
 import "./Character.css";
 
 const Gender = ({ gender }) => {
+  const className = `gender-icon ${gender.toLowerCase()}`;
+
   switch (gender) {
     case "Male":
-      return <Male sx={{ color: "blue" }} />;
+      return <Male className={className} />;
     case "Female":
-      return <Female sx={{ color: "pink" }} />;
+      return <Female className={className} />;
     case "Non-binary":
-      return <Transgender sx={{ color: "purple" }} />;
+      return <Transgender className={className} />;
     default:
       return null;
   }
