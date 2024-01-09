@@ -17,7 +17,7 @@ const CharacterGenerator = () => {
     <ThemeProvider theme={theme}>
       <Container
         component="main"
-        maxWidth="xs"
+        maxWidth="md"
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "24px",

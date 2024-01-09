@@ -13,7 +13,7 @@ import {
 import { Male, Female, Transgender } from "@mui/icons-material";
 import "./Character.css";
 
-const getGenderIcon = (gender) => {
+const Gender = ({ gender }) => {
   switch (gender) {
     case "Male":
       return <Male sx={{ color: "blue" }} />;
@@ -36,9 +36,43 @@ const CharacterTypography = ({ children }) => {
   );
 };
 
+const CharacterBackground = ({ background }) => {
+  if (!background || !background.content) {
+    return null;
+  }
+
+  const { content, title } = background;
+
+  return (
+    <>
+      <CharacterTypography>
+        <strong>History:</strong>
+      </CharacterTypography>
+      <Typography className="background-title">{title}</Typography>
+      {content.map((paragraph, index) => (
+        <div key={index} style={{ padding: "5px" }}>
+          <CharacterTypography>{paragraph}</CharacterTypography>
+        </div>
+      ))}
+    </>
+  );
+};
+
 const Character = ({ character, onGenerate }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const {
+    firstName,
+    lastName,
+    gender,
+    race,
+    characterClass,
+    age,
+    alignment,
+    background,
+    epithet,
+  } = character;
 
   const portraitPath = "/images/default-portrait.jpg";
 
@@ -52,7 +86,7 @@ const Character = ({ character, onGenerate }) => {
     >
       <CardHeader
         title={
-          <span data-testid="character-name">{`${character.firstName} ${character.lastName}`}</span>
+          <span data-testid="character-name">{`${firstName} ${lastName}`}</span>
         }
         titleTypographyProps={{ align: "center", variant: "h4" }}
         subheader={
@@ -63,8 +97,8 @@ const Character = ({ character, onGenerate }) => {
               justifyContent: "center",
             }}
           >
-            {character.race} {character.characterClass}
-            {getGenderIcon(character.gender)}
+            {race} {characterClass}
+            <Gender gender={gender} />
           </div>
         }
         subheaderTypographyProps={{ align: "center", variant: "subtitle1" }}
@@ -73,7 +107,7 @@ const Character = ({ character, onGenerate }) => {
         <CardMedia
           component="img"
           className="character-portrait"
-          alt={`${character.race} ${character.characterClass}`}
+          alt={`${race} ${characterClass}`}
           image={portraitPath}
           height="140"
           sx={{
@@ -88,32 +122,30 @@ const Character = ({ character, onGenerate }) => {
       )}
       <CardContent>
         <CharacterTypography>
-          <strong>First Name:</strong> {character.firstName}
+          <strong>First Name:</strong> {firstName}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Last Name:</strong> {character.lastName}
+          <strong>Last Name:</strong> {lastName}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Epithet:</strong> {character.epithet}
+          <strong>Epithet:</strong> {epithet}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Race:</strong> {character.race}
+          <strong>Race:</strong> {race}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Class:</strong> {character.characterClass}
+          <strong>Class:</strong> {characterClass}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Gender:</strong> {character.gender}
+          <strong>Gender:</strong> {gender}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Age:</strong> {character.age}
+          <strong>Age:</strong> {age}
         </CharacterTypography>
         <CharacterTypography>
-          <strong>Alignment:</strong> {character.alignment}
+          <strong>Alignment:</strong> {alignment}
         </CharacterTypography>
-        <CharacterTypography>
-          <strong>Description:</strong> {character.description}
-        </CharacterTypography>
+        <CharacterBackground background={background} />
       </CardContent>
       <CardActions>
         <Button

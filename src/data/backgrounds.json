@@ -1,0 +1,16 @@
+[
+  {
+    "alignment": "Lawful Good",
+    "class": "Warrior",
+    "content": [
+      "In the sun-kissed realm of Eldoria, {{firstName}} {{lastName}} emerged as a paragon of honor and virtue. Born into the esteemed House of Lightwell, {{firstName}} was raised on tales of chivalry, bravery, and the unwavering commitment to justice. From an early age, he displayed an innate sense of duty, driven by a desire to protect the innocent and uphold the principles of righteousness.",
+      "As a scion of House Lightwell, {{firstName}} underwent rigorous training in the martial arts and the code of knighthood. His prowess with the blade and unwavering adherence to the principles of Law and Good earned him the title of the Knight of Noble Valor. Clad in gleaming armor adorned with the emblem of a radiant sun, {{firstName}} became a symbol of hope and inspiration for the people of Eldoria.",
+      "His unwavering commitment to justice led him to the forefront of battles against marauding brigands, dark cults, and malevolent creatures that threatened the peace of the realm. {{firstName}}'s deeds were not merely acts of heroism but a testament to the embodiment of the lawful good ethos.",
+      "In addition to his martial skills, {{firstName}} {{lastName}} also excelled in diplomacy, often serving as a mediator in disputes and fostering alliances among the noble houses. His compassion extended beyond the battlefield, as he actively participated in charitable endeavors and sought to uplift the less fortunate.",
+      "As he advanced in years, {{firstName}} continued his quest for justice, ensuring that the light of his noble valor pierced through the shadows of corruption. Whether leading his fellow knights in glorious charges or standing firm in the face of adversity, {{firstName}} {{lastName}} remained a paragon of virtue, a guardian of the realm, and a beacon of hope for Eldoria."
+    ],
+    "gender": "Male",
+    "race": "Human",
+    "title": "{{firstName}} {{lastName}} - {{epithet}}"
+  }
+]

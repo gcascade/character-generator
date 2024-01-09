@@ -1,33 +1,48 @@
 import { useState, useCallback } from "react";
 import characterNames from "../data/characterNames.json";
+import backgrounds from "../data/backgrounds.json";
 
 const MIN_AGE = 15;
+
+const replacePlaceholders = (str, character) => {
+  const { firstName, lastName, epithet } = character;
+
+  return str
+    .replace(/{{firstName}}/g, firstName)
+    .replace(/{{lastName}}/g, lastName)
+    .replace(/{{epithet}}/g, epithet);
+};
+
+const generateBackground = ({ firstName, lastName, epithet }) => {
+  return {
+    content: backgrounds[0].content.map((paragraph) =>
+      replacePlaceholders(paragraph, { firstName, lastName, epithet })
+    ),
+    title: replacePlaceholders(backgrounds[0].title, {
+      firstName,
+      lastName,
+      epithet,
+    }),
+  };
+};
 
 const useCharacterGenerator = () => {
   const races = [
     {
       name: "Human",
       maxAge: 100,
-      background:
-        "Born into a diverse society, adapting to various cultures and professions.",
     },
     {
       name: "Elf",
       maxAge: 200,
-      background:
-        "An ancient race with a deep connection to nature and a profound appreciation for art and beauty.",
     },
     {
       name: "Dwarf",
       maxAge: 400,
-      background:
-        "Hailing from underground realms, skilled in craftsmanship and known for their resilience.",
     },
     {
       name: "Orc",
       maxAge: 80,
-      background:
-        "A proud and fierce warrior, living by the strong bonds of their tribal community.",
     },
   ];
   const classes = ["Warrior", "Mage", "Rogue", "Cleric"];
@@ -43,16 +58,6 @@ const useCharacterGenerator = () => {
     "Neutral Evil",
     "Chaotic Evil",
   ];
-
-  const classBackgrounds = {
-    Warrior:
-      "A seasoned veteran of numerous battles, honing their combat skills on the front lines.",
-    Mage: "A scholar of arcane mysteries, delving into ancient tomes to harness the power of magic.",
-    Rogue:
-      "A skilled infiltrator and master of stealth, navigating the shadows with finesse.",
-    Cleric:
-      "A devoted follower of divine forces, serving as a healer and protector of the faithful.",
-  };
 
   const getRandomItem = (array) =>
     array[Math.floor(Math.random() * array.length)];
@@ -76,23 +81,10 @@ const useCharacterGenerator = () => {
 
     const randomLastName = getRandomItem(lastName);
     const randomEpithet = getRandomItem(epithet);
-    const randomAge =
-      Math.floor(Math.random() * randomRace.maxAge - MIN_AGE) + MIN_AGE;
+    const randomAge = Math.floor(Math.random() * randomRace.maxAge) + MIN_AGE;
     const randomAlignment = getRandomItem(alignments);
 
-    const raceDescription = `A ${randomRace.name.toLowerCase()} with a rich cultural heritage. ${
-      randomRace.background
-    }`;
-    const classDescription = `Skilled in the ways of ${randomClass.toLowerCase()}, ready to face any challenge. ${
-      classBackgrounds[randomClass]
-    }`;
-    const genderDescription = `Identifying as ${randomGender.toLowerCase()}, this character brings a unique perspective to their adventures.`;
-    const ageDescription = `With ${randomAge} years of experience, wisdom is etched into every line on their face.`;
-    const alignmentDescription = `Guided by a moral compass, this character follows the path of ${randomAlignment.toLowerCase()}.`;
-
-    const randomDescription = `${raceDescription} ${classDescription} ${genderDescription} ${ageDescription} ${alignmentDescription}`;
-
-    return {
+    const character = {
       firstName: randomFirstName,
       lastName: randomLastName,
       epithet: randomEpithet,
@@ -101,7 +93,12 @@ const useCharacterGenerator = () => {
       gender: randomGender,
       age: randomAge,
       alignment: randomAlignment,
-      description: randomDescription,
+    };
+
+    return {
+      ...character,
+      description: generateBackground(character).content,
+      background: generateBackground(character),
     };
   };
 
