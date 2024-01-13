@@ -6,11 +6,11 @@ import {
   Typography,
   Button,
   CardActions,
-  CardMedia,
   CardHeader,
   useMediaQuery,
 } from "@mui/material";
 import { Male, Female, Transgender } from "@mui/icons-material";
+import CharacterImage from "./CharacterImage";
 import "./Character.css";
 
 const Gender = ({ gender }) => {
@@ -76,8 +76,6 @@ const Character = ({ character, onGenerate }) => {
     epithet,
   } = character;
 
-  const portraitPath = "/images/default-portrait.jpg";
-
   return (
     <Card
       data-testid="character-card"
@@ -105,23 +103,7 @@ const Character = ({ character, onGenerate }) => {
         }
         subheaderTypographyProps={{ align: "center", variant: "subtitle1" }}
       />
-      {!isMobile && (
-        <CardMedia
-          component="img"
-          className="character-portrait"
-          alt={`${race} ${characterClass}`}
-          image={portraitPath}
-          height="140"
-          sx={{
-            boxShadow:
-              "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-            transition: "transform 0.3s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.05)",
-            },
-          }}
-        />
-      )}
+      {!isMobile && <CharacterImage character={character} />}
       <CardContent>
         <CharacterTypography>
           <strong>First Name:</strong> {firstName}

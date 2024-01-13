@@ -1,6 +1,12 @@
 import { useState, useCallback } from "react";
 import characterNames from "../data/characterNames.json";
 import backgrounds from "../data/backgrounds.json";
+import {
+  Races,
+  Classes,
+  Genders,
+  Alignments,
+} from "../constants/characterAttributes";
 
 const MIN_AGE = 15;
 
@@ -11,6 +17,16 @@ const replacePlaceholders = (str, character) => {
     .replace(/{{firstName}}/g, firstName)
     .replace(/{{lastName}}/g, lastName)
     .replace(/{{epithet}}/g, epithet);
+};
+
+export const getDefaultBackground = (gender) => {
+  return backgrounds.find(
+    (background) =>
+      background.gender === gender &&
+      background.race === Races.DEFAULT.name &&
+      background.characterClass === Classes.DEFAULT &&
+      background.alignment === Alignments.DEFAULT
+  );
 };
 
 const generateBackground = (character) => {
@@ -37,7 +53,7 @@ const generateBackground = (character) => {
       ? backgroundsFiltered[
           Math.floor(Math.random() * backgroundsFiltered.length)
         ]
-      : backgrounds[0];
+      : getDefaultBackground(gender);
 
   return {
     content: background.content.map((paragraph) =>
@@ -52,37 +68,10 @@ const generateBackground = (character) => {
 };
 
 const useCharacterGenerator = () => {
-  const races = [
-    {
-      name: "Human",
-      maxAge: 100,
-    },
-    {
-      name: "Elf",
-      maxAge: 200,
-    },
-    {
-      name: "Dwarf",
-      maxAge: 400,
-    },
-    {
-      name: "Orc",
-      maxAge: 80,
-    },
-  ];
-  const classes = ["Warrior", "Mage", "Rogue", "Cleric"];
-  const genders = ["Male", "Female", "Non-binary"];
-  const alignments = [
-    "Lawful Good",
-    "Neutral Good",
-    "Chaotic Good",
-    "Lawful Neutral",
-    "True Neutral",
-    "Chaotic Neutral",
-    "Lawful Evil",
-    "Neutral Evil",
-    "Chaotic Evil",
-  ];
+  const races = Object.values(Races);
+  const classes = Object.values(Classes);
+  const genders = Object.values(Genders);
+  const alignments = Object.values(Alignments);
 
   const getRandomItem = (array) =>
     array[Math.floor(Math.random() * array.length)];
@@ -105,24 +94,23 @@ const useCharacterGenerator = () => {
         : `Character${Math.floor(Math.random() * 1000)}`;
 
     const randomLastName = getRandomItem(lastName);
-    const randomEpithet = getRandomItem(epithet);
     const randomAge = Math.floor(Math.random() * randomRace.maxAge) + MIN_AGE;
     const randomAlignment = getRandomItem(alignments);
+    const randomEpithet = getRandomItem(epithet);
 
     const character = {
       firstName: randomFirstName,
       lastName: randomLastName,
-      epithet: randomEpithet,
       race: randomRace.name,
       characterClass: randomClass,
       gender: randomGender,
+      epithet: randomEpithet,
       age: randomAge,
       alignment: randomAlignment,
     };
 
     return {
       ...character,
-      description: generateBackground(character).content,
       background: generateBackground(character),
     };
   };
