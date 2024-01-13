@@ -68,10 +68,14 @@ const generateBackground = (character) => {
 };
 
 const useCharacterGenerator = () => {
-  const races = Object.values(Races);
-  const classes = Object.values(Classes);
+  const races = Object.values(Races).filter((race) => race !== Races.DEFAULT);
+  const classes = Object.values(Classes).filter(
+    (cls) => cls !== Classes.DEFAULT
+  );
   const genders = Object.values(Genders);
-  const alignments = Object.values(Alignments);
+  const alignments = Object.values(Alignments).filter(
+    (alignment) => alignment !== Alignments.DEFAULT
+  );
 
   const getRandomItem = (array) =>
     array[Math.floor(Math.random() * array.length)];
