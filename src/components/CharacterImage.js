@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { CardMedia } from "@mui/material";
-import "./Character.css";
+import "./CharacterImage.css";
 import { isImage } from "../utils/image";
 import { Genders } from "../constants/characterAttributes";
 
+const IMAGE_SIZE = 512;
+const DEFAULT_IMAGE_PATH = "/images/default-portrait.png";
+
 const CharacterImage = ({ character }) => {
   const { gender, race, characterClass } = character;
-
-  const [portraitPath, setPortraitPath] = useState(
-    "/images/default-portrait.jpg"
-  );
+  const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -27,11 +27,7 @@ const CharacterImage = ({ character }) => {
         return;
       }
 
-      if (exists) {
-        setPortraitPath(imagePath);
-      } else {
-        setPortraitPath("/images/default-portrait.jpg");
-      }
+      setPortraitPath(exists ? imagePath : DEFAULT_IMAGE_PATH);
     });
 
     return () => {
@@ -39,13 +35,19 @@ const CharacterImage = ({ character }) => {
     };
   }, [race, characterClass, gender]);
 
+  const handleClick = () => {
+    window.open(portraitPath, "_blank");
+  };
+
   return (
     <CardMedia
       component="img"
       className="character-portrait"
       alt={`${race} ${characterClass}`}
+      onClick={handleClick}
       image={portraitPath}
-      height="140"
+      height={IMAGE_SIZE}
+      style={{ width: "30%" }}
       sx={{
         boxShadow:
           "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",

@@ -12,12 +12,6 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.character-portrait {
-  border-radius: 16px;
-  overflow: hidden;
-  border: 2px solid #000000;
-}
-
 .background-title {
   font-size: 1rem;
   font-weight: bold;

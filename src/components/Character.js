@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material/styles";
 import {
   Card,
   CardContent,
-  Typography,
   Button,
   CardActions,
   CardHeader,
@@ -12,6 +11,8 @@ import {
 import { Male, Female, Transgender } from "@mui/icons-material";
 import CharacterImage from "./CharacterImage";
 import "./Character.css";
+import CharacterBackground from "./CharacterBackground";
+import CharacterInformation from "./CharacterInformation";
 
 const Gender = ({ gender }) => {
   const className = `gender-icon ${gender.toLowerCase()}`;
@@ -28,53 +29,12 @@ const Gender = ({ gender }) => {
   }
 };
 
-const CharacterTypography = ({ children }) => {
-  const theme = useTheme();
-
-  return (
-    <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
-      {children}
-    </Typography>
-  );
-};
-
-const CharacterBackground = ({ background }) => {
-  if (!background || !background.content) {
-    return null;
-  }
-
-  const { content, title } = background;
-
-  return (
-    <>
-      <CharacterTypography>
-        <strong>History:</strong>
-      </CharacterTypography>
-      <Typography className="background-title">{title}</Typography>
-      {content.map((paragraph, index) => (
-        <div key={index} style={{ padding: "5px" }}>
-          <CharacterTypography>{paragraph}</CharacterTypography>
-        </div>
-      ))}
-    </>
-  );
-};
-
 const Character = ({ character, onGenerate }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const {
-    firstName,
-    lastName,
-    gender,
-    race,
-    characterClass,
-    age,
-    alignment,
-    background,
-    epithet,
-  } = character;
+  const { firstName, lastName, gender, race, characterClass, background } =
+    character;
 
   return (
     <Card
@@ -103,33 +63,12 @@ const Character = ({ character, onGenerate }) => {
         }
         subheaderTypographyProps={{ align: "center", variant: "subtitle1" }}
       />
-      {!isMobile && <CharacterImage character={character} />}
-      <CardContent>
-        <CharacterTypography>
-          <strong>First Name:</strong> {firstName}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Last Name:</strong> {lastName}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Epithet:</strong> {epithet}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Race:</strong> {race}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Class:</strong> {characterClass}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Gender:</strong> {gender}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Age:</strong> {age}
-        </CharacterTypography>
-        <CharacterTypography>
-          <strong>Alignment:</strong> {alignment}
-        </CharacterTypography>
-        <CharacterBackground background={background} />
+      <CardContent style={{ display: "flex" }}>
+        {!isMobile && <CharacterImage character={character} />}
+        <div style={{ marginLeft: "20px", width: "70%" }}>
+          <CharacterInformation character={character} />
+          <CharacterBackground background={background} />
+        </div>
       </CardContent>
       <CardActions>
         <Button

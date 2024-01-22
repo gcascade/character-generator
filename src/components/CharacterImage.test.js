@@ -68,6 +68,6 @@ describe("CharacterImage", () => {
     const image = await screen.findByAltText(
       "NonexistentRace NonexistentClass"
     );
-    expect(image.src).toContain("/images/default-portrait.jpg");
+    expect(image.src).toContain("/images/default-portrait.png");
   });
 });

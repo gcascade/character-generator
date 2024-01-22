@@ -2,6 +2,8 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Character from "./Character";
+import theme from "../themes/themes";
+import { expectElementWithTextToBeInTheDocument } from "../utils/tests";
 
 describe("Character", () => {
   const mockCharacter = {
@@ -19,18 +21,19 @@ describe("Character", () => {
     },
   };
 
-  const hasText = (node, text) => node.textContent === text;
-  const childrenDontHaveText = (node, text) =>
-    // eslint-disable-next-line testing-library/no-node-access
-    Array.from(node.children).every((child) => !hasText(child, text));
-
   test("renders Character component without crashing", () => {
-    render(<Character character={mockCharacter} onGenerate={() => {}} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
+    );
   });
 
   test("displays character properties correctly", () => {
     const { container } = render(
-      <Character character={mockCharacter} onGenerate={() => {}} />
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
     );
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     const title = container.querySelector(".MuiCardHeader-title");
@@ -48,17 +51,16 @@ describe("Character", () => {
     ];
 
     properties.forEach((property) => {
-      expect(
-        screen.getByText(
-          (_, node) =>
-            hasText(node, property) && childrenDontHaveText(node, property)
-        )
-      ).toBeInTheDocument();
+      expectElementWithTextToBeInTheDocument(property);
     });
   });
 
   test("displays character background correctly", () => {
-    render(<Character character={mockCharacter} onGenerate={() => {}} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
+    );
 
     const backgroundTitle = screen.getByText(mockCharacter.background.title);
     expect(backgroundTitle).toBeInTheDocument();
@@ -71,14 +73,17 @@ describe("Character", () => {
 
   test("calls onGenerate function when button is clicked", () => {
     const mockOnGenerate = jest.fn();
-    render(<Character character={mockCharacter} onGenerate={mockOnGenerate} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={mockOnGenerate} />
+      </ThemeProvider>
+    );
     const button = screen.getByText("New Character");
     fireEvent.click(button);
     expect(mockOnGenerate).toHaveBeenCalled();
   });
 
   test("applies theme colors correctly to card", () => {
-    const theme = createTheme();
     render(
       <ThemeProvider theme={theme}>
         <Character character={mockCharacter} onGenerate={() => {}} />
@@ -93,7 +98,11 @@ describe("Character", () => {
   });
 
   test("applies hover effects correctly to card", () => {
-    render(<Character character={mockCharacter} onGenerate={() => {}} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Character character={mockCharacter} onGenerate={() => {}} />
+      </ThemeProvider>
+    );
     const card = screen.getByTestId("character-card");
     fireEvent.mouseOver(card);
     expect(card).toHaveStyle(
