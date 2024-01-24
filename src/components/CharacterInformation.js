@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import CharacterTypography from "./CharacterTypography";
+import { CharacterContext } from "../contexts/CharacterContext";
 
-const CharacterInformation = ({ character }) => {
+const CharacterInformation = () => {
   const {
-    firstName,
-    lastName,
-    epithet,
-    race,
-    characterClass,
-    gender,
-    age,
-    alignment,
-  } = character;
+    character: {
+      firstName,
+      lastName,
+      epithet,
+      race,
+      characterClass,
+      gender,
+      age,
+      alignment,
+    },
+  } = useContext(CharacterContext);
 
   return (
     <>

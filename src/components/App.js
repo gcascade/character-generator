@@ -1,11 +1,13 @@
 import React from "react";
 import CharacterGenerator from "./CharacterGenerator";
+import { CharacterProvider } from "../contexts/CharacterContext";
+import { generateRandomCharacter } from "../utils/character";
 
 function App() {
   return (
-    <div>
+    <CharacterProvider initCharacter={generateRandomCharacter()}>
       <CharacterGenerator />
-    </div>
+    </CharacterProvider>
   );
 }
 

@@ -20,6 +20,12 @@
   padding: 5px;
 }
 
+.character-subheader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .gender-icon {
   color: blue;
 }

@@ -11,7 +11,7 @@ import theme from "../themes/themes";
 import useCharacterGenerator from "../hooks/useCharacterGenerator";
 
 const CharacterGenerator = () => {
-  const { character, generateNewCharacter } = useCharacterGenerator();
+  const { generateNewCharacter } = useCharacterGenerator();
 
   return (
     <ThemeProvider theme={theme}>
@@ -33,7 +33,7 @@ const CharacterGenerator = () => {
           >
             RPG Character Generator
           </Typography>
-          <Character character={character} onGenerate={generateNewCharacter} />
+          <Character onGenerate={generateNewCharacter} />
         </Paper>
       </Container>
     </ThemeProvider>

@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Character from "./Character";
 import theme from "../themes/themes";
 import { expectElementWithTextToBeInTheDocument } from "../utils/tests";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 describe("Character", () => {
   const mockCharacter = {
@@ -24,7 +25,9 @@ describe("Character", () => {
   test("renders Character component without crashing", () => {
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
   });
@@ -32,7 +35,9 @@ describe("Character", () => {
   test("displays character properties correctly", () => {
     const { container } = render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
@@ -58,7 +63,9 @@ describe("Character", () => {
   test("displays character background correctly", () => {
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
 
@@ -75,7 +82,9 @@ describe("Character", () => {
     const mockOnGenerate = jest.fn();
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={mockOnGenerate} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={mockOnGenerate} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
     const button = screen.getByText("New Character");
@@ -86,7 +95,9 @@ describe("Character", () => {
   test("applies theme colors correctly to card", () => {
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
 
@@ -100,7 +111,9 @@ describe("Character", () => {
   test("applies hover effects correctly to card", () => {
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
     const card = screen.getByTestId("character-card");
@@ -127,7 +140,9 @@ describe("Character", () => {
 
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
 
@@ -154,7 +169,9 @@ describe("Character", () => {
 
     render(
       <ThemeProvider theme={theme}>
-        <Character character={mockCharacter} onGenerate={() => {}} />
+        <CharacterContext.Provider value={{ character: mockCharacter }}>
+          <Character character={mockCharacter} onGenerate={() => {}} />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
 

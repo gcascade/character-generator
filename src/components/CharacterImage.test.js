@@ -1,6 +1,7 @@
 import React from "react";
 import { render, act, screen } from "@testing-library/react";
 import CharacterImage from "./CharacterImage";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 jest.mock("../utils/image", () => {
   const {
@@ -28,24 +29,34 @@ jest.mock("../utils/image", () => {
 });
 
 describe("CharacterImage", () => {
+  const character = {
+    gender: "Male",
+    race: "Elf",
+    characterClass: "Warrior",
+  };
   test("renders CharacterImage component without crashing", async () => {
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
       render(
-        <CharacterImage
-          character={{ gender: "Male", race: "Elf", characterClass: "Warrior" }}
-        />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterImage />
+        </CharacterContext.Provider>
       );
     });
   });
 
   test("renders the correct image based on the character's properties", async () => {
+    const character = {
+      gender: "Male",
+      race: "Elf",
+      characterClass: "Warrior",
+    };
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
       render(
-        <CharacterImage
-          character={{ gender: "Male", race: "Elf", characterClass: "Warrior" }}
-        />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterImage />
+        </CharacterContext.Provider>
       );
     });
     const image = await screen.findByAltText("Elf Warrior");
@@ -53,16 +64,17 @@ describe("CharacterImage", () => {
   });
 
   test("renders the default image when the character's image does not exist", async () => {
+    const character = {
+      gender: "Male",
+      race: "NonexistentRace",
+      characterClass: "NonexistentClass",
+    };
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
       render(
-        <CharacterImage
-          character={{
-            gender: "Male",
-            race: "NonexistentRace",
-            characterClass: "NonexistentClass",
-          }}
-        />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterImage />
+        </CharacterContext.Provider>
       );
     });
     const image = await screen.findByAltText(

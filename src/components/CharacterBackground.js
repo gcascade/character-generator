@@ -1,16 +1,21 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useContext } from "react";
 import { Typography, Button } from "@mui/material";
 import CharacterTypography from "./CharacterTypography";
 import { useTheme } from "@emotion/react";
 import "./Character.css";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 const MAX_LENGTH = 500;
 
-const CharacterBackground = ({ background }) => {
+const CharacterBackground = () => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const { content, title } = background || {};
+  const {
+    character: {
+      background,
+      background: { content, title },
+    },
+  } = useContext(CharacterContext);
 
   const processedContent = useMemo(() => {
     if (!content) {
@@ -34,13 +39,13 @@ const CharacterBackground = ({ background }) => {
     });
   }, [content, isExpanded]);
 
-  if (!background || !background.content) {
-    return null;
-  }
-
   const toggleIsExpanded = () => {
     setIsExpanded(!isExpanded);
   };
+
+  if (!background) {
+    return;
+  }
 
   return (
     <>

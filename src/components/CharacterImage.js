@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { CardMedia } from "@mui/material";
 import "./CharacterImage.css";
 import { isImage } from "../utils/image";
 import { Genders } from "../constants/characterAttributes";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 const IMAGE_SIZE = 512;
 const DEFAULT_IMAGE_PATH = "/images/default-portrait.png";
 
-const CharacterImage = ({ character }) => {
-  const { gender, race, characterClass } = character;
+const CharacterImage = () => {
+  const {
+    character: { gender, race, characterClass },
+  } = useContext(CharacterContext);
   const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
 
   useEffect(() => {

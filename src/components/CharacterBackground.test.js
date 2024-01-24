@@ -3,23 +3,28 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import { ThemeProvider } from "@emotion/react";
 import CharacterBackground from "./CharacterBackground";
 import theme from "../themes/themes";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 describe("CharacterBackground", () => {
-  const background = {
-    title: "Test Title",
-    content: [
-      "Test content 1",
-      "Test content 2",
-      "Test content 3",
-      "Test content 4",
-      "Test content 5",
-    ],
+  const character = {
+    background: {
+      title: "Test Title",
+      content: [
+        "Test content 1",
+        "Test content 2",
+        "Test content 3",
+        "Test content 4",
+        "Test content 5",
+      ],
+    },
   };
 
   test("renders CharacterBackground component without crashing", () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterBackground background={background} />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterBackground />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
   });
@@ -27,7 +32,9 @@ describe("CharacterBackground", () => {
   test("displays the title correctly", () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterBackground background={background} />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterBackground />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
     expect(screen.getByText("Test Title")).toBeInTheDocument();
@@ -36,7 +43,9 @@ describe("CharacterBackground", () => {
   test("displays the content correctly", () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterBackground background={background} />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterBackground />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
     expect(screen.getByText("Test content 1")).toBeInTheDocument();
@@ -45,7 +54,9 @@ describe("CharacterBackground", () => {
   test("expands and collapses the content when the button is clicked", () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterBackground background={background} />
+        <CharacterContext.Provider value={{ character }}>
+          <CharacterBackground />
+        </CharacterContext.Provider>
       </ThemeProvider>
     );
 

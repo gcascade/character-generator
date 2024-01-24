@@ -1,7 +1,8 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import CharacterInformation from "./CharacterInformation";
 import { expectElementWithTextToBeInTheDocument } from "../utils/tests";
+import { CharacterContext } from "../contexts/CharacterContext"; // import the context
 
 describe("CharacterInformation", () => {
   const character = {
@@ -16,11 +17,19 @@ describe("CharacterInformation", () => {
   };
 
   test("renders CharacterInformation component without crashing", () => {
-    render(<CharacterInformation character={character} />);
+    render(
+      <CharacterContext.Provider value={{ character }}>
+        <CharacterInformation />
+      </CharacterContext.Provider>
+    );
   });
 
   test("displays the character information correctly", () => {
-    render(<CharacterInformation character={character} />);
+    render(
+      <CharacterContext.Provider value={{ character }}>
+        <CharacterInformation />
+      </CharacterContext.Provider>
+    );
 
     expectElementWithTextToBeInTheDocument("First Name: John");
     expectElementWithTextToBeInTheDocument("Last Name: Doe");

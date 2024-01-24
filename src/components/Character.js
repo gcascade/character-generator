@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Card,
@@ -13,9 +13,10 @@ import CharacterImage from "./CharacterImage";
 import "./Character.css";
 import CharacterBackground from "./CharacterBackground";
 import CharacterInformation from "./CharacterInformation";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 const Gender = ({ gender }) => {
-  const className = `gender-icon ${gender.toLowerCase()}`;
+  const className = `gender-icon ${gender?.toLowerCase()}`;
 
   switch (gender) {
     case "Male":
@@ -29,12 +30,12 @@ const Gender = ({ gender }) => {
   }
 };
 
-const Character = ({ character, onGenerate }) => {
+const Character = ({ onGenerate }) => {
+  const { character } = useContext(CharacterContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { firstName, lastName, gender, race, characterClass, background } =
-    character;
+  const { firstName, lastName, gender, race, characterClass } = character;
 
   return (
     <Card
@@ -50,13 +51,7 @@ const Character = ({ character, onGenerate }) => {
         }
         titleTypographyProps={{ align: "center", variant: "h4" }}
         subheader={
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div className="character-subheader">
             {race} {characterClass}
             <Gender gender={gender} />
           </div>
@@ -64,10 +59,10 @@ const Character = ({ character, onGenerate }) => {
         subheaderTypographyProps={{ align: "center", variant: "subtitle1" }}
       />
       <CardContent style={{ display: "flex" }}>
-        {!isMobile && <CharacterImage character={character} />}
+        {!isMobile && <CharacterImage />}
         <div style={{ marginLeft: "20px", width: "70%" }}>
-          <CharacterInformation character={character} />
-          <CharacterBackground background={background} />
+          <CharacterInformation />
+          <CharacterBackground />
         </div>
       </CardContent>
       <CardActions>
