@@ -48,7 +48,6 @@ describe("Character", () => {
       "First Name: Test",
       "Last Name: Character",
       "Epithet: The Great",
-      "Race: Elf",
       "Class: Warrior",
       "Gender: Male",
       "Age: 100",

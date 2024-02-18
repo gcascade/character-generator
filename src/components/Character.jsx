@@ -15,7 +15,7 @@ import CharacterBackground from "./CharacterBackground";
 import CharacterInformation from "./CharacterInformation";
 import { CharacterContext } from "../contexts/CharacterContext";
 
-const Gender = ({ gender }) => {
+const GenderIcon = ({ gender }) => {
   const className = `gender-icon ${gender?.toLowerCase()}`;
 
   switch (gender) {
@@ -53,7 +53,7 @@ const Character = ({ onGenerate }) => {
         subheader={
           <div className="character-subheader">
             {race} {characterClass}
-            <Gender gender={gender} />
+            <GenderIcon gender={gender} />
           </div>
         }
         subheaderTypographyProps={{ align: "center", variant: "subtitle1" }}

@@ -22,21 +22,23 @@ const CharacterBackground = () => {
       return null;
     }
     let charactersLeft = MAX_LENGTH;
-    return content.map((paragraph) => {
-      if (isExpanded) {
-        return paragraph;
-      }
-      if (charactersLeft <= 0) {
-        return null;
-      }
-      if (paragraph.length <= charactersLeft) {
-        charactersLeft -= paragraph.length;
-        return paragraph;
-      }
-      const truncated = `${paragraph.substring(0, charactersLeft)}... `;
-      charactersLeft = 0;
-      return truncated;
-    });
+    return content
+      .map((paragraph) => {
+        if (isExpanded) {
+          return paragraph;
+        }
+        if (charactersLeft <= 0) {
+          return null;
+        }
+        if (paragraph.length <= charactersLeft) {
+          charactersLeft -= paragraph.length;
+          return paragraph;
+        }
+        const truncated = `${paragraph.substring(0, charactersLeft)}... `;
+        charactersLeft = 0;
+        return truncated;
+      })
+      .filter(Boolean);
   }, [content, isExpanded]);
 
   const toggleIsExpanded = () => {
@@ -47,6 +49,18 @@ const CharacterBackground = () => {
     return;
   }
 
+  function simpleHash(str) {
+    if (!str) {
+      return 0;
+    }
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  }
+
   return (
     <>
       <CharacterTypography>
@@ -55,14 +69,17 @@ const CharacterBackground = () => {
       <Typography variant="h5" className="background-title">
         {title}
       </Typography>
-      {processedContent.map((paragraph, index) => (
-        <div key={index} style={{ padding: "5px" }}>
+      {processedContent.map((paragraph, _) => (
+        <div
+          key={`content-${simpleHash(paragraph)}`}
+          style={{ padding: "5px" }}
+        >
           <CharacterTypography>{paragraph}</CharacterTypography>
         </div>
       ))}
       <Button
         onClick={toggleIsExpanded}
-        variant="text"
+        variant="expandable"
         size="small"
         style={{
           color: theme.palette.text.primary,

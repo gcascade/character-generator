@@ -32,6 +32,31 @@ const theme = createTheme({
       fontSize: "1rem",
     },
   },
+  overrides: {
+    MuiButton: {
+      expandable: {
+        color: "textPrimary",
+        fontSize: "body1.fontSize",
+        fontFamily: "fontFamily",
+        textTransform: "none",
+        border: `1px solid palette.secondary`,
+        borderRadius: "4px",
+        transition: "all 0.3s ease",
+        "&:hover": {
+          backgroundColor: "#f5f5f5",
+          color: "#000",
+        },
+        "&:active": {
+          backgroundColor: "#ccc",
+          color: "#000",
+        },
+        "&:focus": {
+          outline: "none",
+          boxShadow: "0 0 0 3px rgba(0, 123, 255, 0.5)",
+        },
+      },
+    },
+  },
 });
 
 export default theme;
