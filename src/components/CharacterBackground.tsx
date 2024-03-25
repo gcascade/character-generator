@@ -1,21 +1,28 @@
-import React, { useState, useMemo, useContext } from "react";
-import { Typography, Button } from "@mui/material";
-import CharacterTypography from "./CharacterTypography";
-import { useTheme } from "@emotion/react";
-import "./Character.css";
-import { CharacterContext } from "../contexts/CharacterContext";
+import { Button, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import React, { FC, useContext, useMemo, useState } from 'react';
+import { CharacterContext } from '../contexts/CharacterContext';
+import './Character.css';
+import CharacterTypography from './CharacterTypography';
 
 const MAX_LENGTH = 500;
 
-const CharacterBackground = () => {
+const CharacterBackground: FC = () => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
+  const context = useContext(CharacterContext);
+
+  if (!context) {
+    throw new Error(
+      'CharacterBackground must be used within a CharacterProvider',
+    );
+  }
   const {
     character: {
       background,
       background: { content, title },
     },
-  } = useContext(CharacterContext);
+  } = context;
 
   const processedContent = useMemo(() => {
     if (!content) {
@@ -49,7 +56,7 @@ const CharacterBackground = () => {
     return;
   }
 
-  function simpleHash(str) {
+  function simpleHash(str: string | null | undefined) {
     if (!str) {
       return 0;
     }
@@ -69,26 +76,26 @@ const CharacterBackground = () => {
       <Typography variant="h5" className="background-title">
         {title}
       </Typography>
-      {processedContent.map((paragraph, _) => (
+      {processedContent?.map((paragraph, _) => (
         <div
           key={`content-${simpleHash(paragraph)}`}
-          style={{ padding: "5px" }}
+          style={{ padding: '5px' }}
         >
           <CharacterTypography>{paragraph}</CharacterTypography>
         </div>
       ))}
       <Button
         onClick={toggleIsExpanded}
-        variant="expandable"
+        variant="text"
         size="small"
         style={{
           color: theme.palette.text.primary,
           fontSize: theme.typography.body1.fontSize,
           fontFamily: theme.typography.fontFamily,
-          textTransform: "none",
+          textTransform: 'none',
         }}
       >
-        {isExpanded ? "Show Less" : "Show More..."}
+        {isExpanded ? 'Show Less' : 'Show More...'}
       </Button>
     </>
   );

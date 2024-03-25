@@ -1,16 +1,16 @@
-import React from "react";
 import {
   Container,
   CssBaseline,
   Paper,
-  Typography,
   ThemeProvider,
-} from "@mui/material";
-import Character from "./Character";
-import theme from "../themes/themes";
-import useCharacterGenerator from "../hooks/useCharacterGenerator";
+  Typography,
+} from '@mui/material';
+import React, { FC } from 'react';
+import useCharacterGenerator from '../hooks/useCharacterGenerator';
+import theme from '../themes/themes';
+import Character from './Character';
 
-const CharacterGenerator = () => {
+const CharacterGenerator: FC = () => {
   const { generateNewCharacter } = useCharacterGenerator();
 
   return (
@@ -20,11 +20,11 @@ const CharacterGenerator = () => {
         maxWidth="lg"
         sx={{
           backgroundColor: theme.palette.background.default,
-          padding: "24px",
+          padding: '24px',
         }}
       >
         <CssBaseline />
-        <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
+        <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
           <Typography
             component="h1"
             variant="h5"

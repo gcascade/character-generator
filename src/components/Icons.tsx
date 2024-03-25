@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from 'react';
 import {
   Forest,
   SportsKabaddi,
@@ -8,37 +8,37 @@ import {
   AutoFixHigh,
   VisibilityOff,
   EmojiSymbols,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 
-const ElfIcon = () => {
-  return <Forest style={{ color: "green" }} />;
+const ElfIcon: FC = () => {
+  return <Forest style={{ color: 'green' }} />;
 };
 
-const DwarfIcon = () => {
+const DwarfIcon: FC = () => {
   return <Construction />;
 };
 
-const HumanIcon = () => {
+const HumanIcon: FC = () => {
   return <PersonOutline />;
 };
 
-const OrcIcon = () => {
+const OrcIcon: FC = () => {
   return <SportsKabaddi />;
 };
 
-const WarriorIcon = () => {
+const WarriorIcon: FC = () => {
   return <Security />;
 };
 
-const MageIcon = () => {
+const MageIcon: FC = () => {
   return <AutoFixHigh />;
 };
 
-const RogueIcon = () => {
+const RogueIcon: FC = () => {
   return <VisibilityOff />;
 };
 
-const ClercIcon = () => {
+const ClercIcon: FC = () => {
   return <EmojiSymbols />;
 };
 
