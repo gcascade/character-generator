@@ -76,7 +76,7 @@ const CharacterBackground: FC = () => {
       <Typography variant="h5" className="background-title">
         {title}
       </Typography>
-      {processedContent?.map((paragraph, _) => (
+      {processedContent?.map((paragraph) => (
         <div
           key={`content-${simpleHash(paragraph)}`}
           style={{ padding: '5px' }}
