@@ -23,13 +23,14 @@ const CharacterImage: FC = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    const imagePath = `/images/${race}/${characterClass}/${
-      gender === 'Non-binary'
-        ? Math.random() < 0.5
-          ? 'Male'
-          : 'Female'
-        : (gender as Gender)
-    }1.png`.toLowerCase();
+    const imagePath =
+      `${process.env.PUBLIC_URL}/images/${race}/${characterClass}/${
+        gender === 'Non-binary'
+          ? Math.random() < 0.5
+            ? 'Male'
+            : 'Female'
+          : (gender as Gender)
+      }1.png`.toLowerCase();
 
     isImage(imagePath, abortController.signal).then((exists) => {
       if (abortController.signal.aborted) {

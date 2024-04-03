@@ -1,6 +1,15 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { ClercIcon, DwarfIcon, ElfIcon, HumanIcon, MageIcon, OrcIcon, RogueIcon, WarriorIcon } from './Icons';
+import {
+  ClercIcon,
+  DwarfIcon,
+  ElfIcon,
+  HumanIcon,
+  MageIcon,
+  OrcIcon,
+  RogueIcon,
+  WarriorIcon,
+} from './Icons';
 
 describe('Icons', () => {
   it('renders ElfIcon without crashing', () => {

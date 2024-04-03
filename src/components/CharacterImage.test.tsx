@@ -48,7 +48,9 @@ describe('CharacterImage', () => {
         </CharacterContext.Provider>,
       );
     });
-    const image = await screen.findByAltText('Elf Warrior') as HTMLImageElement;
+    const image = (await screen.findByAltText(
+      'Elf Warrior',
+    )) as HTMLImageElement;
     expect(image.src).toContain('/images/elf/warrior/male1.png');
   });
 
@@ -62,9 +64,9 @@ describe('CharacterImage', () => {
         </CharacterContext.Provider>,
       );
     });
-    const image = await screen.findByAltText(
+    const image = (await screen.findByAltText(
       'Elf Warrior',
-    ) as HTMLImageElement;
+    )) as HTMLImageElement;
     expect(image.src).toContain('/images/default-portrait.png');
   });
 });

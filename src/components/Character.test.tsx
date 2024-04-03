@@ -28,7 +28,9 @@ describe('Character', () => {
   test('renders Character component without crashing', () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -38,7 +40,9 @@ describe('Character', () => {
   test('displays character properties correctly', () => {
     const { container } = render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter}}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -65,7 +69,9 @@ describe('Character', () => {
   test('displays character background correctly', () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -84,7 +90,9 @@ describe('Character', () => {
     const mockOnGenerate = jest.fn();
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={mockOnGenerate} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -97,7 +105,9 @@ describe('Character', () => {
   test('applies theme colors correctly to card', () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -113,7 +123,9 @@ describe('Character', () => {
   test('applies hover effects correctly to card', () => {
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -142,7 +154,9 @@ describe('Character', () => {
 
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -171,7 +185,9 @@ describe('Character', () => {
 
     render(
       <ThemeProvider theme={theme}>
-        <CharacterContext.Provider value={{ character: mockCharacter, setCharacter }}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
           <Character onGenerate={() => {}} />
         </CharacterContext.Provider>
       </ThemeProvider>,

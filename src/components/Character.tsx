@@ -17,13 +17,12 @@ import CharacterImage from './CharacterImage';
 import CharacterInformation from './CharacterInformation';
 
 type GenderIconsProps = {
-  gender: Gender
-}
+  gender: Gender;
+};
 
 type CharacterProps = {
-  onGenerate: () => void
-
-}
+  onGenerate: () => void;
+};
 
 const GenderIcon: FC<GenderIconsProps> = ({ gender }) => {
   const className = `gender-icon ${gender?.toLowerCase()}`;
@@ -48,7 +47,9 @@ const Character: FC<CharacterProps> = ({ onGenerate }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { character: { firstName, lastName, gender, race, characterClass } } = context;
+  const {
+    character: { firstName, lastName, gender, race, characterClass },
+  } = context;
 
   return (
     <Card

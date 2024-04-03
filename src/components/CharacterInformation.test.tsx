@@ -18,16 +18,15 @@ describe('CharacterInformation', () => {
     background: {
       title: 'Title',
       content: ['Content'],
-    }
+    },
   };
 
   const setCharacter = jest.fn();
 
-
   test('renders CharacterInformation component without crashing', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-      <CharacterInformation />
+        <CharacterInformation />
       </CharacterContext.Provider>,
     );
   });
@@ -35,7 +34,7 @@ describe('CharacterInformation', () => {
   test('displays the character information correctly', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-      <CharacterInformation />
+        <CharacterInformation />
       </CharacterContext.Provider>,
     );
 
