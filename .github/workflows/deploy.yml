@@ -1,6 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
+  workflow_run:
+    workflows: ['Run Tests']
+    types:
+      - completed
   push:
     branches:
       - master
@@ -21,10 +25,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: npm run predeploy
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.5
-        with:
-          branch: gh-pages
-          folder: build
+        run: npm run deploy
