@@ -1,12 +1,15 @@
 import React from 'react';
-import CharacterGenerator from './CharacterGenerator';
 import { CharacterProvider } from '../contexts/CharacterContext';
+import { HistoryProvider } from '../contexts/HistoryContext';
 import { generateRandomCharacter } from '../utils/character';
+import CharacterGenerator from './CharacterGenerator';
 
 function App() {
   return (
     <CharacterProvider initCharacter={generateRandomCharacter()}>
-      <CharacterGenerator />
+      <HistoryProvider>
+        <CharacterGenerator />
+      </HistoryProvider>
     </CharacterProvider>
   );
 }

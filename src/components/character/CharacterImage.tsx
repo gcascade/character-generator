@@ -1,8 +1,8 @@
 import { CardMedia } from '@mui/material';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import { Gender } from '../types/character';
-import { isImage } from '../utils/image';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import { Gender } from '../../types/character';
+import { isImage } from '../../utils/image';
 import './CharacterImage.css';
 
 const IMAGE_SIZE = 512;

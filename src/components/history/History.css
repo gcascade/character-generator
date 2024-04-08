@@ -1,0 +1,5 @@
+.history-container {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}

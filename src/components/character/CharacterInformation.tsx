@@ -1,24 +1,7 @@
-import React, { CSSProperties, FC, ReactElement, useContext } from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import { CharacterRace } from '../types/character';
+import React, { FC, useContext } from 'react';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import RaceIcon from '../common/icons/RaceIcon';
 import CharacterTypography from './CharacterTypography';
-import { DwarfIcon, ElfIcon, HumanIcon, OrcIcon } from './Icons';
-
-const raceIcon: Record<CharacterRace, FC<IconProps>> = {
-  Human: HumanIcon,
-  Elf: ElfIcon,
-  Dwarf: DwarfIcon,
-  Orc: OrcIcon,
-};
-
-type IconProps = {
-  style?: CSSProperties;
-};
-
-function getIconByRace(race: CharacterRace): ReactElement | null {
-  const Icon = raceIcon[race] as FC<IconProps> | undefined;
-  return Icon ? <Icon style={{ paddingLeft: '5px' }} /> : null;
-}
 
 const CharacterInformation: FC = () => {
   const context = useContext(CharacterContext);
@@ -57,7 +40,7 @@ const CharacterInformation: FC = () => {
         <span style={{ display: 'flex', alignItems: 'center' }}>
           <strong style={{ marginRight: '5px' }}>Race:</strong>
           <span style={{ marginRight: '5px' }}>{race}</span>
-          {getIconByRace(race)}
+          <RaceIcon characterRace={race} />
         </span>
       </CharacterTypography>
       <CharacterTypography>

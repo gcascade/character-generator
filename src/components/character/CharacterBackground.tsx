@@ -1,7 +1,7 @@
 import { Button, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import React, { FC, useContext, useMemo, useState } from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
+import { CharacterContext } from '../../contexts/CharacterContext';
 import './Character.css';
 import CharacterTypography from './CharacterTypography';
 

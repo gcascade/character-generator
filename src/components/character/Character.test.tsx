@@ -1,10 +1,10 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import theme from '../themes/themes';
-import { Character as CharacterType } from '../types/character';
-import { expectElementWithTextToBeInTheDocument } from '../utils/tests';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import theme from '../../themes/themes';
+import { Character as CharacterType } from '../../types/character';
+import { expectElementWithTextToBeInTheDocument } from '../../utils/tests';
 import Character from './Character';
 
 describe('Character', () => {

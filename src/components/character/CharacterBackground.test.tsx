@@ -1,9 +1,9 @@
 import { ThemeProvider } from '@emotion/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import theme from '../themes/themes';
-import { Character } from '../types/character';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import theme from '../../themes/themes';
+import { Character } from '../../types/character';
 import CharacterBackground from './CharacterBackground';
 
 describe('CharacterBackground', () => {

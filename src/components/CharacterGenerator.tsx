@@ -1,23 +1,43 @@
 import {
   Container,
   CssBaseline,
+  Unstable_Grid2 as Grid,
   Paper,
   ThemeProvider,
   Typography,
 } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
+import { CharacterContext } from '../contexts/CharacterContext';
 import useCharacterGenerator from '../hooks/useCharacterGenerator';
+import useCharacterHistory from '../hooks/useCharacterHistory';
 import theme from '../themes/themes';
-import Character from './Character';
+import Character from './character/Character';
+import HistoryCard from './history/HistoryCard';
 
 const CharacterGenerator: FC = () => {
   const { generateNewCharacter } = useCharacterGenerator();
+  const { addToHistory } = useCharacterHistory();
+
+  const characterContext = useContext(CharacterContext);
+
+  if (!characterContext) {
+    throw new Error(
+      'CharacterGenerator must be used within a CharacterProvider',
+    );
+  }
+
+  const { character } = characterContext;
+
+  const saveCharacter = () => {
+    addToHistory([character]);
+    generateNewCharacter();
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <Container
         component="main"
-        maxWidth="lg"
+        maxWidth="xl"
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: '24px',
@@ -31,9 +51,20 @@ const CharacterGenerator: FC = () => {
             align="center"
             sx={{ color: theme.palette.text.primary }}
           >
-            RPG Character Generator
+            Character Generator
           </Typography>
-          <Character onGenerate={generateNewCharacter} />
+          <Grid
+            container
+            spacing={2}
+            style={{ display: 'flex', alignItems: 'stretch' }}
+          >
+            <Grid xs={12} md={9} style={{ display: 'flex' }}>
+              <Character onGenerate={saveCharacter} />
+            </Grid>
+            <Grid xs={12} md={3} style={{ display: 'flex' }}>
+              <HistoryCard />
+            </Grid>
+          </Grid>
         </Paper>
       </Container>
     </ThemeProvider>

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext } from '../contexts/CharacterContext';
+import { HistoryContext } from '../contexts/HistoryContext';
 import { Character } from '../types/character';
 import CharacterGenerator from './CharacterGenerator';
 
@@ -26,30 +27,47 @@ describe('CharacterGenerator', () => {
     },
   };
 
+  const history = [];
+
   const setCharacter = jest.fn();
+  const addToHistory = jest.fn();
+  const removeFromHistory = jest.fn();
+  const clearHistory = jest.fn();
 
   test('renders CharacterGenerator component without crashing', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <CharacterGenerator />
+        <HistoryContext.Provider
+          value={{ history, addToHistory, removeFromHistory, clearHistory }}
+        >
+          <CharacterGenerator />
+        </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
   });
 
-  test('renders RPG Character Generator title', () => {
+  test('renders Character Generator title', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <CharacterGenerator />
+        <HistoryContext.Provider
+          value={{ history, addToHistory, removeFromHistory, clearHistory }}
+        >
+          <CharacterGenerator />
+        </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
-    const title = screen.getByText('RPG Character Generator');
+    const title = screen.getByText('Character Generator');
     expect(title).toBeInTheDocument();
   });
 
   test('renders initial character on load', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <CharacterGenerator />
+        <HistoryContext.Provider
+          value={{ history, addToHistory, removeFromHistory, clearHistory }}
+        >
+          <CharacterGenerator />
+        </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
     const initialCharacters = screen.getAllByText(/\w+/);
@@ -60,7 +78,11 @@ describe('CharacterGenerator', () => {
   test('clicking the generate button updates the character', async () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <CharacterGenerator />
+        <HistoryContext.Provider
+          value={{ history, addToHistory, removeFromHistory, clearHistory }}
+        >
+          <CharacterGenerator />
+        </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
     const button = screen.getByText('New Character');

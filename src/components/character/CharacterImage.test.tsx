@@ -1,11 +1,11 @@
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import { Character } from '../types/character';
-import { isImage } from '../utils/image';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import { Character } from '../../types/character';
+import { isImage } from '../../utils/image';
 import CharacterImage from './CharacterImage';
 
-jest.mock('../utils/image');
+jest.mock('../../utils/image');
 
 describe('CharacterImage', () => {
   const character: Character = {

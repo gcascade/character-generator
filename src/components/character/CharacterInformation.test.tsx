@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import { Character } from '../types/character';
-import { expectElementWithTextToBeInTheDocument } from '../utils/tests';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import { Character } from '../../types/character';
+import { expectElementWithTextToBeInTheDocument } from '../../utils/tests';
 import CharacterInformation from './CharacterInformation';
 
 describe('CharacterInformation', () => {

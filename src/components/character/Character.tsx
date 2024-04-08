@@ -1,4 +1,3 @@
-import { Female, Male, Transgender } from '@mui/icons-material';
 import {
   Button,
   Card,
@@ -9,34 +8,16 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import React, { FC, useContext } from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import { Gender } from '../types/character';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import '../common/Common.css';
+import { GenderIcon } from '../common/icons/GenderIcon';
 import './Character.css';
 import CharacterBackground from './CharacterBackground';
 import CharacterImage from './CharacterImage';
 import CharacterInformation from './CharacterInformation';
 
-type GenderIconsProps = {
-  gender: Gender;
-};
-
 type CharacterProps = {
-  onGenerate: () => void;
-};
-
-const GenderIcon: FC<GenderIconsProps> = ({ gender }) => {
-  const className = `gender-icon ${gender?.toLowerCase()}`;
-
-  switch (gender) {
-    case 'Male':
-      return <Male className={className} />;
-    case 'Female':
-      return <Female className={className} />;
-    case 'Non-binary':
-      return <Transgender className={className} />;
-    default:
-      return null;
-  }
+  onGenerate: VoidFunction;
 };
 
 const Character: FC<CharacterProps> = ({ onGenerate }) => {
