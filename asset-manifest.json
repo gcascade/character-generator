@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/character-generator/static/css/main.550e9462.css",
-    "main.js": "/character-generator/static/js/main.90bc7f18.js",
-    "static/js/787.f2236d22.chunk.js": "/character-generator/static/js/787.f2236d22.chunk.js",
+    "main.css": "/character-generator/static/css/main.21e6ed19.css",
+    "main.js": "/character-generator/static/js/main.312bf594.js",
+    "static/js/453.ade40261.chunk.js": "/character-generator/static/js/453.ade40261.chunk.js",
     "index.html": "/character-generator/index.html",
-    "main.550e9462.css.map": "/character-generator/static/css/main.550e9462.css.map",
-    "main.90bc7f18.js.map": "/character-generator/static/js/main.90bc7f18.js.map",
-    "787.f2236d22.chunk.js.map": "/character-generator/static/js/787.f2236d22.chunk.js.map"
+    "main.21e6ed19.css.map": "/character-generator/static/css/main.21e6ed19.css.map",
+    "main.312bf594.js.map": "/character-generator/static/js/main.312bf594.js.map",
+    "453.ade40261.chunk.js.map": "/character-generator/static/js/453.ade40261.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.550e9462.css",
-    "static/js/main.90bc7f18.js"
+    "static/css/main.21e6ed19.css",
+    "static/js/main.312bf594.js"
   ]
 }
