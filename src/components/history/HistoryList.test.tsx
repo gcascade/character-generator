@@ -1,5 +1,3 @@
-// FILEPATH: /c:/Users/geoff/Documents/GitHub/character-generator/src/components/History/HistoryList.test.tsx
-
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
