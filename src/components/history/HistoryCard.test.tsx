@@ -1,6 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { CharacterContext } from '../../contexts/CharacterContext';
 import { Character } from '../../types/character';
 import HistoryCard from './HistoryCard';
 
@@ -25,6 +26,8 @@ const character: Character = {
   },
 };
 
+const setCharacter = jest.fn();
+
 let mockHistory = [character];
 
 jest.mock('../../hooks/useCharacterHistory', () => ({
@@ -41,7 +44,9 @@ describe('HistoryCard', () => {
   it('renders without crashing', () => {
     render(
       <ThemeProvider theme={createTheme()}>
-        <HistoryCard />
+        <CharacterContext.Provider value={{ character, setCharacter }}>
+          <HistoryCard />
+        </CharacterContext.Provider>
       </ThemeProvider>,
     );
   });
@@ -49,7 +54,9 @@ describe('HistoryCard', () => {
   it('displays the "Clear History" button when there is history', () => {
     render(
       <ThemeProvider theme={createTheme()}>
-        <HistoryCard />
+        <CharacterContext.Provider value={{ character, setCharacter }}>
+          <HistoryCard />
+        </CharacterContext.Provider>
       </ThemeProvider>,
     );
 
@@ -59,7 +66,9 @@ describe('HistoryCard', () => {
   it('displays the "Confirm?" text when the "Clear History" button is clicked once and resets on outside click', async () => {
     render(
       <ThemeProvider theme={createTheme()}>
-        <HistoryCard />
+        <CharacterContext.Provider value={{ character, setCharacter }}>
+          <HistoryCard />
+        </CharacterContext.Provider>
       </ThemeProvider>,
     );
 

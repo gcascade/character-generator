@@ -1,14 +1,31 @@
-import { Box, List, ListItem, Typography } from '@mui/material';
-import React, { FC } from 'react';
+import { Box, List } from '@mui/material';
+import React, { FC, useContext } from 'react';
+import { CharacterContext } from '../../contexts/CharacterContext';
 import { Character } from '../../types/character';
-import ClassIcon from '../common/icons/ClassIcon';
-import RaceIcon from '../common/icons/RaceIcon';
+import HistoryItem from './HistoryItem';
+import SelectedHistoryItem from './SelectedHistoryItem';
 
 type HistoryListProps = {
   history: Character[];
 };
 
 const HistoryList: FC<HistoryListProps> = ({ history }) => {
+  const characterContext = useContext(CharacterContext);
+
+  if (!characterContext) {
+    throw new Error('CharacterContext is not provided');
+  }
+
+  const { character: currentCharacter, setCharacter } = characterContext;
+
+  if (history.length === 0) {
+    return <></>;
+  }
+
+  const onCharacterClick = (character: Character) => {
+    setCharacter(character);
+  };
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
       <List
@@ -21,18 +38,19 @@ const HistoryList: FC<HistoryListProps> = ({ history }) => {
         }}
       >
         {history.map((character: Character) => {
-          const { firstName, lastName, age, race, characterClass } = character;
-          return (
-            <ListItem
-              className="history-container"
-              key={`${firstName}-${lastName}-${age}`}
-            >
-              <RaceIcon characterRace={race} />
-              <ClassIcon characterClass={characterClass} />
-              <Typography variant="body1">
-                {firstName} {lastName} ({age})
-              </Typography>
-            </ListItem>
+          const isSelected = currentCharacter === character;
+
+          return isSelected ? (
+            <SelectedHistoryItem
+              key={`${character.firstName}-${character.lastName}-${character.age}`}
+              character={character}
+            />
+          ) : (
+            <HistoryItem
+              key={`${character.firstName}-${character.lastName}-${character.age}`}
+              character={character}
+              onCharacterClick={onCharacterClick}
+            />
           );
         })}
       </List>

@@ -1,10 +1,31 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { CharacterContext } from '../../contexts/CharacterContext';
 import { Character } from '../../types/character';
 import HistoryList from './HistoryList';
 
 describe('HistoryList', () => {
+  const character: Character = {
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 30,
+    race: 'Elf',
+    characterClass: 'Warrior',
+    epithet: 'The Brave',
+    gender: 'Male',
+    alignment: 'Neutral Good',
+    background: {
+      title: 'Test Title',
+      content: [
+        'Test content 1',
+        'Test content 2',
+        'Test content 3',
+        'Test content 4',
+        'Test content 5',
+      ],
+    },
+  };
   const mockHistory: Character[] = [
     {
       firstName: 'John',
@@ -48,10 +69,14 @@ describe('HistoryList', () => {
     },
   ];
 
+  const setCharacter = jest.fn();
+
   it('renders without crashing', () => {
     render(
       <ThemeProvider theme={createTheme()}>
-        <HistoryList history={mockHistory} />
+        <CharacterContext.Provider value={{ character, setCharacter }}>
+          <HistoryList history={mockHistory} />
+        </CharacterContext.Provider>
       </ThemeProvider>,
     );
   });
@@ -59,7 +84,9 @@ describe('HistoryList', () => {
   it('displays the correct characters', () => {
     render(
       <ThemeProvider theme={createTheme()}>
-        <HistoryList history={mockHistory} />
+        <CharacterContext.Provider value={{ character, setCharacter }}>
+          <HistoryList history={mockHistory} />
+        </CharacterContext.Provider>
       </ThemeProvider>,
     );
 

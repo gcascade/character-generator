@@ -16,7 +16,7 @@ import HistoryCard from './history/HistoryCard';
 
 const CharacterGenerator: FC = () => {
   const { generateNewCharacter } = useCharacterGenerator();
-  const { addToHistory } = useCharacterHistory();
+  const { history, addToHistory } = useCharacterHistory();
 
   const characterContext = useContext(CharacterContext);
 
@@ -29,7 +29,9 @@ const CharacterGenerator: FC = () => {
   const { character } = characterContext;
 
   const saveCharacter = () => {
-    addToHistory([character]);
+    if (!history.includes(character)) {
+      addToHistory([character]);
+    }
     generateNewCharacter();
   };
 
