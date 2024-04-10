@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { Character } from '../../types/character';
 import SelectedHistoryItem from './SelectedHistoryItem';
@@ -24,18 +24,44 @@ const character: Character = {
   },
 };
 
+const mockOnDeleteClick = jest.fn();
+
 describe('SelectedHistoryItem', () => {
   it('renders without crashing', () => {
-    render(<SelectedHistoryItem character={character} />);
+    render(
+      <SelectedHistoryItem
+        character={character}
+        onDeleteClick={mockOnDeleteClick}
+      />,
+    );
   });
 
   it('displays the character information correctly', () => {
-    render(<SelectedHistoryItem character={character} />);
+    render(
+      <SelectedHistoryItem
+        character={character}
+        onDeleteClick={mockOnDeleteClick}
+      />,
+    );
 
     expect(
       screen.getByText(
         `${character.firstName} ${character.lastName} (${character.age})`,
       ),
     ).toBeInTheDocument();
+  });
+
+  it('calls onDeleteClick when the delete button is clicked', () => {
+    const onDeleteClick = jest.fn();
+    const { getByLabelText } = render(
+      <SelectedHistoryItem
+        character={character}
+        onDeleteClick={onDeleteClick}
+      />,
+    );
+
+    fireEvent.click(getByLabelText('delete'));
+
+    expect(onDeleteClick).toHaveBeenCalledWith(character);
   });
 });

@@ -2,6 +2,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import { HistoryContext } from '../../contexts/HistoryContext';
 import { Character } from '../../types/character';
 import HistoryList from './HistoryList';
 
@@ -75,7 +76,16 @@ describe('HistoryList', () => {
     render(
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
-          <HistoryList history={mockHistory} />
+          <HistoryContext.Provider
+            value={{
+              history: mockHistory,
+              clearHistory: jest.fn(),
+              removeFromHistory: jest.fn(),
+              addToHistory: jest.fn(),
+            }}
+          >
+            <HistoryList history={mockHistory} removeFromHistory={jest.fn()} />
+          </HistoryContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -85,7 +95,16 @@ describe('HistoryList', () => {
     render(
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
-          <HistoryList history={mockHistory} />
+          <HistoryContext.Provider
+            value={{
+              history: mockHistory,
+              clearHistory: jest.fn(),
+              removeFromHistory: jest.fn(),
+              addToHistory: jest.fn(),
+            }}
+          >
+            <HistoryList history={mockHistory} removeFromHistory={jest.fn()} />
+          </HistoryContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );

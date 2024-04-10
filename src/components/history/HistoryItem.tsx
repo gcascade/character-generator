@@ -1,4 +1,5 @@
-import { ListItem, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, ListItem, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import { Character } from '../../types/character';
 import ClassIcon from '../common/icons/ClassIcon';
@@ -8,9 +9,14 @@ import './History.css';
 type HistoryItemProps = {
   character: Character;
   onCharacterClick: (character: Character) => void;
+  onDeleteClick: (character: Character) => void;
 };
 
-const HistoryItem: FC<HistoryItemProps> = ({ character, onCharacterClick }) => {
+const HistoryItem: FC<HistoryItemProps> = ({
+  character,
+  onCharacterClick,
+  onDeleteClick,
+}) => {
   const { firstName, lastName, age, race, characterClass } = character;
 
   return (
@@ -32,6 +38,16 @@ const HistoryItem: FC<HistoryItemProps> = ({ character, onCharacterClick }) => {
       <Typography variant="subtitle1" sx={{ fontWeight: 'normal' }}>
         {firstName} {lastName} ({age})
       </Typography>
+      <IconButton
+        onClick={(event) => {
+          event.stopPropagation();
+          onDeleteClick(character);
+        }}
+        edge="end"
+        aria-label="delete"
+      >
+        <DeleteIcon />
+      </IconButton>
     </ListItem>
   );
 };

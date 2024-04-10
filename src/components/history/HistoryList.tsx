@@ -7,15 +7,15 @@ import SelectedHistoryItem from './SelectedHistoryItem';
 
 type HistoryListProps = {
   history: Character[];
+  removeFromHistory: (character: Character) => void;
 };
 
-const HistoryList: FC<HistoryListProps> = ({ history }) => {
+const HistoryList: FC<HistoryListProps> = ({ history, removeFromHistory }) => {
   const characterContext = useContext(CharacterContext);
 
   if (!characterContext) {
     throw new Error('CharacterContext is not provided');
   }
-
   const { character: currentCharacter, setCharacter } = characterContext;
 
   if (history.length === 0) {
@@ -44,12 +44,14 @@ const HistoryList: FC<HistoryListProps> = ({ history }) => {
             <SelectedHistoryItem
               key={`${character.firstName}-${character.lastName}-${character.age}`}
               character={character}
+              onDeleteClick={removeFromHistory}
             />
           ) : (
             <HistoryItem
               key={`${character.firstName}-${character.lastName}-${character.age}`}
               character={character}
               onCharacterClick={onCharacterClick}
+              onDeleteClick={removeFromHistory}
             />
           );
         })}

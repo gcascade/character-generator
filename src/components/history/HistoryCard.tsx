@@ -15,7 +15,7 @@ import './History.css';
 import HistoryList from './HistoryList';
 
 const HistoryCard: FC = () => {
-  const { history, clearHistory } = useCharacterHistory();
+  const { history, clearHistory, removeFromHistory } = useCharacterHistory();
   const [confirmClear, setConfirmClear] = useState(false);
 
   useEffect(() => {
@@ -53,7 +53,10 @@ const HistoryCard: FC = () => {
       />
       <CardContent sx={{ flexGrow: 1 }}>
         {history.length > 0 ? (
-          <HistoryList history={history} />
+          <HistoryList
+            history={history}
+            removeFromHistory={removeFromHistory}
+          />
         ) : (
           <EmptyHistory />
         )}

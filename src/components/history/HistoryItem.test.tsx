@@ -25,26 +25,53 @@ const character: Character = {
 };
 
 const onCharacterClick = jest.fn();
+const onDeleteClick = jest.fn();
 
 describe('HistoryItem', () => {
   it('renders without crashing', () => {
     render(
-      <HistoryItem character={character} onCharacterClick={onCharacterClick} />,
+      <HistoryItem
+        character={character}
+        onCharacterClick={onCharacterClick}
+        onDeleteClick={onDeleteClick}
+      />,
     );
   });
 
   it('displays the correct character information', () => {
     render(
-      <HistoryItem character={character} onCharacterClick={onCharacterClick} />,
+      <HistoryItem
+        character={character}
+        onCharacterClick={onCharacterClick}
+        onDeleteClick={onDeleteClick}
+      />,
     );
     expect(screen.getByText('John Doe (100)')).toBeInTheDocument();
   });
 
   it('calls onCharacterClick when clicked', () => {
     render(
-      <HistoryItem character={character} onCharacterClick={onCharacterClick} />,
+      <HistoryItem
+        character={character}
+        onCharacterClick={onCharacterClick}
+        onDeleteClick={onDeleteClick}
+      />,
     );
     fireEvent.click(screen.getByText('John Doe (100)'));
     expect(onCharacterClick).toHaveBeenCalledWith(character);
+  });
+
+  it('calls onDeleteClick when the delete button is clicked', () => {
+    const { getByLabelText } = render(
+      <HistoryItem
+        character={character}
+        onCharacterClick={onCharacterClick}
+        onDeleteClick={onDeleteClick}
+      />,
+    );
+
+    fireEvent.click(getByLabelText('delete'));
+
+    expect(onDeleteClick).toHaveBeenCalledWith(character);
   });
 });
