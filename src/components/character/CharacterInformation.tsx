@@ -1,16 +1,18 @@
 import React, { FC, useContext } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
-import RaceIcon from '../common/icons/RaceIcon';
-import CharacterTypography from './CharacterTypography';
+import useCharacterGenerator from '../../hooks/useCharacterGenerator';
+import CharacterProperty from './CharacterProperty';
 
 const CharacterInformation: FC = () => {
-  const context = useContext(CharacterContext);
+  const characterContext = useContext(CharacterContext);
 
-  if (!context) {
+  if (!characterContext) {
     throw new Error(
       'CharacterInformation must be used within a CharacterProvider',
     );
   }
+
+  const { rerollCharacterProperty } = useCharacterGenerator();
 
   const {
     character: {
@@ -23,38 +25,50 @@ const CharacterInformation: FC = () => {
       age,
       alignment,
     },
-  } = context;
+  } = characterContext;
 
   return (
     <>
-      <CharacterTypography>
-        <strong>First Name:</strong> {firstName}
-      </CharacterTypography>
-      <CharacterTypography>
-        <strong>Last Name:</strong> {lastName}
-      </CharacterTypography>
-      <CharacterTypography>
-        <strong>Epithet:</strong> {epithet}
-      </CharacterTypography>
-      <CharacterTypography>
-        <span style={{ display: 'flex', alignItems: 'center' }}>
-          <strong style={{ marginRight: '5px' }}>Race:</strong>
-          <span style={{ marginRight: '5px' }}>{race}</span>
-          <RaceIcon characterRace={race} />
-        </span>
-      </CharacterTypography>
-      <CharacterTypography>
-        <strong>Class:</strong> {characterClass}
-      </CharacterTypography>
-      <CharacterTypography>
-        <strong>Gender:</strong> {gender}
-      </CharacterTypography>
-      <CharacterTypography>
-        <strong>Age:</strong> {age}
-      </CharacterTypography>
-      <CharacterTypography>
-        <strong>Alignment:</strong> {alignment}
-      </CharacterTypography>
+      <CharacterProperty
+        label="First Name"
+        value={firstName}
+        onButtonClick={() => rerollCharacterProperty('firstName')}
+      />
+      <CharacterProperty
+        label="Last Name"
+        value={lastName}
+        onButtonClick={() => rerollCharacterProperty('lastName')}
+      />
+      <CharacterProperty
+        label="Epithet"
+        value={epithet}
+        onButtonClick={() => rerollCharacterProperty('epithet')}
+      />
+      <CharacterProperty
+        label="Race"
+        value={race}
+        onButtonClick={() => rerollCharacterProperty('race')}
+      />
+      <CharacterProperty
+        label="Class"
+        value={characterClass}
+        onButtonClick={() => rerollCharacterProperty('characterClass')}
+      />
+      <CharacterProperty
+        label="Gender"
+        value={gender}
+        onButtonClick={() => rerollCharacterProperty('gender')}
+      />
+      <CharacterProperty
+        label="Age"
+        value={age}
+        onButtonClick={() => rerollCharacterProperty('age')}
+      />
+      <CharacterProperty
+        label="Alignment"
+        value={alignment}
+        onButtonClick={() => rerollCharacterProperty('alignment')}
+      />
     </>
   );
 };

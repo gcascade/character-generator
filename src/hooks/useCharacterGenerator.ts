@@ -1,5 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { CharacterContext } from '../contexts/CharacterContext';
+import { Character } from '../types/character';
 import { generateRandomCharacter } from '../utils/character';
 
 const useCharacterGenerator = () => {
@@ -10,13 +11,22 @@ const useCharacterGenerator = () => {
       'useCharacterGenerator must be used within a CharacterProvider',
     );
   }
-  const { setCharacter } = context;
+  const { character, setCharacter } = context;
   const useRandomCharacter = () => {
     const generateNewCharacter = useCallback(() => {
-      setCharacter(generateRandomCharacter());
+      setCharacter(generateRandomCharacter({}));
     }, []);
 
-    return { generateNewCharacter };
+    const rerollCharacterProperty = useCallback(
+      (property: keyof Character) => {
+        setCharacter(
+          generateRandomCharacter({ ...character, [property]: null }),
+        );
+      },
+      [character],
+    );
+
+    return { generateNewCharacter, rerollCharacterProperty };
   };
 
   return useRandomCharacter();

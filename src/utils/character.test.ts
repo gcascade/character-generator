@@ -5,7 +5,7 @@ describe('generateRandomCharacter', () => {
   let character: Character;
 
   beforeEach(() => {
-    character = generateRandomCharacter();
+    character = generateRandomCharacter({});
   });
 
   test('returns an object', () => {

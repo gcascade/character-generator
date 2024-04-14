@@ -86,37 +86,50 @@ const getRandomAge = (race: CharacterRace): number => {
   return Math.floor(Math.random() * maxAge) + MIN_AGE;
 };
 
-export const generateRandomCharacter = () => {
-  const randomRace = getRandomItem(races) as CharacterRace;
-  const randomClass = getRandomItem(classes) as CharacterClass;
-  const randomGender = getRandomItem(genders) as Gender;
-  const randomAlignment = getRandomItem(alignments) as CharacterAlignment;
+const getRandomFirstName = (
+  firstnamesForGender: string[],
+): string | undefined => {
+  return firstnamesForGender && firstnamesForGender.length > 0
+    ? getRandomItem(firstnamesForGender)
+    : `Character${Math.floor(Math.random() * 1000)}`;
+};
 
-  const { firstName, lastName, epithet } = characterNames;
+export const generateRandomCharacter = (
+  characterTemplate: Partial<Character>,
+) => {
+  const race =
+    characterTemplate.race ?? (getRandomItem(races) as CharacterRace);
+  const characterClass =
+    characterTemplate.characterClass ??
+    (getRandomItem(classes) as CharacterClass);
+  const gender = characterTemplate.gender ?? (getRandomItem(genders) as Gender);
+  const alignment =
+    characterTemplate.alignment ??
+    (getRandomItem(alignments) as CharacterAlignment);
+
+  const { firstNames, lastNames, epithets } = characterNames;
 
   const firstnamesForGender =
-    randomGender === 'Non-binary'
-      ? firstName['Male'].concat(firstName['Female'])
-      : firstName[randomGender];
+    gender === 'Non-binary'
+      ? firstNames['Male'].concat(firstNames['Female'])
+      : firstNames[gender];
 
-  const randomFirstName =
-    firstnamesForGender && firstnamesForGender.length > 0
-      ? getRandomItem(firstnamesForGender)
-      : `Character${Math.floor(Math.random() * 1000)}`;
+  const firstName =
+    characterTemplate.firstName ?? getRandomFirstName(firstnamesForGender);
 
-  const randomLastName = getRandomItem(lastName);
-  const randomAge = getRandomAge(randomRace);
-  const randomEpithet = getRandomItem(epithet);
+  const lastName = characterTemplate.lastName ?? getRandomItem(lastNames);
+  const age = characterTemplate.age ?? getRandomAge(race);
+  const epithet = characterTemplate.epithet ?? getRandomItem(epithets);
 
   const character = {
-    firstName: randomFirstName,
-    lastName: randomLastName,
-    race: randomRace,
-    characterClass: randomClass,
-    gender: randomGender,
-    epithet: randomEpithet,
-    age: randomAge,
-    alignment: randomAlignment,
+    firstName: firstName,
+    lastName: lastName,
+    race: race,
+    characterClass: characterClass,
+    gender: gender,
+    epithet: epithet,
+    age: age,
+    alignment: alignment,
   } as CharacterProps;
 
   return {

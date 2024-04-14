@@ -1,4 +1,5 @@
 import { Box, List } from '@mui/material';
+import hash from 'object-hash';
 import React, { FC, useContext } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { Character } from '../../types/character';
@@ -39,16 +40,17 @@ const HistoryList: FC<HistoryListProps> = ({ history, removeFromHistory }) => {
       >
         {history.map((character: Character) => {
           const isSelected = currentCharacter === character;
+          const characterHash = hash(character);
 
           return isSelected ? (
             <SelectedHistoryItem
-              key={`${character.firstName}-${character.lastName}-${character.age}`}
+              key={characterHash}
               character={character}
               onDeleteClick={removeFromHistory}
             />
           ) : (
             <HistoryItem
-              key={`${character.firstName}-${character.lastName}-${character.age}`}
+              key={characterHash}
               character={character}
               onCharacterClick={onCharacterClick}
               onDeleteClick={removeFromHistory}

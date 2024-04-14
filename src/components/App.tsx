@@ -6,7 +6,7 @@ import CharacterGenerator from './CharacterGenerator';
 
 function App() {
   return (
-    <CharacterProvider initCharacter={generateRandomCharacter()}>
+    <CharacterProvider initCharacter={generateRandomCharacter({})}>
       <HistoryProvider>
         <CharacterGenerator />
       </HistoryProvider>

@@ -1,5 +1,5 @@
 {
-  "firstName": {
+  "firstNames": {
     "Male": [
       "Achard",
       "Adalard",
@@ -1485,7 +1485,7 @@
       "Zyanya"
     ]
   },
-  "lastName": [
+  "lastNames": [
     "Acker",
     "Adams",
     "Ambergrove",
@@ -1892,7 +1892,7 @@
     "Zimmermann",
     "Zypher"
   ],
-  "epithet": [
+  "epithets": [
     "The Arcane Scholar",
     "The Astral Nomad",
     "The Benevolent Guardian",

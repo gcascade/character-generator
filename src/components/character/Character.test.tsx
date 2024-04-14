@@ -4,12 +4,11 @@ import React from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import theme from '../../themes/themes';
 import { Character as CharacterType } from '../../types/character';
-import { expectElementWithTextToBeInTheDocument } from '../../utils/tests';
 import Character from './Character';
 
 describe('Character', () => {
   const mockCharacter: CharacterType = {
-    firstName: 'Test',
+    firstName: 'John',
     lastName: 'Character',
     epithet: 'The Great',
     race: 'Elf',
@@ -49,21 +48,14 @@ describe('Character', () => {
     );
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     const title = container.querySelector('.MuiCardHeader-title');
-    expect(title).toHaveTextContent('Test Character');
-
-    const properties = [
-      'First Name: Test',
-      'Last Name: Character',
-      'Epithet: The Great',
-      'Class: Warrior',
-      'Gender: Male',
-      'Age: 100',
-      'Alignment: True Neutral',
-    ];
-
-    properties.forEach((property) => {
-      expectElementWithTextToBeInTheDocument(property);
-    });
+    expect(title).toHaveTextContent('John Character');
+    expect(screen.getByText('John')).toBeInTheDocument();
+    expect(screen.getByText('The Great')).toBeInTheDocument();
+    expect(screen.getByText('Elf')).toBeInTheDocument();
+    expect(screen.getByText('Warrior')).toBeInTheDocument();
+    expect(screen.getByText('Male')).toBeInTheDocument();
+    expect(screen.getByText('100')).toBeInTheDocument();
+    expect(screen.getByText('True Neutral')).toBeInTheDocument();
   });
 
   test('displays character background correctly', () => {

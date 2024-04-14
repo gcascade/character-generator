@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { Character } from '../../types/character';
-import { expectElementWithTextToBeInTheDocument } from '../../utils/tests';
 import CharacterInformation from './CharacterInformation';
 
 describe('CharacterInformation', () => {
@@ -38,13 +37,13 @@ describe('CharacterInformation', () => {
       </CharacterContext.Provider>,
     );
 
-    expectElementWithTextToBeInTheDocument('First Name: John');
-    expectElementWithTextToBeInTheDocument('Last Name: Doe');
-    expectElementWithTextToBeInTheDocument('Epithet: The Brave');
+    expect(screen.getByText(/John/i)).toBeInTheDocument();
+    expect(screen.getByText(/Doe/i)).toBeInTheDocument();
+    expect(screen.getByText(/The Brave/i)).toBeInTheDocument();
     expect(screen.getByText(/Elf/i)).toBeInTheDocument();
-    expectElementWithTextToBeInTheDocument('Class: Warrior');
-    expectElementWithTextToBeInTheDocument('Gender: Male');
-    expectElementWithTextToBeInTheDocument('Age: 100');
-    expectElementWithTextToBeInTheDocument('Alignment: Neutral Good');
+    expect(screen.getByText(/Warrior/i)).toBeInTheDocument();
+    expect(screen.getByText(/Male/i)).toBeInTheDocument();
+    expect(screen.getByText(/100/i)).toBeInTheDocument();
+    expect(screen.getByText(/Neutral Good/i)).toBeInTheDocument();
   });
 });
