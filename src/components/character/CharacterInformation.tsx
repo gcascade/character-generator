@@ -1,10 +1,12 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
-import useCharacterGenerator from '../../hooks/useCharacterGenerator';
+import useCharacterRequest from '../../hooks/useCharacterRequest';
+import { Character } from '../../types/character';
 import CharacterProperty from './CharacterProperty';
 
 const CharacterInformation: FC = () => {
   const characterContext = useContext(CharacterContext);
+  const [isRerollButtonDisabled, setIsRerollButtonDisabled] = useState(false);
 
   if (!characterContext) {
     throw new Error(
@@ -12,7 +14,7 @@ const CharacterInformation: FC = () => {
     );
   }
 
-  const { rerollCharacterProperty } = useCharacterGenerator();
+  const { requestStatus, rerollCharacterProperty } = useCharacterRequest();
 
   const {
     character: {
@@ -27,47 +29,67 @@ const CharacterInformation: FC = () => {
     },
   } = characterContext;
 
+  const handleButtonClick = (property: keyof Character) => {
+    rerollCharacterProperty(property, () => setIsRerollButtonDisabled(false));
+  };
+
+  useEffect(() => {
+    if (requestStatus !== 'loading') {
+      setIsRerollButtonDisabled(false);
+    } else {
+      setIsRerollButtonDisabled(true);
+    }
+  }, [requestStatus]);
+
   return (
     <>
       <CharacterProperty
         label="First Name"
         value={firstName}
-        onButtonClick={() => rerollCharacterProperty('firstName')}
+        onButtonClick={() => handleButtonClick('firstName')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Last Name"
         value={lastName}
-        onButtonClick={() => rerollCharacterProperty('lastName')}
+        onButtonClick={() => handleButtonClick('lastName')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Epithet"
         value={epithet}
-        onButtonClick={() => rerollCharacterProperty('epithet')}
+        onButtonClick={() => handleButtonClick('epithet')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Race"
         value={race}
-        onButtonClick={() => rerollCharacterProperty('race')}
+        onButtonClick={() => handleButtonClick('race')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Class"
         value={characterClass}
-        onButtonClick={() => rerollCharacterProperty('characterClass')}
+        onButtonClick={() => handleButtonClick('characterClass')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Gender"
         value={gender}
-        onButtonClick={() => rerollCharacterProperty('gender')}
+        onButtonClick={() => handleButtonClick('gender')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Age"
         value={age}
-        onButtonClick={() => rerollCharacterProperty('age')}
+        onButtonClick={() => handleButtonClick('age')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
       <CharacterProperty
         label="Alignment"
         value={alignment}
-        onButtonClick={() => rerollCharacterProperty('alignment')}
+        onButtonClick={() => handleButtonClick('alignment')}
+        isRerollButtonDisabled={isRerollButtonDisabled}
       />
     </>
   );
