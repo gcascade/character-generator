@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext } from '../contexts/CharacterContext';
 import { HistoryContext } from '../contexts/HistoryContext';
+import { RequestContext } from '../contexts/RequestContext';
 import { Character } from '../types/character';
 import CharacterGenerator from './CharacterGenerator';
 
@@ -33,6 +34,17 @@ describe('CharacterGenerator', () => {
   const addToHistory = jest.fn();
   const removeFromHistory = jest.fn();
   const clearHistory = jest.fn();
+  const setRequestStatus = jest.fn();
+  const setError = jest.fn();
+
+  beforeEach(() => {
+    setCharacter.mockClear();
+    addToHistory.mockClear();
+    removeFromHistory.mockClear();
+    clearHistory.mockClear();
+    setRequestStatus.mockClear();
+    setError.mockClear();
+  });
 
   test('renders CharacterGenerator component without crashing', () => {
     render(
@@ -40,7 +52,16 @@ describe('CharacterGenerator', () => {
         <HistoryContext.Provider
           value={{ history, addToHistory, removeFromHistory, clearHistory }}
         >
-          <CharacterGenerator />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: setRequestStatus,
+              error: '',
+              setError: setError,
+            }}
+          >
+            <CharacterGenerator />
+          </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
@@ -52,7 +73,16 @@ describe('CharacterGenerator', () => {
         <HistoryContext.Provider
           value={{ history, addToHistory, removeFromHistory, clearHistory }}
         >
-          <CharacterGenerator />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: setRequestStatus,
+              error: '',
+              setError: setError,
+            }}
+          >
+            <CharacterGenerator />
+          </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
@@ -66,7 +96,16 @@ describe('CharacterGenerator', () => {
         <HistoryContext.Provider
           value={{ history, addToHistory, removeFromHistory, clearHistory }}
         >
-          <CharacterGenerator />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: setRequestStatus,
+              error: '',
+              setError: setError,
+            }}
+          >
+            <CharacterGenerator />
+          </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
@@ -81,14 +120,26 @@ describe('CharacterGenerator', () => {
         <HistoryContext.Provider
           value={{ history, addToHistory, removeFromHistory, clearHistory }}
         >
-          <CharacterGenerator />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: setRequestStatus,
+              error: '',
+              setError: setError,
+            }}
+          >
+            <CharacterGenerator />
+          </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
     const button = screen.getByText('New Character');
     fireEvent.click(button);
-    await waitFor(() => {
-      expect(setCharacter).toHaveBeenCalled();
-    });
+    await waitFor(
+      () => {
+        expect(setCharacter).toHaveBeenCalled();
+      },
+      { timeout: 2000 },
+    );
   });
 });

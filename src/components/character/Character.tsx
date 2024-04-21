@@ -7,8 +7,9 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import useCharacterRequest from '../../hooks/useCharacterRequest';
 import '../common/Common.css';
 import { GenderIcon } from '../common/icons/GenderIcon';
 import './Character.css';
@@ -17,20 +18,31 @@ import CharacterImage from './CharacterImage';
 import CharacterInformation from './CharacterInformation';
 
 type CharacterProps = {
-  onGenerate: VoidFunction;
+  onGenerateCallback: VoidFunction;
 };
 
-const Character: FC<CharacterProps> = ({ onGenerate }) => {
+const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   const context = useContext(CharacterContext);
   if (!context) {
     throw new Error('Character must be used within a CharacterProvider');
   }
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const [isNewCharacterButtonDisabled, setIsNewCharacterButtonDisabled] =
+    useState(false);
   const {
     character: { firstName, lastName, gender, race, characterClass },
   } = context;
+
+  const { requestStatus, generateNewCharacter } = useCharacterRequest();
+
+  useEffect(() => {
+    if (requestStatus !== 'loading') {
+      setIsNewCharacterButtonDisabled(false);
+    } else {
+      setIsNewCharacterButtonDisabled(true);
+    }
+  }, [requestStatus]);
 
   return (
     <Card
@@ -73,7 +85,8 @@ const Character: FC<CharacterProps> = ({ onGenerate }) => {
               backgroundColor: theme.palette.primary.dark,
             },
           }}
-          onClick={onGenerate}
+          onClick={() => generateNewCharacter(onGenerateCallback)}
+          disabled={isNewCharacterButtonDisabled}
         >
           New Character
         </Button>

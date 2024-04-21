@@ -1,70 +1,58 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { RequestContext } from '../contexts/RequestContext';
 import { Character } from '../types/character';
-import { RequestStatus } from '../types/requests';
 import useCharacterGenerator from './useCharacterGenerator';
 
 const useCharacterRequest = (delayTime = 1000) => {
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>('success');
-  const [error, setError] = useState('');
+  const requestContext = useContext(RequestContext);
+
+  if (!requestContext) {
+    throw new Error(
+      'useCharacterRequest must be used within a RequestProvider',
+    );
+  }
+
+  const { requestStatus, setRequestStatus, error, setError } = requestContext;
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const { generateNewCharacter, rerollCharacterProperty } =
     useCharacterGenerator();
 
+  const callWithDelay = async (
+    action: () => void,
+    doneCallback?: VoidFunction,
+  ) => {
+    try {
+      await delay(delayTime);
+      action();
+      setRequestStatus('success');
+    } catch (e) {
+      console.log('error thrown inside action', e);
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+      setRequestStatus('failure');
+    } finally {
+      if (doneCallback) {
+        doneCallback();
+      }
+    }
+  };
+
   const callRerollCharacterProperty = (
     property: keyof Character,
     doneCallback?: VoidFunction,
   ) => {
-    const delayFunction = async () => {
-      try {
-        await delay(delayTime);
-        rerollCharacterProperty(property);
-        setRequestStatus('success');
-        if (doneCallback) {
-          doneCallback();
-        }
-      } catch (e) {
-        console.log('error thrown inside reroll property', e);
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError('An unknown error occurred');
-        }
-        setRequestStatus('failure');
-        if (doneCallback) {
-          doneCallback();
-        }
-      }
-    };
     setRequestStatus('loading');
-    delayFunction();
+    callWithDelay(() => rerollCharacterProperty(property), doneCallback);
   };
 
   const callGenerateNewCharacter = (doneCallback?: VoidFunction) => {
-    const delayFunction = async () => {
-      try {
-        await delay(delayTime);
-        generateNewCharacter();
-        setRequestStatus('success');
-        if (doneCallback) {
-          doneCallback();
-        }
-      } catch (e) {
-        console.log('error thrown inside reroll property', e);
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError('An unknown error occurred');
-        }
-        setRequestStatus('failure');
-        if (doneCallback) {
-          doneCallback();
-        }
-      }
-    };
     setRequestStatus('loading');
-    delayFunction();
+    callWithDelay(generateNewCharacter, doneCallback);
   };
 
   return {

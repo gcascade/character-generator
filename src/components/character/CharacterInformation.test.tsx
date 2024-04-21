@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import { RequestContext } from '../../contexts/RequestContext';
 import { Character } from '../../types/character';
 import CharacterInformation from './CharacterInformation';
 
@@ -25,7 +26,16 @@ describe('CharacterInformation', () => {
   test('renders CharacterInformation component without crashing', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <CharacterInformation />
+        <RequestContext.Provider
+          value={{
+            requestStatus: 'success',
+            setRequestStatus: jest.fn(),
+            error: '',
+            setError: jest.fn(),
+          }}
+        >
+          <CharacterInformation />
+        </RequestContext.Provider>
       </CharacterContext.Provider>,
     );
   });
@@ -33,7 +43,16 @@ describe('CharacterInformation', () => {
   test('displays the character information correctly', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <CharacterInformation />
+        <RequestContext.Provider
+          value={{
+            requestStatus: 'success',
+            setRequestStatus: jest.fn(),
+            error: '',
+            setError: jest.fn(),
+          }}
+        >
+          <CharacterInformation />
+        </RequestContext.Provider>
       </CharacterContext.Provider>,
     );
 

@@ -1,7 +1,9 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { fireEvent, render, screen } from '@testing-library/react';
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { ThemeProvider } from '@mui/material/styles';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import { RequestContext } from '../../contexts/RequestContext';
 import theme from '../../themes/themes';
 import { Character as CharacterType } from '../../types/character';
 import Character from './Character';
@@ -24,13 +26,26 @@ describe('Character', () => {
 
   const setCharacter = jest.fn();
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders Character component without crashing', () => {
     render(
       <ThemeProvider theme={theme}>
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -42,7 +57,16 @@ describe('Character', () => {
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -64,7 +88,16 @@ describe('Character', () => {
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -78,20 +111,34 @@ describe('Character', () => {
     });
   });
 
-  test('calls onGenerate function when button is clicked', () => {
+  test('calls onGenerate function when button is clicked', async () => {
     const mockOnGenerate = jest.fn();
     render(
       <ThemeProvider theme={theme}>
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={mockOnGenerate} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={mockOnGenerate} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
     const button = screen.getByText('New Character');
     fireEvent.click(button);
-    expect(mockOnGenerate).toHaveBeenCalled();
+    await waitFor(
+      () => {
+        expect(mockOnGenerate).toHaveBeenCalled();
+      },
+      { timeout: 2000 },
+    );
   });
 
   test('applies theme colors correctly to card', () => {
@@ -100,7 +147,16 @@ describe('Character', () => {
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -112,13 +168,46 @@ describe('Character', () => {
     expect(card).toHaveStyle(`color: ${theme.palette.text.primary}`);
   });
 
+  test('disables new character button when loading', () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <CharacterContext.Provider
+          value={{ character: mockCharacter, setCharacter }}
+        >
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'loading',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
+        </CharacterContext.Provider>
+      </ThemeProvider>,
+    );
+
+    const button = screen.getByText('New Character');
+    expect(button).toBeDisabled();
+  });
+
   test('applies hover effects correctly to card', () => {
     render(
       <ThemeProvider theme={theme}>
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -130,7 +219,6 @@ describe('Character', () => {
   });
 
   test('renders character portrait component when not on mobile', () => {
-    const theme = createTheme();
     window.matchMedia = jest.fn().mockImplementation((query) => {
       return {
         matches: false, // not mobile
@@ -149,7 +237,16 @@ describe('Character', () => {
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -161,7 +258,6 @@ describe('Character', () => {
   });
 
   test('does not render character portrait on mobile', () => {
-    const theme = createTheme();
     window.matchMedia = jest.fn().mockImplementation((query) => {
       return {
         matches: true, // mobile
@@ -180,7 +276,16 @@ describe('Character', () => {
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <Character onGenerate={() => {}} />
+          <RequestContext.Provider
+            value={{
+              requestStatus: 'success',
+              setRequestStatus: jest.fn(),
+              error: '',
+              setError: jest.fn(),
+            }}
+          >
+            <Character onGenerateCallback={() => {}} />
+          </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );

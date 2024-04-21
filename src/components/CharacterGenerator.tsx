@@ -8,14 +8,12 @@ import {
 } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import { CharacterContext } from '../contexts/CharacterContext';
-import useCharacterGenerator from '../hooks/useCharacterGenerator';
 import useCharacterHistory from '../hooks/useCharacterHistory';
 import theme from '../themes/themes';
 import Character from './character/Character';
 import HistoryCard from './history/HistoryCard';
 
 const CharacterGenerator: FC = () => {
-  const { generateNewCharacter } = useCharacterGenerator();
   const { history, addToHistory } = useCharacterHistory();
 
   const characterContext = useContext(CharacterContext);
@@ -28,11 +26,10 @@ const CharacterGenerator: FC = () => {
 
   const { character } = characterContext;
 
-  const saveCharacter = () => {
+  const onGenerateCallback = () => {
     if (!history.includes(character)) {
       addToHistory([character]);
     }
-    generateNewCharacter();
   };
 
   return (
@@ -61,7 +58,7 @@ const CharacterGenerator: FC = () => {
             style={{ display: 'flex', alignItems: 'stretch' }}
           >
             <Grid xs={12} md={9} style={{ display: 'flex' }}>
-              <Character onGenerate={saveCharacter} />
+              <Character onGenerateCallback={onGenerateCallback} />
             </Grid>
             <Grid xs={12} md={3} style={{ display: 'flex' }}>
               <HistoryCard />
