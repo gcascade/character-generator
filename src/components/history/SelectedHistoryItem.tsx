@@ -19,7 +19,7 @@ const SelectedHistoryItem: FC<SelectedHistoryItemProps> = ({
   return (
     <ListItem
       className="history-container"
-      key={`${firstName}-${lastName}-${age}`}
+      key={`${firstName}-${lastName}-${age}-${race}-${characterClass}`}
       sx={{
         borderRadius: 1,
         transition: 'background-color 0.3s',

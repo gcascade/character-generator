@@ -21,7 +21,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
   return (
     <ListItem
       className="history-container"
-      key={`${firstName}-${lastName}-${age}`}
+      key={`${firstName}-${lastName}-${age}-${race}-${characterClass}`}
       onClick={() => onCharacterClick(character)}
       sx={{
         borderRadius: 1,
