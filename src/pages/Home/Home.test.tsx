@@ -1,12 +1,12 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { CharacterContext } from '../contexts/CharacterContext';
-import { HistoryContext } from '../contexts/HistoryContext';
-import { RequestContext } from '../contexts/RequestContext';
-import { Character } from '../types/character';
-import CharacterGenerator from './CharacterGenerator';
+import { CharacterContext } from '../../contexts/CharacterContext';
+import { HistoryContext } from '../../contexts/HistoryContext';
+import { RequestContext } from '../../contexts/RequestContext';
+import { Character } from '../../types/character';
+import Home from './Home';
 
-describe('CharacterGenerator', () => {
+describe('Home', () => {
   const character: Character = {
     firstName: 'John',
     lastName: 'Doe',
@@ -46,7 +46,7 @@ describe('CharacterGenerator', () => {
     setError.mockClear();
   });
 
-  test('renders CharacterGenerator component without crashing', () => {
+  test('renders Home component without crashing', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
         <HistoryContext.Provider
@@ -60,14 +60,14 @@ describe('CharacterGenerator', () => {
               setError: setError,
             }}
           >
-            <CharacterGenerator />
+            <Home />
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
   });
 
-  test('renders Character Generator title', () => {
+  test('renders Home title', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
         <HistoryContext.Provider
@@ -81,7 +81,7 @@ describe('CharacterGenerator', () => {
               setError: setError,
             }}
           >
-            <CharacterGenerator />
+            <Home />
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
@@ -104,7 +104,7 @@ describe('CharacterGenerator', () => {
               setError: setError,
             }}
           >
-            <CharacterGenerator />
+            <Home />
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
@@ -128,7 +128,7 @@ describe('CharacterGenerator', () => {
               setError: setError,
             }}
           >
-            <CharacterGenerator />
+            <Home />
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
