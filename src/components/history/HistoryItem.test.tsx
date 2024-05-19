@@ -74,4 +74,22 @@ describe('HistoryItem', () => {
 
     expect(onDeleteClick).toHaveBeenCalledWith(character);
   });
+
+  it('displays the correct tooltips', async () => {
+    const { getByTestId } = render(
+      <HistoryItem
+        character={character}
+        onCharacterClick={onCharacterClick}
+        onDeleteClick={onDeleteClick}
+      />,
+    );
+
+    fireEvent.mouseOver(getByTestId('elf-icon'));
+    expect(await screen.findByText(character.race)).toBeInTheDocument();
+
+    fireEvent.mouseOver(getByTestId('warrior-icon'));
+    expect(
+      await screen.findByText(character.characterClass),
+    ).toBeInTheDocument();
+  });
 });

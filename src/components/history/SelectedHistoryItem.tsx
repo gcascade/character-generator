@@ -1,10 +1,9 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, ListItem, Typography } from '@mui/material';
+import { IconButton, ListItem } from '@mui/material';
 import React, { FC } from 'react';
 import { Character } from '../../types/character';
-import ClassIcon from '../common/icons/ClassIcon';
-import RaceIcon from '../common/icons/RaceIcon';
 import './History.css';
+import HistoryCharacterSummary from './HistoryCharacterSummary';
 
 type SelectedHistoryItemProps = {
   character: Character;
@@ -29,11 +28,10 @@ const SelectedHistoryItem: FC<SelectedHistoryItemProps> = ({
         },
       }}
     >
-      <RaceIcon characterRace={race} />
-      <ClassIcon characterClass={characterClass} />
-      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-        {firstName} {lastName} ({age})
-      </Typography>
+      <HistoryCharacterSummary
+        {...character}
+        textStyle={{ fontWeight: 'bold' }}
+      />
       <IconButton
         onClick={(event) => {
           event.stopPropagation();
