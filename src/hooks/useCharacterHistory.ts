@@ -1,9 +1,10 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { HistoryContext } from '../contexts/HistoryContext';
 import { Character } from '../types/character';
 
 const useCharacterHistory = () => {
   const historyContext = useContext(HistoryContext);
+  const isInitialLoad = useRef(true);
 
   if (!historyContext) {
     throw new Error(
@@ -15,14 +16,17 @@ const useCharacterHistory = () => {
     historyContext;
 
   useEffect(() => {
-    const storedHistory = localStorage.getItem('characterHistory');
-    if (storedHistory) {
-      try {
-        const historyData: Character[] = JSON.parse(storedHistory);
-        addToHistory(historyData);
-      } catch (error) {
-        console.error('Failed to parse stored history:', error);
+    if (isInitialLoad.current && history.length === 0) {
+      const storedHistory = localStorage.getItem('characterHistory');
+      if (storedHistory) {
+        try {
+          const historyData: Character[] = JSON.parse(storedHistory);
+          addToHistory(historyData);
+        } catch (error) {
+          console.error('Failed to parse stored history:', error);
+        }
       }
+      isInitialLoad.current = false;
     }
   }, []);
 

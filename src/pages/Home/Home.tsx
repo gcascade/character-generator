@@ -1,4 +1,5 @@
 import {
+  Container,
   Unstable_Grid2 as Grid,
   Paper,
   Typography,
@@ -29,28 +30,30 @@ const Home: FC = () => {
   };
 
   return (
-    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
-      <Typography
-        component="h1"
-        variant="h5"
-        align="center"
-        sx={{ color: theme.palette.text.primary }}
-      >
-        Character Generator
-      </Typography>
-      <Grid
-        container
-        spacing={2}
-        style={{ display: 'flex', alignItems: 'stretch' }}
-      >
-        <Grid xs={12} md={9} style={{ display: 'flex' }}>
-          <Character onGenerateCallback={onGenerateCallback} />
+    <Container maxWidth={false}>
+      <Paper elevation={3} style={{ padding: '20px' }}>
+        <Typography
+          component="h1"
+          variant="h5"
+          align="center"
+          sx={{ color: theme.palette.text.primary }}
+        >
+          Character Generator
+        </Typography>
+        <Grid
+          container
+          spacing={2}
+          style={{ display: 'flex', alignItems: 'stretch' }}
+        >
+          <Grid xs={12} md={9} style={{ display: 'flex' }}>
+            <Character onGenerateCallback={onGenerateCallback} />
+          </Grid>
+          <Grid xs={12} md={3} style={{ display: 'flex' }}>
+            <HistoryCard />
+          </Grid>
         </Grid>
-        <Grid xs={12} md={3} style={{ display: 'flex' }}>
-          <HistoryCard />
-        </Grid>
-      </Grid>
-    </Paper>
+      </Paper>
+    </Container>
   );
 };
 
