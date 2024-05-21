@@ -25,7 +25,7 @@ const App: React.FC = () => {
             <BrowserRouter>
               <Box
                 style={{
-                  backgroundColor: 'red',
+                  backgroundColor: theme.palette.background.paper,
                 }}
               >
                 <CssBaseline />
