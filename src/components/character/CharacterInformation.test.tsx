@@ -5,6 +5,28 @@ import { RequestContext } from '../../contexts/RequestContext';
 import { Character } from '../../types/character';
 import CharacterInformation from './CharacterInformation';
 
+jest.mock('../../hooks/useSettings', () => ({
+  __esModule: true,
+  default: () => ({
+    settings: {
+      useOllamaAPI: false,
+      ollamaEndpoint: '',
+      ollamaModelName: '',
+    },
+    setUseOllamaAPI: jest.fn(),
+    setOllamaEndpoint: jest.fn(),
+    setOllamaModelName: jest.fn(),
+  }),
+}));
+
+jest.mock('../../hooks/useOllama', () => ({
+  __esModule: true,
+  default: () => ({
+    generateCharacterFromTemplateCharacter: jest.fn(),
+    generateBackground: jest.fn(),
+  }),
+}));
+
 describe('CharacterInformation', () => {
   const character: Character = {
     firstName: 'John',

@@ -2,6 +2,13 @@ import { useCallback, useContext } from 'react';
 import { CharacterContext } from '../contexts/CharacterContext';
 import { Character } from '../types/character';
 import { generateRandomCharacter } from '../utils/character';
+import useOllama from './useOllama';
+
+type OllamaParams = {
+  useOllamaAPI: boolean;
+  ollamaEndpoint: string;
+  ollamaModelName: string;
+};
 
 const useCharacterGenerator = () => {
   const context = useContext(CharacterContext);
@@ -12,21 +19,56 @@ const useCharacterGenerator = () => {
     );
   }
   const { character, setCharacter } = context;
+  const { generateCharacterFromTemplateCharacter, generateBackground } =
+    useOllama();
+
   const useRandomCharacter = () => {
-    const generateNewCharacter = useCallback(() => {
-      setCharacter(generateRandomCharacter({}));
-    }, []);
+    const generateNewCharacter = useCallback(
+      async ({
+        useOllamaAPI,
+        ollamaEndpoint,
+        ollamaModelName,
+      }: OllamaParams): Promise<void> => {
+        let character = generateRandomCharacter({});
+
+        if (useOllamaAPI) {
+          character = await generateCharacterFromTemplateCharacter(character, {
+            ollamaEndpoint,
+            ollamaModelName,
+          });
+        }
+
+        setCharacter(character);
+      },
+      [],
+    );
 
     const rerollCharacterProperty = useCallback(
-      (property: keyof Character) => {
-        setCharacter(
-          generateRandomCharacter({ ...character, [property]: null }),
-        );
+      async (
+        property: keyof Character,
+        { useOllamaAPI, ollamaEndpoint, ollamaModelName }: OllamaParams,
+      ): Promise<void> => {
+        let updatedCharacter = generateRandomCharacter({
+          ...character,
+          [property]: null,
+        });
+
+        if (useOllamaAPI) {
+          updatedCharacter = await generateBackground(updatedCharacter, {
+            ollamaEndpoint,
+            ollamaModelName,
+          });
+        }
+
+        setCharacter(updatedCharacter);
       },
       [character],
     );
 
-    return { generateNewCharacter, rerollCharacterProperty };
+    return {
+      generateNewCharacter,
+      rerollCharacterProperty,
+    };
   };
 
   return useRandomCharacter();

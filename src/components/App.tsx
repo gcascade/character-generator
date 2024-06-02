@@ -4,6 +4,7 @@ import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { CharacterProvider } from '../contexts/CharacterContext';
 import { HistoryProvider } from '../contexts/HistoryContext';
 import { RequestProvider } from '../contexts/RequestContext';
+import { SettingsProvider } from '../contexts/SettingsContext';
 import routes from '../routes';
 import theme from '../themes/themes';
 import { generateRandomCharacter } from '../utils/character';
@@ -21,30 +22,32 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CharacterProvider initCharacter={generateRandomCharacter({})}>
         <HistoryProvider>
-          <RequestProvider>
-            <BrowserRouter>
-              <Box
-                style={{
-                  backgroundColor: theme.palette.background.paper,
-                }}
-              >
-                <CssBaseline />
-                <DrawerMenu width={drawerWidth} />
-                <Container
-                  component="main"
-                  sx={{
+          <SettingsProvider>
+            <RequestProvider>
+              <BrowserRouter>
+                <Box
+                  style={{
                     backgroundColor: theme.palette.background.paper,
-                    padding: '24px',
-                    marginLeft: `${drawerWidth}px`,
-                    minWidth: `calc(100% - ${drawerWidth}px)`,
-                    minHeight: '100vh',
                   }}
                 >
-                  <AppRoutes />
-                </Container>
-              </Box>
-            </BrowserRouter>
-          </RequestProvider>
+                  <CssBaseline />
+                  <DrawerMenu width={drawerWidth} />
+                  <Container
+                    component="main"
+                    sx={{
+                      backgroundColor: theme.palette.background.paper,
+                      padding: '24px',
+                      marginLeft: `${drawerWidth}px`,
+                      minWidth: `calc(100% - ${drawerWidth}px)`,
+                      minHeight: '100vh',
+                    }}
+                  >
+                    <AppRoutes />
+                  </Container>
+                </Box>
+              </BrowserRouter>
+            </RequestProvider>
+          </SettingsProvider>
         </HistoryProvider>
       </CharacterProvider>
     </ThemeProvider>

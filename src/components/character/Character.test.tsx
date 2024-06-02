@@ -8,6 +8,28 @@ import theme from '../../themes/themes';
 import { Character as CharacterType } from '../../types/character';
 import Character from './Character';
 
+jest.mock('../../hooks/useSettings', () => ({
+  __esModule: true,
+  default: () => ({
+    settings: {
+      useOllamaAPI: false,
+      ollamaEndpoint: '',
+      ollamaModelName: '',
+    },
+    setUseOllamaAPI: jest.fn(),
+    setOllamaEndpoint: jest.fn(),
+    setOllamaModelName: jest.fn(),
+  }),
+}));
+
+jest.mock('../../hooks/useOllama', () => ({
+  __esModule: true,
+  default: () => ({
+    generateCharacterFromTemplateCharacter: jest.fn(),
+    generateBackground: jest.fn(),
+  }),
+}));
+
 describe('Character', () => {
   const mockCharacter: CharacterType = {
     firstName: 'John',

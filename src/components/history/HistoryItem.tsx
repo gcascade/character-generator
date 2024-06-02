@@ -16,6 +16,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
   onCharacterClick,
   onDeleteClick,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { firstName, lastName, age, race, characterClass } = character;
 
   return (
