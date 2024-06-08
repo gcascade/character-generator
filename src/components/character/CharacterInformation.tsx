@@ -1,6 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import useCharacterRequest from '../../hooks/useCharacterRequest';
+import useError from '../../hooks/useError';
 import { Character } from '../../types/character';
 import CharacterProperty from './CharacterProperty';
 
@@ -16,6 +17,8 @@ const CharacterInformation: FC = () => {
 
   const { requestStatus, rerollCharacterProperty } = useCharacterRequest();
 
+  const { addError } = useError();
+
   const {
     character: {
       firstName,
@@ -30,7 +33,11 @@ const CharacterInformation: FC = () => {
   } = characterContext;
 
   const handleButtonClick = (property: keyof Character) => {
-    rerollCharacterProperty(property, () => setIsRerollButtonDisabled(false));
+    rerollCharacterProperty(
+      property,
+      () => setIsRerollButtonDisabled(false),
+      addError,
+    );
   };
 
   useEffect(() => {

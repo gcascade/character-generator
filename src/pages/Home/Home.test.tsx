@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { HistoryContext } from '../../contexts/HistoryContext';
 import { RequestContext } from '../../contexts/RequestContext';
@@ -82,7 +83,11 @@ describe('Home', () => {
               setError: setError,
             }}
           >
-            <Home />
+            <AlertManagerContext.Provider
+              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            >
+              <Home />
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
@@ -103,7 +108,11 @@ describe('Home', () => {
               setError: setError,
             }}
           >
-            <Home />
+            <AlertManagerContext.Provider
+              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            >
+              <Home />
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
@@ -126,7 +135,11 @@ describe('Home', () => {
               setError: setError,
             }}
           >
-            <Home />
+            <AlertManagerContext.Provider
+              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            >
+              <Home />
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
@@ -150,7 +163,11 @@ describe('Home', () => {
               setError: setError,
             }}
           >
-            <Home />
+            <AlertManagerContext.Provider
+              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            >
+              <Home />
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,

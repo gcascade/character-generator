@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { RequestContext } from '../../contexts/RequestContext';
 import { Character } from '../../types/character';
@@ -56,7 +57,11 @@ describe('CharacterInformation', () => {
             setError: jest.fn(),
           }}
         >
-          <CharacterInformation />
+          <AlertManagerContext.Provider
+            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+          >
+            <CharacterInformation />
+          </AlertManagerContext.Provider>
         </RequestContext.Provider>
       </CharacterContext.Provider>,
     );
@@ -73,7 +78,11 @@ describe('CharacterInformation', () => {
             setError: jest.fn(),
           }}
         >
-          <CharacterInformation />
+          <AlertManagerContext.Provider
+            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+          >
+            <CharacterInformation />
+          </AlertManagerContext.Provider>
         </RequestContext.Provider>
       </CharacterContext.Provider>,
     );

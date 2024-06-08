@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import useCharacterRequest from '../../hooks/useCharacterRequest';
+import useError from '../../hooks/useError';
 import '../common/Common.css';
 import { GenderIcon } from '../common/icons/GenderIcon';
 import './Character.css';
@@ -36,6 +37,8 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const { requestStatus, generateNewCharacter } = useCharacterRequest();
 
+  const { addError } = useError();
+
   useEffect(() => {
     if (requestStatus !== 'loading') {
       setIsNewCharacterButtonDisabled(false);
@@ -43,6 +46,9 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
       setIsNewCharacterButtonDisabled(true);
     }
   }, [requestStatus]);
+
+  const onButtonClick = () =>
+    generateNewCharacter(onGenerateCallback, addError);
 
   return (
     <Card
@@ -85,7 +91,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
               backgroundColor: theme.palette.primary.dark,
             },
           }}
-          onClick={() => generateNewCharacter(onGenerateCallback)}
+          onClick={onButtonClick}
           disabled={isNewCharacterButtonDisabled}
         >
           New Character

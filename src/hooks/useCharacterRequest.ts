@@ -27,6 +27,7 @@ const useCharacterRequest = (delayTime = 1000) => {
   const callWithDelay = async (
     action: () => Promise<void>,
     doneCallback?: VoidFunction,
+    onError?: (message: string) => void,
   ) => {
     try {
       await delay(delayTime);
@@ -34,11 +35,16 @@ const useCharacterRequest = (delayTime = 1000) => {
       setRequestStatus('success');
     } catch (e) {
       console.log('error thrown inside action', e);
+      let message;
       if (e instanceof Error) {
-        setError(e.message);
+        message = e.message;
       } else {
-        setError('An unknown error occurred');
+        message = 'An unknown error occurred';
       }
+      if (onError) {
+        onError(message);
+      }
+      setError(message);
       setRequestStatus('failure');
     } finally {
       if (doneCallback) {
@@ -50,6 +56,7 @@ const useCharacterRequest = (delayTime = 1000) => {
   const callRerollCharacterProperty = (
     property: keyof Character,
     doneCallback?: VoidFunction,
+    onError?: (message: string) => void,
   ) => {
     setRequestStatus('loading');
     callWithDelay(
@@ -60,18 +67,26 @@ const useCharacterRequest = (delayTime = 1000) => {
           ollamaModelName,
         }),
       doneCallback,
+      onError,
     );
   };
 
-  const callGenerateNewCharacter = (doneCallback?: VoidFunction) => {
+  const callGenerateNewCharacter = (
+    doneCallback?: VoidFunction,
+    onError?: (message: string) => void,
+  ) => {
     setRequestStatus('loading');
-    callWithDelay(async () => {
-      await generateNewCharacter({
-        useOllamaAPI,
-        ollamaEndpoint,
-        ollamaModelName,
-      });
-    }, doneCallback);
+    callWithDelay(
+      async () => {
+        await generateNewCharacter({
+          useOllamaAPI,
+          ollamaEndpoint,
+          ollamaModelName,
+        });
+      },
+      doneCallback,
+      onError,
+    );
   };
 
   return {
