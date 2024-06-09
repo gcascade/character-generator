@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Alert, IconButton, Stack, Typography } from '@mui/material';
+import { Alert, Grow, IconButton, Stack, Typography } from '@mui/material';
 import React, { FC, useContext } from 'react';
+import { TransitionGroup } from 'react-transition-group';
 import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
 
 type AlertManagerProps = {
@@ -27,32 +28,37 @@ const AlertManager: FC<AlertManagerProps> = ({ width }) => {
         spacing: 2,
       }}
     >
-      {alerts.map((alert) => (
-        <Alert
-          key={alert.id}
-          severity={alert.severity}
-          sx={{
-            mb: 2,
-            boxShadow: 3,
-            border: '1px solid',
-            borderColor: (theme) => theme.palette[alert.severity].dark,
-            backgroundColor: (theme) => theme.palette[alert.severity].main,
-            color: (theme) => theme.palette.common.white,
-          }}
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => removeAlert(alert.id)}
+      <TransitionGroup>
+        {alerts.map((alert) => (
+          <Grow key={alert.id}>
+            <Alert
+              severity={alert.severity}
+              sx={{
+                mb: 2,
+                boxShadow: 3,
+                border: '1px solid',
+              }}
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => removeAlert(alert.id)}
+                  sx={{
+                    padding: 0,
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
             >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          <Typography variant="caption">{alert.message}</Typography>
-        </Alert>
-      ))}
+              <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
+                {alert.message}
+              </Typography>
+            </Alert>
+          </Grow>
+        ))}
+      </TransitionGroup>
     </Stack>
   );
 };

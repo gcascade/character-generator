@@ -4,6 +4,12 @@ import { Character } from '../types/character';
 import useCharacterGenerator from './useCharacterGenerator';
 import useSettings from './useSettings';
 
+type CharacterRequestOptions = {
+  doneCallback?: VoidFunction;
+  onSuccess?: VoidFunction;
+  onError?: (message: string) => void;
+};
+
 const useCharacterRequest = (delayTime = 1000) => {
   const requestContext = useContext(RequestContext);
 
@@ -27,12 +33,16 @@ const useCharacterRequest = (delayTime = 1000) => {
   const callWithDelay = async (
     action: () => Promise<void>,
     doneCallback?: VoidFunction,
+    onSuccess?: VoidFunction,
     onError?: (message: string) => void,
   ) => {
     try {
       await delay(delayTime);
       await action();
       setRequestStatus('success');
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (e) {
       console.log('error thrown inside action', e);
       let message;
@@ -55,8 +65,7 @@ const useCharacterRequest = (delayTime = 1000) => {
 
   const callRerollCharacterProperty = (
     property: keyof Character,
-    doneCallback?: VoidFunction,
-    onError?: (message: string) => void,
+    { doneCallback, onSuccess, onError }: CharacterRequestOptions,
   ) => {
     setRequestStatus('loading');
     callWithDelay(
@@ -67,14 +76,16 @@ const useCharacterRequest = (delayTime = 1000) => {
           ollamaModelName,
         }),
       doneCallback,
+      onSuccess,
       onError,
     );
   };
 
-  const callGenerateNewCharacter = (
-    doneCallback?: VoidFunction,
-    onError?: (message: string) => void,
-  ) => {
+  const callGenerateNewCharacter = ({
+    doneCallback,
+    onSuccess,
+    onError,
+  }: CharacterRequestOptions) => {
     setRequestStatus('loading');
     callWithDelay(
       async () => {
@@ -85,6 +96,7 @@ const useCharacterRequest = (delayTime = 1000) => {
         });
       },
       doneCallback,
+      onSuccess,
       onError,
     );
   };

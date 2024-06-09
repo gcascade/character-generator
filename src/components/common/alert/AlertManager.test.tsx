@@ -58,22 +58,6 @@ describe('AlertManager', () => {
     expect(mockRemoveAlert).toHaveBeenCalledWith(mockAlerts[0].id);
   });
 
-  test('applies the correct styles to alerts', () => {
-    renderWithProvider();
-
-    mockAlerts.forEach((alert) => {
-      const alertElement = screen
-        .getByText(alert.message)
-        .closest('.MuiAlert-root');
-      expect(alertElement).toHaveStyle(
-        `background-color: ${theme.palette[alert.severity].main}`,
-      );
-      expect(alertElement).toHaveStyle(
-        `border-color: ${theme.palette[alert.severity].dark}`,
-      );
-    });
-  });
-
   test('throws an error if used outside of a provider', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<AlertManager width="400px" />)).toThrow(

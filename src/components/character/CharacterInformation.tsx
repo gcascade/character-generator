@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import useAlert from '../../hooks/useAlert';
 import useCharacterRequest from '../../hooks/useCharacterRequest';
-import useError from '../../hooks/useError';
 import { Character } from '../../types/character';
 import CharacterProperty from './CharacterProperty';
 
@@ -17,7 +17,7 @@ const CharacterInformation: FC = () => {
 
   const { requestStatus, rerollCharacterProperty } = useCharacterRequest();
 
-  const { addError } = useError();
+  const { addError, addSuccess } = useAlert();
 
   const {
     character: {
@@ -33,11 +33,11 @@ const CharacterInformation: FC = () => {
   } = characterContext;
 
   const handleButtonClick = (property: keyof Character) => {
-    rerollCharacterProperty(
-      property,
-      () => setIsRerollButtonDisabled(false),
-      addError,
-    );
+    rerollCharacterProperty(property, {
+      doneCallback: () => setIsRerollButtonDisabled(false),
+      onSuccess: () => addSuccess('Updated character'),
+      onError: addError,
+    });
   };
 
   useEffect(() => {

@@ -9,8 +9,8 @@ import {
 import { useTheme } from '@mui/material/styles';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import useAlert from '../../hooks/useAlert';
 import useCharacterRequest from '../../hooks/useCharacterRequest';
-import useError from '../../hooks/useError';
 import '../common/Common.css';
 import { GenderIcon } from '../common/icons/GenderIcon';
 import './Character.css';
@@ -37,7 +37,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const { requestStatus, generateNewCharacter } = useCharacterRequest();
 
-  const { addError } = useError();
+  const { addError, addSuccess } = useAlert();
 
   useEffect(() => {
     if (requestStatus !== 'loading') {
@@ -48,7 +48,11 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   }, [requestStatus]);
 
   const onButtonClick = () =>
-    generateNewCharacter(onGenerateCallback, addError);
+    generateNewCharacter({
+      doneCallback: onGenerateCallback,
+      onSuccess: () => addSuccess('New character generated'),
+      onError: addError,
+    });
 
   return (
     <Card
