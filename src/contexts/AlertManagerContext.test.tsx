@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import {
-    AlertManagerContext,
-    AlertManagerProvider,
+  AlertManagerContext,
+  AlertManagerProvider,
 } from './AlertManagerContext';
 
 describe('AlertManagerContext', () => {
