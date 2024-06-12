@@ -7,6 +7,7 @@ import {
   CardHeader,
 } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
+import useAlert from '../../hooks/useAlert';
 import useCharacterHistory from '../../hooks/useCharacterHistory';
 import theme from '../../themes/themes';
 import '../common/Common.css';
@@ -17,6 +18,7 @@ import HistoryList from './HistoryList';
 const HistoryCard: FC = () => {
   const { history, clearHistory, removeFromHistory } = useCharacterHistory();
   const [confirmClear, setConfirmClear] = useState(false);
+  const { addSuccess } = useAlert();
 
   useEffect(() => {
     const cancelClear = () => setConfirmClear(false);
@@ -32,6 +34,7 @@ const HistoryCard: FC = () => {
     event.stopPropagation();
     if (confirmClear) {
       clearHistory();
+      addSuccess('History cleared');
     }
     setConfirmClear(!confirmClear);
   };

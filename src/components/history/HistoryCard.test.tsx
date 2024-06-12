@@ -1,6 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { Character } from '../../types/character';
 import HistoryCard from './HistoryCard';
@@ -45,7 +46,11 @@ describe('HistoryCard', () => {
     render(
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
-          <HistoryCard />
+          <AlertManagerContext.Provider
+            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+          >
+            <HistoryCard />
+          </AlertManagerContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -55,7 +60,11 @@ describe('HistoryCard', () => {
     render(
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
-          <HistoryCard />
+          <AlertManagerContext.Provider
+            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+          >
+            <HistoryCard />
+          </AlertManagerContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
@@ -67,7 +76,11 @@ describe('HistoryCard', () => {
     render(
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
-          <HistoryCard />
+          <AlertManagerContext.Provider
+            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+          >
+            <HistoryCard />
+          </AlertManagerContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
