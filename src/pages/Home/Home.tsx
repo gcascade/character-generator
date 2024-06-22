@@ -6,8 +6,8 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { FC, useContext } from 'react';
-import Character from '../../components/character/Character';
-import HistoryCard from '../../components/history/HistoryCard';
+import Character from '../../components/character/character/Character';
+import HistoryCard from '../../components/history/historyCard/HistoryCard';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import useCharacterHistory from '../../hooks/useCharacterHistory';
 

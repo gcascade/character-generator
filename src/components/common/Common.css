@@ -11,15 +11,3 @@
 .paper-card:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
-.gender-icon {
-  color: blue;
-}
-
-.gender-icon.female {
-  color: pink;
-}
-
-.gender-icon.non-binary {
-  color: purple;
-}

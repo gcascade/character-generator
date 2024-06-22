@@ -1,6 +1,6 @@
 import { IconButton, Tooltip } from '@mui/material';
 import React, { FC } from 'react';
-import RerollIcon from '../../common/icons/RerollIcon';
+import RerollIcon from '../icons/reroll/RerollIcon';
 
 type RerollButtonProps = {
   onButtonClick: VoidFunction;

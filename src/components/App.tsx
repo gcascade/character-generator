@@ -11,7 +11,7 @@ import theme from '../themes/themes';
 import { generateRandomCharacter } from '../utils/character';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
-import DrawerMenu from './navigation/DrawerMenu';
+import DrawerMenu from './navigation/drawerMenu/DrawerMenu';
 
 const AppRoutes = () => {
   const routing = useRoutes(routes);

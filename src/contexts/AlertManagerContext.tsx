@@ -1,16 +1,10 @@
 import React, { createContext, FC, ReactNode, useState } from 'react';
-
-type AlertType = {
-  id: number;
-  severity: 'error' | 'warning' | 'info' | 'success';
-  title: string;
-  message: string;
-};
+import { Alert } from '../types/alerts';
 
 type AlertManagerContextType = {
-  addAlert: (alert: Omit<AlertType, 'id'>) => void;
+  addAlert: (alert: Omit<Alert, 'id'>) => void;
   removeAlert: (id: number) => void;
-  alerts: AlertType[];
+  alerts: Alert[];
 };
 
 export const AlertManagerContext = createContext<
@@ -20,9 +14,9 @@ export const AlertManagerContext = createContext<
 export const AlertManagerProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [alerts, setAlerts] = useState<AlertType[]>([]);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
 
-  const addAlert = (alert: Omit<AlertType, 'id'>) => {
+  const addAlert = (alert: Omit<Alert, 'id'>) => {
     const newAlert = { ...alert, id: Date.now() };
     setAlerts((prevAlerts) => [...prevAlerts, newAlert]);
   };
