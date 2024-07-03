@@ -1,24 +1,27 @@
+import { CharacterClass, CharacterRace, Gender } from '@Types/character';
 import { CardMedia } from '@mui/material';
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { CharacterContext } from '../../../contexts/CharacterContext';
-import { Gender } from '../../../types/character';
+import React, { FC, useEffect, useState } from 'react';
 import { isImage } from '../../../utils/image';
 import './CharacterImage.css';
 
-const IMAGE_SIZE = 512;
 const DEFAULT_IMAGE_PATH = '/images/default-portrait.png';
 
-const CharacterImage: FC = () => {
-  const context = useContext(CharacterContext);
+type CharacterImageProps = {
+  gender?: Gender;
+  race?: CharacterRace;
+  characterClass?: CharacterClass;
+  height: string | number;
+  width: string | number;
+};
+
+const CharacterImage: FC<CharacterImageProps> = ({
+  gender,
+  race,
+  characterClass,
+  height,
+  width,
+}) => {
   const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
-
-  if (!context) {
-    throw new Error('CharacterImage must be used within a CharacterProvider');
-  }
-
-  const {
-    character: { gender, race, characterClass },
-  } = context;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -53,11 +56,11 @@ const CharacterImage: FC = () => {
     <CardMedia
       component="img"
       className="character-portrait"
-      alt={`${race} ${characterClass}`}
+      alt={`${race ?? 'unknown race'} ${characterClass ?? 'unknown class'}`}
       onClick={handleClick}
       image={portraitPath}
-      height={IMAGE_SIZE}
-      style={{ width: '30%' }}
+      height={height}
+      style={{ width: width }}
       sx={{
         boxShadow:
           '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',

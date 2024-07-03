@@ -13,6 +13,10 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  args: {
+    height: 512,
+    width: 512,
+  },
   argTypes: {
     gender: {
       description: 'Character gender',
@@ -34,6 +38,12 @@ const meta = {
         type: 'select',
         options: Object.values(CharacterRaces),
       },
+    },
+    height: {
+      description: 'Character image height',
+    },
+    width: {
+      description: 'Character image width',
     },
   },
   decorators: [CharacterDecorator],

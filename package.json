@@ -162,6 +162,7 @@
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
       "^@Test/(.*)$": "<rootDir>/test/$1",
+      "^@Components/(.*)$": "<rootDir>/src/components/$1",
       "^@Contexts/(.*)$": "<rootDir>/src/contexts/$1",
       "^@Types/(.*)$": "<rootDir>/src/types/$1"
     },

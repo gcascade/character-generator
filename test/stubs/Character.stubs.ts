@@ -71,3 +71,15 @@ export const eiraKragnir: Character = {
   alignment: 'Neutral Evil',
   background: shortBackgroundStub,
 };
+
+export const characterList: Character[] = [
+  korvusBlackiron,
+  eryndorThorne,
+  eiraKragnir,
+  eryndorThorne,
+  eiraKragnir,
+  korvusBlackiron,
+  eiraKragnir,
+  eryndorThorne,
+  korvusBlackiron,
+];

@@ -1,3 +1,4 @@
+import GroupIcon from '@mui/icons-material/Group';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import {
@@ -55,13 +56,13 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ width }) => {
           </ListItemIcon>
           <ListItemText primary="Character Generator" />
         </ListItemButton>
-        {/* <ListItemButton component={Link} to="/characters">
+        <ListItemButton component={Link} to="/characters">
           <ListItemIcon className="listItemIcon">
             <GroupIcon />
           </ListItemIcon>
-          <ListItemText primary="Characters" />
+          <ListItemText primary="My Characters" />
         </ListItemButton>
-        <ListItemButton component={Link} to="/import-export">
+        {/* <ListItemButton component={Link} to="/import-export">
           <ListItemIcon className="listItemIcon">
             <ImportExportIcon />
           </ListItemIcon>

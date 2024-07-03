@@ -22,6 +22,10 @@ const config: StorybookConfig = {
   staticDirs: ['../public'],
   webpackFinal: async (config) => {
     config.resolve.alias['@Test'] = path.resolve(__dirname, '../test');
+    config.resolve.alias['@Components'] = path.resolve(
+      __dirname,
+      '../src/components',
+    );
     config.resolve.alias['@Contexts'] = path.resolve(
       __dirname,
       '../src/contexts',

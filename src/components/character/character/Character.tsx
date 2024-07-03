@@ -13,10 +13,10 @@ import useAlert from '../../../hooks/useAlert';
 import useCharacterRequest from '../../../hooks/useCharacterRequest';
 import '../../common/Common.css';
 import { GenderIcon } from '../../common/icons/gender/GenderIcon';
+import '../Character.css';
 import CharacterBackground from '../characterBackground/CharacterBackground';
 import CharacterImage from '../characterImage/CharacterImage';
 import CharacterInformation from '../characterInformation/CharacterInformation';
-import './Character.css';
 
 type CharacterProps = {
   onGenerateCallback: VoidFunction;
@@ -76,7 +76,15 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
         subheaderTypographyProps={{ align: 'center', variant: 'subtitle1' }}
       />
       <CardContent style={{ display: 'flex' }}>
-        {!isMobile && <CharacterImage />}
+        {!isMobile && (
+          <CharacterImage
+            gender={gender}
+            race={race}
+            characterClass={characterClass}
+            height={512}
+            width={'30%'}
+          />
+        )}
         <div style={{ marginLeft: '20px', width: '70%' }}>
           <CharacterInformation />
           <CharacterBackground />

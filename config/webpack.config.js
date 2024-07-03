@@ -312,6 +312,7 @@ module.exports = function (webpackEnv) {
         .filter((ext) => useTypeScript || !ext.includes('ts')),
       alias: {
         '@Test': path.resolve(__dirname, 'test'),
+        '@Components': path.resolve(__dirname, 'src/components'),
         '@Contexts': path.resolve(__dirname, 'src/contexts'),
         '@Types': path.resolve(__dirname, 'src/types'),
         // Support React Native Web
