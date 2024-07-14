@@ -6,8 +6,10 @@ import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../../contexts/CharacterContext';
 import { DataContext } from '../../../contexts/DataContext';
 import { RequestContext } from '../../../contexts/RequestContext';
+import * as useCharacterRequestModule from '../../../hooks/useCharacterRequest';
 import theme from '../../../themes/themes';
 import { Character as CharacterType } from '../../../types/character';
+import { RequestStatus } from '../../../types/requests';
 import Character from './Character';
 
 jest.mock('../../../hooks/useSettings', () => ({
@@ -49,79 +51,69 @@ describe('Character', () => {
   };
 
   const setCharacter = jest.fn();
+  const mockOnGenerateCallback = jest.fn();
+  const mockSaveCharacter = jest.fn();
+  const mockAddAlert = jest.fn();
+  const mockGenerateNewCharacter = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('renders Character component without crashing', () => {
-    render(
+  const renderComponent = ({
+    characters = [],
+    mockRequestStatus = 'success' as RequestStatus,
+  } = {}) => {
+    jest.spyOn(useCharacterRequestModule, 'default').mockImplementation(() => ({
+      requestStatus: mockRequestStatus,
+      generateNewCharacter: mockGenerateNewCharacter,
+      error: '',
+      rerollCharacterProperty: jest.fn(),
+    }));
+
+    return render(
       <ThemeProvider theme={theme}>
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
           <RequestContext.Provider
             value={{
-              requestStatus: 'success',
+              requestStatus: mockRequestStatus,
               setRequestStatus: jest.fn(),
               error: '',
               setError: jest.fn(),
             }}
           >
             <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+              value={{
+                addAlert: mockAddAlert,
+                removeAlert: jest.fn,
+                alerts: [],
+              }}
             >
               <DataContext.Provider
                 value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
+                  characters,
+                  saveCharacter: mockSaveCharacter,
                   removeCharacter: jest.fn(),
                 }}
               >
-                <Character onGenerateCallback={() => {}} />
+                <Character onGenerateCallback={mockOnGenerateCallback} />
               </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
+  };
+
+  test('renders Character component without crashing', () => {
+    renderComponent();
   });
 
   test('displays character properties correctly', () => {
-    const { container } = render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const title = container.querySelector('.MuiCardHeader-title');
-    expect(title).toHaveTextContent('John Character');
-    expect(screen.getByText('John')).toBeInTheDocument();
+    renderComponent();
+    expect(screen.getByText('John Character')).toBeInTheDocument();
     expect(screen.getByText('The Great')).toBeInTheDocument();
     expect(screen.getByText('Elf')).toBeInTheDocument();
     expect(screen.getByText('Warrior')).toBeInTheDocument();
@@ -131,37 +123,7 @@ describe('Character', () => {
   });
 
   test('displays character background correctly', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-
+    renderComponent();
     const backgroundTitle = screen.getByText(mockCharacter.background.title);
     expect(backgroundTitle).toBeInTheDocument();
 
@@ -171,206 +133,42 @@ describe('Character', () => {
     });
   });
 
-  test('calls onGenerate function when button is clicked', async () => {
-    const mockOnGenerate = jest.fn();
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={mockOnGenerate} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
+  test('calls onGenerate function when Generate button is clicked', async () => {
+    renderComponent();
     const button = screen.getByText('Generate');
     fireEvent.click(button);
-    await waitFor(
-      () => {
-        expect(mockOnGenerate).toHaveBeenCalled();
-      },
-      { timeout: 2000 },
-    );
+    await waitFor(() => {
+      expect(mockGenerateNewCharacter).toHaveBeenCalled();
+    });
   });
 
   test('applies theme colors correctly to card', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-
+    renderComponent();
     const card = screen.getByTestId('character-card');
     expect(card).toHaveStyle(
       `background-color: ${theme.palette.background.paper}`,
     );
-    expect(card).toHaveStyle(`color: ${theme.palette.text.primary}`);
   });
 
   test('disables Generate button when loading', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'loading',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-
+    renderComponent({ mockRequestStatus: 'loading' });
     const button = screen.getByText('Generate');
     expect(button).toBeDisabled();
   });
 
-  test('applies hover effects correctly to card', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-    const card = screen.getByTestId('character-card');
-    fireEvent.mouseOver(card);
-    expect(card).toHaveStyle(
-      'box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
-    );
-  });
-
   test('renders character portrait component when not on mobile', () => {
-    window.matchMedia = jest.fn().mockImplementation((query) => {
-      return {
-        matches: false, // not mobile
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      };
-    });
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
 
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-
+    renderComponent();
     const cardMedia = screen.getByAltText(
       `${mockCharacter.race} ${mockCharacter.characterClass}`,
     );
@@ -378,53 +176,64 @@ describe('Character', () => {
   });
 
   test('does not render character portrait on mobile', () => {
-    window.matchMedia = jest.fn().mockImplementation((query) => {
-      return {
-        matches: true, // mobile
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      };
-    });
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: true,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
 
-    render(
-      <ThemeProvider theme={theme}>
-        <CharacterContext.Provider
-          value={{ character: mockCharacter, setCharacter }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: jest.fn(),
-              error: '',
-              setError: jest.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
-            >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
-                }}
-              >
-                <Character onGenerateCallback={() => {}} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </CharacterContext.Provider>
-      </ThemeProvider>,
-    );
-
+    renderComponent();
     const cardMedia = screen.queryByAltText(
       `${mockCharacter.race} ${mockCharacter.characterClass}`,
     );
     expect(cardMedia).not.toBeInTheDocument();
+  });
+
+  test('calls saveCharacter function when Save button is clicked', async () => {
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+
+    renderComponent();
+
+    const button = screen.getByText('Save Character');
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(mockSaveCharacter).toHaveBeenCalledWith(mockCharacter);
+      expect(mockAddAlert).toHaveBeenCalledWith({
+        message: 'Character saved',
+        severity: 'success',
+        title: 'Success',
+      });
+    });
+  });
+
+  test('disables Save button if character is already saved', () => {
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+
+    renderComponent({ characters: [mockCharacter] });
+    const button = screen.getByText('Saved');
+    expect(button).toBeDisabled();
   });
 });

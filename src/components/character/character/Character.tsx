@@ -38,21 +38,22 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   if (!characterContext) {
     throw new Error('Character must be used within a CharacterProvider');
   }
-  const { saveCharacter } = dataContext;
+  const { saveCharacter, characters } = dataContext;
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [isActionButtonEnabled, setIsActionButtonEnabled] = useState(false);
-  const {
-    character: { firstName, lastName, gender, race, characterClass },
-  } = characterContext;
+  const [isActionButtonDisabled, setIsActionButtonDisabled] = useState(false);
+  const { character } = characterContext;
+  const { firstName, lastName, gender, race, characterClass } = character;
 
   const { requestStatus, generateNewCharacter } = useCharacterRequest();
 
   const { addError, addSuccess } = useAlert();
 
+  const isSaved = characters.some((c) => c === character);
+
   useEffect(() => {
-    setIsActionButtonEnabled(requestStatus === 'loading');
+    setIsActionButtonDisabled(requestStatus === 'loading');
   }, [requestStatus]);
 
   const onGenerateButtonClick = useCallback(() => {
@@ -65,12 +66,12 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const onSaveButtonClick = useCallback(() => {
     try {
-      saveCharacter(characterContext.character);
+      saveCharacter(character);
       addSuccess('Character saved');
     } catch (error) {
       addError('Failed to save character');
     }
-  }, [saveCharacter, characterContext.character, addSuccess, addError]);
+  }, [saveCharacter, character, addSuccess, addError]);
 
   return (
     <Card
@@ -126,21 +127,21 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
               color: theme.palette.common.white,
             }}
             onClick={onGenerateButtonClick}
-            disabled={isActionButtonEnabled}
+            disabled={isActionButtonDisabled}
           >
             Generate
           </Button>
           <Button
             variant="outlined"
-            color="secondary"
+            color={isSaved ? 'success' : 'secondary'}
             startIcon={<SaveIcon />}
             sx={{
               flex: 1,
             }}
             onClick={onSaveButtonClick}
-            disabled={isActionButtonEnabled}
+            disabled={isSaved || isActionButtonDisabled}
           >
-            Save Character
+            {isSaved ? 'Saved' : 'Save Character'}
           </Button>
         </Stack>
       </CardActions>
