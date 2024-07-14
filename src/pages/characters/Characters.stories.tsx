@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { DataContext } from '@Contexts/DataContext';
+import AlertManagerDecorator from '@Test/decorators/AlertManagerDecorator';
 import DataDecorator from '@Test/decorators/DataDecorator';
 import { characterList } from '@Test/stubs/Character.stubs';
 import { Character } from '@Types/character';
@@ -29,7 +30,7 @@ const meta: Meta<PageProps> = {
   parameters: {
     layout: 'fullscreen',
   },
-  decorators: [DataDecorator],
+  decorators: [AlertManagerDecorator, DataDecorator],
   tags: ['autodocs'],
 } satisfies Meta;
 

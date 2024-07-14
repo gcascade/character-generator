@@ -1,3 +1,5 @@
+import AlertManagerDecorator from '@Test/decorators/AlertManagerDecorator';
+import DataDecorator from '@Test/decorators/DataDecorator';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
 import {
   Character,
@@ -64,6 +66,7 @@ const meta: Meta<ComponentProps> = {
   parameters: {
     layout: 'centered',
   },
+  decorators: [AlertManagerDecorator, DataDecorator],
   argTypes: {
     firstName: {
       description: 'Character first name',
@@ -132,7 +135,6 @@ const meta: Meta<ComponentProps> = {
       description: 'Height of the character summary',
     },
   },
-  decorators: [],
   tags: ['autodocs'],
 } satisfies Meta;
 

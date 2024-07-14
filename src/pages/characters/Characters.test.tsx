@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { characterList } from '../../../test/stubs/Character.stubs';
+import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { DataContext } from '../../contexts/DataContext';
 import { Character } from '../../types/character';
 import Characters from './Characters';
@@ -14,7 +15,11 @@ const renderCharactersWithContext = (characters: Character[] = []) => {
         removeCharacter: jest.fn(),
       }}
     >
-      <Characters />
+      <AlertManagerContext.Provider
+        value={{ alerts: [], addAlert: jest.fn(), removeAlert: jest.fn() }}
+      >
+        <Characters />
+      </AlertManagerContext.Provider>
     </DataContext.Provider>,
   );
 };
