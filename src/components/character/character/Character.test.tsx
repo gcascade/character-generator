@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../../contexts/CharacterContext';
+import { DataContext } from '../../../contexts/DataContext';
 import { RequestContext } from '../../../contexts/RequestContext';
 import theme from '../../../themes/themes';
 import { Character as CharacterType } from '../../../types/character';
@@ -70,7 +71,15 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
@@ -95,7 +104,15 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
@@ -130,7 +147,15 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
@@ -164,13 +189,21 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={mockOnGenerate} />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={mockOnGenerate} />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
-    const button = screen.getByText('New Character');
+    const button = screen.getByText('Generate');
     fireEvent.click(button);
     await waitFor(
       () => {
@@ -197,8 +230,16 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
-            </AlertManagerContext.Provider>{' '}
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -211,7 +252,7 @@ describe('Character', () => {
     expect(card).toHaveStyle(`color: ${theme.palette.text.primary}`);
   });
 
-  test('disables new character button when loading', () => {
+  test('disables Generate button when loading', () => {
     render(
       <ThemeProvider theme={theme}>
         <CharacterContext.Provider
@@ -228,14 +269,22 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
-            </AlertManagerContext.Provider>{' '}
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );
 
-    const button = screen.getByText('New Character');
+    const button = screen.getByText('Generate');
     expect(button).toBeDisabled();
   });
 
@@ -256,8 +305,16 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
-            </AlertManagerContext.Provider>{' '}
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -299,8 +356,16 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
-            </AlertManagerContext.Provider>{' '}
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -342,8 +407,16 @@ describe('Character', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Character onGenerateCallback={() => {}} />
-            </AlertManagerContext.Provider>{' '}
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Character onGenerateCallback={() => {}} />
+              </DataContext.Provider>
+            </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,

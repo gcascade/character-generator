@@ -1,14 +1,18 @@
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import SaveIcon from '@mui/icons-material/Save';
 import {
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Stack,
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../../../contexts/CharacterContext';
+import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
 import useCharacterRequest from '../../../hooks/useCharacterRequest';
 import '../../common/Common.css';
@@ -23,36 +27,50 @@ type CharacterProps = {
 };
 
 const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
-  const context = useContext(CharacterContext);
-  if (!context) {
+  const characterContext = useContext(CharacterContext);
+
+  const dataContext = useContext(DataContext);
+
+  if (!dataContext) {
+    throw new Error('Character must be used within a DataProvider');
+  }
+
+  if (!characterContext) {
     throw new Error('Character must be used within a CharacterProvider');
   }
+  const { saveCharacter } = dataContext;
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [isNewCharacterButtonDisabled, setIsNewCharacterButtonDisabled] =
-    useState(false);
+  const [isActionButtonEnabled, setIsActionButtonEnabled] = useState(false);
   const {
     character: { firstName, lastName, gender, race, characterClass },
-  } = context;
+  } = characterContext;
 
   const { requestStatus, generateNewCharacter } = useCharacterRequest();
 
   const { addError, addSuccess } = useAlert();
 
   useEffect(() => {
-    if (requestStatus !== 'loading') {
-      setIsNewCharacterButtonDisabled(false);
-    } else {
-      setIsNewCharacterButtonDisabled(true);
-    }
+    setIsActionButtonEnabled(requestStatus === 'loading');
   }, [requestStatus]);
 
-  const onButtonClick = () =>
+  const onGenerateButtonClick = useCallback(() => {
     generateNewCharacter({
       doneCallback: onGenerateCallback,
       onSuccess: () => addSuccess('New character generated'),
       onError: addError,
     });
+  }, [generateNewCharacter, onGenerateCallback, addSuccess, addError]);
+
+  const onSaveButtonClick = useCallback(() => {
+    try {
+      saveCharacter(characterContext.character);
+      addSuccess('Character saved');
+    } catch (error) {
+      addError('Failed to save character');
+    }
+  }, [saveCharacter, characterContext.character, addSuccess, addError]);
 
   return (
     <Card
@@ -91,23 +109,40 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
         </div>
       </CardContent>
       <CardActions>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
+        <Stack
+          direction="row"
+          spacing={2}
           sx={{
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.common.white,
-            transition: 'background-color 0.5s, color 0.5s ease-in-out',
-            '&:hover': {
-              backgroundColor: theme.palette.primary.dark,
-            },
+            width: '100%',
           }}
-          onClick={onButtonClick}
-          disabled={isNewCharacterButtonDisabled}
         >
-          New Character
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<DoubleArrowIcon />}
+            sx={{
+              flex: 1,
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.common.white,
+            }}
+            onClick={onGenerateButtonClick}
+            disabled={isActionButtonEnabled}
+          >
+            Generate
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<SaveIcon />}
+            sx={{
+              flex: 1,
+            }}
+            onClick={onSaveButtonClick}
+            disabled={isActionButtonEnabled}
+          >
+            Save Character
+          </Button>
+        </Stack>
       </CardActions>
     </Card>
   );

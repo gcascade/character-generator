@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../contexts/CharacterContext';
+import { DataContext } from '../../contexts/DataContext';
 import { HistoryContext } from '../../contexts/HistoryContext';
 import { RequestContext } from '../../contexts/RequestContext';
 import { Character } from '../../types/character';
@@ -86,7 +87,15 @@ describe('Home', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Home />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Home />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
@@ -111,7 +120,15 @@ describe('Home', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Home />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Home />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
@@ -138,7 +155,15 @@ describe('Home', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Home />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Home />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
@@ -166,13 +191,21 @@ describe('Home', () => {
             <AlertManagerContext.Provider
               value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
             >
-              <Home />
+              <DataContext.Provider
+                value={{
+                  characters: [],
+                  saveCharacter: jest.fn(),
+                  removeCharacter: jest.fn(),
+                }}
+              >
+                <Home />
+              </DataContext.Provider>
             </AlertManagerContext.Provider>
           </RequestContext.Provider>
         </HistoryContext.Provider>
       </CharacterContext.Provider>,
     );
-    const button = screen.getByText('New Character');
+    const button = screen.getByText('Generate');
     fireEvent.click(button);
     await waitFor(
       () => {

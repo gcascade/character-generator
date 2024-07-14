@@ -1,5 +1,6 @@
 import AlertManagerDecorator from '@Test/decorators/AlertManagerDecorator';
 import CharacterDecorator from '@Test/decorators/CharacterDecorator';
+import DataDecorator from '@Test/decorators/DataDecorator';
 import RequestDecorator from '@Test/decorators/RequestDecorator';
 import SettingsDecorator from '@Test/decorators/SettingsDecorator';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
@@ -89,6 +90,7 @@ const meta = {
     SettingsDecorator,
     RequestDecorator,
     CharacterDecorator,
+    DataDecorator,
   ],
   tags: ['autodocs'],
 } satisfies Meta;

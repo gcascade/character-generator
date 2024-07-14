@@ -43,7 +43,7 @@ const Carousel: FC<CarouselProps> = ({ children, cardsPerPage = 3 }) => {
     >
       <IconButton
         onClick={handlePrevPage}
-        sx={{ margin: 5 }}
+        sx={{ margin: 15 }}
         disabled={currentPage === 0}
         data-testid="navigate-before"
       >
@@ -97,7 +97,7 @@ const Carousel: FC<CarouselProps> = ({ children, cardsPerPage = 3 }) => {
       <IconButton
         onClick={handleNextPage}
         sx={{
-          margin: 5,
+          margin: 15,
         }}
         disabled={
           currentPage >= Math.ceil((children.length || 0) / cardsPerPage) - 1
