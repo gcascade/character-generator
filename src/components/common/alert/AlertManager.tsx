@@ -17,8 +17,6 @@ const AlertManager: FC<AlertManagerProps> = ({ width }) => {
 
   const { alerts, removeAlert } = context;
 
-  console.log('alerts:', alerts);
-
   return (
     <Stack
       sx={{

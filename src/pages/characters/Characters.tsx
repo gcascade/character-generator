@@ -34,7 +34,9 @@ const Characters = () => {
           My Characters
         </Typography>
         {characters.length > 0 && (
-          <Carousel cardsPerPage={3}>{children}</Carousel>
+          <Carousel cardsPerPage={3} height={600}>
+            {children}
+          </Carousel>
         )}
       </Paper>
     </Container>

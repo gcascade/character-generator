@@ -5,11 +5,16 @@ import { Box, IconButton, Slide, Stack } from '@mui/material';
 import React, { FC, useState } from 'react';
 
 type CarouselProps = {
-  children: React.ReactNode[];
+  children: React.ReactElement[];
   cardsPerPage?: number;
+  height?: number | string;
 };
 
-const Carousel: FC<CarouselProps> = ({ children, cardsPerPage = 3 }) => {
+const Carousel: FC<CarouselProps> = ({
+  children,
+  cardsPerPage = 3,
+  height,
+}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<
     'right' | 'left' | undefined
@@ -35,7 +40,7 @@ const Carousel: FC<CarouselProps> = ({ children, cardsPerPage = 3 }) => {
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
-        height: '400px',
+        height: height,
         width: '100%',
         marginTop: '40px',
       }}
@@ -84,9 +89,12 @@ const Carousel: FC<CarouselProps> = ({ children, cardsPerPage = 3 }) => {
                   .map((child, childIndex) => (
                     <Box
                       key={childIndex}
-                      sx={{ height: '100%', flex: '0 0 auto' }}
+                      sx={{ height: height, flex: '0 0 auto' }}
                     >
-                      {child}
+                      {React.isValidElement(child) &&
+                        React.cloneElement(child, {
+                          height: height,
+                        } as React.Attributes)}
                     </Box>
                   ))}
               </Stack>

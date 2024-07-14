@@ -7,9 +7,14 @@ import CharacterImage from '../characterImage/CharacterImage';
 type CharacterSummaryProps = {
   character: Character;
   width?: number | string | undefined;
+  height?: number | string | undefined;
 };
 
-const CharacterSummary: FC<CharacterSummaryProps> = ({ character, width }) => {
+const CharacterSummary: FC<CharacterSummaryProps> = ({
+  character,
+  width,
+  height,
+}) => {
   const {
     firstName,
     lastName,
@@ -22,7 +27,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({ character, width }) => {
   } = character;
 
   return (
-    <Card sx={{ width: width }}>
+    <Card sx={{ width: width, height: height }}>
       <CharacterImage height={256} width={'100%'} {...character} />
       <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
         <Typography

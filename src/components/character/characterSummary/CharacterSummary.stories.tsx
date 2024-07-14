@@ -25,6 +25,8 @@ type ComponentProps = {
   race: CharacterRace;
   title: string;
   content: string[];
+  width?: string | number | undefined;
+  height?: string | number | undefined;
 };
 
 const Component: FC<ComponentProps> = ({
@@ -123,6 +125,12 @@ const meta: Meta<ComponentProps> = {
       description:
         'The content of the character background. 1 string = 1 paragraph',
     },
+    width: {
+      description: 'Width of the character summary',
+    },
+    height: {
+      description: 'Height of the character summary',
+    },
   },
   decorators: [],
   tags: ['autodocs'],
@@ -156,5 +164,7 @@ export const Default: Story = {
     alignment: alignment,
     title: title,
     content: content,
+    width: '300px',
+    height: '600px',
   },
 };
