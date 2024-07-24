@@ -25,6 +25,9 @@ const HistoryItem: FC<HistoryItemProps> = ({
       key={`${firstName}-${lastName}-${age}-${race}-${characterClass}`}
       onClick={() => onCharacterClick(character)}
       sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         borderRadius: 1,
         transition: 'background-color 0.3s',
         '&:hover': {
@@ -44,6 +47,9 @@ const HistoryItem: FC<HistoryItemProps> = ({
         }}
         edge="end"
         aria-label="delete"
+        sx={{
+          flexShrink: 0,
+        }}
       >
         <DeleteIcon />
       </IconButton>
