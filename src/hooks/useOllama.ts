@@ -1,71 +1,10 @@
 import { Ollama, OllamaCallOptions } from '@langchain/community/llms/ollama';
-import {
-  Character,
-  CharacterAlignments,
-  CharacterClasses,
-  CharacterRaces,
-  Genders,
-} from '../types/character';
+import { Character } from '../types/character';
+import { buildBackgroundPrompt, buildCharacterPrompt } from '../utils/prompt';
 
 type OllamaParams = {
   ollamaEndpoint: string;
   ollamaModelName: string;
-};
-
-const schema = {
-  firstName: {
-    type: 'string',
-    description: 'The first name of the character',
-  },
-  lastName: {
-    type: 'string',
-    description: 'The last name of the character',
-  },
-  epithet: {
-    type: 'string',
-    description: "The character's epithet. Start with 'The'",
-  },
-  characterClass: {
-    type: 'string',
-    enum: Object.values(CharacterClasses),
-    description: "The character's class",
-  },
-  gender: {
-    type: 'string',
-    enum: Object.values(Genders),
-    description: "The character's gender",
-  },
-  race: {
-    type: 'string',
-    enum: Object.values(CharacterRaces),
-    description: "The character's race",
-  },
-  aligment: {
-    type: 'string',
-    enum: Object.values(CharacterAlignments),
-    description: "The character's alignment",
-  },
-  age: {
-    type: 'integer',
-    description: "The character's age",
-  },
-  background: {
-    type: 'object',
-    properties: {
-      title: {
-        type: 'string',
-        description: "The title of the character's background",
-      },
-      content: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-        description:
-          "The content of the character's background. Each element of the array is a paragraph of text. Content should be made of 4 to 6 paragraphs. Use third person.",
-      },
-    },
-  },
 };
 
 const useOllama = () => {
@@ -85,11 +24,7 @@ const useOllama = () => {
     params: OllamaParams,
   ): Promise<Character> => {
     const ollama = createOllamaInstance(params);
-    const { characterClass, gender, race, alignment, age } = character;
-
-    const prompt = `Generate a ${age} year-old ${gender} ${race} ${characterClass} of ${alignment} alignment in a fantasy setting. Some values were already generated. Answer in JSON only. Schema: ${JSON.stringify(
-      schema,
-    )} All properties are required`;
+    const prompt = buildCharacterPrompt(character);
 
     try {
       const answer = await ollama.invoke(prompt, {
@@ -100,11 +35,11 @@ const useOllama = () => {
 
       return {
         ...jsonObject,
-        characterClass,
-        gender,
-        race,
-        alignment,
-        age,
+        characterClass: character.characterClass,
+        gender: character.gender,
+        race: character.race,
+        alignment: character.alignment,
+        age: character.age,
       };
     } catch (error) {
       console.error('Error during API call:', error);
@@ -117,8 +52,7 @@ const useOllama = () => {
     params: OllamaParams,
   ): Promise<Character> => {
     const ollama = createOllamaInstance(params);
-
-    const prompt = `Generate a background for a character. Answer in JSON only. Schema: ${JSON.stringify(schema)} All properties are required. Here is the current character: ${JSON.stringify({ ...character, background: null })}`;
+    const prompt = buildBackgroundPrompt(character);
 
     try {
       const answer = await ollama.invoke(prompt, {

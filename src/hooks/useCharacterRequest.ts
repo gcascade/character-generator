@@ -10,6 +10,13 @@ type CharacterRequestOptions = {
   onError?: (message: string) => void;
 };
 
+type ApiParams = {
+  apiType: 'ollama' | 'azure' | 'none';
+  endpoint?: string;
+  modelName?: string;
+  token?: string;
+};
+
 const useCharacterRequest = (delayTime = 1000) => {
   const requestContext = useContext(RequestContext);
 
@@ -22,7 +29,23 @@ const useCharacterRequest = (delayTime = 1000) => {
   const { requestStatus, setRequestStatus, error, setError } = requestContext;
   const {
     ollamaSettings: { useOllamaAPI, ollamaEndpoint, ollamaModelName },
+    azureSettings: { useAzureAPI, azureEndpoint, azureModelName, azureToken },
   } = useSettings();
+
+  const params: ApiParams = {
+    apiType: useOllamaAPI ? 'ollama' : useAzureAPI ? 'azure' : 'none',
+    endpoint: useOllamaAPI
+      ? ollamaEndpoint
+      : useAzureAPI
+        ? azureEndpoint
+        : undefined,
+    modelName: useOllamaAPI
+      ? ollamaModelName
+      : useAzureAPI
+        ? azureModelName
+        : undefined,
+    token: useAzureAPI ? azureToken : undefined,
+  };
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -69,12 +92,7 @@ const useCharacterRequest = (delayTime = 1000) => {
   ) => {
     setRequestStatus('loading');
     callWithDelay(
-      async () =>
-        rerollCharacterProperty(property, {
-          useOllamaAPI,
-          ollamaEndpoint,
-          ollamaModelName,
-        }),
+      async () => rerollCharacterProperty(property, params),
       doneCallback,
       onSuccess,
       onError,
@@ -89,11 +107,7 @@ const useCharacterRequest = (delayTime = 1000) => {
     setRequestStatus('loading');
     callWithDelay(
       async () => {
-        await generateNewCharacter({
-          useOllamaAPI,
-          ollamaEndpoint,
-          ollamaModelName,
-        });
+        await generateNewCharacter(params);
       },
       doneCallback,
       onSuccess,

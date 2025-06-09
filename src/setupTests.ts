@@ -6,3 +6,4 @@ import '@testing-library/jest-dom';
 
 jest.mock('./hooks/useSettings');
 jest.mock('./hooks/useOllama');
+jest.mock('./hooks/useAzure');
