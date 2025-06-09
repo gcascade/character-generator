@@ -75,3 +75,20 @@ This app can use external APIs or tools to generate characters.
 Install Ollama by following the instructions [here](https://github.com/ollama/ollama/blob/main/README.md)
 
 To allow additional web origins to access Ollama, set the environment variable OLLAMA_ORIGINS. For more information, refer to the [FAQ](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-allow-additional-web-origins-to-access-ollama)
+
+## Azure
+
+You can also use Azure as a backend for character generation.
+
+**To use Azure integration:**
+
+1. Obtain your Azure OpenAI endpoint, model name, and API key from the Azure Portal.
+2. In the app settings, enable "Azure API Integration" and fill in:
+   - **Azure Endpoint** (e.g. `https://<your-resource-name>.openai.azure.com`)
+   - **Azure Model Name** (e.g. `gpt-4`)
+   - **Azure Token** (your API key)
+3. Only one API (Ollama or Azure) can be enabled at a time.
+
+For more details on Azure OpenAI, see the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+
+Github models are also usable : [Github Models](https://github.com/marketplace/models)
