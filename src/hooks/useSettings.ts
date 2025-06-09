@@ -1,14 +1,12 @@
-import { useContext, useEffect, useMemo, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { SettingsContext } from '../contexts/SettingsContext';
 
 type SettingsType = {
-  settings: Settings;
-  setUseOllamaAPI: (useOllamaAPI: boolean) => void;
-  setOllamaEndpoint: (ollamaEndpoint: string) => void;
-  setOllamaModelName: (ollamaModelName: string) => void;
+  ollamaSettings: OllamaSettings;
+  setOllamaSettings: (settings: Partial<OllamaSettings>) => void;
 };
 
-type Settings = {
+type OllamaSettings = {
   useOllamaAPI: boolean;
   ollamaEndpoint: string;
   ollamaModelName: string;
@@ -22,55 +20,34 @@ const useSettings = (): SettingsType => {
     throw new Error('useSettings must be used within a SettingsProvider');
   }
 
-  const {
-    useOllamaAPI,
-    ollamaEndpoint,
-    ollamaModelName,
-    setUseOllamaAPI,
-    setOllamaEndpoint,
-    setOllamaModelName,
-  } = settingsContext;
+  const { ollamaSettings, setOllamaSettings } = settingsContext;
 
   useEffect(() => {
     if (isInitialLoad.current) {
-      const savedUseOllamaAPI = localStorage.getItem('useOllamaAPI');
-      const savedOllamaEndpoint = localStorage.getItem('ollamaEndpoint');
-      const savedOllamaModelName = localStorage.getItem('ollamaModelName');
+      const savedSettings: OllamaSettings = {
+        useOllamaAPI: localStorage.getItem('useOllamaAPI') === 'true',
+        ollamaEndpoint: localStorage.getItem('ollamaEndpoint') || '',
+        ollamaModelName: localStorage.getItem('ollamaModelName') || '',
+      };
 
-      if (savedUseOllamaAPI !== null) {
-        setUseOllamaAPI(savedUseOllamaAPI === 'true');
-      }
-      if (savedOllamaEndpoint) {
-        setOllamaEndpoint(savedOllamaEndpoint);
-      }
-      if (savedOllamaModelName) {
-        setOllamaModelName(savedOllamaModelName);
-      }
+      setOllamaSettings(savedSettings);
 
       isInitialLoad.current = false;
     }
-  }, []);
+  }, [setOllamaSettings]);
 
   useEffect(() => {
-    localStorage.setItem('useOllamaAPI', useOllamaAPI.toString());
-    localStorage.setItem('ollamaEndpoint', ollamaEndpoint);
-    localStorage.setItem('ollamaModelName', ollamaModelName);
-  }, [useOllamaAPI, ollamaEndpoint, ollamaModelName]);
-
-  const settings = useMemo(
-    () => ({
-      useOllamaAPI,
-      ollamaEndpoint,
-      ollamaModelName,
-    }),
-    [useOllamaAPI, ollamaEndpoint, ollamaModelName],
-  );
+    localStorage.setItem(
+      'useOllamaAPI',
+      ollamaSettings.useOllamaAPI.toString(),
+    );
+    localStorage.setItem('ollamaEndpoint', ollamaSettings.ollamaEndpoint);
+    localStorage.setItem('ollamaModelName', ollamaSettings.ollamaModelName);
+  }, [ollamaSettings]);
 
   return {
-    settings,
-    setUseOllamaAPI,
-    setOllamaEndpoint,
-    setOllamaModelName,
+    ollamaSettings,
+    setOllamaSettings,
   };
 };
 

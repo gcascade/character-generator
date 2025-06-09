@@ -2,14 +2,29 @@ import { render, screen } from '@testing-library/react';
 import React, { useContext } from 'react';
 import { SettingsContext, SettingsProvider } from './SettingsContext';
 
-const TestComponent: React.FC = () => {
+const TestComponent: React.FC<{
+  update?: Partial<ReturnType<typeof useContext>>;
+}> = ({ update }) => {
   const context = useContext(SettingsContext);
+
+  React.useEffect(() => {
+    if (update && context) {
+      context.setOllamaSettings(update);
+    }
+    // eslint-disable-next-line
+  }, [update]);
 
   return (
     <div>
-      <div>{context?.useOllamaAPI.toString()}</div>
-      <div>{context?.ollamaEndpoint}</div>
-      <div>{context?.ollamaModelName}</div>
+      <div data-testid="useOllamaAPI">
+        {context?.ollamaSettings?.useOllamaAPI.toString()}
+      </div>
+      <div data-testid="ollamaEndpoint">
+        {context?.ollamaSettings?.ollamaEndpoint}
+      </div>
+      <div data-testid="ollamaModelName">
+        {context?.ollamaSettings?.ollamaModelName}
+      </div>
     </div>
   );
 };
@@ -31,48 +46,54 @@ describe('SettingsProvider', () => {
     expect(screen.getByText('llama3')).toBeInTheDocument();
   });
 
-  it('updates useOllamaAPI when setUseOllamaAPI is called', () => {
-    const TestComponent: React.FC = () => {
-      const context = useContext(SettingsContext);
-
-      React.useEffect(() => {
-        context?.setUseOllamaAPI(true);
-      }, [context]);
-
-      return <div>{context?.useOllamaAPI.toString()}</div>;
-    };
-
-    renderWithProvider(<TestComponent />);
-    expect(screen.getByText('true')).toBeInTheDocument();
+  it('updates a single ollamaSettings field', () => {
+    renderWithProvider(<TestComponent update={{ useOllamaAPI: true }} />);
+    expect(screen.getByTestId('useOllamaAPI')).toHaveTextContent('true');
+    expect(screen.getByTestId('ollamaEndpoint')).toHaveTextContent(
+      'http://localhost:11434',
+    );
+    expect(screen.getByTestId('ollamaModelName')).toHaveTextContent('llama3');
   });
 
-  it('updates ollamaEndpoint when setOllamaEndpoint is called', () => {
-    const TestComponent: React.FC = () => {
-      const context = useContext(SettingsContext);
-
-      React.useEffect(() => {
-        context?.setOllamaEndpoint('new-endpoint');
-      }, [context]);
-
-      return <div>{context?.ollamaEndpoint}</div>;
-    };
-
-    renderWithProvider(<TestComponent />);
-    expect(screen.getByText('new-endpoint')).toBeInTheDocument();
+  it('updates multiple ollamaSettings fields', () => {
+    renderWithProvider(
+      <TestComponent
+        update={{
+          ollamaEndpoint: 'http://remote:1234',
+          ollamaModelName: 'other-model',
+        }}
+      />,
+    );
+    expect(screen.getByTestId('useOllamaAPI')).toHaveTextContent('false');
+    expect(screen.getByTestId('ollamaEndpoint')).toHaveTextContent(
+      'http://remote:1234',
+    );
+    expect(screen.getByTestId('ollamaModelName')).toHaveTextContent(
+      'other-model',
+    );
   });
 
-  it('updates ollamaModelName when setOllamaModelName is called', () => {
-    const TestComponent: React.FC = () => {
-      const context = useContext(SettingsContext);
+  it('merges updates with previous state', () => {
+    renderWithProvider(
+      <TestComponent update={{ ollamaModelName: 'merged-model' }} />,
+    );
+    expect(screen.getByTestId('useOllamaAPI')).toHaveTextContent('false');
+    expect(screen.getByTestId('ollamaEndpoint')).toHaveTextContent(
+      'http://localhost:11434',
+    );
+    expect(screen.getByTestId('ollamaModelName')).toHaveTextContent(
+      'merged-model',
+    );
+  });
 
-      React.useEffect(() => {
-        context?.setOllamaModelName('new-model-name');
-      }, [context]);
-
-      return <div>{context?.ollamaModelName}</div>;
-    };
-
-    renderWithProvider(<TestComponent />);
-    expect(screen.getByText('new-model-name')).toBeInTheDocument();
+  it('setOllamaSettings does not remove unspecified fields', () => {
+    renderWithProvider(
+      <TestComponent update={{ ollamaEndpoint: 'http://changed:5678' }} />,
+    );
+    expect(screen.getByTestId('useOllamaAPI')).toHaveTextContent('false');
+    expect(screen.getByTestId('ollamaEndpoint')).toHaveTextContent(
+      'http://changed:5678',
+    );
+    expect(screen.getByTestId('ollamaModelName')).toHaveTextContent('llama3');
   });
 });

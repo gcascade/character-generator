@@ -4,39 +4,44 @@ type SettingsProviderProps = {
   children: ReactNode;
 };
 
-type SettingsContextType = {
+type OllamaSettings = {
   useOllamaAPI: boolean;
   ollamaEndpoint: string;
   ollamaModelName: string;
-  setUseOllamaAPI: (useOllamaAPI: boolean) => void;
-  setOllamaEndpoint: (endpoint: string) => void;
-  setOllamaModelName: (modelName: string) => void;
 };
 
-const defaultOllamaEndPoint = 'http://localhost:11434';
-const defaultOllamaModel = 'llama3';
+type SettingsContextType = {
+  ollamaSettings: OllamaSettings;
+  setOllamaSettings: (settings: Partial<OllamaSettings>) => void;
+};
+
+const defaultOllamaSettings: OllamaSettings = {
+  useOllamaAPI: false,
+  ollamaEndpoint: 'http://localhost:11434',
+  ollamaModelName: 'llama3',
+};
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(
   undefined,
 );
 
 export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
-  const [useOllamaAPI, setUseOllamaAPI] = useState(false);
-  const [ollamaEndpoint, setOllamaEndpoint] = useState(defaultOllamaEndPoint);
-  const [ollamaModelName, setOllamaModelName] = useState(defaultOllamaModel);
+  const [ollamaSettings, setOllamaSettingsState] = useState<OllamaSettings>(
+    defaultOllamaSettings,
+  );
 
-  const setEndpoint = (endpoint: string) => setOllamaEndpoint(endpoint);
-  const setModelName = (modelName: string) => setOllamaModelName(modelName);
+  const setOllamaSettings = (settings: Partial<OllamaSettings>) => {
+    setOllamaSettingsState((prevSettings) => ({
+      ...prevSettings,
+      ...settings,
+    }));
+  };
 
   return (
     <SettingsContext.Provider
       value={{
-        useOllamaAPI,
-        ollamaEndpoint,
-        ollamaModelName,
-        setUseOllamaAPI,
-        setOllamaEndpoint: setEndpoint,
-        setOllamaModelName: setModelName,
+        ollamaSettings,
+        setOllamaSettings,
       }}
     >
       {children}

@@ -21,7 +21,7 @@ const useCharacterRequest = (delayTime = 1000) => {
 
   const { requestStatus, setRequestStatus, error, setError } = requestContext;
   const {
-    settings: { useOllamaAPI, ollamaEndpoint, ollamaModelName },
+    ollamaSettings: { useOllamaAPI, ollamaEndpoint, ollamaModelName },
   } = useSettings();
 
   const delay = (ms: number) =>

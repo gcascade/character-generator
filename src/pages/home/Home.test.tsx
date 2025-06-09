@@ -8,27 +8,25 @@ import { RequestContext } from '../../contexts/RequestContext';
 import { Character } from '../../types/character';
 import Home from './Home';
 
-jest.mock('../../hooks/useSettings', () => ({
-  __esModule: true,
-  default: () => ({
-    settings: {
-      useOllamaAPI: false,
-      ollamaEndpoint: '',
-      ollamaModelName: '',
-    },
-    setUseOllamaAPI: jest.fn(),
-    setOllamaEndpoint: jest.fn(),
-    setOllamaModelName: jest.fn(),
-  }),
-}));
+// jest.mock('../../hooks/useSettings', () => ({
+//   __esModule: true,
+//   default: () => ({
+//     ollamaSettings: {
+//       useOllamaAPI: false,
+//       ollamaEndpoint: '',
+//       ollamaModelName: '',
+//     },
+//     setOllamaSettings: jest.fn(),
+//   }),
+// }));
 
-jest.mock('../../hooks/useOllama', () => ({
-  __esModule: true,
-  default: () => ({
-    generateCharacterFromTemplateCharacter: jest.fn(),
-    generateBackground: jest.fn(),
-  }),
-}));
+// jest.mock('../../hooks/useOllama', () => ({
+//   __esModule: true,
+//   default: () => ({
+//     generateCharacterFromTemplateCharacter: jest.fn(),
+//     generateBackground: jest.fn(),
+//   }),
+// }));
 
 describe('Home', () => {
   const character: Character = {

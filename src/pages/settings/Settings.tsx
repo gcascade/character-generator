@@ -20,10 +20,8 @@ type SettingsFormValues = {
 
 const Settings: React.FC = () => {
   const {
-    settings: { useOllamaAPI, ollamaEndpoint, ollamaModelName },
-    setUseOllamaAPI,
-    setOllamaEndpoint,
-    setOllamaModelName,
+    ollamaSettings: { useOllamaAPI, ollamaEndpoint, ollamaModelName },
+    setOllamaSettings,
   } = useSettings();
 
   const {
@@ -47,9 +45,11 @@ const Settings: React.FC = () => {
   }, [useOllamaAPI, ollamaEndpoint, ollamaModelName, setValue]);
 
   const onSubmit: SubmitHandler<SettingsFormValues> = (data) => {
-    setUseOllamaAPI(data.useOllamaAPI);
-    setOllamaEndpoint(data.ollamaEndpoint);
-    setOllamaModelName(data.ollamaModelName);
+    setOllamaSettings({
+      useOllamaAPI: data.useOllamaAPI,
+      ollamaEndpoint: data.ollamaEndpoint,
+      ollamaModelName: data.ollamaModelName,
+    });
   };
 
   return (
