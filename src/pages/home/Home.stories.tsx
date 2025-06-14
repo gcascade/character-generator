@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import AlertManagerDecorator from '@Test/decorators/AlertManagerDecorator';
 import CharacterDecorator from '@Test/decorators/CharacterDecorator';
+import DataDecorator from '@Test/decorators/DataDecorator';
 import HistoryDecorator from '@Test/decorators/HistoryDecorator';
 import RequestDecorator from '@Test/decorators/RequestDecorator';
 import SettingsDecorator from '@Test/decorators/SettingsDecorator';
@@ -19,6 +20,7 @@ const meta = {
     AlertManagerDecorator,
     RequestDecorator,
     SettingsDecorator,
+    DataDecorator,
   ],
   tags: ['autodocs'],
 } satisfies Meta;
