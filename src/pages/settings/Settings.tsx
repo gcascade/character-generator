@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import PageTitle from '../../components/common/pageTitle/PageTitle';
 import useSettings from '../../hooks/useSettings';
 
 type SettingsFormValues = {
@@ -93,9 +94,7 @@ const Settings: React.FC = () => {
           padding: '20px',
         }}
       >
-        <Typography variant="h2" component="h1" gutterBottom>
-          Character Generator Settings
-        </Typography>
+        <PageTitle>Character Generator Settings</PageTitle>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ marginBottom: '1.5rem' }}>
             <Typography variant="h4" component="h2" gutterBottom>

@@ -1,7 +1,9 @@
-import { Container, Paper, Typography } from '@mui/material';
+import { Container, Paper } from '@mui/material';
 import React, { useContext } from 'react';
 import CharacterSummary from '../../components/character/characterSummary/CharacterSummary';
 import Carousel from '../../components/common/carousel/Carousel';
+import PageTitle from '../../components/common/pageTitle/PageTitle';
+
 import { DataContext } from '../../contexts/DataContext';
 
 const Characters = () => {
@@ -30,9 +32,7 @@ const Characters = () => {
           padding: '20px',
         }}
       >
-        <Typography variant="h2" component="h1" gutterBottom>
-          My Characters
-        </Typography>
+        <PageTitle>My Characters</PageTitle>
         {characters.length > 0 && (
           <Carousel cardsPerPage={3} height={600}>
             {children}
