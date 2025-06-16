@@ -40,7 +40,7 @@
     "langchain": "^0.2.10",
     "mini-css-extract-plugin": "^2.9.0",
     "object-hash": "^3.0.0",
-    "postcss": "^8.4.4",
+    "postcss": "^8.5.5",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^8.1.1",
     "postcss-normalize": "^10.0.1",
