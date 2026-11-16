@@ -1,8 +1,8 @@
 import { HistoryProvider } from '@Contexts/HistoryContext';
-import { StoryFn } from '@storybook/react-vite';
+import type { Decorator } from '@storybook/react-vite';
 import React from 'react';
 
-const HistoryDecorator = (Story: StoryFn): JSX.Element => (
+const HistoryDecorator: Decorator = (Story) => (
   <HistoryProvider>
     <Story />
   </HistoryProvider>

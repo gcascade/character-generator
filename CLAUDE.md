@@ -23,7 +23,7 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 
 ## Stack
 
-- React 18, TypeScript 6 (strict; TS 7 waits for typescript-eslint support), MUI 5, React Router 6, react-hook-form.
+- React 19, TypeScript 6 (strict; TS 7 waits for typescript-eslint support), MUI 5, React Router 6, react-hook-form.
 - Build: Vite (`vite.config.ts`, base `/character-generator/` for GitHub Pages); tests: Vitest + jsdom
   + Testing Library, configured in the same file. Storybook uses the Vite builder.
 - Use `import.meta.env.BASE_URL` for public assets, never absolute `/images/...` paths.
