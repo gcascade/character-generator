@@ -1,8 +1,8 @@
 import { AlertManagerProvider } from '@Contexts/AlertManagerContext';
-import { StoryFn } from '@storybook/react-vite';
+import type { Decorator } from '@storybook/react-vite';
 import React from 'react';
 
-const AlertManagerDecorator = (Story: StoryFn): JSX.Element => (
+const AlertManagerDecorator: Decorator = (Story) => (
   <AlertManagerProvider>
     <Story />
   </AlertManagerProvider>

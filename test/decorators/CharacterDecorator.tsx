@@ -1,6 +1,6 @@
 import { CharacterProvider } from '@Contexts/CharacterContext';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { StoryContext, StoryFn } from '@storybook/react-vite';
+import type { Decorator } from '@storybook/react-vite';
 import React from 'react';
 import {
   Character,
@@ -24,16 +24,14 @@ type ContextProps = {
   history?: Character[];
 };
 
-const CharacterDecorator = (
-  Story: StoryFn,
-  context: StoryContext<ContextProps>,
-): JSX.Element => {
+const CharacterDecorator: Decorator<ContextProps> = (Story, context) => {
+  const { title, content, ...args } = context.args;
   const character: Character = {
     ...korvusBlackiron,
-    ...context.args,
+    ...args,
     background: {
-      title: context.args.title || korvusBlackiron.background.title,
-      content: context.args.content || korvusBlackiron.background.content,
+      title: title || korvusBlackiron.background.title,
+      content: content || korvusBlackiron.background.content,
     },
   };
 

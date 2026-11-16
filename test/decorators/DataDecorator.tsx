@@ -1,8 +1,8 @@
 import { DataProvider } from '@Contexts/DataContext';
-import { StoryFn } from '@storybook/react-vite';
+import type { Decorator } from '@storybook/react-vite';
 import React from 'react';
 
-const DataDecorator = (Story: StoryFn): JSX.Element => (
+const DataDecorator: Decorator = (Story) => (
   <DataProvider>
     <Story />
   </DataProvider>

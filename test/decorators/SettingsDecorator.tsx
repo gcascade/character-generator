@@ -1,8 +1,8 @@
 import { SettingsProvider } from '@Contexts/SettingsContext';
-import { StoryFn } from '@storybook/react-vite';
+import type { Decorator } from '@storybook/react-vite';
 import React from 'react';
 
-const SettingsDecorator = (Story: StoryFn): JSX.Element => (
+const SettingsDecorator: Decorator = (Story) => (
   <SettingsProvider>
     <Story />
   </SettingsProvider>
