@@ -1,4 +1,4 @@
-import { Container, Unstable_Grid2 as Grid, Paper } from '@mui/material';
+import { Container, Grid2 as Grid, Paper } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import Character from '../../components/character/character/Character';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
@@ -32,10 +32,10 @@ const Home: FC = () => {
           spacing={2}
           style={{ display: 'flex', alignItems: 'stretch' }}
         >
-          <Grid xs={12} md={9} style={{ display: 'flex' }}>
+          <Grid size={{ xs: 12, md: 9 }} style={{ display: 'flex' }}>
             <Character onGenerateCallback={onGenerateCallback} />
           </Grid>
-          <Grid xs={12} md={3} style={{ display: 'flex' }}>
+          <Grid size={{ xs: 12, md: 3 }} style={{ display: 'flex' }}>
             <HistoryCard />
           </Grid>
         </Grid>
