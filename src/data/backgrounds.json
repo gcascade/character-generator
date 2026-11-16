@@ -72,7 +72,7 @@
   {
     "alignment": "Chaotic Evil",
     "characterClass": "Warrior",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "race": "Human",
     "title": "A terror in the night",
     "content": [
@@ -178,7 +178,7 @@
       "{{firstName}}'s approach to warfare is unorthodox, often blending unconventional tactics with a deep understanding of the human psyche. Their actions might not always align with societal expectations, but their heart is always aimed at creating a world where freedom and justice prevail.",
       "Continuously on the move, {{firstName}} is a symbol of hope for many. Their journey is a testament to the belief that one can be a fierce warrior and yet fight for good, challenging the status quo and breaking free from the constraints of traditional warrior roles."
     ],
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "race": "Human",
     "title": "{{firstName}} {{epithet}}"
   },
@@ -199,7 +199,7 @@
     "alignment": "Chaotic Neutral",
     "characterClass": "Rogue",
     "race": "Elf",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "title": "The Whispering Wind",
     "content": [
       "{{firstName}} {{lastName}}, known across the land as {{epithet}}, moves like a shadow, their presence as elusive as the fleeting breeze.",
@@ -254,7 +254,7 @@
   {
     "alignment": "Lawful Evil",
     "characterClass": "Warrior",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "race": "Human",
     "title": "{{epithet}}",
     "content": [
@@ -368,7 +368,7 @@
     "alignment": "Lawful Neutral",
     "characterClass": "Mage",
     "race": "Elf",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "title": "The Arbiter of Order",
     "content": [
       "{{firstName}} {{lastName}}, known among the arcane circles as {{epithet}}, seeks to maintain the delicate balance between magical power and the laws that govern it.",
@@ -409,7 +409,7 @@
   {
     "alignment": "Lawful Neutral",
     "characterClass": "Warrior",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "race": "Human",
     "title": "The Arbitrator of Justica",
     "content": [
@@ -465,7 +465,7 @@
   {
     "alignment": "Neutral Evil",
     "characterClass": "Warrior",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "race": "Human",
     "title": "{{epithet}} of Dunesend",
     "content": [
@@ -574,7 +574,7 @@
     "alignment": "True Neutral",
     "characterClass": "Cleric",
     "race": "Elf",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "title": "The Enlightened of the Forest",
     "content": [
       "{{firstName}} {{lastName}}, known among the woodland realms as {{epithet}}, has always been a mysterious figure, their presence as serene as the ancient groves they protect.",
@@ -631,7 +631,7 @@
   {
     "alignment": "True Neutral",
     "characterClass": "Warrior",
-    "gender": "Non-Binary",
+    "gender": "Non-binary",
     "race": "Human",
     "title": "{{epithet}}",
     "content": [
