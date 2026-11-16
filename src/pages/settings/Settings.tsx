@@ -123,8 +123,10 @@ const Settings: React.FC = () => {
                       {...register('useOllamaAPI')}
                       checked={watch('useOllamaAPI')}
                       onChange={(e) => handleOllamaToggle(e.target.checked)}
-                      inputProps={{
-                        'aria-label': 'Toggle Ollama API Integration',
+                      slotProps={{
+                        input: {
+                          'aria-label': 'Toggle Ollama API Integration',
+                        },
                       }}
                     />
                   }
@@ -175,8 +177,8 @@ const Settings: React.FC = () => {
                       {...register('useAzureAPI')}
                       checked={watch('useAzureAPI')}
                       onChange={(e) => handleAzureToggle(e.target.checked)}
-                      inputProps={{
-                        'aria-label': 'Toggle Azure API Integration',
+                      slotProps={{
+                        input: { 'aria-label': 'Toggle Azure API Integration' },
                       }}
                     />
                   }

@@ -52,7 +52,7 @@ const HistoryCard: FC = () => {
     >
       <CardHeader
         title="History"
-        titleTypographyProps={{ align: 'center', variant: 'h4' }}
+        slotProps={{ title: { align: 'center', variant: 'h4' } }}
       />
       <CardContent sx={{ flexGrow: 1 }}>
         {history.length > 0 ? (

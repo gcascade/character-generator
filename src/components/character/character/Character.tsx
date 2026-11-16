@@ -82,14 +82,16 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
         title={
           <span data-testid="character-name">{`${firstName} ${lastName}`}</span>
         }
-        titleTypographyProps={{ align: 'center', variant: 'h4' }}
         subheader={
           <div className="character-subheader">
             {race} {characterClass}
             <GenderIcon gender={gender} />
           </div>
         }
-        subheaderTypographyProps={{ align: 'center', variant: 'subtitle1' }}
+        slotProps={{
+          title: { align: 'center', variant: 'h4' },
+          subheader: { align: 'center', variant: 'subtitle1' },
+        }}
       />
       <CardContent style={{ display: 'flex' }}>
         {!isMobile && (

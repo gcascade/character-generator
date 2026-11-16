@@ -77,9 +77,12 @@ const Carousel: FC<CarouselProps> = ({
               <Stack
                 spacing={2}
                 direction="row"
-                alignContent="center"
-                justifyContent="center"
-                sx={{ width: '100%', height: '100%' }}
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}
               >
                 {React.Children.toArray(children)
                   .slice(
