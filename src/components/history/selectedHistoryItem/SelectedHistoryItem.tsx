@@ -1,4 +1,4 @@
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { IconButton, ListItem } from '@mui/material';
 import React, { FC } from 'react';
 import { Character } from '../../../types/character';

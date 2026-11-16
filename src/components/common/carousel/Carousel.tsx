@@ -1,5 +1,5 @@
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { NavigateBefore as NavigateBeforeIcon } from '@mui/icons-material';
+import { NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { Box, IconButton, Slide, Stack } from '@mui/material';
 
 import React, { FC, useState } from 'react';

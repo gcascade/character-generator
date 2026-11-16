@@ -1,6 +1,6 @@
 const useOllama = () => ({
-  generateCharacterFromTemplateCharacter: jest.fn(),
-  generateBackground: jest.fn(),
+  generateCharacterFromTemplateCharacter: vi.fn(),
+  generateBackground: vi.fn(),
 });
 
 export default useOllama;

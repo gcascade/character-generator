@@ -1,4 +1,3 @@
-import { Ollama, OllamaCallOptions } from '@langchain/community/llms/ollama';
 import { Character } from '../types/character';
 import { buildBackgroundPrompt, buildCharacterPrompt } from '../utils/prompt';
 
@@ -8,28 +7,43 @@ type OllamaParams = {
 };
 
 const useOllama = () => {
-  const createOllamaInstance = ({
-    ollamaEndpoint,
-    ollamaModelName,
-  }: OllamaParams) => {
-    return new Ollama({
-      baseUrl: ollamaEndpoint,
-      model: ollamaModelName,
-      format: 'json',
-    });
+  const generate = async (
+    prompt: string,
+    { ollamaEndpoint, ollamaModelName }: OllamaParams,
+  ): Promise<string> => {
+    const response = await fetch(
+      `${ollamaEndpoint.replace(/\/+$/, '')}/api/generate`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: ollamaModelName,
+          prompt,
+          format: 'json',
+          stream: false,
+          options: {
+            seed: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Ollama API responded with HTTP ${response.status}`);
+    }
+
+    const body: { response: string } = await response.json();
+    return body.response;
   };
 
   const generateCharacterFromTemplateCharacter = async (
     character: Character,
     params: OllamaParams,
   ): Promise<Character> => {
-    const ollama = createOllamaInstance(params);
     const prompt = buildCharacterPrompt(character);
 
     try {
-      const answer = await ollama.invoke(prompt, {
-        seed: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-      } as OllamaCallOptions);
+      const answer = await generate(prompt, params);
 
       const jsonObject = JSON.parse(answer);
 
@@ -51,13 +65,10 @@ const useOllama = () => {
     character: Character,
     params: OllamaParams,
   ): Promise<Character> => {
-    const ollama = createOllamaInstance(params);
     const prompt = buildBackgroundPrompt(character);
 
     try {
-      const answer = await ollama.invoke(prompt, {
-        seed: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-      } as OllamaCallOptions);
+      const answer = await generate(prompt, params);
 
       const jsonObject = JSON.parse(answer);
 

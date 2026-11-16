@@ -1,4 +1,4 @@
-import { Character, CharacterBackground } from 'src/types/character';
+import { Character, CharacterBackground } from '@Types/character';
 
 export const longBackgroundStub: CharacterBackground = {
   title: 'Outcast of the Deep Delve',

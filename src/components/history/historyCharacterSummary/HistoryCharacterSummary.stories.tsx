@@ -1,6 +1,6 @@
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
 import { CharacterClasses, CharacterRaces } from '@Types/character';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import HistoryCharacterSummary from './HistoryCharacterSummary';
 
 const meta = {

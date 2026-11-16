@@ -4,9 +4,9 @@ import React from 'react';
 import theme from '../../themes/themes';
 import Settings from './Settings';
 
-const mockSetOllamaSettings = jest.fn();
-const mockSetAzureSettings = jest.fn();
-jest.mock('../../hooks/useSettings', () => ({
+const mockSetOllamaSettings = vi.fn();
+const mockSetAzureSettings = vi.fn();
+vi.mock('../../hooks/useSettings', () => ({
   __esModule: true,
   default: () => ({
     ollamaSettings: {

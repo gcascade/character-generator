@@ -1,6 +1,6 @@
-import GroupIcon from '@mui/icons-material/Group';
-import HomeIcon from '@mui/icons-material/Home';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Group as GroupIcon } from '@mui/icons-material';
+import { Home as HomeIcon } from '@mui/icons-material';
+import { Settings as SettingsIcon } from '@mui/icons-material';
 import {
   Box,
   Divider,

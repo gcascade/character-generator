@@ -1,5 +1,5 @@
 import CharacterDecorator from '@Test/decorators/CharacterDecorator';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import {
   CharacterClasses,
   CharacterRaces,

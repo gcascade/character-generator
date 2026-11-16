@@ -1,6 +1,6 @@
 const useAzure = () => ({
-  generateCharacterFromTemplateCharacter: jest.fn(),
-  generateBackground: jest.fn(),
+  generateCharacterFromTemplateCharacter: vi.fn(),
+  generateBackground: vi.fn(),
 });
 
 export default useAzure;

@@ -1,6 +1,6 @@
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import HistoryItem from './HistoryItem';
 
 const meta = {
@@ -30,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     character: korvusBlackiron,
-    onCharacterClick: fn,
-    onDeleteClick: fn,
+    onCharacterClick: fn(),
+    onDeleteClick: fn(),
   },
 };

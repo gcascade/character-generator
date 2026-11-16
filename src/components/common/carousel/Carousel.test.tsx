@@ -4,7 +4,7 @@ import React from 'react';
 import Carousel from './Carousel';
 
 describe('Carousel Component', () => {
-  const TestCard = ({ text }) => (
+  const TestCard = ({ text }: { text: string }) => (
     <Box sx={{ width: 250, height: 400, backgroundColor: 'lightgray' }}>
       {text}
     </Box>

@@ -3,7 +3,7 @@ import React from 'react';
 import CharacterProperty from './CharacterProperty';
 
 describe('CharacterProperty', () => {
-  const mockOnButtonClick = jest.fn();
+  const mockOnButtonClick = vi.fn();
 
   it('renders without crashing', () => {
     render(

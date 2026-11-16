@@ -1,37 +1,14 @@
-import type { StorybookConfig } from '@storybook/react-webpack5';
-
-const path = require('path');
+import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [
-    '@storybook/addon-webpack5-compiler-swc',
-    '@storybook/addon-onboarding',
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@chromatic-com/storybook',
-    '@storybook/addon-interactions',
-  ],
+  addons: ['@storybook/addon-docs', '@storybook/addon-links'],
   framework: {
-    name: '@storybook/react-webpack5',
+    name: '@storybook/react-vite',
     options: {},
   },
-  typescript: {
-    reactDocgen: 'react-docgen-typescript',
-  },
   staticDirs: ['../public'],
-  webpackFinal: async (config) => {
-    config.resolve.alias['@Test'] = path.resolve(__dirname, '../test');
-    config.resolve.alias['@Components'] = path.resolve(
-      __dirname,
-      '../src/components',
-    );
-    config.resolve.alias['@Contexts'] = path.resolve(
-      __dirname,
-      '../src/contexts',
-    );
-    config.resolve.alias['@Types'] = path.resolve(__dirname, '../src/types');
-    return config;
-  },
+  viteFinal: (viteConfig) => ({ ...viteConfig, base: './' }),
 };
+
 export default config;

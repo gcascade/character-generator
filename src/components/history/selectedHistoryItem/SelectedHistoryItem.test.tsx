@@ -24,7 +24,7 @@ const character: Character = {
   },
 };
 
-const mockOnDeleteClick = jest.fn();
+const mockOnDeleteClick = vi.fn();
 
 describe('SelectedHistoryItem', () => {
   it('renders without crashing', () => {
@@ -52,7 +52,7 @@ describe('SelectedHistoryItem', () => {
   });
 
   it('calls onDeleteClick when the delete button is clicked', () => {
-    const onDeleteClick = jest.fn();
+    const onDeleteClick = vi.fn();
     const { getByLabelText } = render(
       <SelectedHistoryItem
         character={character}

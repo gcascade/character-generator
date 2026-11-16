@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { CharacterRaces } from '../../../../types/character';
 import RaceIcon from './RaceIcon';
 

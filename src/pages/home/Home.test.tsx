@@ -8,26 +8,6 @@ import { RequestContext } from '../../contexts/RequestContext';
 import { Character } from '../../types/character';
 import Home from './Home';
 
-// jest.mock('../../hooks/useSettings', () => ({
-//   __esModule: true,
-//   default: () => ({
-//     ollamaSettings: {
-//       useOllamaAPI: false,
-//       ollamaEndpoint: '',
-//       ollamaModelName: '',
-//     },
-//     setOllamaSettings: jest.fn(),
-//   }),
-// }));
-
-// jest.mock('../../hooks/useOllama', () => ({
-//   __esModule: true,
-//   default: () => ({
-//     generateCharacterFromTemplateCharacter: jest.fn(),
-//     generateBackground: jest.fn(),
-//   }),
-// }));
-
 describe('Home', () => {
   const character: Character = {
     firstName: 'John',
@@ -50,14 +30,14 @@ describe('Home', () => {
     },
   };
 
-  const history = [];
+  const history: Character[] = [];
 
-  const setCharacter = jest.fn();
-  const addToHistory = jest.fn();
-  const removeFromHistory = jest.fn();
-  const clearHistory = jest.fn();
-  const setRequestStatus = jest.fn();
-  const setError = jest.fn();
+  const setCharacter = vi.fn();
+  const addToHistory = vi.fn();
+  const removeFromHistory = vi.fn();
+  const clearHistory = vi.fn();
+  const setRequestStatus = vi.fn();
+  const setError = vi.fn();
 
   beforeEach(() => {
     setCharacter.mockClear();
@@ -83,13 +63,13 @@ describe('Home', () => {
             }}
           >
             <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
             >
               <DataContext.Provider
                 value={{
                   characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
+                  saveCharacter: vi.fn(),
+                  removeCharacter: vi.fn(),
                 }}
               >
                 <Home />
@@ -116,13 +96,13 @@ describe('Home', () => {
             }}
           >
             <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
             >
               <DataContext.Provider
                 value={{
                   characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
+                  saveCharacter: vi.fn(),
+                  removeCharacter: vi.fn(),
                 }}
               >
                 <Home />
@@ -151,13 +131,13 @@ describe('Home', () => {
             }}
           >
             <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
             >
               <DataContext.Provider
                 value={{
                   characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
+                  saveCharacter: vi.fn(),
+                  removeCharacter: vi.fn(),
                 }}
               >
                 <Home />
@@ -187,13 +167,13 @@ describe('Home', () => {
             }}
           >
             <AlertManagerContext.Provider
-              value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
             >
               <DataContext.Provider
                 value={{
                   characters: [],
-                  saveCharacter: jest.fn(),
-                  removeCharacter: jest.fn(),
+                  saveCharacter: vi.fn(),
+                  removeCharacter: vi.fn(),
                 }}
               >
                 <Home />

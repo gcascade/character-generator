@@ -12,7 +12,7 @@ import {
   Gender,
   Genders,
 } from '@Types/character';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import React, { FC } from 'react';
 import CharacterSummary from './CharacterSummary';
 

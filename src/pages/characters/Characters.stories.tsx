@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { DataContext } from '@Contexts/DataContext';
 import AlertManagerDecorator from '@Test/decorators/AlertManagerDecorator';

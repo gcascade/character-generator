@@ -1,13 +1,14 @@
+import type { MockedFunction } from 'vitest';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { korvusBlackiron } from '../../../../test/stubs/Character.stubs';
 import { isImage } from '../../../utils/image';
 import CharacterImage from './CharacterImage';
 
-jest.mock('../../../utils/image');
+vi.mock('../../../utils/image');
 
 describe('CharacterImage', () => {
-  const isImageMock = isImage as jest.MockedFunction<typeof isImage>;
+  const isImageMock = isImage as MockedFunction<typeof isImage>;
 
   test('renders CharacterImage component without crashing', async () => {
     isImageMock.mockResolvedValue(true);

@@ -4,14 +4,14 @@ const useSettings = () => ({
     ollamaEndpoint: '',
     ollamaModelName: '',
   },
-  setOllamaSettings: jest.fn(),
+  setOllamaSettings: vi.fn(),
   azureSettings: {
     useAzureAPI: false,
     azureEndpoint: '',
     azureModelName: '',
     azureToken: '',
   },
-  setAzureSettings: jest.fn(),
+  setAzureSettings: vi.fn(),
 });
 
 export default useSettings;

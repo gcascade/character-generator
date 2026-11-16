@@ -27,15 +27,15 @@ const character: Character = {
   },
 };
 
-const setCharacter = jest.fn();
+const setCharacter = vi.fn();
 
 let mockHistory = [character];
 
-jest.mock('../../../hooks/useCharacterHistory', () => ({
+vi.mock('../../../hooks/useCharacterHistory', () => ({
   __esModule: true,
   default: () => ({
     history: mockHistory,
-    clearHistory: jest.fn().mockImplementation(() => {
+    clearHistory: vi.fn().mockImplementation(() => {
       mockHistory = [];
     }),
   }),
@@ -47,7 +47,7 @@ describe('HistoryCard', () => {
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
           <AlertManagerContext.Provider
-            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
           >
             <HistoryCard />
           </AlertManagerContext.Provider>
@@ -61,7 +61,7 @@ describe('HistoryCard', () => {
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
           <AlertManagerContext.Provider
-            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
           >
             <HistoryCard />
           </AlertManagerContext.Provider>
@@ -77,7 +77,7 @@ describe('HistoryCard', () => {
       <ThemeProvider theme={createTheme()}>
         <CharacterContext.Provider value={{ character, setCharacter }}>
           <AlertManagerContext.Provider
-            value={{ addAlert: jest.fn, removeAlert: jest.fn, alerts: [] }}
+            value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
           >
             <HistoryCard />
           </AlertManagerContext.Provider>

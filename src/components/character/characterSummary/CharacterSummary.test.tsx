@@ -6,15 +6,18 @@ import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
 import CharacterSummary from './CharacterSummary';
 
-jest.mock('../../../hooks/useAlert');
+vi.mock('../../../hooks/useAlert');
 
 describe('CharacterSummary', () => {
-  const mockRemoveCharacter = jest.fn();
-  const mockAddSuccess = jest.fn();
+  const mockRemoveCharacter = vi.fn();
+  const mockAddSuccess = vi.fn();
 
   beforeEach(() => {
-    (useAlert as jest.Mock).mockReturnValue({
+    vi.mocked(useAlert).mockReturnValue({
       addSuccess: mockAddSuccess,
+      addError: vi.fn(),
+      addWarning: vi.fn(),
+      addInfo: vi.fn(),
     });
   });
 
@@ -23,12 +26,12 @@ describe('CharacterSummary', () => {
       <DataContext.Provider
         value={{
           characters: [],
-          saveCharacter: jest.fn(),
+          saveCharacter: vi.fn(),
           removeCharacter: mockRemoveCharacter,
         }}
       >
         <AlertManagerContext.Provider
-          value={{ alerts: [], addAlert: jest.fn(), removeAlert: jest.fn() }}
+          value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
         >
           <CharacterSummary character={eryndorThorne} />
         </AlertManagerContext.Provider>

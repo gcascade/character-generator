@@ -4,8 +4,8 @@ import DataDecorator from '@Test/decorators/DataDecorator';
 import RequestDecorator from '@Test/decorators/RequestDecorator';
 import SettingsDecorator from '@Test/decorators/SettingsDecorator';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import {
   CharacterAlignments,
   CharacterClasses,

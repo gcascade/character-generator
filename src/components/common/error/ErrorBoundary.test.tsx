@@ -26,7 +26,7 @@ describe('ErrorBoundary', () => {
   });
 
   it('logs error to console when an error is thrown', () => {
-    const consoleErrorSpy = jest
+    const consoleErrorSpy = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
 

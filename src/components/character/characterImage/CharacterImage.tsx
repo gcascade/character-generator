@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { isImage } from '../../../utils/image';
 import './CharacterImage.css';
 
-const DEFAULT_IMAGE_PATH = '/images/default-portrait.png';
+const DEFAULT_IMAGE_PATH = `${import.meta.env.BASE_URL}images/default-portrait.png`;
 
 type CharacterImageProps = {
   gender?: Gender;
@@ -27,7 +27,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
     const abortController = new AbortController();
 
     const imagePath =
-      `${process.env.PUBLIC_URL}/images/${race}/${characterClass}/${
+      `${import.meta.env.BASE_URL}images/${race}/${characterClass}/${
         gender === 'Non-binary'
           ? Math.random() < 0.5
             ? 'Male'
