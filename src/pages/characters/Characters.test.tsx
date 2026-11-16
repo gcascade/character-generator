@@ -39,13 +39,13 @@ describe('Characters', () => {
 
   it('does not display the carousel when there are no characters', () => {
     renderCharactersWithContext();
-    expect(screen.queryByText('My Characters')).toBeInTheDocument();
+    expect(screen.getByText('My Characters')).toBeInTheDocument();
     expect(screen.queryByTestId('carousel')).not.toBeInTheDocument();
   });
 
   it('displays the carousel when there are characters', () => {
     renderCharactersWithContext(characterList);
     expect(screen.getByText('My Characters')).toBeInTheDocument();
-    expect(screen.queryByTestId('carousel')).toBeInTheDocument();
+    expect(screen.getByTestId('carousel')).toBeInTheDocument();
   });
 });

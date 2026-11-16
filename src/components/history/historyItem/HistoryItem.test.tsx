@@ -62,7 +62,7 @@ describe('HistoryItem', () => {
   });
 
   it('calls onDeleteClick when the delete button is clicked', () => {
-    const { getByLabelText } = render(
+    render(
       <HistoryItem
         character={character}
         onCharacterClick={onCharacterClick}
@@ -70,13 +70,13 @@ describe('HistoryItem', () => {
       />,
     );
 
-    fireEvent.click(getByLabelText('delete'));
+    fireEvent.click(screen.getByLabelText('delete'));
 
     expect(onDeleteClick).toHaveBeenCalledWith(character);
   });
 
   it('displays the correct tooltips', async () => {
-    const { getByTestId } = render(
+    render(
       <HistoryItem
         character={character}
         onCharacterClick={onCharacterClick}
@@ -84,10 +84,10 @@ describe('HistoryItem', () => {
       />,
     );
 
-    fireEvent.mouseOver(getByTestId('elf-icon'));
+    fireEvent.mouseOver(screen.getByTestId('elf-icon'));
     expect(await screen.findByText(character.race)).toBeInTheDocument();
 
-    fireEvent.mouseOver(getByTestId('warrior-icon'));
+    fireEvent.mouseOver(screen.getByTestId('warrior-icon'));
     expect(
       await screen.findByText(character.characterClass),
     ).toBeInTheDocument();

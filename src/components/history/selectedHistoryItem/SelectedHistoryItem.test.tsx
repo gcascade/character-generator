@@ -53,30 +53,30 @@ describe('SelectedHistoryItem', () => {
 
   it('calls onDeleteClick when the delete button is clicked', () => {
     const onDeleteClick = vi.fn();
-    const { getByLabelText } = render(
+    render(
       <SelectedHistoryItem
         character={character}
         onDeleteClick={onDeleteClick}
       />,
     );
 
-    fireEvent.click(getByLabelText('delete'));
+    fireEvent.click(screen.getByLabelText('delete'));
 
     expect(onDeleteClick).toHaveBeenCalledWith(character);
   });
 
   it('displays the correct tooltips', async () => {
-    const { getByTestId } = render(
+    render(
       <SelectedHistoryItem
         character={character}
         onDeleteClick={mockOnDeleteClick}
       />,
     );
 
-    fireEvent.mouseOver(getByTestId('elf-icon'));
+    fireEvent.mouseOver(screen.getByTestId('elf-icon'));
     expect(await screen.findByText(character.race)).toBeInTheDocument();
 
-    fireEvent.mouseOver(getByTestId('warrior-icon'));
+    fireEvent.mouseOver(screen.getByTestId('warrior-icon'));
     expect(
       await screen.findByText(character.characterClass),
     ).toBeInTheDocument();

@@ -14,7 +14,7 @@ npm test               # Vitest in watch mode
 npm run test:run       # Vitest single run
 npm run typecheck      # tsc --noEmit (includes tests and stories)
 npm run build          # production build to dist/
-npm run lint           # ESLint with --fix
+npm run lint           # ESLint (flat config in eslint.config.js); lint:fix to auto-fix
 npm run prettier       # format everything
 npm run storybook      # Storybook on :6006
 ```
@@ -23,7 +23,7 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 
 ## Stack
 
-- React 18, TypeScript (strict), MUI 5, React Router 6, react-hook-form.
+- React 18, TypeScript 6 (strict; TS 7 waits for typescript-eslint support), MUI 5, React Router 6, react-hook-form.
 - Build: Vite (`vite.config.ts`, base `/character-generator/` for GitHub Pages); tests: Vitest + jsdom
   + Testing Library, configured in the same file. Storybook uses the Vite builder.
 - Use `import.meta.env.BASE_URL` for public assets, never absolute `/images/...` paths.

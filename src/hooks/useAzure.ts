@@ -49,7 +49,9 @@ const useAzure = () => {
     try {
       jsonObject = typeof content === 'string' ? JSON.parse(content) : content;
     } catch (e) {
-      throw new Error('Failed to parse character JSON from Azure response');
+      throw new Error('Failed to parse character JSON from Azure response', {
+        cause: e,
+      });
     }
 
     return {
@@ -94,7 +96,9 @@ const useAzure = () => {
     try {
       jsonObject = typeof content === 'string' ? JSON.parse(content) : content;
     } catch (e) {
-      throw new Error('Failed to parse character JSON from Azure response');
+      throw new Error('Failed to parse character JSON from Azure response', {
+        cause: e,
+      });
     }
 
     return {

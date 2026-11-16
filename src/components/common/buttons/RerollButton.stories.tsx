@@ -33,7 +33,7 @@ export const Enabled: Story = {
   args: {
     disabled: false,
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByTestId('reroll-button'));
   },

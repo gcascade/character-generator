@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { fn } from 'storybook/test';
 import * as RerollButtonStories from './RerollButton.stories';
@@ -14,27 +14,27 @@ describe('RerollButton', () => {
   });
 
   it('renders without crashing', () => {
-    const { getByRole } = render(<Enabled />);
-    expect(getByRole('button')).toBeInTheDocument();
+    render(<Enabled />);
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
   it('displays the correct tooltip', async () => {
-    const baseDom = render(<Enabled />);
+    render(<Enabled />);
 
-    fireEvent.mouseOver(baseDom.getByTestId('reroll-button'));
+    fireEvent.mouseOver(screen.getByTestId('reroll-button'));
 
-    expect(await baseDom.findByText('Reroll')).toBeInTheDocument();
+    expect(await screen.findByText('Reroll')).toBeInTheDocument();
   });
 
   it('calls onButtonClick when enabled button is clicked', () => {
-    const { getByRole } = render(<Enabled onButtonClick={handleClick} />);
-    fireEvent.click(getByRole('button'));
+    render(<Enabled onButtonClick={handleClick} />);
+    fireEvent.click(screen.getByRole('button'));
     expect(handleClick).toHaveBeenCalled();
   });
 
   it('does not call onButtonClick when disabled button is clicked', () => {
-    const { getByRole } = render(<Disabled onButtonClick={handleClick} />);
-    fireEvent.click(getByRole('button'));
+    render(<Disabled onButtonClick={handleClick} />);
+    fireEvent.click(screen.getByRole('button'));
     expect(handleClick).not.toHaveBeenCalled();
   });
 });

@@ -10,7 +10,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import { CharacterContext } from '../../../contexts/CharacterContext';
 import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
@@ -42,7 +42,6 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [isActionButtonDisabled, setIsActionButtonDisabled] = useState(false);
   const { character } = characterContext;
   const { firstName, lastName, gender, race, characterClass } = character;
 
@@ -52,9 +51,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const isSaved = characters.some((c) => c === character);
 
-  useEffect(() => {
-    setIsActionButtonDisabled(requestStatus === 'loading');
-  }, [requestStatus]);
+  const isActionButtonDisabled = requestStatus === 'loading';
 
   const onGenerateButtonClick = useCallback(() => {
     generateNewCharacter({
@@ -68,7 +65,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
     try {
       saveCharacter(character);
       addSuccess('Character saved');
-    } catch (error) {
+    } catch {
       addError('Failed to save character');
     }
   }, [saveCharacter, character, addSuccess, addError]);
