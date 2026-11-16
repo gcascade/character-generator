@@ -1,6 +1,6 @@
 import { Box, Container, CssBaseline, ThemeProvider } from '@mui/material';
 import React from 'react';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter, useRoutes } from 'react-router';
 import { AlertManagerProvider } from '../contexts/AlertManagerContext';
 import { CharacterProvider } from '../contexts/CharacterContext';
 import { DataProvider } from '../contexts/DataContext';
@@ -31,7 +31,7 @@ const App: React.FC = () => {
               <RequestProvider>
                 <AlertManagerProvider>
                   <DataProvider>
-                    <BrowserRouter>
+                    <BrowserRouter basename={import.meta.env.BASE_URL}>
                       <Box
                         style={{
                           backgroundColor: theme.palette.background.paper,
