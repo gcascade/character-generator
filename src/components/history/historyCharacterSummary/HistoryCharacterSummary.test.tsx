@@ -33,16 +33,14 @@ describe('HistoryCharacterSummary', () => {
   });
 
   it('displays the correct tooltips', async () => {
-    const { getByTestId } = render(
-      <HistoryCharacterSummary {...characterInfoProps} />,
-    );
+    render(<HistoryCharacterSummary {...characterInfoProps} />);
 
-    fireEvent.mouseOver(getByTestId('elf-icon'));
+    fireEvent.mouseOver(screen.getByTestId('elf-icon'));
     expect(
       await screen.findByText(characterInfoProps.race),
     ).toBeInTheDocument();
 
-    fireEvent.mouseOver(getByTestId('warrior-icon'));
+    fireEvent.mouseOver(screen.getByTestId('warrior-icon'));
     expect(
       await screen.findByText(characterInfoProps.characterClass),
     ).toBeInTheDocument();
@@ -51,10 +49,10 @@ describe('HistoryCharacterSummary', () => {
   it('applies the textStyle correctly', () => {
     const textStyle = { color: 'rgb(255, 0, 0)' };
 
-    const { getByText } = render(
+    render(
       <HistoryCharacterSummary {...characterInfoProps} textStyle={textStyle} />,
     );
-    const textElement = getByText(
+    const textElement = screen.getByText(
       `${characterInfoProps.firstName} ${characterInfoProps.lastName} (${characterInfoProps.age})`,
     );
 

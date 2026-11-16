@@ -57,7 +57,9 @@ const useOllama = () => {
       };
     } catch (error) {
       console.error('Error during API call:', error);
-      throw new Error('Failed to generate data from Ollama API');
+      throw new Error('Failed to generate data from Ollama API', {
+        cause: error,
+      });
     }
   };
 
@@ -78,7 +80,9 @@ const useOllama = () => {
       };
     } catch (error) {
       console.error('Error during API call:', error);
-      throw new Error('Failed to generate data from Ollama API');
+      throw new Error('Failed to generate data from Ollama API', {
+        cause: error,
+      });
     }
   };
 

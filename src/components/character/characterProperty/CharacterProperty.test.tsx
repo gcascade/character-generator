@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import CharacterProperty from './CharacterProperty';
 
@@ -16,7 +16,7 @@ describe('CharacterProperty', () => {
   });
 
   it('displays the correct label and value', () => {
-    const { getByText } = render(
+    render(
       <CharacterProperty
         label="Test Label"
         value="Test Value"
@@ -24,12 +24,12 @@ describe('CharacterProperty', () => {
       />,
     );
 
-    expect(getByText('Test Label:')).toBeInTheDocument();
-    expect(getByText('Test Value')).toBeInTheDocument();
+    expect(screen.getByText('Test Label:')).toBeInTheDocument();
+    expect(screen.getByText('Test Value')).toBeInTheDocument();
   });
 
   it('calls onButtonClick when reroll button is clicked', () => {
-    const { getByRole } = render(
+    render(
       <CharacterProperty
         label="Test Label"
         value="Test Value"
@@ -37,7 +37,7 @@ describe('CharacterProperty', () => {
       />,
     );
 
-    fireEvent.click(getByRole('button'));
+    fireEvent.click(screen.getByRole('button'));
     expect(mockOnButtonClick).toHaveBeenCalled();
   });
 });

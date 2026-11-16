@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext } from 'react';
 import { CharacterContext } from '../../../contexts/CharacterContext';
 import useAlert from '../../../hooks/useAlert';
 import useCharacterRequest from '../../../hooks/useCharacterRequest';
@@ -7,7 +7,6 @@ import CharacterProperty from '../characterProperty/CharacterProperty';
 
 const CharacterInformation: FC = () => {
   const characterContext = useContext(CharacterContext);
-  const [isRerollButtonDisabled, setIsRerollButtonDisabled] = useState(false);
 
   if (!characterContext) {
     throw new Error(
@@ -34,19 +33,12 @@ const CharacterInformation: FC = () => {
 
   const handleButtonClick = (property: keyof Character) => {
     rerollCharacterProperty(property, {
-      doneCallback: () => setIsRerollButtonDisabled(false),
       onSuccess: () => addSuccess('Updated character'),
       onError: addError,
     });
   };
 
-  useEffect(() => {
-    if (requestStatus !== 'loading') {
-      setIsRerollButtonDisabled(false);
-    } else {
-      setIsRerollButtonDisabled(true);
-    }
-  }, [requestStatus]);
+  const isRerollButtonDisabled = requestStatus === 'loading';
 
   return (
     <>
