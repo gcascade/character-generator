@@ -32,6 +32,11 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 - Optional AI generation: Ollama (plain `fetch` to `/api/generate`) or Azure / GitHub Models
   (via `@azure-rest/ai-inference`). Without AI, everything comes from the static data in `src/data/`.
 
+## CI / deploy
+
+`.github/workflows/ci.yml`: lint, typecheck, tests and build on every push and PR. Pushes to
+`master` then deploy `dist/` to the `gh-pages` branch (with `404.html` = `index.html` for deep links).
+
 ## Layout
 
 ```
@@ -61,7 +66,6 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 ## Known issues (from the November 2026 review)
 
 - With AI, rerolling any property regenerates the background; Azure may also overwrite names.
-- Deploy workflow runs even when tests fail, and twice per push.
 - Characters are compared by reference (no `id`); LLM responses are not validated.
 
 ## Direction
