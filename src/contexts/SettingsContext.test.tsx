@@ -51,6 +51,35 @@ const renderWithProvider = (ui: React.ReactElement) => {
 };
 
 describe('SettingsProvider', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('loads saved settings and keeps defaults for missing keys', () => {
+    localStorage.setItem('useOllamaAPI', 'true');
+    localStorage.setItem('azureModelName', 'my-model');
+
+    renderWithProvider(<TestComponent />);
+
+    expect(screen.getByTestId('useOllamaAPI')).toHaveTextContent('true');
+    expect(screen.getByTestId('ollamaEndpoint')).toHaveTextContent(
+      'http://localhost:11434',
+    );
+    expect(screen.getByTestId('ollamaModelName')).toHaveTextContent('llama3');
+    expect(screen.getByTestId('azureModelName')).toHaveTextContent('my-model');
+  });
+
+  it('persists changes to localStorage', () => {
+    renderWithProvider(
+      <TestComponent updateOllama={{ ollamaModelName: 'mistral' }} />,
+    );
+
+    expect(localStorage.getItem('ollamaModelName')).toBe('mistral');
+    expect(localStorage.getItem('ollamaEndpoint')).toBe(
+      'http://localhost:11434',
+    );
+  });
+
   it('renders its children', () => {
     renderWithProvider(<div>Test</div>);
     expect(screen.getByText('Test')).toBeInTheDocument();

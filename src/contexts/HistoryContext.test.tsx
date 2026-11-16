@@ -1,5 +1,6 @@
-import { render } from '@testing-library/react';
-import React from 'react';
+import { korvusBlackiron } from '@Test/stubs/Character.stubs';
+import { render, screen } from '@testing-library/react';
+import React, { useContext } from 'react';
 import { HistoryContext, HistoryProvider } from './HistoryContext';
 
 describe('HistoryContext', () => {
@@ -23,5 +24,38 @@ describe('HistoryContext', () => {
         <TestComponent />
       </HistoryProvider>,
     );
+  });
+
+  describe('persistence', () => {
+    const HistoryLength = () => {
+      const context = useContext(HistoryContext);
+      return <div data-testid="length">{context?.history.length}</div>;
+    };
+
+    beforeEach(() => localStorage.clear());
+
+    it('loads the saved history', () => {
+      localStorage.setItem(
+        'characterHistory',
+        JSON.stringify([korvusBlackiron, korvusBlackiron]),
+      );
+      render(
+        <HistoryProvider>
+          <HistoryLength />
+        </HistoryProvider>,
+      );
+      expect(screen.getByTestId('length')).toHaveTextContent('2');
+    });
+
+    it('starts empty when the saved history is corrupted', () => {
+      localStorage.setItem('characterHistory', '{not json');
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      render(
+        <HistoryProvider>
+          <HistoryLength />
+        </HistoryProvider>,
+      );
+      expect(screen.getByTestId('length')).toHaveTextContent('0');
+    });
   });
 });
