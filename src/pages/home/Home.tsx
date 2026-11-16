@@ -1,4 +1,4 @@
-import { Container, Grid2 as Grid, Paper } from '@mui/material';
+import { Container, Grid, Paper } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import Character from '../../components/character/character/Character';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
