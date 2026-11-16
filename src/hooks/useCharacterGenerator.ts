@@ -5,7 +5,7 @@ import { generateRandomCharacter } from '../utils/character';
 import useAzure from './useAzure';
 import useOllama from './useOllama';
 
-type ApiParams = {
+export type ApiParams = {
   apiType: 'ollama' | 'azure' | 'none';
   endpoint?: string;
   modelName?: string;
@@ -24,104 +24,82 @@ const useCharacterGenerator = () => {
       'useCharacterGenerator must be used within a CharacterProvider',
     );
   }
+
   const { character, setCharacter } = context;
-  const {
-    generateCharacterFromTemplateCharacter:
-      generateCharacterFromTemplateCharacterOllama,
-    generateBackground: generateBackgroundOllama,
-  } = useOllama();
+  const ollama = useOllama();
+  const azure = useAzure();
 
-  const {
-    generateCharacterFromTemplateCharacter:
-      generateCharacterFromTemplateCharacterAzure,
-    generateBackground: generateBackgroundAzure,
-  } = useAzure();
+  const generateNewCharacter = useCallback(
+    async ({ apiType, endpoint, modelName, token }: ApiParams) => {
+      let newCharacter = generateRandomCharacter({});
 
-  const useRandomCharacter = () => {
-    const generateNewCharacter = useCallback(
-      async ({
-        apiType,
-        endpoint,
-        modelName,
-        token,
-      }: ApiParams): Promise<void> => {
-        let character = generateRandomCharacter({});
-
-        switch (apiType) {
-          case 'ollama':
-            character = await generateCharacterFromTemplateCharacterOllama(
-              character,
-              {
-                ollamaEndpoint: endpoint ?? '',
-                ollamaModelName: modelName ?? '',
-              },
-            );
-            break;
-          case 'azure':
-            character = await generateCharacterFromTemplateCharacterAzure(
-              character,
-              {
-                endpoint: endpoint ?? '',
-                model: modelName ?? '',
-                token: token ?? '',
-              },
-            );
-            break;
-          case 'none':
-            // If no API is specified, just use the generated character without any API call
-            break;
-          default:
-            assertNever(apiType);
-        }
-
-        setCharacter(character);
-      },
-      [],
-    );
-
-    const rerollCharacterProperty = useCallback(
-      async (
-        property: keyof Character,
-        { apiType, endpoint, modelName, token }: ApiParams,
-      ): Promise<void> => {
-        let updatedCharacter = generateRandomCharacter({
-          ...character,
-          [property]: null,
-        });
-
-        switch (apiType) {
-          case 'ollama':
-            updatedCharacter = await generateBackgroundOllama(
-              updatedCharacter,
-              {
-                ollamaEndpoint: endpoint ?? '',
-                ollamaModelName: modelName ?? '',
-              },
-            );
-            break;
-          case 'azure':
-            updatedCharacter = await generateBackgroundAzure(updatedCharacter, {
+      switch (apiType) {
+        case 'ollama':
+          newCharacter = await ollama.generateCharacterFromTemplateCharacter(
+            newCharacter,
+            {
+              ollamaEndpoint: endpoint ?? '',
+              ollamaModelName: modelName ?? '',
+            },
+          );
+          break;
+        case 'azure':
+          newCharacter = await azure.generateCharacterFromTemplateCharacter(
+            newCharacter,
+            {
               endpoint: endpoint ?? '',
               model: modelName ?? '',
               token: token ?? '',
-            });
-            break;
-          default:
-            throw new Error(`Unsupported API type: ${apiType}`);
-        }
+            },
+          );
+          break;
+        case 'none':
+          break;
+        default:
+          assertNever(apiType);
+      }
 
-        setCharacter(updatedCharacter);
-      },
-      [character],
-    );
+      setCharacter(newCharacter);
+    },
+    [ollama, azure, setCharacter],
+  );
 
-    return {
-      generateNewCharacter,
-      rerollCharacterProperty,
-    };
-  };
+  const rerollCharacterProperty = useCallback(
+    async (
+      property: keyof Character,
+      { apiType, endpoint, modelName, token }: ApiParams,
+    ) => {
+      let updatedCharacter = generateRandomCharacter({
+        ...character,
+        [property]: undefined,
+      });
 
-  return useRandomCharacter();
+      switch (apiType) {
+        case 'ollama':
+          updatedCharacter = await ollama.generateBackground(updatedCharacter, {
+            ollamaEndpoint: endpoint ?? '',
+            ollamaModelName: modelName ?? '',
+          });
+          break;
+        case 'azure':
+          updatedCharacter = await azure.generateBackground(updatedCharacter, {
+            endpoint: endpoint ?? '',
+            model: modelName ?? '',
+            token: token ?? '',
+          });
+          break;
+        case 'none':
+          break;
+        default:
+          assertNever(apiType);
+      }
+
+      setCharacter(updatedCharacter);
+    },
+    [character, ollama, azure, setCharacter],
+  );
+
+  return { generateNewCharacter, rerollCharacterProperty };
 };
 
 export default useCharacterGenerator;
