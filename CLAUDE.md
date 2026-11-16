@@ -54,17 +54,15 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 
 - Function components with `FC<Props>`; each context-consuming hook throws if its provider is missing.
 - Every component gets a test (Testing Library) and a story. Tests use the decorators in `test/decorators/`.
-- Persistence is `localStorage` only (no backend).
+- Persistence is `localStorage` only (no backend), loaded once in the provider with a lazy
+  `useState` initializer and saved in an effect; hooks like `useSettings` only read the context.
 - Domain enums: add the value to the `as const` object in `src/types/character.ts`; the union type follows.
 
 ## Known issues (from the November 2026 review)
 
-- Rerolling a property with no AI configured throws (`useCharacterGenerator`, missing `'none'` case).
 - With AI, rerolling any property regenerates the background; Azure may also overwrite names.
-- Settings defaults are overwritten by empty strings on first load (`useSettings`).
 - Deploy workflow runs even when tests fail, and twice per push.
 - Characters are compared by reference (no `id`); LLM responses are not validated.
-- Some backgrounds use `Non-Binary` while the code expects `Non-binary`, so they never match.
 
 ## Direction
 

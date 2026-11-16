@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import useSettings from '../../hooks/useSettings';
 
@@ -34,7 +34,7 @@ const Settings: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm<SettingsFormValues>({
@@ -48,6 +48,9 @@ const Settings: React.FC = () => {
       azureToken,
     },
   });
+
+  const isOllamaEnabled = useWatch({ control, name: 'useOllamaAPI' });
+  const isAzureEnabled = useWatch({ control, name: 'useAzureAPI' });
 
   useEffect(() => {
     setValue('useOllamaAPI', useOllamaAPI);
@@ -121,7 +124,7 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       {...register('useOllamaAPI')}
-                      checked={watch('useOllamaAPI')}
+                      checked={isOllamaEnabled}
                       onChange={(e) => handleOllamaToggle(e.target.checked)}
                       slotProps={{
                         input: {
@@ -139,7 +142,7 @@ const Settings: React.FC = () => {
                   variant="outlined"
                   fullWidth
                   {...register('ollamaEndpoint', {
-                    required: watch('useOllamaAPI'),
+                    required: isOllamaEnabled,
                     pattern: {
                       value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
                       message: 'Enter a valid URL',
@@ -147,7 +150,7 @@ const Settings: React.FC = () => {
                   })}
                   error={!!errors.ollamaEndpoint}
                   helperText={errors.ollamaEndpoint?.message}
-                  disabled={!watch('useOllamaAPI')}
+                  disabled={!isOllamaEnabled}
                 />
               </div>
               <div style={{ marginBottom: '20px' }}>
@@ -156,13 +159,13 @@ const Settings: React.FC = () => {
                   variant="outlined"
                   fullWidth
                   {...register('ollamaModelName', {
-                    required: watch('useOllamaAPI'),
+                    required: isOllamaEnabled,
                   })}
                   error={!!errors.ollamaModelName}
                   helperText={
                     errors.ollamaModelName && 'Model name is required'
                   }
-                  disabled={!watch('useOllamaAPI')}
+                  disabled={!isOllamaEnabled}
                 />
               </div>
             </div>
@@ -175,7 +178,7 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       {...register('useAzureAPI')}
-                      checked={watch('useAzureAPI')}
+                      checked={isAzureEnabled}
                       onChange={(e) => handleAzureToggle(e.target.checked)}
                       slotProps={{
                         input: { 'aria-label': 'Toggle Azure API Integration' },
@@ -191,7 +194,7 @@ const Settings: React.FC = () => {
                   variant="outlined"
                   fullWidth
                   {...register('azureEndpoint', {
-                    required: watch('useAzureAPI'),
+                    required: isAzureEnabled,
                     pattern: {
                       value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
                       message: 'Enter a valid URL',
@@ -199,7 +202,7 @@ const Settings: React.FC = () => {
                   })}
                   error={!!errors.azureEndpoint}
                   helperText={errors.azureEndpoint?.message}
-                  disabled={!watch('useAzureAPI')}
+                  disabled={!isAzureEnabled}
                 />
               </div>
               <div style={{ marginBottom: '20px' }}>
@@ -208,11 +211,11 @@ const Settings: React.FC = () => {
                   variant="outlined"
                   fullWidth
                   {...register('azureModelName', {
-                    required: watch('useAzureAPI'),
+                    required: isAzureEnabled,
                   })}
                   error={!!errors.azureModelName}
                   helperText={errors.azureModelName && 'Model name is required'}
-                  disabled={!watch('useAzureAPI')}
+                  disabled={!isAzureEnabled}
                 />
               </div>
               <div style={{ marginBottom: '20px' }}>
@@ -222,11 +225,11 @@ const Settings: React.FC = () => {
                   fullWidth
                   type="password"
                   {...register('azureToken', {
-                    required: watch('useAzureAPI'),
+                    required: isAzureEnabled,
                   })}
                   error={!!errors.azureToken}
                   helperText={errors.azureToken && 'Token is required'}
-                  disabled={!watch('useAzureAPI')}
+                  disabled={!isAzureEnabled}
                 />
               </div>
             </div>

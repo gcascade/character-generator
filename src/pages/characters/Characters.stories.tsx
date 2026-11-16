@@ -19,6 +19,8 @@ const Page: FC<PageProps> = ({ characters }) => {
     characters.forEach((character) => {
       context?.saveCharacter(character);
     });
+    // Seed the story's fixture data once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <Characters />;
