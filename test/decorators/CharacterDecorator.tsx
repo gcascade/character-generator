@@ -1,6 +1,6 @@
 import { CharacterProvider } from '@Contexts/CharacterContext';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { StoryContext, StoryFn } from '@storybook/react/*';
+import { StoryContext, StoryFn } from '@storybook/react-vite';
 import React from 'react';
 import {
   Character,
@@ -8,7 +8,7 @@ import {
   CharacterClass,
   CharacterRace,
   Gender,
-} from 'src/types/character';
+} from '@Types/character';
 
 type ContextProps = {
   firstName?: string;

@@ -1,5 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import * as CharacterTypographyStories from './CharacterTypography.stories';

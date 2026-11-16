@@ -3,7 +3,7 @@ import CharacterDecorator from '@Test/decorators/CharacterDecorator';
 import HistoryDecorator from '@Test/decorators/HistoryDecorator';
 import { historyStub } from '@Test/stubs/History.stubs';
 import { Character } from '@Types/character';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import React, { FC, useEffect } from 'react';
 import useCharacterHistory from '../../../hooks/useCharacterHistory';
 import HistoryCard from './HistoryCard';

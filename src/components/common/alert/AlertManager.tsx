@@ -1,4 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { Alert, Grow, IconButton, Stack, Typography } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import { TransitionGroup } from 'react-transition-group';

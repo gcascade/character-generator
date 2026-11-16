@@ -11,12 +11,12 @@ const renderCharactersWithContext = (characters: Character[] = []) => {
     <DataContext.Provider
       value={{
         characters,
-        saveCharacter: jest.fn(),
-        removeCharacter: jest.fn(),
+        saveCharacter: vi.fn(),
+        removeCharacter: vi.fn(),
       }}
     >
       <AlertManagerContext.Provider
-        value={{ alerts: [], addAlert: jest.fn(), removeAlert: jest.fn() }}
+        value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
       >
         <Characters />
       </AlertManagerContext.Provider>
@@ -28,7 +28,7 @@ describe('Characters', () => {
   it('throws an error when used outside of its context', () => {
     // Since React 16.9, console errors about uncaught exceptions in components are logged even if the error is caught in the test.
     // This line suppresses those logs for this test.
-    jest.spyOn(console, 'error').mockImplementation(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {
       return;
     });
 

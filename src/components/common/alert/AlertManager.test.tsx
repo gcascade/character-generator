@@ -1,3 +1,4 @@
+import { Alert } from '@Types/alerts';
 import { ThemeProvider } from '@mui/material/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
@@ -6,7 +7,7 @@ import theme from '../../../themes/themes';
 import AlertManager from './AlertManager';
 
 describe('AlertManager', () => {
-  const mockAlerts = [
+  const mockAlerts: Alert[] = [
     { id: 1, severity: 'error', message: 'Error message', title: 'Error' },
     {
       id: 2,
@@ -23,13 +24,13 @@ describe('AlertManager', () => {
     },
   ];
 
-  const mockRemoveAlert = jest.fn();
+  const mockRemoveAlert = vi.fn();
 
   const renderWithProvider = (alerts = mockAlerts) => {
     return render(
       <ThemeProvider theme={theme}>
         <AlertManagerContext.Provider
-          value={{ alerts, removeAlert: mockRemoveAlert }}
+          value={{ alerts, addAlert: vi.fn(), removeAlert: mockRemoveAlert }}
         >
           <AlertManager width="400px" />
         </AlertManagerContext.Provider>
@@ -59,10 +60,10 @@ describe('AlertManager', () => {
   });
 
   test('throws an error if used outside of a provider', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<AlertManager width="400px" />)).toThrow(
       'AlertManager must be used within an AlertManagerProvider',
     );
-    console.error.mockRestore();
+    vi.restoreAllMocks();
   });
 });

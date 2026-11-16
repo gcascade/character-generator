@@ -1,8 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { CharacterClass, CharacterRace } from '@Types/character';
 import React from 'react';
 import HistoryCharacterSummary from './HistoryCharacterSummary';
 
-const characterInfoProps = {
+const characterInfoProps: {
+  race: CharacterRace;
+  characterClass: CharacterClass;
+  firstName: string;
+  lastName: string;
+  age: number;
+} = {
   race: 'Elf',
   characterClass: 'Warrior',
   firstName: 'John',
@@ -42,7 +49,7 @@ describe('HistoryCharacterSummary', () => {
   });
 
   it('applies the textStyle correctly', () => {
-    const textStyle = { color: 'red' };
+    const textStyle = { color: 'rgb(255, 0, 0)' };
 
     const { getByText } = render(
       <HistoryCharacterSummary {...characterInfoProps} textStyle={textStyle} />,

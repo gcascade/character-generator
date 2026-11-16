@@ -70,7 +70,7 @@ describe('HistoryList', () => {
     },
   ];
 
-  const setCharacter = jest.fn();
+  const setCharacter = vi.fn();
 
   it('renders without crashing', () => {
     render(
@@ -79,12 +79,12 @@ describe('HistoryList', () => {
           <HistoryContext.Provider
             value={{
               history: mockHistory,
-              clearHistory: jest.fn(),
-              removeFromHistory: jest.fn(),
-              addToHistory: jest.fn(),
+              clearHistory: vi.fn(),
+              removeFromHistory: vi.fn(),
+              addToHistory: vi.fn(),
             }}
           >
-            <HistoryList history={mockHistory} removeFromHistory={jest.fn()} />
+            <HistoryList history={mockHistory} removeFromHistory={vi.fn()} />
           </HistoryContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,
@@ -98,12 +98,12 @@ describe('HistoryList', () => {
           <HistoryContext.Provider
             value={{
               history: mockHistory,
-              clearHistory: jest.fn(),
-              removeFromHistory: jest.fn(),
-              addToHistory: jest.fn(),
+              clearHistory: vi.fn(),
+              removeFromHistory: vi.fn(),
+              addToHistory: vi.fn(),
             }}
           >
-            <HistoryList history={mockHistory} removeFromHistory={jest.fn()} />
+            <HistoryList history={mockHistory} removeFromHistory={vi.fn()} />
           </HistoryContext.Provider>
         </CharacterContext.Provider>
       </ThemeProvider>,

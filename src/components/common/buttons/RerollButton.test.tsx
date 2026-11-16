@@ -1,12 +1,17 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import { fn } from 'storybook/test';
 import * as RerollButtonStories from './RerollButton.stories';
 
 const { Enabled, Disabled } = composeStories(RerollButtonStories);
 
 describe('RerollButton', () => {
-  const handleClick = jest.fn();
+  const handleClick = fn();
+
+  beforeEach(() => {
+    handleClick.mockClear();
+  });
 
   it('renders without crashing', () => {
     const { getByRole } = render(<Enabled />);

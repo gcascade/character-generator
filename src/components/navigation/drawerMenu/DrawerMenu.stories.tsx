@@ -1,5 +1,5 @@
 import RouterDecorator from '@Test/decorators/RouterDecorator';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import DrawerMenu from './DrawerMenu';
 
 const meta = {

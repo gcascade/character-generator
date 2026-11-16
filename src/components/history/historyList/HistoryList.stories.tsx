@@ -1,7 +1,7 @@
 import CharacterDecorator from '@Test/decorators/CharacterDecorator';
 import { historyStub } from '@Test/stubs/History.stubs';
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import HistoryList from './HistoryList';
 
 const meta = {
@@ -11,7 +11,7 @@ const meta = {
     layout: 'centered',
   },
   args: {
-    removeFromHistory: fn,
+    removeFromHistory: fn(),
   },
   decorators: [CharacterDecorator],
   tags: ['autodocs'],

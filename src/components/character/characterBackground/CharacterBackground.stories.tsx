@@ -3,7 +3,7 @@ import {
   longBackgroundStub,
   shortBackgroundStub,
 } from '@Test/stubs/Character.stubs';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import CharacterBackground from './CharacterBackground';
 
 const meta = {

@@ -1,5 +1,5 @@
 import { AlertManagerProvider } from '@Contexts/AlertManagerContext';
-import { StoryFn } from '@storybook/react/*';
+import { StoryFn } from '@storybook/react-vite';
 import React from 'react';
 
 const AlertManagerDecorator = (Story: StoryFn): JSX.Element => (

@@ -9,22 +9,27 @@ The maintainer communicates in French; code, comments, commits and app content a
 ## Commands
 
 ```bash
-npm start              # dev server
-npm test               # Jest (watch mode locally; use CI=true for a single run)
-npx tsc --noEmit       # type check (not run in CI yet)
+npm start              # Vite dev server (http://localhost:5173/character-generator/)
+npm test               # Vitest in watch mode
+npm run test:run       # Vitest single run
+npm run typecheck      # tsc --noEmit (includes tests and stories)
+npm run build          # production build to dist/
 npm run lint           # ESLint with --fix
 npm run prettier       # format everything
 npm run storybook      # Storybook on :6006
 ```
 
-Before considering a change done: tests pass, `tsc --noEmit` is clean, lint is clean.
+Before considering a change done: tests pass, `npm run typecheck` is clean, lint is clean.
 
 ## Stack
 
 - React 18, TypeScript (strict), MUI 5, React Router 6, react-hook-form.
-- Build: an **ejected Create React App** (`config/`, `scripts/`). Planned migration to Vite + Vitest;
-  do not invest in the webpack config.
-- Optional AI generation: Ollama (via `@langchain/community`) or Azure / GitHub Models
+- Build: Vite (`vite.config.ts`, base `/character-generator/` for GitHub Pages); tests: Vitest + jsdom
+  + Testing Library, configured in the same file. Storybook uses the Vite builder.
+- Use `import.meta.env.BASE_URL` for public assets, never absolute `/images/...` paths.
+- Import MUI icons as named imports from `@mui/icons-material` (default imports of
+  `@mui/icons-material/X` break under Vite's CJS interop).
+- Optional AI generation: Ollama (plain `fetch` to `/api/generate`) or Azure / GitHub Models
   (via `@azure-rest/ai-inference`). Without AI, everything comes from the static data in `src/data/`.
 
 ## Layout
@@ -34,7 +39,7 @@ src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
   pages/                           Home (generator), Characters (saved), Settings
   contexts/                        One React context per concern (character, history, settings, ...)
-  hooks/                           Hooks wrapping contexts and AI providers; __mocks__/ for Jest
+  hooks/                           Hooks wrapping contexts and AI providers; __mocks__/ used by vi.mock
   utils/character.ts               Random generation from static data
   utils/prompt.ts                  LLM prompts and JSON schema
   data/                            backgrounds.json (templated with {{firstName}} etc.), characterNames.json
@@ -43,7 +48,7 @@ test/                              Shared Storybook/test decorators and stubs
 public/images/<race>/<class>/<gender>1.png   Portraits
 ```
 
-Path aliases (`tsconfig.json` + Jest `moduleNameMapper`): `@Components/*`, `@Contexts/*`, `@Types/*`, `@Test/*`.
+Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Components/*`, `@Contexts/*`, `@Types/*`, `@Test/*`.
 
 ## Conventions
 

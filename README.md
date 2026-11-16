@@ -6,7 +6,7 @@ This app generates detailed fantasy characters, including attributes like race, 
 
 ## Requirements
 
-- Node.js
+- Node.js 22.12 or later
 
 ## Installation
 
@@ -27,7 +27,7 @@ This app generates detailed fantasy characters, including attributes like race, 
 - Start the development server:
 
 ```sh
-npm run start
+npm start
 ```
 
 - Build the project:
@@ -40,6 +40,12 @@ npm run build
 
 ```sh
 npm test
+```
+
+- Type check:
+
+```sh
+npm run typecheck
 ```
 
 - Lint the code:

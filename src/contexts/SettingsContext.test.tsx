@@ -2,9 +2,11 @@ import { render, screen } from '@testing-library/react';
 import React, { useContext } from 'react';
 import { SettingsContext, SettingsProvider } from './SettingsContext';
 
+type SettingsValue = NonNullable<React.ContextType<typeof SettingsContext>>;
+
 const TestComponent: React.FC<{
-  updateOllama?: Partial<ReturnType<typeof useContext>['ollamaSettings']>;
-  updateAzure?: Partial<ReturnType<typeof useContext>['azureSettings']>;
+  updateOllama?: Partial<SettingsValue['ollamaSettings']>;
+  updateAzure?: Partial<SettingsValue['azureSettings']>;
 }> = ({ updateOllama, updateAzure }) => {
   const context = useContext(SettingsContext);
 

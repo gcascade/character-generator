@@ -1,10 +1,11 @@
+import { Character } from '@Types/character';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { CharacterContext, CharacterProvider } from './CharacterContext';
 
 describe('CharacterContext', () => {
   it('provides character and setCharacter function', () => {
-    const character = {
+    const character: Character = {
       firstName: 'Test',
       lastName: 'Character',
       epithet: 'The Great',

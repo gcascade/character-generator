@@ -12,7 +12,7 @@ import { Character as CharacterType } from '../../../types/character';
 import { RequestStatus } from '../../../types/requests';
 import Character from './Character';
 
-jest.mock('../../../hooks/useSettings', () => ({
+vi.mock('../../../hooks/useSettings', () => ({
   __esModule: true,
   default: () => ({
     settings: {
@@ -20,17 +20,17 @@ jest.mock('../../../hooks/useSettings', () => ({
       ollamaEndpoint: '',
       ollamaModelName: '',
     },
-    setUseOllamaAPI: jest.fn(),
-    setOllamaEndpoint: jest.fn(),
-    setOllamaModelName: jest.fn(),
+    setUseOllamaAPI: vi.fn(),
+    setOllamaEndpoint: vi.fn(),
+    setOllamaModelName: vi.fn(),
   }),
 }));
 
-jest.mock('../../../hooks/useOllama', () => ({
+vi.mock('../../../hooks/useOllama', () => ({
   __esModule: true,
   default: () => ({
-    generateCharacterFromTemplateCharacter: jest.fn(),
-    generateBackground: jest.fn(),
+    generateCharacterFromTemplateCharacter: vi.fn(),
+    generateBackground: vi.fn(),
   }),
 }));
 
@@ -50,25 +50,25 @@ describe('Character', () => {
     },
   };
 
-  const setCharacter = jest.fn();
-  const mockOnGenerateCallback = jest.fn();
-  const mockSaveCharacter = jest.fn();
-  const mockAddAlert = jest.fn();
-  const mockGenerateNewCharacter = jest.fn();
+  const setCharacter = vi.fn();
+  const mockOnGenerateCallback = vi.fn();
+  const mockSaveCharacter = vi.fn();
+  const mockAddAlert = vi.fn();
+  const mockGenerateNewCharacter = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const renderComponent = ({
-    characters = [],
+    characters = [] as CharacterType[],
     mockRequestStatus = 'success' as RequestStatus,
   } = {}) => {
-    jest.spyOn(useCharacterRequestModule, 'default').mockImplementation(() => ({
+    vi.spyOn(useCharacterRequestModule, 'default').mockImplementation(() => ({
       requestStatus: mockRequestStatus,
       generateNewCharacter: mockGenerateNewCharacter,
       error: '',
-      rerollCharacterProperty: jest.fn(),
+      rerollCharacterProperty: vi.fn(),
     }));
 
     return render(
@@ -79,15 +79,15 @@ describe('Character', () => {
           <RequestContext.Provider
             value={{
               requestStatus: mockRequestStatus,
-              setRequestStatus: jest.fn(),
+              setRequestStatus: vi.fn(),
               error: '',
-              setError: jest.fn(),
+              setError: vi.fn(),
             }}
           >
             <AlertManagerContext.Provider
               value={{
                 addAlert: mockAddAlert,
-                removeAlert: jest.fn,
+                removeAlert: vi.fn(),
                 alerts: [],
               }}
             >
@@ -95,7 +95,7 @@ describe('Character', () => {
                 value={{
                   characters,
                   saveCharacter: mockSaveCharacter,
-                  removeCharacter: jest.fn(),
+                  removeCharacter: vi.fn(),
                 }}
               >
                 <Character onGenerateCallback={mockOnGenerateCallback} />
@@ -157,15 +157,15 @@ describe('Character', () => {
   });
 
   test('renders character portrait component when not on mobile', () => {
-    window.matchMedia = jest.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     renderComponent();
@@ -176,15 +176,15 @@ describe('Character', () => {
   });
 
   test('does not render character portrait on mobile', () => {
-    window.matchMedia = jest.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: true,
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     renderComponent();
@@ -195,15 +195,15 @@ describe('Character', () => {
   });
 
   test('calls saveCharacter function when Save button is clicked', async () => {
-    window.matchMedia = jest.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     renderComponent();
@@ -221,15 +221,15 @@ describe('Character', () => {
   });
 
   test('disables Save button if character is already saved', () => {
-    window.matchMedia = jest.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     renderComponent({ characters: [mockCharacter] });

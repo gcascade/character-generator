@@ -1,5 +1,5 @@
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import SaveIcon from '@mui/icons-material/Save';
+import { DoubleArrow as DoubleArrowIcon } from '@mui/icons-material';
+import { Save as SaveIcon } from '@mui/icons-material';
 import {
   Button,
   Card,

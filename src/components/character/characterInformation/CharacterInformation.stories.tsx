@@ -3,7 +3,7 @@ import CharacterDecorator from '@Test/decorators/CharacterDecorator';
 import RequestDecorator from '@Test/decorators/RequestDecorator';
 import SettingsDecorator from '@Test/decorators/SettingsDecorator';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import {
   CharacterAlignments,
   CharacterClasses,

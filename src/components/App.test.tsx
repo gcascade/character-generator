@@ -2,7 +2,9 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import App from './App';
 
-jest.mock('../pages/home/Home', () => () => <div>CharacterGenerator</div>);
+vi.mock('../pages/home/Home', () => ({
+  default: () => <div>CharacterGenerator</div>,
+}));
 
 describe('App', () => {
   test('renders App component without crashing', () => {

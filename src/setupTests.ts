@@ -2,8 +2,8 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
-jest.mock('./hooks/useSettings');
-jest.mock('./hooks/useOllama');
-jest.mock('./hooks/useAzure');
+vi.mock('./hooks/useSettings');
+vi.mock('./hooks/useOllama');
+vi.mock('./hooks/useAzure');

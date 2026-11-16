@@ -24,8 +24,8 @@ const character: Character = {
   },
 };
 
-const onCharacterClick = jest.fn();
-const onDeleteClick = jest.fn();
+const onCharacterClick = vi.fn();
+const onDeleteClick = vi.fn();
 
 describe('HistoryItem', () => {
   it('renders without crashing', () => {
