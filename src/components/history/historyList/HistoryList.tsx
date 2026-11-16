@@ -28,7 +28,14 @@ const HistoryList: FC<HistoryListProps> = ({ history, removeFromHistory }) => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 2,
+      }}
+    >
       <List
         sx={{
           width: '100%',

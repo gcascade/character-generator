@@ -1,7 +1,7 @@
 import {
   Construction,
   Forest,
-  PersonOutline,
+  PersonOutlined,
   SportsKabaddi,
 } from '@mui/icons-material';
 import React, { FC } from 'react';
@@ -14,7 +14,7 @@ type RaceIconsProps = {
 const ClassIcon: FC<RaceIconsProps> = ({ characterRace }) => {
   switch (characterRace) {
     case 'Human':
-      return <PersonOutline data-testid="human-icon" />;
+      return <PersonOutlined data-testid="human-icon" />;
     case 'Elf':
       return <Forest style={{ color: 'green' }} data-testid="elf-icon" />;
     case 'Orc':
