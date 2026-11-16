@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import './DrawerMenu.css';
 
 type DrawerMenuProps = {
@@ -50,7 +50,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ width }) => {
       </Box>
       <Divider />
       <List>
-        <ListItemButton component={Link} to="/character-generator">
+        <ListItemButton component={Link} to="/">
           <ListItemIcon className="listItemIcon">
             <HomeIcon />
           </ListItemIcon>
