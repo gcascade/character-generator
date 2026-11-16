@@ -1,20 +1,13 @@
 import { useContext } from 'react';
 import { RequestContext } from '../contexts/RequestContext';
 import { Character } from '../types/character';
-import useCharacterGenerator from './useCharacterGenerator';
+import useCharacterGenerator, { ApiParams } from './useCharacterGenerator';
 import useSettings from './useSettings';
 
 type CharacterRequestOptions = {
   doneCallback?: VoidFunction;
   onSuccess?: VoidFunction;
   onError?: (message: string) => void;
-};
-
-type ApiParams = {
-  apiType: 'ollama' | 'azure' | 'none';
-  endpoint?: string;
-  modelName?: string;
-  token?: string;
 };
 
 const useCharacterRequest = (delayTime = 1000) => {
