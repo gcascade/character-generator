@@ -14,6 +14,7 @@
 
 - Q: Which AI provider types must Settings offer besides "No AI"? → A: Ollama (local), OpenAI-compatible, and a dedicated Claude (Anthropic) type; in-browser AI (e.g. Chrome built-in) is deferred.
 - Q: How long should the browser keep the API key? → A: The user chooses with a "Remember on this device" option (checked by default); unchecked, the key is kept only until the tab is closed; a "Forget key" action deletes it at any time.
+- Q: With AI enabled, who chooses the new value when the first name, last name or epithet is rerolled? → A: The AI proposes the new value together with a matching background (falling back to the app's lists if invalid); for race, class, gender, alignment and age the app chooses and the AI rewrites the background.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -49,7 +50,8 @@ A user likes a character but wants to change one property, for example the class
 1. **Given** a character and an enabled AI provider, **When** the user rerolls the class, **Then** only the class changes among the properties, and the new background is consistent with the new class.
 2. **Given** an AI answer to a reroll that also changes the name, **When** the result is applied, **Then** the name the AI tried to change is ignored and the original name is kept.
 3. **Given** an AI provider that fails during a reroll, **When** the reroll completes, **Then** the requested property is changed, the background comes from the app's own content, and the message explains that the AI could not rewrite the background.
-4. **Given** no AI provider, **When** the user rerolls a property, **Then** only that property changes and the background comes from the app's own content, with no AI-related message.
+4. **Given** an enabled AI provider, **When** the user rerolls the epithet, **Then** the AI proposes a new epithet different from the previous one and the background is rewritten to match it; all other properties are unchanged.
+5. **Given** no AI provider, **When** the user rerolls a property, **Then** only that property changes and the background comes from the app's own content, with no AI-related message.
 
 ---
 
@@ -115,8 +117,9 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 **Generation and reroll**
 
 - **FR-007**: The app MUST decide the race, class, gender, alignment and age of a new character itself; the AI provider MUST only contribute the first name, last name, epithet and background.
-- **FR-008**: When rerolling a property, the app MUST change only that property (choosing the new value itself) and MUST ask the AI provider, if any, only for a new background consistent with the updated character.
-- **FR-009**: Any property value returned by the AI provider that the app did not ask for MUST be ignored.
+- **FR-008**: When rerolling a property, the app MUST change only that property. For race, class, gender, alignment and age, the app MUST choose the new value itself and ask the AI provider, if any, only for a new background consistent with the updated character.
+- **FR-008a**: When rerolling the first name, last name or epithet with an AI provider, the AI MUST propose the new value together with a matching background; if the proposed value is missing, invalid or identical to the previous one, the app MUST choose the value from its own lists (and keep the AI background if usable).
+- **FR-009**: Any property value returned by the AI provider that the app did not ask for (including other name fields during a name or epithet reroll) MUST be ignored.
 - **FR-010**: Generation and reroll without an AI provider MUST complete without any artificial waiting time.
 - **FR-011**: AI requests MUST stop after a time limit of 60 seconds.
 - **FR-012**: The Generate and reroll actions MUST be unavailable while a request is in progress.
@@ -156,7 +159,6 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 - "OpenAI-compatible" covers OpenAI, GitHub Models, Azure AI services exposing the same chat API, Mistral, Gemini, OpenRouter, Groq and local servers such as LM Studio. A dedicated "Azure" type is therefore not kept; existing Azure settings are migrated to "OpenAI-compatible".
 - Claude (Anthropic) gets its own type because its API is not the OpenAI chat API; it is called through Anthropic's official client.
 - In-browser AI (e.g. the AI built into Chrome) is deferred: experimental and not available in every browser.
-- The new value of a rerolled property is chosen by the app from its own lists (as today without AI); asking the AI to invent the new value is out of scope.
 - 60 seconds is long enough for a local model on a modest machine to produce a background, and short enough that a stuck request does not feel endless.
 - Cancelling an in-progress AI request from the UI is out of scope for this feature.
 - Requests go directly from the browser to the provider (no backend, per the constitution); providers that refuse browser requests cannot be used, and the app explains why.
