@@ -1,5 +1,16 @@
-import { Box, Container, CssBaseline, ThemeProvider } from '@mui/material';
-import React from 'react';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import {
+  AppBar,
+  Box,
+  Container,
+  CssBaseline,
+  IconButton,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+import React, { useState } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router';
 import { AlertManagerProvider } from '../contexts/AlertManagerContext';
 import { CharacterProvider } from '../contexts/CharacterContext';
@@ -20,39 +31,68 @@ const AppRoutes = () => {
 };
 
 const drawerWidth = 240;
+const initialCharacter = generateRandomCharacter({});
+
+// Permanent side menu on wide screens; app bar + collapsible menu below `md`.
+const AppLayout: React.FC = () => {
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <Box sx={{ backgroundColor: 'background.paper', minHeight: '100vh' }}>
+      <CssBaseline />
+      {!isDesktop && (
+        <AppBar position="sticky" sx={{ backgroundColor: '#3f51b5' }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              edge="start"
+              aria-label="Open menu"
+              onClick={() => setIsMenuOpen(true)}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" component="div" noWrap>
+              Character Generator
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      )}
+      <DrawerMenu
+        width={drawerWidth}
+        variant={isDesktop ? 'permanent' : 'temporary'}
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      />
+      <Container
+        component="main"
+        maxWidth={false}
+        sx={{
+          padding: { xs: 1, sm: 3 },
+          marginLeft: { md: `${drawerWidth}px` },
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <AlertManager />
+        <AppRoutes />
+      </Container>
+    </Box>
+  );
+};
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <ErrorBoundary>
-        <CharacterProvider initCharacter={generateRandomCharacter({})}>
+        <CharacterProvider initCharacter={initialCharacter}>
           <HistoryProvider>
             <SettingsProvider>
               <RequestProvider>
                 <AlertManagerProvider>
                   <DataProvider>
                     <BrowserRouter basename={import.meta.env.BASE_URL}>
-                      <Box
-                        style={{
-                          backgroundColor: theme.palette.background.paper,
-                        }}
-                      >
-                        <CssBaseline />
-                        <DrawerMenu width={drawerWidth} />
-                        <Container
-                          component="main"
-                          sx={{
-                            backgroundColor: theme.palette.background.paper,
-                            padding: '24px',
-                            marginLeft: `${drawerWidth}px`,
-                            minWidth: `calc(100% - ${drawerWidth}px)`,
-                            minHeight: '100vh',
-                          }}
-                        >
-                          <AlertManager width={`${drawerWidth}px`} />
-                          <AppRoutes />
-                        </Container>
-                      </Box>
+                      <AppLayout />
                     </BrowserRouter>
                   </DataProvider>
                 </AlertManagerProvider>

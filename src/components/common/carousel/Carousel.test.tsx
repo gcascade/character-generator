@@ -59,3 +59,22 @@ describe('Carousel Component', () => {
     expect(screen.getByText('Card 1')).toBeInTheDocument();
   });
 });
+
+describe('Carousel when the number of cards per page changes', () => {
+  const cards = Array.from({ length: 5 }, (_, i) => (
+    <div key={i}>Card {i + 1}</div>
+  ));
+
+  it('stays on a valid page after switching to more cards per page', () => {
+    const { rerender } = render(<Carousel cardsPerPage={1}>{cards}</Carousel>);
+    for (let i = 0; i < 4; i++) {
+      fireEvent.click(screen.getByTestId('navigate-next'));
+    }
+
+    rerender(<Carousel cardsPerPage={3}>{cards}</Carousel>);
+
+    expect(screen.getByText('Card 4')).toBeInTheDocument();
+    expect(screen.getByTestId('navigate-next')).toBeDisabled();
+    expect(screen.getByTestId('navigate-before')).toBeEnabled();
+  });
+});

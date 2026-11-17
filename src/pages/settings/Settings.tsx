@@ -89,12 +89,12 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{}}>
+    <Container maxWidth={false} disableGutters>
       <Paper
         elevation={3}
         sx={{
           minHeight: '95vh',
-          padding: '20px',
+          padding: { xs: 1.5, sm: 2.5 },
         }}
       >
         <PageTitle>Character Generator Settings</PageTitle>

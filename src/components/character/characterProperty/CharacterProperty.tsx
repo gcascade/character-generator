@@ -18,7 +18,9 @@ const CharacterProperty: FC<CharacterPropertyProps> = ({
   return (
     <CharacterTypography>
       <span style={{ display: 'flex', alignItems: 'center' }}>
-        <strong style={{ marginRight: '5px' }}>{label}:</strong>
+        <strong style={{ marginRight: '5px', whiteSpace: 'nowrap' }}>
+          {label}:
+        </strong>
         <span>{value}</span>
         <RerollButton
           tooltip={`Reroll character's ${label.toLowerCase()}`}

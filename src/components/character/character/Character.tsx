@@ -93,7 +93,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
           subheader: { align: 'center', variant: 'subtitle1' },
         }}
       />
-      <CardContent style={{ display: 'flex' }}>
+      <CardContent sx={{ display: 'flex', px: { xs: 1, sm: 2 } }}>
         {!isMobile && (
           <CharacterImage
             gender={gender}
@@ -103,7 +103,11 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             width={'30%'}
           />
         )}
-        <div style={{ marginLeft: '20px', width: '70%' }}>
+        <div
+          style={
+            isMobile ? { width: '100%' } : { marginLeft: '20px', width: '70%' }
+          }
+        >
           <CharacterInformation />
           <CharacterBackground />
         </div>
