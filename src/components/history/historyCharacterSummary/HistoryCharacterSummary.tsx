@@ -42,7 +42,13 @@ const HistoryCharacterSummary: React.FC<CharacterInfoProps> = ({
       </Tooltip>
       <Typography
         variant="subtitle1"
-        sx={{ paddingLeft: '2px', flexGrow: 1, ...textStyle }}
+        sx={{
+          paddingLeft: 1,
+          flexGrow: 1,
+          minWidth: 0,
+          overflowWrap: 'anywhere',
+          ...textStyle,
+        }}
       >
         {firstName} {lastName} ({age})
       </Typography>
