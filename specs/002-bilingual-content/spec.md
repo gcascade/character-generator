@@ -13,6 +13,7 @@
 ### Session 2026-11-17
 
 - Q: How does French text refer to non-binary characters? → A: Neutral phrasing that avoids gendered words; no neopronoun and no inclusive punctuation.
+- Q: What happens to AI-written text when the user switches language? → A: It stays as written with its label, and a "Translate with AI" action rewrites it in the current language when an AI provider is configured.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -82,7 +83,9 @@ A user with an AI provider enabled generates a character in French. The AI write
 
 1. **Given** the app in French and an AI provider, **When** a character is generated, **Then** the AI is asked to write in French.
 2. **Given** an AI-written background in French, **When** the user switches to English, **Then** the background text is unchanged and labelled with its language and its AI origin.
-3. **Given** an AI failure, **When** the app falls back to its own content, **Then** that content is in the current language and switches with it.
+3. **Given** an AI-written text in another language and a configured AI provider, **When** the user chooses "Translate with AI", **Then** the name-independent texts (epithet and background) are rewritten in the current language, keeping the same story, and the label shows the new language.
+4. **Given** no AI provider configured, **When** an AI-written text is in another language, **Then** no translate action is offered.
+5. **Given** an AI failure, **When** the app falls back to its own content, **Then** that content is in the current language and switches with it.
 
 ---
 
@@ -139,6 +142,7 @@ A user who saved characters before this feature opens "My Characters". Old chara
 
 - **FR-014**: When an AI provider is used, it MUST be asked to write in the current language.
 - **FR-015**: Text written by the AI MUST be stored with its language and displayed as written in any interface language, with a visible label stating it was written by the AI and in which language.
+- **FR-015a**: When AI-written text is in another language than the interface and an AI provider is configured, users MUST be offered a "Translate with AI" action that rewrites the epithet and background in the current language without changing the story; on failure the original text is kept and the usual failure message is shown. The app never translates automatically.
 - **FR-016**: App-made characters MUST be stored in a language-independent way (fragment and list references) so they re-render in the current language; characters saved by previous versions MUST still display, as English text.
 
 ### Key Entities
