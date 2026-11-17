@@ -13,6 +13,7 @@
 ### Session 2026-11-17
 
 - Q: Which AI provider types must Settings offer besides "No AI"? → A: Ollama (local), OpenAI-compatible, and a dedicated Claude (Anthropic) type; in-browser AI (e.g. Chrome built-in) is deferred.
+- Q: How long should the browser keep the API key? → A: The user chooses with a "Remember on this device" option (checked by default); unchecked, the key is kept only until the tab is closed; a "Forget key" action deletes it at any time.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -91,6 +92,7 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 - The AI answer contains markup or script-like text: it is displayed as plain text, never interpreted.
 - The user clicks Generate again, or leaves the page, while a request is in progress: the Generate and reroll buttons stay disabled until the request ends, and a result arriving after the user left does not overwrite anything unexpectedly.
 - The user changes the provider in Settings while a request is in progress: the request finishes with the settings it started with.
+- The user unchecks "Remember on this device" after the key was saved: the durable copy is deleted immediately and only the session copy remains.
 - The saved settings in the browser are corrupted or from an unknown format: they are ignored, defaults are used ("No AI"), and nothing breaks.
 - The provider is reachable from the user's machine but blocks requests from a web page (cross-origin restriction, e.g. Ollama without allowed origins): the message says the provider refused the browser's request and links to how to allow it.
 - The site is served over HTTPS and the provider address is plain HTTP on another machine: the message explains that the browser blocks the request.
@@ -106,6 +108,8 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 - **FR-003**: The default provider type for a user with no saved settings MUST be "No AI".
 - **FR-004**: Settings saved by previous versions (Ollama or Azure switches and fields) MUST be migrated to the new choice on first load, without the user re-entering anything.
 - **FR-005**: The Settings page MUST state, next to the API key field, that the key is stored only in this browser and sent only to the chosen provider.
+- **FR-005a**: Next to the API key field, users MUST be able to choose "Remember on this device" (checked by default). When checked, the key survives closing the browser; when unchecked, it is kept only until the tab is closed.
+- **FR-005b**: Users MUST be able to delete the stored API key at any time with a "Forget key" action, after which no copy of the key remains in the browser.
 - **FR-006**: Users MUST be able to test the connection to the configured provider from Settings and see a success or a specific failure cause (unreachable, refused key, unknown model, blocked by the browser, too slow, unusable answer).
 
 **Generation and reroll**
@@ -132,7 +136,7 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 
 ### Key Entities
 
-- **Provider settings**: the user's choice of provider type plus its address, model and optional API key; stored in the browser; one active choice at a time.
+- **Provider settings**: the user's choice of provider type plus its address, model and optional API key; stored in the browser, the key either durably or for the session only depending on the user's "Remember on this device" choice; one active choice at a time.
 - **AI contribution**: the part of a character the AI is allowed to produce (first name, last name, epithet, background title and paragraphs), checked before use.
 - **Generation outcome**: the character finally shown plus how it was obtained (full AI, AI completed by the app, or non-AI with a cause), which drives the message shown to the user.
 
