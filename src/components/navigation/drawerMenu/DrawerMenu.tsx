@@ -17,12 +17,23 @@ import './DrawerMenu.css';
 
 type DrawerMenuProps = {
   width: number;
+  /** `permanent` on wide screens, `temporary` (opened from the app bar) on small ones. */
+  variant?: 'permanent' | 'temporary';
+  open?: boolean;
+  onClose?: VoidFunction;
 };
 
-const DrawerMenu: React.FC<DrawerMenuProps> = ({ width }) => {
+const DrawerMenu: React.FC<DrawerMenuProps> = ({
+  width,
+  variant = 'permanent',
+  open = false,
+  onClose,
+}) => {
   return (
     <Drawer
-      variant="permanent"
+      variant={variant}
+      open={variant === 'permanent' || open}
+      onClose={onClose}
       className="drawer"
       classes={{ paper: 'drawerPaper' }}
       anchor="left"
@@ -49,7 +60,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ width }) => {
         </Typography>
       </Box>
       <Divider />
-      <List>
+      <List component="nav" aria-label="Main navigation" onClick={onClose}>
         <ListItemButton component={Link} to="/">
           <ListItemIcon className="listItemIcon">
             <HomeIcon />

@@ -27,3 +27,11 @@ export const Default: Story = {
     width: 300,
   },
 };
+
+export const MobileOpen: Story = {
+  args: {
+    width: 240,
+    variant: 'temporary',
+    open: true,
+  },
+};

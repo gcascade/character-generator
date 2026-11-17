@@ -20,16 +20,18 @@ const Carousel: FC<CarouselProps> = ({
     'right' | 'left' | undefined
   >('left');
 
-  const containerWidth = cardsPerPage * 250;
+  const pageCount = Math.max(1, Math.ceil(children.length / cardsPerPage));
+  // The number of cards per page can change with the screen size.
+  const page = Math.min(currentPage, pageCount - 1);
 
   const handleNextPage = () => {
     setSlideDirection('left');
-    setCurrentPage((prevPage) => prevPage + 1);
+    setCurrentPage(Math.min(page + 1, pageCount - 1));
   };
 
   const handlePrevPage = () => {
     setSlideDirection('right');
-    setCurrentPage((prevPage) => prevPage - 1);
+    setCurrentPage(Math.max(page - 1, 0));
   };
 
   return (
@@ -48,19 +50,19 @@ const Carousel: FC<CarouselProps> = ({
     >
       <IconButton
         onClick={handlePrevPage}
-        sx={{ margin: 15 }}
-        disabled={currentPage === 0}
+        sx={{ margin: { xs: 0, sm: 2 } }}
+        disabled={page === 0}
         data-testid="navigate-before"
       >
         <NavigateBeforeIcon />
       </IconButton>
       <Box
         sx={{
-          width: `${containerWidth}px`,
+          width: '100%',
+          maxWidth: cardsPerPage * 330,
+          minWidth: 0,
           height: '100%',
           display: 'flex',
-          paddingLeft: '50px',
-          paddingRight: '50px',
         }}
       >
         {children.map((child, index) => (
@@ -69,11 +71,11 @@ const Carousel: FC<CarouselProps> = ({
             sx={{
               width: '100%',
               height: '100%',
-              display: currentPage === index ? 'block' : 'none',
+              display: page === index ? 'block' : 'none',
               flex: '0 0 auto',
             }}
           >
-            <Slide direction={slideDirection} in={currentPage === index}>
+            <Slide direction={slideDirection} in={page === index}>
               <Stack
                 spacing={2}
                 direction="row"
@@ -107,12 +109,8 @@ const Carousel: FC<CarouselProps> = ({
       </Box>
       <IconButton
         onClick={handleNextPage}
-        sx={{
-          margin: 15,
-        }}
-        disabled={
-          currentPage >= Math.ceil((children.length || 0) / cardsPerPage) - 1
-        }
+        sx={{ margin: { xs: 0, sm: 2 } }}
+        disabled={page >= pageCount - 1}
         data-testid="navigate-next"
       >
         <NavigateNextIcon />
