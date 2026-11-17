@@ -14,6 +14,7 @@
 
 - Q: How does French text refer to non-binary characters? → A: Neutral phrasing that avoids gendered words; no neopronoun and no inclusive punctuation.
 - Q: What happens to AI-written text when the user switches language? → A: It stays as written with its label, and a "Translate with AI" action rewrites it in the current language when an AI provider is configured.
+- Q: What happens to the 46 existing hand-written backgrounds? → A: They are replaced by fragments; their best passages are recycled as fragments (origins, trainings, turning points).
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -136,6 +137,7 @@ A user who saved characters before this feature opens "My Characters". Old chara
 - **FR-010**: First names MUST be chosen from the character's race and gender lists, with a gender-neutral list for non-binary characters; last names from the race's list.
 - **FR-011**: Epithets MUST exist in both languages, with masculine and feminine French forms and a neutral French form for non-binary characters (e.g. an epithet without gendered article or adjective agreement).
 - **FR-012**: When one property is rerolled, only the fragments that depend on it MUST change (race → origin, class → training, alignment → turning point); names and epithet are untouched except as stated in edge cases.
+- **FR-012a**: The previous hand-written full backgrounds MUST no longer be used as a content source; generation relies on fragments only.
 - **FR-013**: A data check MUST fail when any fragment, name list, epithet or label is missing in a language, uses an unknown placeholder, or a combination has fewer fragments than FR-009.
 
 **AI and stored characters**
@@ -167,7 +169,7 @@ A user who saved characters before this feature opens "My Characters". Old chara
 ## Assumptions
 
 - Character names are not translated; only labels, epithets and backgrounds are.
-- Existing hand-written backgrounds are replaced by the fragment content; their best passages may be reused as fragments.
+- The 46 existing hand-written backgrounds are removed from the app; their best passages are recycled as fragments, rewritten for gender placeholders and translated.
 - Content is written for this feature (by the maintainer with AI assistance) in a classic heroic fantasy tone; quantities in FR-009 are minimums.
 - French text refers to non-binary characters with neutral phrasing that avoids gendered words (the name, "cette personne", participles, epithets without article agreement…), never with a neopronoun or inclusive punctuation.
 - Portraits keep their current behaviour (out of scope).
