@@ -15,6 +15,7 @@
 - Q: Which AI provider types must Settings offer besides "No AI"? → A: Ollama (local), OpenAI-compatible, and a dedicated Claude (Anthropic) type; in-browser AI (e.g. Chrome built-in) is deferred.
 - Q: How long should the browser keep the API key? → A: The user chooses with a "Remember on this device" option (checked by default); unchecked, the key is kept only until the tab is closed; a "Forget key" action deletes it at any time.
 - Q: With AI enabled, who chooses the new value when the first name, last name or epithet is rerolled? → A: The AI proposes the new value together with a matching background (falling back to the app's lists if invalid); for race, class, gender, alignment and age the app chooses and the AI rewrites the background.
+- Q: How does the user specify the AI model in Settings? → A: A free-text field pre-filled with a default per provider; after a successful connection test, the list of models offered by the provider is shown to pick from, and free text stays possible.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -67,9 +68,10 @@ A user opens Settings, chooses one provider type (no AI, a local Ollama server, 
 
 1. **Given** the Settings page, **When** the user opens the provider choice, **Then** exactly one of "No AI", "Ollama (local)", "Claude (Anthropic)" and "OpenAI-compatible" can be selected, and "No AI" is the default for new users.
 2. **Given** a provider with correct settings, **When** the user clicks Test connection, **Then** a success result is shown within the time limit, including the model that answered.
-3. **Given** a provider with a wrong address, a wrong model or a refused key, **When** the user clicks Test connection, **Then** the result names which of these is the likely cause.
-4. **Given** the API key field, **When** the user views it, **Then** a notice states that the key is stored only in this browser and sent only to the chosen provider.
-5. **Given** a user who had configured Ollama or Azure before this feature, **When** they open the app for the first time after the update, **Then** their previous provider choice, address, model and key are kept, mapped to the new provider choice.
+3. **Given** a successful connection test, **When** the provider can list its models, **Then** the user can pick the model from that list instead of typing it; when it cannot, the free-text field stays the only way and no error is shown.
+4. **Given** a provider with a wrong address, a wrong model or a refused key, **When** the user clicks Test connection, **Then** the result names which of these is the likely cause.
+5. **Given** the API key field, **When** the user views it, **Then** a notice states that the key is stored only in this browser and sent only to the chosen provider.
+6. **Given** a user who had configured Ollama or Azure before this feature, **When** they open the app for the first time after the update, **Then** their previous provider choice, address, model and key are kept, mapped to the new provider choice.
 
 ---
 
@@ -113,6 +115,7 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 - **FR-005a**: Next to the API key field, users MUST be able to choose "Remember on this device" (checked by default). When checked, the key survives closing the browser; when unchecked, it is kept only until the tab is closed.
 - **FR-005b**: Users MUST be able to delete the stored API key at any time with a "Forget key" action, after which no copy of the key remains in the browser.
 - **FR-006**: Users MUST be able to test the connection to the configured provider from Settings and see a success or a specific failure cause (unreachable, refused key, unknown model, blocked by the browser, too slow, unusable answer).
+- **FR-006a**: The model MUST be entered in a free-text field pre-filled with a default for each provider type. After a successful connection test, when the provider can list its models, the app MUST offer that list to choose from; typing a name by hand MUST remain possible.
 
 **Generation and reroll**
 
