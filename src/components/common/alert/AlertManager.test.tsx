@@ -32,7 +32,7 @@ describe('AlertManager', () => {
         <AlertManagerContext.Provider
           value={{ alerts, addAlert: vi.fn(), removeAlert: mockRemoveAlert }}
         >
-          <AlertManager width="400px" />
+          <AlertManager />
         </AlertManagerContext.Provider>
       </ThemeProvider>,
     );
@@ -61,7 +61,7 @@ describe('AlertManager', () => {
 
   test('throws an error if used outside of a provider', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    expect(() => render(<AlertManager width="400px" />)).toThrow(
+    expect(() => render(<AlertManager />)).toThrow(
       'AlertManager must be used within an AlertManagerProvider',
     );
     vi.restoreAllMocks();
