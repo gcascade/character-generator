@@ -23,14 +23,15 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 
 ## Stack
 
-- React 19, TypeScript 6 (strict; TS 7 waits for typescript-eslint support), MUI 9, React Router 8 (`react-router`, basename = Vite base), Storybook 10, react-hook-form.
+- React 19, TypeScript 6 (strict; TS 7 waits for typescript-eslint support), MUI 9, React Router 8 (`react-router`, basename = Vite base), Storybook 10.
 - Build: Vite (`vite.config.ts`, base `/character-generator/` for GitHub Pages); tests: Vitest + jsdom
-  + Testing Library, configured in the same file. Storybook uses the Vite builder.
+  - Testing Library, configured in the same file. Storybook uses the Vite builder.
 - Use `import.meta.env.BASE_URL` for public assets, never absolute `/images/...` paths.
 - Import MUI icons as named imports from `@mui/icons-material` (default imports of
   `@mui/icons-material/X` break under Vite's CJS interop).
-- Optional AI generation: Ollama (plain `fetch` to `/api/generate`) or Azure / GitHub Models
-  (via `@azure-rest/ai-inference`). Without AI, everything comes from the static data in `src/data/`.
+- Optional AI generation lives in `src/ai/` (framework-free, see its README): providers "Ollama",
+  "OpenAI-compatible" (both through one `fetch` adapter) and "Claude" (official `@anthropic-ai/sdk`, browser mode).
+  zod validates AI answers and stored settings. Without AI, everything comes from `src/data/`.
 
 ## CI / deploy
 
@@ -44,16 +45,16 @@ src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
   pages/                           Home (generator), Characters (saved), Settings
   contexts/                        One React context per concern (character, history, settings, ...)
-  hooks/                           Hooks wrapping contexts and AI providers; __mocks__/ used by vi.mock
+  ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
+  hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
   utils/character.ts               Random generation from static data
-  utils/prompt.ts                  LLM prompts and JSON schema
   data/                            backgrounds.json (templated with {{firstName}} etc.), characterNames.json
   types/                           Domain types; enums are `as const` objects + derived union types
 test/                              Shared Storybook/test decorators and stubs
 public/images/<race>/<class>/<gender>1.png   Portraits
 ```
 
-Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Components/*`, `@Contexts/*`, `@Types/*`, `@Test/*`.
+Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Components/*`, `@Contexts/*`, `@Types/*`, `@Test/*`, `@Ai/*`.
 
 ## Conventions
 
@@ -65,15 +66,13 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 
 ## Known issues (from the November 2026 review)
 
-- With AI, rerolling any property regenerates the background; Azure may also overwrite names.
-- Characters are compared by reference (no `id`); LLM responses are not validated.
+- Characters are compared by reference (no `id`).
 
 ## Direction
 
 - Rich content without AI is a goal: static content (backgrounds, names, epithets) is meant to grow,
   likely as composable fragments (origin by race, training by class, turning point by alignment)
   with pronoun placeholders instead of one copy per gender.
-- When a property is rerolled with AI enabled, the background is rewritten to stay coherent.
 - New features are specified with Spec Kit before implementation (see below).
 
 ## Spec-driven development (Spec Kit)
