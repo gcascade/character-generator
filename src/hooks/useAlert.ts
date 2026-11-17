@@ -1,5 +1,14 @@
+import { useMemo } from 'react';
 import { useContext } from 'react';
 import { AlertManagerContext } from '../contexts/AlertManagerContext';
+import type { Alert } from '../types/alerts';
+
+const TITLES: Record<Alert['severity'], string> = {
+  success: 'Success',
+  error: 'Error',
+  warning: 'Warning',
+  info: 'Info',
+};
 
 const useAlert = () => {
   const context = useContext(AlertManagerContext);
@@ -10,35 +19,16 @@ const useAlert = () => {
 
   const { addAlert } = context;
 
-  const addAlertWithSeverity = (
-    severity: 'success' | 'error' | 'warning' | 'info',
-    message: string,
-  ) => {
-    const titleMap: {
-      [key in 'success' | 'error' | 'warning' | 'info']: string;
-    } = {
-      success: 'Success',
-      error: 'Error',
-      warning: 'Warning',
-      info: 'Info',
+  return useMemo(() => {
+    const add = (severity: Alert['severity']) => (message: string) =>
+      addAlert({ severity, title: TITLES[severity], message });
+    return {
+      addSuccess: add('success'),
+      addError: add('error'),
+      addWarning: add('warning'),
+      addInfo: add('info'),
     };
-
-    addAlert({ severity, title: titleMap[severity], message });
-  };
-
-  const addSuccess = (message: string) =>
-    addAlertWithSeverity('success', message);
-  const addError = (message: string) => addAlertWithSeverity('error', message);
-  const addWarning = (message: string) =>
-    addAlertWithSeverity('warning', message);
-  const addInfo = (message: string) => addAlertWithSeverity('info', message);
-
-  return {
-    addSuccess,
-    addError,
-    addWarning,
-    addInfo,
-  };
+  }, [addAlert]);
 };
 
 export default useAlert;

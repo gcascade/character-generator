@@ -1,6 +1,5 @@
 import React, { FC, useContext } from 'react';
 import { CharacterContext } from '../../../contexts/CharacterContext';
-import useAlert from '../../../hooks/useAlert';
 import useCharacterRequest from '../../../hooks/useCharacterRequest';
 import { Character } from '../../../types/character';
 import CharacterProperty from '../characterProperty/CharacterProperty';
@@ -16,8 +15,6 @@ const CharacterInformation: FC = () => {
 
   const { requestStatus, rerollCharacterProperty } = useCharacterRequest();
 
-  const { addError, addSuccess } = useAlert();
-
   const {
     character: {
       firstName,
@@ -32,10 +29,7 @@ const CharacterInformation: FC = () => {
   } = characterContext;
 
   const handleButtonClick = (property: keyof Character) => {
-    rerollCharacterProperty(property, {
-      onSuccess: () => addSuccess('Updated character'),
-      onError: addError,
-    });
+    rerollCharacterProperty(property);
   };
 
   const isRerollButtonDisabled = requestStatus === 'loading';

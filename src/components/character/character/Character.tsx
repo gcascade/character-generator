@@ -54,12 +54,8 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   const isActionButtonDisabled = requestStatus === 'loading';
 
   const onGenerateButtonClick = useCallback(() => {
-    generateNewCharacter({
-      doneCallback: onGenerateCallback,
-      onSuccess: () => addSuccess('New character generated'),
-      onError: addError,
-    });
-  }, [generateNewCharacter, onGenerateCallback, addSuccess, addError]);
+    generateNewCharacter({ doneCallback: onGenerateCallback });
+  }, [generateNewCharacter, onGenerateCallback]);
 
   const onSaveButtonClick = useCallback(() => {
     try {

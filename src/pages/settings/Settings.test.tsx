@@ -1,159 +1,184 @@
-import { ThemeProvider } from '@mui/material/styles';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
-import theme from '../../themes/themes';
+import { KEYS_KEY, SETTINGS_KEY } from '../../ai/storage';
+import { json, queuedFetch } from '../../ai/providers/testing';
+import { AlertManagerProvider } from '../../contexts/AlertManagerContext';
+import { SettingsProvider } from '../../contexts/SettingsContext';
 import Settings from './Settings';
 
-const mockSetOllamaSettings = vi.fn();
-const mockSetAzureSettings = vi.fn();
-vi.mock('../../hooks/useSettings', () => ({
-  __esModule: true,
-  default: () => ({
-    ollamaSettings: {
-      useOllamaAPI: false,
-      ollamaEndpoint: 'http://localhost:11434',
-      ollamaModelName: 'llama3',
-    },
-    azureSettings: {
-      useAzureAPI: false,
-      azureEndpoint: 'https://your-azure-endpoint.com',
-      azureModelName: 'openai/gpt-4.1',
-      azureToken: 'fake-token',
-    },
-    setOllamaSettings: mockSetOllamaSettings,
-    setAzureSettings: mockSetAzureSettings,
-  }),
-}));
+vi.unmock('../../hooks/useSettings');
 
-const renderWithTheme = (ui: React.ReactElement) => {
-  return render(<ThemeProvider theme={theme}>{ui}</ThemeProvider>);
+const renderSettings = () =>
+  render(
+    <AlertManagerProvider>
+      <SettingsProvider>
+        <Settings />
+      </SettingsProvider>
+    </AlertManagerProvider>,
+  );
+
+const chooseProvider = async (label: string) => {
+  await userEvent.click(screen.getByRole('combobox', { name: 'Provider' }));
+  await userEvent.click(
+    within(screen.getByRole('listbox')).getByRole('option', { name: label }),
+  );
 };
+
+const storedSettings = () => JSON.parse(localStorage.getItem(SETTINGS_KEY)!);
 
 describe('Settings', () => {
   beforeEach(() => {
-    mockSetOllamaSettings.mockClear();
+    localStorage.clear();
+    sessionStorage.clear();
   });
+  afterEach(() => vi.unstubAllGlobals());
 
-  it('renders the settings form', () => {
-    renderWithTheme(<Settings />);
+  it('defaults to "No AI" with no provider fields', () => {
+    renderSettings();
     expect(
-      screen.getByText('Character Generator Settings'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('General Settings')).toBeInTheDocument();
-    expect(screen.getByText('API Integration')).toBeInTheDocument();
+      screen.getByRole('combobox', { name: 'Provider' }),
+    ).toHaveTextContent('No AI');
+    expect(screen.queryByLabelText('Address')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Model')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Test connection' }),
+    ).not.toBeInTheDocument();
   });
 
-  it('displays validation errors', async () => {
-    renderWithTheme(<Settings />);
-    fireEvent.click(screen.getByLabelText(/Enable Ollama API/i));
-    fireEvent.change(screen.getByLabelText(/Ollama Endpoint/i), {
-      target: { value: 'invalid-url' },
-    });
-    fireEvent.change(screen.getByLabelText(/Ollama Model Name/i), {
-      target: { value: '' },
-    });
+  it('shows the Ollama defaults and saves the choice', async () => {
+    renderSettings();
+    await chooseProvider('Ollama (local)');
 
-    fireEvent.click(screen.getByRole('button', { name: /save settings/i }));
-
-    await waitFor(() => {
-      expect(screen.getByText('Enter a valid URL')).toBeInTheDocument();
-      expect(screen.getByText('Model name is required')).toBeInTheDocument();
-    });
-  });
-
-  it('calls setOllamaSettings with correct values when form is valid', async () => {
-    renderWithTheme(<Settings />);
-    fireEvent.click(screen.getByLabelText(/Enable Ollama API/i));
-    fireEvent.change(screen.getByLabelText(/Ollama Endpoint/i), {
-      target: { value: 'https://valid-url.com' },
-    });
-    fireEvent.change(screen.getByLabelText(/Ollama Model Name/i), {
-      target: { value: 'mymodel' },
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: /save settings/i }));
-
-    await waitFor(() => {
-      expect(mockSetOllamaSettings).toHaveBeenCalledWith({
-        useOllamaAPI: true,
-        ollamaEndpoint: 'https://valid-url.com',
-        ollamaModelName: 'mymodel',
-      });
-    });
-  });
-
-  it('disables endpoint and model fields when Ollama API is off', () => {
-    renderWithTheme(<Settings />);
-    expect(screen.getByLabelText(/Ollama Endpoint/i)).toBeDisabled();
-    expect(screen.getByLabelText(/Ollama Model Name/i)).toBeDisabled();
-  });
-
-  it('disables endpoint and model fields when Azure API is off', () => {
-    renderWithTheme(<Settings />);
-    expect(screen.getByLabelText(/Azure Endpoint/i)).toBeDisabled();
-    expect(screen.getByLabelText(/Azure Model Name/i)).toBeDisabled();
-    expect(screen.getByLabelText(/Azure Token/i)).toBeDisabled();
-  });
-
-  it('enables endpoint and model fields when Ollama API is toggled on', () => {
-    renderWithTheme(<Settings />);
-    fireEvent.click(screen.getByLabelText(/Enable Ollama API/i));
-    expect(screen.getByLabelText(/Ollama Endpoint/i)).not.toBeDisabled();
-    expect(screen.getByLabelText(/Ollama Model Name/i)).not.toBeDisabled();
-  });
-
-  it('enables endpoint and model fields when Azure API is toggled on', () => {
-    renderWithTheme(<Settings />);
-    fireEvent.click(screen.getByLabelText(/Enable Azure API/i));
-    expect(screen.getByLabelText(/Azure Endpoint/i)).not.toBeDisabled();
-    expect(screen.getByLabelText(/Azure Model Name/i)).not.toBeDisabled();
-    expect(screen.getByLabelText(/Azure Token/i)).not.toBeDisabled();
-  });
-
-  it('does not call setOllamaSettings if validation fails', async () => {
-    renderWithTheme(<Settings />);
-    fireEvent.click(screen.getByLabelText(/Enable Ollama API/i));
-    fireEvent.change(screen.getByLabelText(/Ollama Endpoint/i), {
-      target: { value: 'invalid-url' },
-    });
-    fireEvent.change(screen.getByLabelText(/Ollama Model Name/i), {
-      target: { value: '' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /save settings/i }));
-
-    await waitFor(() => {
-      expect(mockSetOllamaSettings).not.toHaveBeenCalled();
-    });
-  });
-
-  it('does not call setAzureSettings if validation fails', async () => {
-    renderWithTheme(<Settings />);
-    fireEvent.click(screen.getByLabelText(/Enable Azure API/i));
-    fireEvent.change(screen.getByLabelText(/Azure Endpoint/i), {
-      target: { value: 'invalid-url' },
-    });
-    fireEvent.change(screen.getByLabelText(/Azure Model Name/i), {
-      target: { value: '' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /save settings/i }));
-
-    await waitFor(() => {
-      expect(mockSetAzureSettings).not.toHaveBeenCalled();
-    });
-  });
-
-  it('shows initial values from context', () => {
-    renderWithTheme(<Settings />);
-    expect(screen.getByLabelText(/Ollama Endpoint/i)).toHaveValue(
+    expect(screen.getByLabelText('Address')).toHaveValue(
       'http://localhost:11434',
     );
-    expect(screen.getByLabelText(/Ollama Model Name/i)).toHaveValue('llama3');
-    expect(screen.getByLabelText(/Azure Endpoint/i)).toHaveValue(
-      'https://your-azure-endpoint.com',
+    expect(screen.getByLabelText('Model')).toHaveValue('llama3');
+    expect(screen.queryByLabelText(/API key/)).not.toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save settings' }),
     );
-    expect(screen.getByLabelText(/Azure Model Name/i)).toHaveValue(
-      'openai/gpt-4.1',
+    expect(storedSettings().activeType).toBe('ollama');
+  });
+
+  it('keeps typed values when switching provider back and forth', async () => {
+    renderSettings();
+    await chooseProvider('OpenAI-compatible');
+    const address = screen.getByLabelText('Address');
+    await userEvent.clear(address);
+    await userEvent.type(address, 'https://api.openai.com/v1');
+
+    await chooseProvider('Claude (Anthropic)');
+    await chooseProvider('OpenAI-compatible');
+
+    expect(screen.getByLabelText('Address')).toHaveValue(
+      'https://api.openai.com/v1',
     );
-    expect(screen.getByLabelText(/Azure Token/i)).toHaveValue('fake-token');
+  });
+
+  it('refuses to save an invalid address', async () => {
+    renderSettings();
+    await chooseProvider('Ollama (local)');
+    const address = screen.getByLabelText('Address');
+    await userEvent.clear(address);
+    await userEvent.type(address, 'localhost');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save settings' }),
+    );
+
+    expect(
+      screen.getByText('Enter an http or https address'),
+    ).toBeInTheDocument();
+    expect(localStorage.getItem(SETTINGS_KEY)).not.toContain('"localhost"');
+  });
+
+  it('explains where the key is stored and remembers it by default', async () => {
+    renderSettings();
+    await chooseProvider('Claude (Anthropic)');
+
+    expect(
+      screen.getByText(
+        'Your key is stored only in this browser and sent only to Claude.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('checkbox', { name: 'Remember on this device' }),
+    ).toBeChecked();
+
+    await userEvent.type(screen.getByLabelText(/API key/), 'sk-123');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save settings' }),
+    );
+
+    expect(JSON.parse(localStorage.getItem(KEYS_KEY)!)).toEqual({
+      anthropic: 'sk-123',
+    });
+  });
+
+  it('keeps the key for the session only when "remember" is unchecked, and forgets it', async () => {
+    renderSettings();
+    await chooseProvider('Claude (Anthropic)');
+    await userEvent.type(screen.getByLabelText(/API key/), 'sk-123');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save settings' }),
+    );
+
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: 'Remember on this device' }),
+    );
+    expect(localStorage.getItem(KEYS_KEY)).toBeNull();
+    expect(sessionStorage.getItem(KEYS_KEY)).toContain('sk-123');
+    expect(
+      screen.getByText('The key will be deleted when you close this tab.'),
+    ).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Forget key' }));
+    expect(sessionStorage.getItem(KEYS_KEY)).toBeNull();
+    expect(screen.getByLabelText(/API key/)).toHaveValue('');
+  });
+
+  it('tests the connection and offers the available models', async () => {
+    vi.stubGlobal(
+      'fetch',
+      queuedFetch(
+        json({ data: [{ id: 'llama3:latest' }, { id: 'mistral:latest' }] }),
+        json({ choices: [{ message: { content: '{"ok":true}' } }] }),
+      ),
+    );
+    renderSettings();
+    await chooseProvider('Ollama (local)');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Test connection' }),
+    );
+
+    expect(
+      await screen.findByText(/Connected to Ollama with the model "llama3"/),
+    ).toBeInTheDocument();
+    await userEvent.click(screen.getByLabelText('Model'));
+    expect(
+      await screen.findByRole('option', { name: 'mistral:latest' }),
+    ).toBeInTheDocument();
+  });
+
+  it('names the cause when the connection fails', async () => {
+    vi.stubGlobal(
+      'fetch',
+      queuedFetch(
+        new TypeError('Failed to fetch'),
+        new TypeError('Failed to fetch'),
+      ),
+    );
+    renderSettings();
+    await chooseProvider('Ollama (local)');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Test connection' }),
+    );
+
+    expect(
+      await screen.findByText(
+        /Couldn't reach Ollama at http:\/\/localhost:11434/,
+      ),
+    ).toBeInTheDocument();
   });
 });

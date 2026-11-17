@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import AlertManagerDecorator from '@Test/decorators/AlertManagerDecorator';
 import SettingsDecorator from '@Test/decorators/SettingsDecorator';
 import Settings from './Settings';
 
@@ -9,7 +10,7 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
-  decorators: [SettingsDecorator],
+  decorators: [SettingsDecorator, AlertManagerDecorator],
   tags: ['autodocs'],
 } satisfies Meta;
 

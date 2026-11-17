@@ -5,5 +5,3 @@
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('./hooks/useSettings');
-vi.mock('./hooks/useOllama');
-vi.mock('./hooks/useAzure');

@@ -1,4 +1,5 @@
 import type { ZodType } from 'zod';
+import type { ProviderType } from '../types';
 
 export type CompletionRequest = {
   system: string;
@@ -14,6 +15,7 @@ export type CompletionRequest = {
  * Adapters reject with `AiError` only, except when the caller aborts.
  */
 export interface AiProvider {
+  readonly type: Exclude<ProviderType, 'none'>;
   /** Resolves with the answer: a parsed object when the provider guarantees JSON, text otherwise. */
   complete(request: CompletionRequest): Promise<unknown>;
   /** Model ids offered by the provider, or `undefined` when listing is not supported. */

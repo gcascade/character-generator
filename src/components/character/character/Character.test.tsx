@@ -11,28 +11,6 @@ import { Character as CharacterType } from '../../../types/character';
 import { RequestStatus } from '../../../types/requests';
 import Character from './Character';
 
-vi.mock('../../../hooks/useSettings', () => ({
-  __esModule: true,
-  default: () => ({
-    settings: {
-      useOllamaAPI: false,
-      ollamaEndpoint: '',
-      ollamaModelName: '',
-    },
-    setUseOllamaAPI: vi.fn(),
-    setOllamaEndpoint: vi.fn(),
-    setOllamaModelName: vi.fn(),
-  }),
-}));
-
-vi.mock('../../../hooks/useOllama', () => ({
-  __esModule: true,
-  default: () => ({
-    generateCharacterFromTemplateCharacter: vi.fn(),
-    generateBackground: vi.fn(),
-  }),
-}));
-
 describe('Character', () => {
   const mockCharacter: CharacterType = {
     firstName: 'John',

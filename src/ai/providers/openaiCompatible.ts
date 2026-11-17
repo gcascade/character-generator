@@ -8,7 +8,7 @@ import type { ProviderType } from '../types';
 import type { AiProvider, CompletionRequest } from './provider';
 
 type Options = {
-  providerType: ProviderType;
+  providerType: Exclude<ProviderType, 'none'>;
   /** Base URL of the OpenAI-compatible API, e.g. `https://api.openai.com/v1`. */
   baseUrl: string;
   model: string;
@@ -67,6 +67,8 @@ export const createOpenAiCompatibleProvider = ({
   };
 
   return {
+    type: providerType,
+
     async complete({ system, prompt, signal }: CompletionRequest) {
       const response = await request('chat/completions', {
         method: 'POST',

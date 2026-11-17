@@ -28,3 +28,34 @@ export const cancelledSignal = () => {
   controller.abort();
   return controller.signal;
 };
+
+/**
+ * A fake AiProvider answering `complete` with the queued values (an AiError or
+ * any Error is thrown instead). Records each request.
+ */
+export const fakeProvider = (
+  answers: unknown[],
+  options: {
+    type?: 'ollama' | 'openai-compatible' | 'anthropic';
+    models?: string[] | Error;
+  } = {},
+) => {
+  const requests: { system: string; prompt: string }[] = [];
+  return {
+    requests,
+    provider: {
+      type: options.type ?? 'ollama',
+      complete: vi.fn(async (request: { system: string; prompt: string }) => {
+        requests.push({ system: request.system, prompt: request.prompt });
+        const next = answers.shift();
+        // jsdom's DOMException does not extend Error.
+        if (next instanceof Error || next instanceof DOMException) throw next;
+        return next;
+      }),
+      listModels: vi.fn(async () => {
+        if (options.models instanceof Error) throw options.models;
+        return options.models;
+      }),
+    },
+  };
+};
