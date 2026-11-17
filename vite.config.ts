@@ -15,6 +15,7 @@ export default defineConfig({
       '@Components': fromRoot('./src/components'),
       '@Contexts': fromRoot('./src/contexts'),
       '@Types': fromRoot('./src/types'),
+      '@Ai': fromRoot('./src/ai'),
     },
   },
   server: {
