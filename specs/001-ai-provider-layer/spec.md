@@ -98,7 +98,7 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 - The user changes the provider in Settings while a request is in progress: the request finishes with the settings it started with.
 - The user unchecks "Remember on this device" after the key was saved: the durable copy is deleted immediately and only the session copy remains.
 - The saved settings in the browser are corrupted or from an unknown format: they are ignored, defaults are used ("No AI"), and nothing breaks.
-- The provider is reachable from the user's machine but blocks requests from a web page (cross-origin restriction, e.g. Ollama without allowed origins): the message says the provider refused the browser's request and links to how to allow it.
+- The provider is reachable from the user's machine but blocks requests from a web page (cross-origin restriction, e.g. Ollama without allowed origins): the browser reports it like an unreachable server, so the "unreachable" message also explains how to allow this site.
 - The site is served over HTTPS and the provider address is plain HTTP on another machine: the message explains that the browser blocks the request.
 
 ## Requirements _(mandatory)_
@@ -114,7 +114,7 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 - **FR-005**: The Settings page MUST state, next to the API key field, that the key is stored only in this browser and sent only to the chosen provider.
 - **FR-005a**: Next to the API key field, users MUST be able to choose "Remember on this device" (checked by default). When checked, the key survives closing the browser; when unchecked, it is kept only until the tab is closed.
 - **FR-005b**: Users MUST be able to delete the stored API key at any time with a "Forget key" action, after which no copy of the key remains in the browser.
-- **FR-006**: Users MUST be able to test the connection to the configured provider from Settings and see a success or a specific failure cause (unreachable, refused key, unknown model, blocked by the browser, too slow, unusable answer).
+- **FR-006**: Users MUST be able to test the connection to the configured provider from Settings and see a success or a specific failure cause (unreachable or blocked by cross-origin rules — one cause, since a browser cannot tell them apart —, insecure address blocked by the browser, refused key, unknown model, rate-limited, provider error, too slow, unusable answer).
 - **FR-006a**: The model MUST be entered in a free-text field pre-filled with a default for each provider type. After a successful connection test, when the provider can list its models, the app MUST offer that list to choose from; typing a name by hand MUST remain possible.
 
 **Generation and reroll**
