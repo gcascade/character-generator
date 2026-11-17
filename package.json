@@ -19,8 +19,9 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.10.0",
     "@azure-rest/ai-inference": "^1.0.0-beta.6",
-    "@azure/core-auth": "^1.9.0",
+    "@azure/core-auth": "^1.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^9.5.0",
@@ -30,7 +31,8 @@
     "react-dom": "^19.3.1",
     "react-hook-form": "^7.52.2",
     "react-router": "^8.5.1",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
