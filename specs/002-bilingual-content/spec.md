@@ -15,6 +15,7 @@
 - Q: How does French text refer to non-binary characters? → A: Neutral phrasing that avoids gendered words; no neopronoun and no inclusive punctuation.
 - Q: What happens to AI-written text when the user switches language? → A: It stays as written with its label, and a "Translate with AI" action rewrites it in the current language when an AI provider is configured.
 - Q: What happens to the 46 existing hand-written backgrounds? → A: They are replaced by fragments; their best passages are recycled as fragments (origins, trainings, turning points).
+- Q: Where is the language selector? → A: At the bottom of the navigation menu (always visible on desktop, in the drawer on phones), plus a reminder in Settings.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -124,7 +125,7 @@ A user who saved characters before this feature opens "My Characters". Old chara
 
 - **FR-001**: Every text of the interface (navigation, page titles, buttons, labels, helper texts, alerts, error messages, empty states, settings) MUST exist in English and French.
 - **FR-002**: On a first visit the language MUST follow the browser preference: French for any French variant, English otherwise.
-- **FR-003**: Users MUST be able to switch language from a selector reachable from every page; the switch MUST apply immediately without reload and be remembered on this device.
+- **FR-003**: Users MUST be able to switch language from a selector at the bottom of the navigation menu (always visible on desktop, inside the menu drawer on phones), also available in Settings; the switch MUST apply immediately without reload and be remembered on this device.
 - **FR-004**: The page language MUST be declared for assistive technologies and match the displayed language.
 - **FR-005**: Race, class, gender and alignment names MUST be displayed in the current language, with French gender agreement.
 
