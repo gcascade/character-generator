@@ -25,7 +25,6 @@ const mockAlerts: Alert[] = [
 
 type DemoComponentProps = {
   alerts: Alert[];
-  width: string;
 };
 
 type AddAlertButtonsProps = {
@@ -81,7 +80,7 @@ const AddAlertButtons: FC<AddAlertButtonsProps> = ({ resetAlerts }) => {
   );
 };
 
-const DemoComponent: FC<DemoComponentProps> = ({ alerts, width }) => {
+const DemoComponent: FC<DemoComponentProps> = ({ alerts }) => {
   const [currentAlerts, setCurrentAlerts] = useState<Alert[]>(alerts);
 
   const addAlert = (alert: Omit<Alert, 'id'>) => {
@@ -105,7 +104,7 @@ const DemoComponent: FC<DemoComponentProps> = ({ alerts, width }) => {
       value={{ alerts: currentAlerts, addAlert, removeAlert }}
     >
       <AddAlertButtons resetAlerts={resetAlerts} />
-      <AlertManager width={width} />
+      <AlertManager />
     </AlertManagerContext.Provider>
   );
 };
@@ -120,15 +119,6 @@ const meta: Meta<DemoComponentProps> = {
     return <DemoComponent {...args} />;
   },
   tags: ['autodocs'],
-  args: {
-    width: '300px',
-  },
-  argTypes: {
-    width: {
-      control: 'text',
-      defaultValue: '300px',
-    },
-  },
 } satisfies Meta<DemoComponentProps>;
 
 export default meta;

@@ -4,11 +4,8 @@ import React, { FC, useContext } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
 
-type AlertManagerProps = {
-  width: string;
-};
-
-const AlertManager: FC<AlertManagerProps> = ({ width }) => {
+// Bottom-right so alerts never cover the navigation menu.
+const AlertManager: FC = () => {
   const context = useContext(AlertManagerContext);
 
   if (!context) {
@@ -20,12 +17,11 @@ const AlertManager: FC<AlertManagerProps> = ({ width }) => {
   return (
     <Stack
       sx={{
-        width,
+        width: { xs: 'calc(100% - 32px)', sm: 360 },
         position: 'fixed',
-        left: 16,
+        right: 16,
         bottom: 16,
-        zIndex: 9999,
-        spacing: 2,
+        zIndex: (theme) => theme.zIndex.snackbar,
       }}
     >
       <TransitionGroup>
