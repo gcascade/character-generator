@@ -24,18 +24,18 @@ const Home: FC = () => {
   };
 
   return (
-    <Container maxWidth={false}>
-      <Paper elevation={3} style={{ padding: '20px' }}>
+    <Container maxWidth={false} disableGutters>
+      <Paper elevation={3} sx={{ padding: { xs: 1.5, sm: 2.5 } }}>
         <PageTitle>Character Generator</PageTitle>
         <Grid
           container
           spacing={2}
           style={{ display: 'flex', alignItems: 'stretch' }}
         >
-          <Grid size={{ xs: 12, md: 9 }} style={{ display: 'flex' }}>
+          <Grid size={{ xs: 12, lg: 8 }} style={{ display: 'flex' }}>
             <Character onGenerateCallback={onGenerateCallback} />
           </Grid>
-          <Grid size={{ xs: 12, md: 3 }} style={{ display: 'flex' }}>
+          <Grid size={{ xs: 12, lg: 4 }} style={{ display: 'flex' }}>
             <HistoryCard />
           </Grid>
         </Grid>
