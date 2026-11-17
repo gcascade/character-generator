@@ -8,6 +8,12 @@
 
 **Input**: User description: "AI provider layer for character generation. Today the app can optionally use an AI provider (Ollama running locally, or Azure / GitHub Models with an API key) to generate a character and its background; without AI it uses static data. Problems to solve: (1) AI responses are trusted blindly; (2) rerolling a single property with AI can silently change other properties; (3) each provider is wired separately with duplicated logic, so supporting another provider is costly; (4) when the AI call fails the user only gets a generic error and nothing is generated. Goals: pick one provider (or none), validated results, clear messages with fallback to the non-AI result, connection test in Settings, API key stays in the browser and the UI says so. Out of scope: AI portraits, content restructuring, i18n."
 
+## Clarifications
+
+### Session 2026-11-17
+
+- Q: Which AI provider types must Settings offer besides "No AI"? → A: Ollama (local), OpenAI-compatible, and a dedicated Claude (Anthropic) type; in-browser AI (e.g. Chrome built-in) is deferred.
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Generating with AI never breaks the app (Priority: P1)
@@ -48,7 +54,7 @@ A user likes a character but wants to change one property, for example the class
 
 ### User Story 3 - Choosing and checking a provider in Settings (Priority: P2)
 
-A user opens Settings, chooses one provider type (no AI, a local Ollama server, or an OpenAI-compatible service such as OpenAI, GitHub Models, Azure AI or LM Studio), fills in its address, model and, when needed, its API key, and clicks **Test connection** to know right away whether it works before going back to generate characters.
+A user opens Settings, chooses one provider type (no AI, a local Ollama server, Claude by Anthropic, or an OpenAI-compatible service such as OpenAI, GitHub Models, Azure AI, Mistral, Gemini, OpenRouter or LM Studio), fills in its address, model and, when needed, its API key, and clicks **Test connection** to know right away whether it works before going back to generate characters.
 
 **Why this priority**: Today a misconfiguration is only discovered when generation fails. A single, explicit choice also removes the current pair of switches that must be kept mutually exclusive.
 
@@ -56,7 +62,7 @@ A user opens Settings, chooses one provider type (no AI, a local Ollama server, 
 
 **Acceptance Scenarios**:
 
-1. **Given** the Settings page, **When** the user opens the provider choice, **Then** exactly one of "No AI", "Ollama (local)" and "OpenAI-compatible" can be selected, and "No AI" is the default for new users.
+1. **Given** the Settings page, **When** the user opens the provider choice, **Then** exactly one of "No AI", "Ollama (local)", "Claude (Anthropic)" and "OpenAI-compatible" can be selected, and "No AI" is the default for new users.
 2. **Given** a provider with correct settings, **When** the user clicks Test connection, **Then** a success result is shown within the time limit, including the model that answered.
 3. **Given** a provider with a wrong address, a wrong model or a refused key, **When** the user clicks Test connection, **Then** the result names which of these is the likely cause.
 4. **Given** the API key field, **When** the user views it, **Then** a notice states that the key is stored only in this browser and sent only to the chosen provider.
@@ -74,7 +80,7 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 
 **Acceptance Scenarios**:
 
-1. **Given** the two supported provider types, **When** their behaviours are compared, **Then** generation, reroll, validation, time limit and error messages are identical except for how the service is called.
+1. **Given** the three supported provider types, **When** their behaviours are compared, **Then** generation, reroll, validation, time limit and error messages are identical except for how the service is called.
 
 ---
 
@@ -95,8 +101,8 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 
 **Provider choice and configuration**
 
-- **FR-001**: Users MUST be able to choose exactly one provider type: "No AI", "Ollama (local)", or "OpenAI-compatible".
-- **FR-002**: For "Ollama (local)", users MUST be able to set the server address and the model; for "OpenAI-compatible", the service address, the model and an API key (optional, since some local services need none).
+- **FR-001**: Users MUST be able to choose exactly one provider type: "No AI", "Ollama (local)", "Claude (Anthropic)", or "OpenAI-compatible".
+- **FR-002**: For "Ollama (local)", users MUST be able to set the server address and the model; for "Claude (Anthropic)", the model and an API key (required); for "OpenAI-compatible", the service address, the model and an API key (optional, since some local services need none).
 - **FR-003**: The default provider type for a user with no saved settings MUST be "No AI".
 - **FR-004**: Settings saved by previous versions (Ollama or Azure switches and fields) MUST be migrated to the new choice on first load, without the user re-entering anything.
 - **FR-005**: The Settings page MUST state, next to the API key field, that the key is stored only in this browser and sent only to the chosen provider.
@@ -143,7 +149,9 @@ As the maintainer, I can support a new kind of AI service by describing how to c
 
 ## Assumptions
 
-- "OpenAI-compatible" covers the services the project cares about: OpenAI, GitHub Models, Azure AI services exposing the same chat API, and local servers such as LM Studio. A dedicated "Azure" type is therefore not kept; existing Azure settings are migrated to "OpenAI-compatible".
+- "OpenAI-compatible" covers OpenAI, GitHub Models, Azure AI services exposing the same chat API, Mistral, Gemini, OpenRouter, Groq and local servers such as LM Studio. A dedicated "Azure" type is therefore not kept; existing Azure settings are migrated to "OpenAI-compatible".
+- Claude (Anthropic) gets its own type because its API is not the OpenAI chat API; it is called through Anthropic's official client.
+- In-browser AI (e.g. the AI built into Chrome) is deferred: experimental and not available in every browser.
 - The new value of a rerolled property is chosen by the app from its own lists (as today without AI); asking the AI to invent the new value is out of scope.
 - 60 seconds is long enough for a local model on a modest machine to produce a background, and short enough that a stuck request does not feel endless.
 - Cancelling an in-progress AI request from the UI is out of scope for this feature.
