@@ -103,17 +103,17 @@ and tests that exercise the real code path (no mocking of the module under test)
 
 **Independent test**: one conformance suite runs unchanged against both adapters.
 
-- [ ] T026 [US4] Write an adapter conformance suite in src/ai/providers/conformance.test.ts, run with `describe.each` over the OpenAI-compatible adapter (mocked `fetch`) and the Anthropic adapter (mocked SDK): success returns the answer, each failure maps to the same `AiError` cause, abort and timeout behave the same, listing returns ids or `undefined`
-- [ ] T027 [US4] Document "How to add a provider" (implement `AiProvider`, register in `createProvider`, add to the conformance suite, add the type to the settings schema and select) in src/ai/README.md
+- [X] T026 [US4] Write an adapter conformance suite in src/ai/providers/conformance.test.ts, run with `describe.each` over the OpenAI-compatible adapter (mocked `fetch`) and the Anthropic adapter (mocked SDK): success returns the answer, each failure maps to the same `AiError` cause, abort and timeout behave the same, listing returns ids or `undefined`
+- [X] T027 [US4] Document "How to add a provider" (implement `AiProvider`, register in `createProvider`, add to the conformance suite, add the type to the settings schema and select) in src/ai/README.md
 
 ---
 
 ## Phase 7: Polish & cross-cutting concerns
 
-- [ ] T028 [P] Update README.md "API Integration": the three provider types, Ollama `OLLAMA_ORIGINS` for the deployed site, OpenAI-compatible examples (GitHub Models, OpenAI, Mistral, OpenRouter, LM Studio), Claude, the classic Azure OpenAI `api-key` limitation, and where keys are stored
-- [ ] T029 [P] Update CLAUDE.md (stack: zod and Anthropic SDK, `src/ai/` module, remove the AI items from "Known issues")
-- [ ] T030 Run `npm run lint`, `npm run typecheck`, `npm run test:run`, `npm run build` and `npm run build-storybook`; fix anything failing
-- [ ] T031 Run the quickstart manual scenarios that do not need real keys (1, 2, 7, 8, and 3/4/5 with a local mock server) in a browser and capture screenshots of Settings and of each alert type
+- [X] T028 [P] Update README.md "API Integration": the three provider types, Ollama `OLLAMA_ORIGINS` for the deployed site, OpenAI-compatible examples (GitHub Models, OpenAI, Mistral, OpenRouter, LM Studio), Claude, the classic Azure OpenAI `api-key` limitation, and where keys are stored
+- [X] T029 [P] Update CLAUDE.md (stack: zod and Anthropic SDK, `src/ai/` module, remove the AI items from "Known issues")
+- [X] T030 Run `npm run lint`, `npm run typecheck`, `npm run test:run`, `npm run build` and `npm run build-storybook`; fix anything failing
+- [X] T031 Run the quickstart manual scenarios that do not need real keys (1, 2, 7, 8, and 3/4/5 with a local mock server) in a browser and capture screenshots of Settings and of each alert type
 
 ---
 

@@ -1,11 +1,14 @@
 import { vi } from 'vitest';
 
 /** A fetch mock answering each call with the next queued response. */
-export const queuedFetch = (...responses: (Response | Error)[]) =>
+export const queuedFetch = (
+  ...responses: (Response | Error | DOMException)[]
+) =>
   vi.fn<typeof fetch>(async () => {
     const next = responses.shift();
     if (!next) throw new Error('No more queued responses');
-    if (next instanceof Error) throw next;
+    // jsdom's DOMException does not extend Error.
+    if (next instanceof Error || next instanceof DOMException) throw next;
     return next;
   });
 

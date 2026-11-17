@@ -72,29 +72,47 @@ npm run storybook
 npm run build-storybook
 ```
 
-# API Integration
+# AI generation (optional)
 
-This app can use external APIs or tools to generate characters.
+The generator works without any AI. Optionally, an AI provider can write names, epithets and backgrounds; race,
+class, gender, alignment and age are always chosen by the app. If the AI fails or answers badly, you still get a
+complete character and a message explaining what happened.
 
-## Ollama
+Choose a provider in **Settings**, then use **Test connection**: it checks the provider and lists its models.
 
-Install Ollama by following the instructions [here](https://github.com/ollama/ollama/blob/main/README.md)
+| Provider               | What to enter                                                      |
+| ---------------------- | ------------------------------------------------------------------ |
+| **Ollama (local)**     | Address (default `http://localhost:11434`) and model               |
+| **Claude (Anthropic)** | Model (default `claude-opus-5-5`) and an Anthropic API key         |
+| **OpenAI-compatible**  | Base URL, model and API key of any service speaking the OpenAI API |
 
-To allow additional web origins to access Ollama, set the environment variable OLLAMA_ORIGINS. For more information, refer to the [FAQ](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-allow-additional-web-origins-to-access-ollama)
+OpenAI-compatible examples:
 
-## Azure
+| Service           | Base URL                                       |
+| ----------------- | ---------------------------------------------- |
+| GitHub Models     | `https://models.github.ai/inference` (default) |
+| OpenAI            | `https://api.openai.com/v1`                    |
+| Mistral           | `https://api.mistral.ai/v1`                    |
+| OpenRouter        | `https://openrouter.ai/api/v1`                 |
+| LM Studio (local) | `http://localhost:1234/v1`                     |
 
-You can also use Azure as a backend for character generation.
+## Ollama and the deployed site
 
-**To use Azure integration:**
+Requests go straight from your browser to Ollama, so Ollama must allow the site's origin. Set the environment
+variable `OLLAMA_ORIGINS` (for example to `https://gcascade.github.io`) and restart Ollama; see the
+[Ollama FAQ](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-allow-additional-web-origins-to-access-ollama).
+Browsers block requests from an `https` page to a plain `http` address other than `localhost`, so a remote Ollama
+needs `https`.
 
-1. Obtain your Azure OpenAI endpoint, model name, and API key from the Azure Portal.
-2. In the app settings, enable "Azure API Integration" and fill in:
-   - **Azure Endpoint** (e.g. `https://<your-resource-name>.openai.azure.com`)
-   - **Azure Model Name** (e.g. `gpt-4`)
-   - **Azure Token** (your API key)
-3. Only one API (Ollama or Azure) can be enabled at a time.
+## API keys
 
-For more details on Azure OpenAI, see the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+Keys stay in your browser and are only sent to the provider you chose. With **Remember on this device** checked
+(default) the key is kept after you close the browser; unchecked, it is deleted when you close the tab.
+**Forget key** deletes it immediately. There is no server: anyone with access to this browser profile can read
+a remembered key.
 
-Github models are also usable : [Github Models](https://github.com/marketplace/models)
+## Limitations
+
+- Classic Azure OpenAI resources that only accept an `api-key` header are not supported; Azure AI model inference
+  endpoints and GitHub Models are.
+- Settings from previous versions (Ollama / Azure) are converted automatically on first load.
