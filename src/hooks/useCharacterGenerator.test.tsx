@@ -25,7 +25,10 @@ describe('useCharacterGenerator without AI', () => {
     const { result } = renderGenerator();
 
     await act(() =>
-      result.current.generator.generateNewCharacter({ apiType: 'none' }),
+      result.current.generator.generateNewCharacter(
+        undefined,
+        new AbortController().signal,
+      ),
     );
 
     expect(result.current.character).not.toBe(korvusBlackiron);
@@ -38,9 +41,11 @@ describe('useCharacterGenerator without AI', () => {
     const { result } = renderGenerator();
 
     await act(() =>
-      result.current.generator.rerollCharacterProperty('race', {
-        apiType: 'none',
-      }),
+      result.current.generator.rerollCharacterProperty(
+        'race',
+        undefined,
+        new AbortController().signal,
+      ),
     );
 
     const { race, ...rest } = result.current.character;

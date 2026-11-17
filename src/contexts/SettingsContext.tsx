@@ -2,107 +2,84 @@ import React, {
   FC,
   ReactNode,
   createContext,
+  useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
-
-type SettingsProviderProps = {
-  children: ReactNode;
-};
-
-export type OllamaSettings = {
-  useOllamaAPI: boolean;
-  ollamaEndpoint: string;
-  ollamaModelName: string;
-};
-
-export type AzureSettings = {
-  useAzureAPI: boolean;
-  azureEndpoint: string;
-  azureModelName: string;
-  azureToken: string;
-};
+import { loadAiState, saveKeys, saveSettings } from '../ai/storage';
+import type { ApiKeys, KeyedProviderType, ProviderSettings } from '../ai/types';
 
 export type SettingsContextType = {
-  ollamaSettings: OllamaSettings;
-  setOllamaSettings: (settings: Partial<OllamaSettings>) => void;
-  azureSettings: AzureSettings;
-  setAzureSettings: (settings: Partial<AzureSettings>) => void;
-};
-
-const defaultOllamaSettings: OllamaSettings = {
-  useOllamaAPI: false,
-  ollamaEndpoint: 'http://localhost:11434',
-  ollamaModelName: 'llama3',
-};
-
-const defaultAzureSettings: AzureSettings = {
-  useAzureAPI: false,
-  azureEndpoint: 'https://your-azure-endpoint.com',
-  azureModelName: 'openai/gpt-4.1',
-  azureToken: '',
-};
-
-// Settings are stored one key per field (kept for compatibility with existing data).
-// A missing key falls back to the default value.
-const loadSettings = <T extends Record<string, string | boolean>>(
-  defaults: T,
-): T => {
-  const loaded: Record<string, string | boolean> = { ...defaults };
-  for (const [key, defaultValue] of Object.entries(defaults)) {
-    const stored = localStorage.getItem(key);
-    if (stored === null) continue;
-    loaded[key] =
-      typeof defaultValue === 'boolean' ? stored === 'true' : stored;
-  }
-  return loaded as T;
-};
-
-const saveSettings = (settings: Record<string, string | boolean>) => {
-  for (const [key, value] of Object.entries(settings)) {
-    localStorage.setItem(key, String(value));
-  }
+  settings: ProviderSettings;
+  keys: ApiKeys;
+  updateSettings: (
+    update: (settings: ProviderSettings) => ProviderSettings,
+  ) => void;
+  setKey: (type: KeyedProviderType, key: string) => void;
+  setRememberKey: (remember: boolean) => void;
+  forgetKey: (type: KeyedProviderType) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(
   undefined,
 );
 
+type SettingsProviderProps = {
+  children: ReactNode;
+};
+
+/**
+ * Holds the AI provider settings and API keys. Loaded once from the browser
+ * storage (with legacy migration) and saved on every change.
+ */
 export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
-  const [ollamaSettings, setOllamaSettingsState] = useState(() =>
-    loadSettings(defaultOllamaSettings),
+  const [initial] = useState(loadAiState);
+  const [settings, setSettings] = useState(initial.settings);
+  const [keys, setKeys] = useState(initial.keys);
+
+  useEffect(() => saveSettings(settings), [settings]);
+  useEffect(
+    () => saveKeys(keys, settings.rememberKey),
+    [keys, settings.rememberKey],
   );
 
-  const [azureSettings, setAzureSettingsState] = useState(() =>
-    loadSettings(defaultAzureSettings),
+  const updateSettings = useCallback(
+    (update: (settings: ProviderSettings) => ProviderSettings) =>
+      setSettings(update),
+    [],
   );
 
-  useEffect(() => saveSettings(ollamaSettings), [ollamaSettings]);
-  useEffect(() => saveSettings(azureSettings), [azureSettings]);
+  const setKey = useCallback((type: KeyedProviderType, key: string) => {
+    setKeys((previous) => ({ ...previous, [type]: key.trim() || undefined }));
+  }, []);
 
-  const setOllamaSettings = (settings: Partial<OllamaSettings>) => {
-    setOllamaSettingsState((prevSettings) => ({
-      ...prevSettings,
-      ...settings,
-    }));
-  };
+  const setRememberKey = useCallback((rememberKey: boolean) => {
+    setSettings((previous) => ({ ...previous, rememberKey }));
+  }, []);
 
-  const setAzureSettings = (settings: Partial<AzureSettings>) => {
-    setAzureSettingsState((prevSettings) => ({
-      ...prevSettings,
-      ...settings,
-    }));
-  };
+  const forgetKey = useCallback((type: KeyedProviderType) => {
+    setKeys((previous) => {
+      const rest = { ...previous };
+      delete rest[type];
+      return rest;
+    });
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      settings,
+      keys,
+      updateSettings,
+      setKey,
+      setRememberKey,
+      forgetKey,
+    }),
+    [settings, keys, updateSettings, setKey, setRememberKey, forgetKey],
+  );
 
   return (
-    <SettingsContext.Provider
-      value={{
-        ollamaSettings,
-        setOllamaSettings,
-        azureSettings,
-        setAzureSettings,
-      }}
-    >
+    <SettingsContext.Provider value={value}>
       {children}
     </SettingsContext.Provider>
   );

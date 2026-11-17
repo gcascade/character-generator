@@ -55,6 +55,8 @@ export const createAnthropicProvider = ({
   });
 
   return {
+    type: PROVIDER,
+
     complete({ system, prompt, schema, signal }: CompletionRequest) {
       return guard(signal, async () => {
         if (!apiKey) throw new AiError('auth', PROVIDER);
