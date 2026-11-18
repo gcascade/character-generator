@@ -1,4 +1,5 @@
 import { Character } from '@Types/character';
+import { parseStoredCharacters } from '../content/storedCharacter';
 import React, {
   FC,
   ReactNode,
@@ -22,10 +23,9 @@ export const DataContext = createContext<DataContextType | undefined>(
 );
 
 export const DataProvider: FC<DataProviderProps> = ({ children }) => {
-  const [characters, setCharacters] = useState<Character[]>(() => {
-    const savedCharacters = localStorage.getItem('characters');
-    return savedCharacters ? JSON.parse(savedCharacters) : [];
-  });
+  const [characters, setCharacters] = useState<Character[]>(() =>
+    parseStoredCharacters(localStorage.getItem('characters')),
+  );
 
   useEffect(() => {
     localStorage.setItem('characters', JSON.stringify(characters));

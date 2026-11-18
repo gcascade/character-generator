@@ -1,19 +1,45 @@
 import { z, type ZodType } from 'zod';
+import type { Locale } from '../i18n';
 import type { Character } from '../types/character';
 import {
   backgroundRewriteSchema,
   type NameField,
   nameRerollSchema,
   newCharacterSchema,
+  translateSchema,
 } from './schemas';
 
 export type Prompt = { system: string; prompt: string; schema: ZodType };
+
+/** A character as shown to the AI: its epithet in words. */
+export type PromptCharacter = Character & { epithet: string };
 
 export const SYSTEM_PROMPT = [
   'You write characters for a classic heroic fantasy role-playing setting:',
   'evocative and adventurous, neither grimdark nor parodic.',
   'Always answer with a single JSON object and nothing else.',
 ].join(' ');
+
+const LANGUAGE_NAME: Record<Locale, string> = {
+  en: 'English',
+  fr: 'French',
+};
+
+/** Writing instructions per language (spec 002 FR-014 and the French clarification). */
+const languageRules = (locale: Locale, gender: Character['gender']) =>
+  [
+    `Write every text value in ${LANGUAGE_NAME[locale]}.`,
+    locale === 'fr' && gender === 'Non-binary'
+      ? 'The character is non-binary: in French, use neutral phrasing (the name, constructions without gendered pronouns or agreements); never use "iel" or inclusive punctuation.'
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+const EPITHET_STYLE: Record<Locale, string> = {
+  en: 'an epithet such as "the Bold" or "the Lionhearted"',
+  fr: 'an epithet such as "le Hardi", "la Hardie" or "Cœur-de-Lion"',
+};
 
 const BACKGROUND_RULES =
   'The background has a short title and 4 to 6 paragraphs in the third person.';
@@ -39,20 +65,24 @@ const fixedFacts = (character: Character) =>
   ].join('\n');
 
 /** New character: the AI writes names, epithet and background. */
-export const newCharacterPrompt = (character: Character): Prompt => ({
+export const newCharacterPrompt = (
+  character: Character,
+  locale: Locale = 'en',
+): Prompt => ({
   system: SYSTEM_PROMPT,
   schema: newCharacterSchema,
   prompt: [
     `Create ${describe(character)}.`,
     'These facts are fixed:',
     fixedFacts(character),
-    'Write a first name, a last name, an epithet starting with "The", and a background.',
+    `Write a first name, a last name, ${EPITHET_STYLE[locale]}, and a background.`,
     BACKGROUND_RULES,
+    languageRules(locale, character.gender),
     `Answer with JSON matching this schema: ${schemaText(newCharacterSchema)}`,
   ].join('\n'),
 });
 
-const currentCharacter = (character: Character) =>
+const currentCharacter = (character: PromptCharacter) =>
   [
     `Name: ${character.firstName} ${character.lastName}`,
     `Epithet: ${character.epithet}`,
@@ -61,8 +91,9 @@ const currentCharacter = (character: Character) =>
 
 /** Race, class, gender, alignment or age changed: rewrite the background only. */
 export const backgroundRewritePrompt = (
-  character: Character,
+  character: PromptCharacter,
   changed: keyof Character,
+  locale: Locale = 'en',
 ): Prompt => ({
   system: SYSTEM_PROMPT,
   schema: backgroundRewriteSchema,
@@ -71,6 +102,7 @@ export const backgroundRewritePrompt = (
     currentCharacter(character),
     'Write a new background consistent with every fact above.',
     BACKGROUND_RULES,
+    languageRules(locale, character.gender),
     `Answer with JSON matching this schema: ${schemaText(backgroundRewriteSchema)}`,
   ].join('\n'),
 });
@@ -78,13 +110,14 @@ export const backgroundRewritePrompt = (
 const FIELD_LABEL: Record<NameField, string> = {
   firstName: 'first name',
   lastName: 'last name',
-  epithet: 'epithet (starting with "The")',
+  epithet: 'epithet',
 };
 
 /** First name, last name or epithet rerolled: the AI proposes the value and a matching background. */
 export const nameRerollPrompt = (
-  character: Character,
+  character: PromptCharacter,
   field: NameField,
+  locale: Locale = 'en',
 ): Prompt => {
   const schema = nameRerollSchema(field);
   return {
@@ -94,9 +127,30 @@ export const nameRerollPrompt = (
       'Here is a character:',
       currentCharacter(character),
       `Give this character a new ${FIELD_LABEL[field]}, different from "${character[field]}", and keep everything else.`,
+      field === 'epithet' ? `Use ${EPITHET_STYLE[locale]}.` : '',
       'Then write a background consistent with the new value and every fact above.',
       BACKGROUND_RULES,
+      languageRules(locale, character.gender),
       `Answer with JSON matching this schema: ${schemaText(schema)}`,
-    ].join('\n'),
+    ]
+      .filter(Boolean)
+      .join('\n'),
   };
 };
+
+/** Translate AI-written text into another language, keeping the story (spec 002 FR-015a). */
+export const translatePrompt = (
+  character: PromptCharacter,
+  locale: Locale,
+): Prompt => ({
+  system: SYSTEM_PROMPT,
+  schema: translateSchema,
+  prompt: [
+    `Translate this character's epithet and background into ${LANGUAGE_NAME[locale]}.`,
+    'Keep the same story, the same names and the same tone; do not add or remove events.',
+    currentCharacter(character),
+    `Background: ${JSON.stringify(character.background ?? null)}`,
+    languageRules(locale, character.gender),
+    `Answer with JSON matching this schema: ${schemaText(translateSchema)}`,
+  ].join('\n'),
+});

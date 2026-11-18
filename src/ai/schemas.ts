@@ -27,6 +27,12 @@ export const backgroundRewriteSchema = z.object({
   background: backgroundSchema,
 });
 
+/** Shape asked when translating AI-written text. */
+export const translateSchema = z.object({
+  epithet: epithetSchema,
+  background: backgroundSchema,
+});
+
 export type NameField = 'firstName' | 'lastName' | 'epithet';
 
 /** Shape asked when a name field or the epithet was rerolled. */

@@ -49,7 +49,8 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   const { character } = characterContext;
   const { firstName, lastName, gender, race, characterClass } = character;
 
-  const { requestStatus, generateNewCharacter } = useCharacterRequest();
+  const { requestStatus, generateNewCharacter, translateCharacter, canUseAi } =
+    useCharacterRequest();
 
   const { addError, addSuccess } = useAlert();
 
@@ -115,7 +116,10 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
           }
         >
           <CharacterInformation />
-          <CharacterBackground />
+          <CharacterBackground
+            onTranslate={canUseAi ? () => translateCharacter() : undefined}
+            translating={requestStatus === 'loading'}
+          />
         </div>
       </CardContent>
       <CardActions>

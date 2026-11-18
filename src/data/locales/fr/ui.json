@@ -116,5 +116,7 @@
   "reroll.age": "Relancer l'âge",
   "reroll.alignment": "Relancer l'alignement",
   "punct.colon": " :",
-  "character.portrait": "Portrait du personnage"
+  "character.portrait": "Portrait du personnage",
+  "language.inline.en": "anglais",
+  "language.inline.fr": "français"
 }

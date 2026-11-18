@@ -109,7 +109,7 @@ const {
   age,
   alignment,
   background: { title, content },
-} = korvusBlackiron;
+} = { ...korvusBlackiron, background: korvusBlackiron.background! };
 
 export const Default: Story = {
   args: {

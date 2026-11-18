@@ -5,6 +5,8 @@ import useCharacterRequest from '../../../hooks/useCharacterRequest';
 import { type MessageKey, useLocale, useT } from '../../../i18n';
 import { Character } from '../../../types/character';
 import CharacterProperty from '../characterProperty/CharacterProperty';
+import { renderCharacter } from '../../../content/character';
+import { capitalize } from '../../../content/renderText';
 
 type Field = {
   property: keyof Character;
@@ -49,6 +51,9 @@ const CharacterInformation: FC = () => {
     if (property in LABEL_KIND) {
       const kind = LABEL_KIND[property as keyof typeof LABEL_KIND];
       return label(kind, String(value), character.gender, locale);
+    }
+    if (property === 'epithet') {
+      return capitalize(renderCharacter(character, locale).epithet);
     }
     return value as string | number;
   };

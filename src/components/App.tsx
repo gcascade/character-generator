@@ -21,7 +21,7 @@ import { SettingsProvider } from '../contexts/SettingsContext';
 import { LocaleProvider, useT } from '../i18n';
 import routes from '../routes';
 import theme from '../themes/themes';
-import { generateRandomCharacter } from '../utils/character';
+import { generateRandomCharacter } from '../content/generate';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
 import DrawerMenu from './navigation/drawerMenu/DrawerMenu';

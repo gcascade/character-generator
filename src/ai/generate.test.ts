@@ -13,6 +13,7 @@ import {
   cancelledSignal,
   fakeProvider,
 } from './providers/testing';
+import { renderCharacter as displayed } from '../content/character';
 
 const background = {
   title: 'The Ember Road',
@@ -29,14 +30,15 @@ const fullAnswer = {
 const expectComplete = (character: Character) => {
   expect(character.firstName).toBeTruthy();
   expect(character.lastName).toBeTruthy();
-  expect(character.epithet).toBeTruthy();
+  const shown = displayed(character, 'en');
+  expect(shown.epithet).toBeTruthy();
   expect(Object.values(CharacterRaces)).toContain(character.race);
   expect(Object.values(CharacterClasses)).toContain(character.characterClass);
   expect(Object.values(Genders)).toContain(character.gender);
   expect(Object.values(CharacterAlignments)).toContain(character.alignment);
   expect(character.age).toBeGreaterThan(0);
-  expect(character.background.title).toBeTruthy();
-  expect(character.background.content.length).toBeGreaterThan(0);
+  expect(shown.background.title).toBeTruthy();
+  expect(shown.background.content.length).toBeGreaterThan(0);
 };
 
 describe('generateCharacter', () => {
@@ -138,11 +140,23 @@ describe('generateCharacter', () => {
 });
 
 describe('rerollProperty', () => {
+  /** Identity and rules values other than the rerolled one (names may follow a gender change). */
   const others = (character: Character, property: keyof Character) => {
-    const copy: Partial<Character> = { ...character };
-    delete copy[property];
-    delete copy.background;
-    return copy;
+    const keys: (keyof Character)[] = [
+      'firstName',
+      'lastName',
+      'race',
+      'characterClass',
+      'gender',
+      'alignment',
+      'age',
+    ];
+    return Object.fromEntries(
+      keys
+        .filter((key) => key !== property)
+        .filter((key) => !(property === 'gender' && key === 'firstName'))
+        .map((key) => [key, character[key]]),
+    );
   };
 
   describe.each([
@@ -215,7 +229,7 @@ describe('rerollProperty', () => {
 
       it('lets the app choose when the AI repeats the previous value', async () => {
         const { provider } = fakeProvider([
-          { [field]: korvusBlackiron[field].toUpperCase(), background },
+          { [field]: korvusBlackiron[field]!.toUpperCase(), background },
         ]);
         const outcome = await rerollProperty(
           provider,

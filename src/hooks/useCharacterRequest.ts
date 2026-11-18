@@ -10,6 +10,8 @@ import useAlert from './useAlert';
 import useCharacterGenerator from './useCharacterGenerator';
 import useSettings from './useSettings';
 import { useT } from '../i18n';
+import { type Locale, useLocale } from '../i18n';
+import type { OutcomeKind } from '../ai/messages';
 
 type CharacterRequestOptions = {
   /** Called once the request is over, whatever its outcome. */
@@ -31,10 +33,11 @@ const useCharacterRequest = () => {
 
   const { requestStatus, setRequestStatus, error, setError } = requestContext;
   const { settings, keys } = useSettings();
-  const { generateNewCharacter, rerollCharacterProperty } =
+  const { generateNewCharacter, rerollCharacterProperty, translateCharacter } =
     useCharacterGenerator();
   const { addSuccess, addInfo, addWarning, addError } = useAlert();
   const t = useT();
+  const { locale } = useLocale();
   const controller = useRef<AbortController | null>(null);
 
   // A result arriving after the component is gone must not change anything.
@@ -42,10 +45,11 @@ const useCharacterRequest = () => {
 
   const run = useCallback(
     async (
-      kind: 'generate' | 'reroll',
+      kind: OutcomeKind,
       action: (
         provider: AiProvider | undefined,
         signal: AbortSignal,
+        locale: Locale,
       ) => Promise<GenerationOutcome>,
       { doneCallback }: CharacterRequestOptions,
     ) => {
@@ -58,6 +62,7 @@ const useCharacterRequest = () => {
         const outcome = await action(
           createProvider(settings, keys),
           current.signal,
+          locale,
         );
         const alert = outcomeToAlert(
           outcome,
@@ -97,6 +102,7 @@ const useCharacterRequest = () => {
       addWarning,
       addError,
       t,
+      locale,
     ],
   );
 
@@ -110,14 +116,30 @@ const useCharacterRequest = () => {
     (property: keyof Character, options: CharacterRequestOptions = {}) =>
       run(
         'reroll',
-        (provider, signal) =>
-          rerollCharacterProperty(property, provider, signal),
+        (provider, signal, language) =>
+          rerollCharacterProperty(property, provider, signal, language),
         options,
       ),
     [run, rerollCharacterProperty],
   );
 
+  /** Rewrites AI-written text in the interface language (spec 002 FR-015a). */
+  const translate = useCallback(
+    (options: CharacterRequestOptions = {}) =>
+      run(
+        'translate',
+        (provider, signal, language) =>
+          provider
+            ? translateCharacter(provider, signal, language)
+            : Promise.reject(new DOMException('No provider', 'AbortError')),
+        options,
+      ),
+    [run, translateCharacter],
+  );
+
   return {
+    canUseAi: settings.activeType !== 'none',
+    translateCharacter: translate,
     requestStatus,
     error,
     generateNewCharacter: generate,

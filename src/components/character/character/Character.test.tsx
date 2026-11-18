@@ -46,6 +46,8 @@ describe('Character', () => {
       generateNewCharacter: mockGenerateNewCharacter,
       error: '',
       rerollCharacterProperty: vi.fn(),
+      translateCharacter: vi.fn(),
+      canUseAi: false,
     }));
 
     return render(
@@ -101,10 +103,10 @@ describe('Character', () => {
 
   test('displays character background correctly', () => {
     renderComponent();
-    const backgroundTitle = screen.getByText(mockCharacter.background.title);
+    const backgroundTitle = screen.getByText(mockCharacter.background!.title);
     expect(backgroundTitle).toBeInTheDocument();
 
-    mockCharacter.background.content.forEach((content) => {
+    mockCharacter.background!.content.forEach((content) => {
       const backgroundContent = screen.getByText(content);
       expect(backgroundContent).toBeInTheDocument();
     });
