@@ -30,7 +30,7 @@ export type AiContribution = {
   firstName: string;
   lastName: string;
   epithet: string;
-  background: Character['background'];
+  background: NonNullable<Character['background']>;
 };
 
 export type AiContributionField = keyof AiContribution;

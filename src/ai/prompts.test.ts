@@ -27,7 +27,7 @@ describe('prompts', () => {
 
   it('asks only for a background after a rules value changed', () => {
     const { prompt, schema } = backgroundRewritePrompt(
-      { ...korvusBlackiron, characterClass: 'Mage' },
+      { ...korvusBlackiron, epithet: 'The Unyielding', characterClass: 'Mage' },
       'characterClass',
     );
     expect(prompt).toContain('class has just changed');
@@ -40,7 +40,10 @@ describe('prompts', () => {
   });
 
   it('asks for a different value and a matching background on a name reroll', () => {
-    const { prompt, schema } = nameRerollPrompt(korvusBlackiron, 'epithet');
+    const { prompt, schema } = nameRerollPrompt(
+      { ...korvusBlackiron, epithet: 'The Unyielding' },
+      'epithet',
+    );
     expect(prompt).toContain('different from "The Unyielding"');
     expect(prompt).toContain('"epithet"');
     expect(

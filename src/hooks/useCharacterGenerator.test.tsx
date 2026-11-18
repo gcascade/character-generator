@@ -4,6 +4,7 @@ import { act, renderHook } from '@testing-library/react';
 import React, { ReactNode, useContext } from 'react';
 import { CharacterContext } from '../contexts/CharacterContext';
 import useCharacterGenerator from './useCharacterGenerator';
+import { renderCharacter } from '../content/character';
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <CharacterProvider initCharacter={korvusBlackiron}>
@@ -32,9 +33,9 @@ describe('useCharacterGenerator without AI', () => {
     );
 
     expect(result.current.character).not.toBe(korvusBlackiron);
-    expect(result.current.character.background.content.length).toBeGreaterThan(
-      0,
-    );
+    expect(
+      renderCharacter(result.current.character, 'en').background.content,
+    ).toHaveLength(4);
   });
 
   it('rerolls a single property and keeps the others', async () => {

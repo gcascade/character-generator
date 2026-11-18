@@ -1,6 +1,8 @@
 import { z } from 'zod';
+import { renderCharacter } from '../content/character';
+import { generateRandomCharacter, rerollWithApp } from '../content/generate';
+import type { Locale } from '../i18n';
 import type { Character } from '../types/character';
-import { generateRandomCharacter } from '../utils/character';
 import { AiError, isCallerAbort } from './errors';
 import { extractJson } from './extractJson';
 import {
@@ -8,6 +10,8 @@ import {
   nameRerollPrompt,
   newCharacterPrompt,
   type Prompt,
+  type PromptCharacter,
+  translatePrompt,
 } from './prompts';
 import { type AiProvider, withTimeout } from './providers';
 import { type NameField, validateContribution } from './schemas';
@@ -16,6 +20,8 @@ import type {
   ConnectionTestResult,
   GenerationOutcome,
 } from './types';
+
+export { rerollWithApp };
 
 const NAME_FIELDS: readonly NameField[] = ['firstName', 'lastName', 'epithet'];
 const ALL_FIELDS: readonly AiContributionField[] = [
@@ -34,6 +40,19 @@ const appOnly = (
   source: 'app',
   completedFields: [],
   failure,
+});
+
+/** The character as the AI should see it: with its epithet in words. */
+const view = (character: Character, locale: Locale): PromptCharacter => ({
+  ...character,
+  epithet: renderCharacter(character, locale).epithet,
+});
+
+/** Marks text as written by the AI in `locale` (FR-015). */
+const writtenByAi = (character: Character, locale: Locale): Character => ({
+  ...character,
+  textLanguage: locale,
+  textSource: 'ai',
 });
 
 /** Calls the provider and turns the answer into a JSON value (or undefined). */
@@ -68,33 +87,20 @@ const differs = (a: unknown, b: unknown) =>
     : a !== b;
 
 /**
- * Rerolls one property with the app's own content, making sure the new value
- * differs from the previous one. Other properties are kept; the background is
- * regenerated from the app's templates.
+ * New character: the app decides the rules values and its own content; the AI
+ * writes names, epithet and background in `locale` (FR-007, spec 002 FR-014).
  */
-export const rerollWithApp = (
-  character: Character,
-  property: keyof Character,
-): Character => {
-  let next = character;
-  for (let attempt = 0; attempt < 20; attempt++) {
-    next = generateRandomCharacter({ ...character, [property]: undefined });
-    if (differs(next[property], character[property])) break;
-  }
-  return next;
-};
-
-/** New character: the app decides the rules values, the AI writes the text (FR-007). */
 export const generateCharacter = async (
   provider: AiProvider | undefined,
   signal: AbortSignal,
+  locale: Locale = 'en',
 ): Promise<GenerationOutcome> => {
-  const base = generateRandomCharacter({});
+  const base = generateRandomCharacter();
   if (!provider) return appOnly(base);
 
   let answer: unknown;
   try {
-    answer = await ask(provider, newCharacterPrompt(base), signal);
+    answer = await ask(provider, newCharacterPrompt(base, locale), signal);
   } catch (error) {
     return appOnly(base, toAiError(error, provider));
   }
@@ -105,7 +111,8 @@ export const generateCharacter = async (
   }
   const completedFields = NAME_FIELDS.filter((field) => !valid[field]);
   return {
-    character: { ...base, ...valid },
+    // Missing fields keep the app's values (an epithet from content, rendered in any language).
+    character: writtenByAi({ ...base, ...valid }, locale),
     source: completedFields.length ? 'ai-completed' : 'ai',
     completedFields,
   };
@@ -116,11 +123,17 @@ const rerollName = async (
   character: Character,
   field: NameField,
   signal: AbortSignal,
+  locale: Locale,
 ): Promise<GenerationOutcome> => {
   const fallback = rerollWithApp(character, field);
+  const current = view(character, locale);
   let answer: unknown;
   try {
-    answer = await ask(provider, nameRerollPrompt(character, field), signal);
+    answer = await ask(
+      provider,
+      nameRerollPrompt(current, field, locale),
+      signal,
+    );
   } catch (error) {
     return appOnly(fallback, toAiError(error, provider));
   }
@@ -128,22 +141,29 @@ const rerollName = async (
   const valid = validateContribution(answer, [field, 'background']);
   const proposed = valid[field];
   const accepted =
-    proposed !== undefined && differs(proposed, character[field])
+    proposed !== undefined && differs(proposed, current[field])
       ? proposed
       : undefined;
-  const value = accepted ?? fallback[field];
 
   if (!valid.background) {
-    // Background from the app's templates, consistent with the chosen value.
+    // The app's own content, with the AI's value when it was usable.
     return appOnly(
-      generateRandomCharacter({ ...character, [field]: value }),
+      accepted !== undefined ? { ...fallback, [field]: accepted } : fallback,
       new AiError('invalid-answer', provider.type),
     );
   }
+  const base = accepted !== undefined ? character : fallback;
   return {
-    character: { ...character, [field]: value, background: valid.background },
-    source: accepted ? 'ai' : 'ai-completed',
-    completedFields: accepted ? [] : [field],
+    character: writtenByAi(
+      {
+        ...base,
+        ...(accepted !== undefined ? { [field]: accepted } : {}),
+        background: valid.background,
+      },
+      locale,
+    ),
+    source: accepted !== undefined ? 'ai' : 'ai-completed',
+    completedFields: accepted !== undefined ? [] : [field],
   };
 };
 
@@ -152,13 +172,14 @@ const rerollRulesValue = async (
   character: Character,
   property: keyof Character,
   signal: AbortSignal,
+  locale: Locale,
 ): Promise<GenerationOutcome> => {
   const updated = rerollWithApp(character, property);
   let answer: unknown;
   try {
     answer = await ask(
       provider,
-      backgroundRewritePrompt(updated, property),
+      backgroundRewritePrompt(view(updated, locale), property, locale),
       signal,
     );
   } catch (error) {
@@ -169,7 +190,7 @@ const rerollRulesValue = async (
     return appOnly(updated, new AiError('invalid-answer', provider.type));
   }
   return {
-    character: { ...updated, background },
+    character: writtenByAi({ ...updated, background }, locale),
     source: 'ai',
     completedFields: [],
   };
@@ -185,12 +206,54 @@ export const rerollProperty = (
   character: Character,
   property: keyof Character,
   signal: AbortSignal,
+  locale: Locale = 'en',
 ): Promise<GenerationOutcome> => {
   if (!provider)
     return Promise.resolve(appOnly(rerollWithApp(character, property)));
   return isNameField(property)
-    ? rerollName(provider, character, property, signal)
-    : rerollRulesValue(provider, character, property, signal);
+    ? rerollName(provider, character, property, signal, locale)
+    : rerollRulesValue(provider, character, property, signal, locale);
+};
+
+/**
+ * Rewrites AI-written text (epithet and background) in `locale`, keeping the
+ * story (spec 002 FR-015a). On failure the character is returned unchanged.
+ */
+export const translateWritten = async (
+  provider: AiProvider,
+  character: Character,
+  locale: Locale,
+  signal: AbortSignal,
+): Promise<GenerationOutcome> => {
+  const current = view(character, locale);
+  const fields: AiContributionField[] =
+    character.epithet !== undefined
+      ? ['epithet', 'background']
+      : ['background'];
+  let answer: unknown;
+  try {
+    answer = await ask(provider, translatePrompt(current, locale), signal);
+  } catch (error) {
+    return appOnly(character, toAiError(error, provider));
+  }
+  const valid = validateContribution(answer, fields);
+  if (!valid.background) {
+    return appOnly(character, new AiError('invalid-answer', provider.type));
+  }
+  return {
+    character: writtenByAi(
+      {
+        ...character,
+        background: valid.background,
+        ...(character.epithet !== undefined && valid.epithet
+          ? { epithet: valid.epithet }
+          : {}),
+      },
+      locale,
+    ),
+    source: 'ai',
+    completedFields: [],
+  };
 };
 
 const PING = {

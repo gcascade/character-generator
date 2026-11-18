@@ -4,14 +4,26 @@ import React, { FC, useContext, useMemo, useState } from 'react';
 import { CharacterContext } from '../../../contexts/CharacterContext';
 import CharacterTypography from '../characterTypography/CharacterTypography';
 import './CharacterBackground.css';
-import { useT } from '../../../i18n';
+import { useLocale, useT } from '../../../i18n';
+import { renderCharacter } from '../../../content/character';
+import WrittenInNotice from '../writtenInNotice/WrittenInNotice';
 
 const MAX_LENGTH = 500;
 
-const CharacterBackground: FC = () => {
+type CharacterBackgroundProps = {
+  /** Rewrites AI-written text in the interface language; offered when an AI provider is configured. */
+  onTranslate?: VoidFunction;
+  translating?: boolean;
+};
+
+const CharacterBackground: FC<CharacterBackgroundProps> = ({
+  onTranslate,
+  translating,
+}) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
   const t = useT();
+  const { locale } = useLocale();
   const context = useContext(CharacterContext);
 
   if (!context) {
@@ -19,12 +31,9 @@ const CharacterBackground: FC = () => {
       'CharacterBackground must be used within a CharacterProvider',
     );
   }
-  const {
-    character: {
-      background,
-      background: { content, title },
-    },
-  } = context;
+  const rendered = renderCharacter(context.character, locale);
+  const { background } = rendered;
+  const { content, title } = background;
 
   const processedContent = useMemo(() => {
     if (!content) {
@@ -78,6 +87,14 @@ const CharacterBackground: FC = () => {
       <Typography variant="h5" className="background-title">
         {title}
       </Typography>
+      {rendered.writtenIn && (
+        <WrittenInNotice
+          language={rendered.writtenIn}
+          by={rendered.writtenBy ?? 'legacy'}
+          onTranslate={rendered.writtenBy === 'ai' ? onTranslate : undefined}
+          translating={translating}
+        />
+      )}
       {processedContent?.map((paragraph) => (
         <div
           key={`content-${simpleHash(paragraph)}`}

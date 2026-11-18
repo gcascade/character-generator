@@ -30,8 +30,8 @@ const CharacterDecorator: Decorator<ContextProps> = (Story, context) => {
     ...korvusBlackiron,
     ...args,
     background: {
-      title: title || korvusBlackiron.background.title,
-      content: content || korvusBlackiron.background.content,
+      title: title || korvusBlackiron.background!.title,
+      content: content || korvusBlackiron.background!.content,
     },
   };
 

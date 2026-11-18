@@ -1,13 +1,31 @@
+/** References to the app's content, rendered in the current language (spec 002). */
+export type ContentRefs = {
+  titleId: string;
+  originId: string;
+  trainingId: string;
+  turningPointId: string;
+  goalId: string;
+  epithetId: string;
+};
+
 export type Character = {
   firstName: string;
   lastName: string;
-  epithet: string;
   characterClass: CharacterClass;
   gender: Gender;
   race: CharacterRace;
   alignment: CharacterAlignment;
   age: number;
-  background: CharacterBackground;
+  /** App-made content; absent only for characters saved by older versions. */
+  content?: ContentRefs;
+  /** Epithet written as text (by the AI or an older version); overrides `content`. */
+  epithet?: string;
+  /** Background written as text (by the AI or an older version); overrides `content`. */
+  background?: CharacterBackground;
+  /** Language of `epithet` / `background` text; older versions wrote English. */
+  textLanguage?: 'en' | 'fr';
+  /** Who wrote the text: the AI, or an older version of the app. */
+  textSource?: 'ai' | 'legacy';
 };
 
 export const Genders = {

@@ -17,6 +17,8 @@ import '../Character.css';
 import CharacterImage from '../characterImage/CharacterImage';
 import { useLocale, useT } from '../../../i18n';
 import { label } from '../../../content/labels';
+import { renderCharacter } from '../../../content/character';
+import { capitalize } from '../../../content/renderText';
 
 type CharacterSummaryProps = {
   character: Character;
@@ -44,16 +46,8 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
   const { locale } = useLocale();
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
-  const {
-    firstName,
-    lastName,
-    age,
-    epithet,
-    race,
-    characterClass,
-    gender,
-    alignment,
-  } = character;
+  const { firstName, lastName, age, race, characterClass, gender, alignment } =
+    character;
 
   const onDeleteClick = () => {
     if (confirmDelete) {
@@ -100,7 +94,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
         }
         subheader={
           <Typography variant="subtitle1" align="center">
-            {epithet}
+            {capitalize(renderCharacter(character, locale).epithet)}
           </Typography>
         }
         action={

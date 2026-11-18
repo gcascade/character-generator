@@ -15,6 +15,7 @@ import {
 import { RequestContext, RequestProvider } from '../contexts/RequestContext';
 import useCharacterRequest from './useCharacterRequest';
 import useSettings from './useSettings';
+import { renderCharacter } from '../content/character';
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <AlertManagerProvider>
@@ -78,9 +79,9 @@ describe('useCharacterRequest', () => {
     await act(() => result.current.request.generateNewCharacter());
 
     expect(result.current.character).not.toBe(korvusBlackiron);
-    expect(result.current.character.background.content.length).toBeGreaterThan(
-      0,
-    );
+    expect(
+      renderCharacter(result.current.character, 'en').background.content,
+    ).toHaveLength(4);
     const [alert] = result.current.alerts;
     expect(alert.severity).toBe('warning');
     expect(alert.message).toMatch(/^Couldn't reach Ollama/);

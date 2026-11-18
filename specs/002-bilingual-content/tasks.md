@@ -29,9 +29,9 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 - [X] T002 Implement `renderText(text, gender, names)` in src/content/renderText.ts: `{{m|f|n}}` selection (exactly 3 options), `{ m, f, n }` objects, placeholders `{firstName}`, `{lastName}`, `{fullName}`, `{epithet}`; throws on unknown placeholder in development; tests in src/content/renderText.test.ts for each gender and both syntaxes
 - [X] T003 [P] Implement the i18n module in src/i18n/: `detectLocale(stored, browserLanguages)` ("fr*" → `fr`, else `en`; invalid stored value ignored), `LocaleProvider` (lazy init from `localStorage["locale"]`, saves on change, sets `document.documentElement.lang`), `useLocale()`, `useT()` with `{param}` interpolation and keys typed from src/data/locales/en/ui.json; tests in src/i18n/i18n.test.tsx
-- [ ] T004 [P] Extend `Character` in src/types/character.ts with `content?: { titleId; originId; trainingId; turningPointId; goalId; epithetId }` and `written?: { language: 'en' | 'fr'; source: 'ai' | 'legacy'; epithet: string; background: CharacterBackground }` ("Exactly one of `content` / `written` is present"); keep `background`/`epithet` only as legacy input
-- [ ] T005 Write zod schemas for stored characters in src/content/storedCharacter.ts: current shape (`content` xor `written`) and the legacy shape (`background` text, no `content`) converted to `written: { language: 'en', source: 'legacy' }`; invalid entries dropped; tests in src/content/storedCharacter.test.ts
-- [ ] T006 Use the stored-character schema when loading `characters` in src/contexts/DataContext.tsx and `characterHistory` in src/contexts/HistoryContext.tsx; compare characters by value-independent identity is out of scope (keep reference comparison); update their tests
+- [X] T004 [P] Extend `Character` in src/types/character.ts with `content?: { titleId; originId; trainingId; turningPointId; goalId; epithetId }` and `written?: { language: 'en' | 'fr'; source: 'ai' | 'legacy'; epithet: string; background: CharacterBackground }` ("Exactly one of `content` / `written` is present"); keep `background`/`epithet` only as legacy input
+- [X] T005 Write zod schemas for stored characters in src/content/storedCharacter.ts: current shape (`content` xor `written`) and the legacy shape (`background` text, no `content`) converted to `written: { language: 'en', source: 'legacy' }`; invalid entries dropped; tests in src/content/storedCharacter.test.ts
+- [X] T006 Use the stored-character schema when loading `characters` in src/contexts/DataContext.tsx and `characterHistory` in src/contexts/HistoryContext.tsx; compare characters by value-independent identity is out of scope (keep reference comparison); update their tests
 - [X] T007 Write the content data test skeleton in src/data/content.test.ts: every id exists in every locale, every `{{…}}` has 3 options, only known placeholders, French texts contain no "iel"/"iels", no "·", no ".e" / "(e)" inclusive forms, UI keys and their `{param}` placeholders identical in `en/ui.json` and `fr/ui.json`
 - [X] T008 Wrap the app in `LocaleProvider` in src/components/App.tsx and add a `LocaleDecorator` in test/decorators/LocaleDecorator.tsx; add it where stories/tests render components that will call `useT`
 
@@ -68,9 +68,9 @@ description: 'Task list for the bilingual app and fragment-based content'
 - [X] T018 [P] [US2] Write English fragment texts (content task, reuse the best passages of src/data/backgrounds.json) in src/data/locales/en/{titles,origins,trainings,turningPoints,goals}.json with `{{He|She|They}}`-style selections
 - [X] T019 [P] [US2] Write French fragment texts (content task) in src/data/locales/fr/{titles,origins,trainings,turningPoints,goals}.json with agreement for m/f and neutral phrasing for n
 - [X] T020 [US2] Extend src/data/content.test.ts with the FR-009 minimum counts per race, class and alignment and a check that every fragment renders for every gender in every locale without leftover `{` or `}`
-- [ ] T021 [US2] Implement `pickFragments(character)` and `renderCharacter(character, locale)` in src/content/character.ts (title + origin + training + turning point + goal; `writtenIn`/`writtenBy` for `written` characters); tests in src/content/character.test.ts including SC-002 (≥ 60 distinct backgrounds in 100 draws for a fixed combination, per locale)
-- [ ] T022 [US2] Move generation from src/utils/character.ts to src/content/generate.ts: `generateRandomCharacter` returns `content` references; `rerollWithApp` changes only the dependent reference (race → `originId`, class → `trainingId`, alignment → `turningPointId`) and keeps names on race rerolls; delete src/utils/character.ts and src/data/backgrounds.json; update imports in src/ai/generate.ts and its tests
-- [ ] T023 [US2] Render characters through `renderCharacter` in src/components/character/characterBackground/CharacterBackground.tsx, Character.tsx, CharacterInformation.tsx, CharacterSummary.tsx and src/components/history/**; update their tests and stories (test/stubs/Character.stubs.ts gets `content` references)
+- [X] T021 [US2] Implement `pickFragments(character)` and `renderCharacter(character, locale)` in src/content/character.ts (title + origin + training + turning point + goal; `writtenIn`/`writtenBy` for `written` characters); tests in src/content/character.test.ts including SC-002 (≥ 60 distinct backgrounds in 100 draws for a fixed combination, per locale)
+- [X] T022 [US2] Move generation from src/utils/character.ts to src/content/generate.ts: `generateRandomCharacter` returns `content` references; `rerollWithApp` changes only the dependent reference (race → `originId`, class → `trainingId`, alignment → `turningPointId`) and keeps names on race rerolls; delete src/utils/character.ts and src/data/backgrounds.json; update imports in src/ai/generate.ts and its tests
+- [X] T023 [US2] Render characters through `renderCharacter` in src/components/character/characterBackground/CharacterBackground.tsx, Character.tsx, CharacterInformation.tsx, CharacterSummary.tsx and src/components/history/**; update their tests and stories (test/stubs/Character.stubs.ts gets `content` references)
 
 **Checkpoint**: app-made characters re-render when switching language.
 
@@ -85,7 +85,7 @@ description: 'Task list for the bilingual app and fragment-based content'
 - [X] T024 [P] [US3] Write name lists (content task) in src/data/content/names/{human,elf,dwarf,orc}.json: `first.male`, `first.female`, `first.neutral` "≥ 40 unique names each", `last` "≥ 40 unique names"; each race with its own naming style; delete src/data/characterNames.json once unused
 - [X] T025 [P] [US3] Write epithets (content task): ids in src/data/content/epithets.json (≥ 40), English in src/data/locales/en/epithets.json, French with masculine, feminine and neutral forms in src/data/locales/fr/epithets.json
 - [X] T026 [US3] Extend src/data/content.test.ts with name list sizes, uniqueness, and epithet coverage in every locale
-- [ ] T027 [US3] Use race/gender name lists and epithet ids in src/content/generate.ts (non-binary → `first.neutral`; gender reroll keeps the first name only if it is in the new gender's list); tests for SC-004 in src/content/generate.test.ts
+- [X] T027 [US3] Use race/gender name lists and epithet ids in src/content/generate.ts (non-binary → `first.neutral`; gender reroll keeps the first name only if it is in the new gender's list); tests for SC-004 in src/content/generate.test.ts
 
 ---
 
@@ -95,9 +95,9 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 **Independent test**: quickstart scenario 8 with the fake server.
 
-- [ ] T028 [US4] Add a `locale` parameter to the prompts in src/ai/prompts.ts ("Write in French." / "Write in English.") and store AI results as `written: { language, source: 'ai' }` in src/ai/generate.ts; update src/ai/prompts.test.ts and src/ai/generate.test.ts
-- [ ] T029 [US4] Implement `translateWritten(provider, character, locale, signal)` in src/ai/generate.ts (epithet + background only, same validation and failure handling as spec 001) with tests
-- [ ] T030 [US4] Show the "Written by AI in {language}" label and a "Translate with AI" button (only when `writtenIn` differs from the locale and a provider is configured) in src/components/character/characterBackground/CharacterBackground.tsx, wired through src/hooks/useCharacterRequest.ts; tests and story
+- [X] T028 [US4] Add a `locale` parameter to the prompts in src/ai/prompts.ts ("Write in French." / "Write in English.") and store AI results as `written: { language, source: 'ai' }` in src/ai/generate.ts; update src/ai/prompts.test.ts and src/ai/generate.test.ts
+- [X] T029 [US4] Implement `translateWritten(provider, character, locale, signal)` in src/ai/generate.ts (epithet + background only, same validation and failure handling as spec 001) with tests
+- [X] T030 [US4] Show the "Written by AI in {language}" label and a "Translate with AI" button (only when `writtenIn` differs from the locale and a provider is configured) in src/components/character/characterBackground/CharacterBackground.tsx, wired through src/hooks/useCharacterRequest.ts; tests and story
 
 ---
 

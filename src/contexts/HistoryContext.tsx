@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { parseStoredCharacters } from '../content/storedCharacter';
 import { Character } from '../types/character';
 
 type HistoryProviderProps = {
@@ -20,17 +21,8 @@ export type HistoryContextType = {
 
 const STORAGE_KEY = 'characterHistory';
 
-const loadHistory = (): Character[] => {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) return [];
-  try {
-    const parsed: unknown = JSON.parse(stored);
-    return Array.isArray(parsed) ? (parsed as Character[]) : [];
-  } catch (error) {
-    console.error('Failed to parse stored history:', error);
-    return [];
-  }
-};
+const loadHistory = (): Character[] =>
+  parseStoredCharacters(localStorage.getItem(STORAGE_KEY));
 
 export const HistoryContext = createContext<HistoryContextType | undefined>(
   undefined,
