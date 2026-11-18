@@ -11,6 +11,7 @@ import {
   generateRandomCharacter,
   rerollWithApp,
 } from './generate';
+import { LOCKABLE_PROPERTIES, MAX_AGE, templateOf } from './template';
 
 const draw = (count: number, template = {}) =>
   Array.from({ length: count }, () => generateRandomCharacter(template));
@@ -128,5 +129,124 @@ describe('rerollWithApp', () => {
     ...Object.values(Genders),
   ])('has content for every value (%s)', (value) => {
     expect(value).toBeTruthy();
+  });
+});
+
+describe('generateRandomCharacter with locks (spec 003)', () => {
+  const sample = generateRandomCharacter({ race: 'Elf', gender: 'Female' });
+  const lockCases = [
+    ...LOCKABLE_PROPERTIES.map((property) => [property]),
+    [...LOCKABLE_PROPERTIES],
+  ];
+
+  it.each(lockCases.map((locked) => [locked.join(', '), locked] as const))(
+    'keeps the locked values (%s) over 1,000 draws (SC-001)',
+    (_, locked) => {
+      const template = templateOf(sample, locked);
+      for (let i = 0; i < 1000; i++) {
+        const character = generateRandomCharacter(template);
+        expect(templateOf(character, locked)).toEqual(template);
+        expect(character.age).toBeLessThanOrEqual(MAX_AGE[character.race]);
+        expect(character.content?.originId).toMatch(
+          new RegExp(`^origin-${character.race.toLowerCase()}-`),
+        );
+        if (!locked.includes('firstName')) {
+          expect(firstNamesFor(character.race, character.gender)).toContain(
+            character.firstName,
+          );
+        }
+      }
+    },
+  );
+
+  it.each(LOCKABLE_PROPERTIES)(
+    'still draws every other property with %s locked (SC-002)',
+    (property) => {
+      const template = templateOf(sample, [property]);
+      const draws = Array.from({ length: 50 }, () =>
+        generateRandomCharacter(template),
+      );
+      // A locked name or age may leave a single race or gender that fits it (US2).
+      const pinned: Partial<Record<string, string[]>> = {
+        firstName: ['race', 'gender'],
+        lastName: ['race'],
+        age: ['race'],
+      };
+      const free = LOCKABLE_PROPERTIES.filter(
+        (p) => p !== property && !pinned[property]?.includes(p),
+      );
+      for (const other of free) {
+        const values = new Set(
+          draws.map((c) => JSON.stringify(templateOf(c, [other]))),
+        );
+        expect(values.size).toBeGreaterThanOrEqual(2);
+      }
+    },
+  );
+
+  it('changes only the content when everything is locked', () => {
+    const template = templateOf(sample, LOCKABLE_PROPERTIES);
+    const stories = new Set(
+      Array.from({ length: 20 }, () =>
+        JSON.stringify(generateRandomCharacter(template).content),
+      ),
+    );
+    expect(stories.size).toBeGreaterThan(1);
+  });
+
+  it('keeps a written epithet with its language', () => {
+    const character = generateRandomCharacter({
+      epithet: { text: 'la Brave', language: 'fr', source: 'ai' },
+    });
+    expect(character).toMatchObject({
+      epithet: 'la Brave',
+      textLanguage: 'fr',
+      textSource: 'ai',
+    });
+  });
+});
+
+describe('rerollWithApp with locks (spec 003 US2)', () => {
+  it('only gives races that live long enough for a locked age, and keeps it', () => {
+    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 300 };
+    for (let i = 0; i < 50; i++) {
+      const next = rerollWithApp(elder, 'race', ['age']);
+      expect(next.race).toBe('Dwarf');
+      expect(next.age).toBe(300);
+    }
+  });
+
+  it('returns the same character when no other race fits', () => {
+    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 450 };
+    expect(rerollWithApp(elder, 'race', ['age'])).toBe(elder);
+  });
+
+  it('returns the same character when the locked first name fits only its gender', () => {
+    const name = firstNamesFor('Human', 'Female').find(
+      (n) =>
+        !firstNamesFor('Human', 'Male').includes(n) &&
+        !firstNamesFor('Human', 'Non-binary').includes(n),
+    )!;
+    const character = {
+      ...generateRandomCharacter({ race: 'Human', gender: 'Female' }),
+      firstName: name,
+    };
+    expect(rerollWithApp(character, 'gender', ['firstName'])).toBe(character);
+  });
+
+  it('keeps a locked first name no list has and changes the gender freely', () => {
+    const character = {
+      ...generateRandomCharacter({ gender: 'Male' }),
+      firstName: 'Zzyzx',
+    };
+    const next = rerollWithApp(character, 'gender', ['firstName']);
+    expect(next.gender).not.toBe('Male');
+    expect(next.firstName).toBe('Zzyzx');
+  });
+
+  it('still clamps the age after a race change when the age is not locked', () => {
+    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 450 };
+    const next = rerollWithApp(elder, 'race');
+    expect(next.age).toBeLessThanOrEqual(MAX_AGE[next.race]);
   });
 });

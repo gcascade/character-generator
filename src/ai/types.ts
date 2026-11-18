@@ -45,6 +45,8 @@ export type GenerationOutcome = {
   completedFields: AiContributionField[];
   /** Why the AI result was not used, when `source` is `app` because of a failure. */
   failure?: AiError;
+  /** Set when a reroll found no other value fitting the locked properties (spec 003). */
+  unchanged?: boolean;
 };
 
 export type ConnectionTestResult =

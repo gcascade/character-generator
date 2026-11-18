@@ -3,9 +3,10 @@ import type { Locale } from '../i18n';
 import type { Character } from '../types/character';
 import {
   backgroundRewriteSchema,
+  backgroundSchema,
+  contributionFieldSchemas,
   type NameField,
   nameRerollSchema,
-  newCharacterSchema,
   translateSchema,
 } from './schemas';
 
@@ -64,23 +65,57 @@ const fixedFacts = (character: Character) =>
     `Age: ${character.age}`,
   ].join('\n');
 
-/** New character: the AI writes names, epithet and background. */
+const ASK_LABEL: Record<NameField, string> = {
+  firstName: 'a first name',
+  lastName: 'a last name',
+  epithet: 'an epithet',
+};
+
+const FIXED_LABEL: Record<NameField, string> = {
+  firstName: 'First name',
+  lastName: 'Last name',
+  epithet: 'Epithet',
+};
+
+/**
+ * New character: the AI writes the names and epithet that are not locked, and
+ * the background. Locked ones are given as fixed facts (spec 003 FR-007).
+ */
 export const newCharacterPrompt = (
-  character: Character,
+  character: PromptCharacter,
   locale: Locale = 'en',
-): Prompt => ({
-  system: SYSTEM_PROMPT,
-  schema: newCharacterSchema,
-  prompt: [
-    `Create ${describe(character)}.`,
-    'These facts are fixed:',
-    fixedFacts(character),
-    `Write a first name, a last name, ${EPITHET_STYLE[locale]}, and a background.`,
-    BACKGROUND_RULES,
-    languageRules(locale, character.gender),
-    `Answer with JSON matching this schema: ${schemaText(newCharacterSchema)}`,
-  ].join('\n'),
-});
+  fixed: readonly NameField[] = [],
+): Prompt => {
+  const asked = (['firstName', 'lastName', 'epithet'] as const).filter(
+    (field) => !fixed.includes(field),
+  );
+  const schema = z.object({
+    ...Object.fromEntries(
+      asked.map((field) => [field, contributionFieldSchemas[field]]),
+    ),
+    background: backgroundSchema,
+  });
+  const wanted = [
+    ...asked.map((field) =>
+      field === 'epithet' ? EPITHET_STYLE[locale] : ASK_LABEL[field],
+    ),
+    'a background',
+  ];
+  return {
+    system: SYSTEM_PROMPT,
+    schema,
+    prompt: [
+      `Create ${describe(character)}.`,
+      'These facts are fixed:',
+      fixedFacts(character),
+      ...fixed.map((field) => `${FIXED_LABEL[field]}: ${character[field]}`),
+      `Write ${wanted.slice(0, -1).join(', ')}${wanted.length > 1 ? ' and ' : ''}${wanted.at(-1)}.`,
+      BACKGROUND_RULES,
+      languageRules(locale, character.gender),
+      `Answer with JSON matching this schema: ${schemaText(schema)}`,
+    ].join('\n'),
+  };
+};
 
 const currentCharacter = (character: PromptCharacter) =>
   [

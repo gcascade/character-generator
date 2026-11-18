@@ -46,3 +46,20 @@ export const RerollButtonDisabled: Story = {
     isRerollButtonDisabled: true,
   },
 };
+
+export const Unlocked: Story = {
+  args: {
+    ...RerollButtonEnabled.args,
+    onToggleLock: fn(),
+    lockLabel: 'Lock the lorem ipsum',
+    locked: false,
+  },
+};
+
+export const Locked: Story = {
+  args: {
+    ...Unlocked.args,
+    lockLabel: 'Unlock the lorem ipsum',
+    locked: true,
+  },
+};

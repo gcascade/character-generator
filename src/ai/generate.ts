@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { renderCharacter } from '../content/character';
 import { generateRandomCharacter, rerollWithApp } from '../content/generate';
+import type { CharacterTemplate, LockableProperty } from '../content/template';
 import type { Locale } from '../i18n';
 import type { Character } from '../types/character';
 import { AiError, isCallerAbort } from './errors';
@@ -24,10 +25,6 @@ import type {
 export { rerollWithApp };
 
 const NAME_FIELDS: readonly NameField[] = ['firstName', 'lastName', 'epithet'];
-const ALL_FIELDS: readonly AiContributionField[] = [
-  ...NAME_FIELDS,
-  'background',
-];
 
 const isNameField = (property: keyof Character): property is NameField =>
   (NAME_FIELDS as readonly string[]).includes(property);
@@ -94,22 +91,30 @@ export const generateCharacter = async (
   provider: AiProvider | undefined,
   signal: AbortSignal,
   locale: Locale = 'en',
+  template: CharacterTemplate = {},
 ): Promise<GenerationOutcome> => {
-  const base = generateRandomCharacter();
+  const base = generateRandomCharacter(template);
   if (!provider) return appOnly(base);
 
+  // Locked names and epithet are fixed facts: never asked, never read (spec 003 FR-007).
+  const fixed = NAME_FIELDS.filter((field) => template[field] !== undefined);
+  const asked = NAME_FIELDS.filter((field) => !fixed.includes(field));
   let answer: unknown;
   try {
-    answer = await ask(provider, newCharacterPrompt(base, locale), signal);
+    answer = await ask(
+      provider,
+      newCharacterPrompt(view(base, locale), locale, fixed),
+      signal,
+    );
   } catch (error) {
     return appOnly(base, toAiError(error, provider));
   }
 
-  const valid = validateContribution(answer, ALL_FIELDS);
+  const valid = validateContribution(answer, [...asked, 'background']);
   if (!valid.background) {
     return appOnly(base, new AiError('invalid-answer', provider.type));
   }
-  const completedFields = NAME_FIELDS.filter((field) => !valid[field]);
+  const completedFields = asked.filter((field) => !valid[field]);
   return {
     // Missing fields keep the app's values (an epithet from content, rendered in any language).
     character: writtenByAi({ ...base, ...valid }, locale),
@@ -122,10 +127,10 @@ const rerollName = async (
   provider: AiProvider,
   character: Character,
   field: NameField,
+  fallback: Character,
   signal: AbortSignal,
   locale: Locale,
 ): Promise<GenerationOutcome> => {
-  const fallback = rerollWithApp(character, field);
   const current = view(character, locale);
   let answer: unknown;
   try {
@@ -171,10 +176,10 @@ const rerollRulesValue = async (
   provider: AiProvider,
   character: Character,
   property: keyof Character,
+  updated: Character,
   signal: AbortSignal,
   locale: Locale,
 ): Promise<GenerationOutcome> => {
-  const updated = rerollWithApp(character, property);
   let answer: unknown;
   try {
     answer = await ask(
@@ -207,12 +212,17 @@ export const rerollProperty = (
   property: keyof Character,
   signal: AbortSignal,
   locale: Locale = 'en',
+  locked: readonly LockableProperty[] = [],
 ): Promise<GenerationOutcome> => {
-  if (!provider)
-    return Promise.resolve(appOnly(rerollWithApp(character, property)));
+  const withApp = rerollWithApp(character, property, locked);
+  if (withApp === character) {
+    // Nothing else fits the other locked properties (spec 003 R5).
+    return Promise.resolve({ ...appOnly(character), unchanged: true });
+  }
+  if (!provider) return Promise.resolve(appOnly(withApp));
   return isNameField(property)
-    ? rerollName(provider, character, property, signal, locale)
-    : rerollRulesValue(provider, character, property, signal, locale);
+    ? rerollName(provider, character, property, withApp, signal, locale)
+    : rerollRulesValue(provider, character, property, withApp, signal, locale);
 };
 
 /**

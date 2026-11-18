@@ -9,6 +9,7 @@ import type { GenerationOutcome } from '../ai/types';
 import { CharacterContext } from '../contexts/CharacterContext';
 import { Character } from '../types/character';
 import type { Locale } from '../i18n';
+import type { CharacterTemplate, LockableProperty } from '../content/template';
 
 /**
  * Generates or rerolls the current character through the AI layer and applies
@@ -30,8 +31,14 @@ const useCharacterGenerator = () => {
       provider: AiProvider | undefined,
       signal: AbortSignal,
       locale: Locale = 'en',
+      template: CharacterTemplate = {},
     ): Promise<GenerationOutcome> => {
-      const outcome = await generateCharacter(provider, signal, locale);
+      const outcome = await generateCharacter(
+        provider,
+        signal,
+        locale,
+        template,
+      );
       setCharacter(outcome.character);
       return outcome;
     },
@@ -44,6 +51,7 @@ const useCharacterGenerator = () => {
       provider: AiProvider | undefined,
       signal: AbortSignal,
       locale: Locale = 'en',
+      locked: readonly LockableProperty[] = [],
     ): Promise<GenerationOutcome> => {
       const outcome = await rerollProperty(
         provider,
@@ -51,8 +59,9 @@ const useCharacterGenerator = () => {
         property,
         signal,
         locale,
+        locked,
       );
-      setCharacter(outcome.character);
+      if (!outcome.unchanged) setCharacter(outcome.character);
       return outcome;
     },
     [character, setCharacter],
