@@ -5,17 +5,20 @@ import { KEYS_KEY, SETTINGS_KEY } from '../../ai/storage';
 import { json, queuedFetch } from '../../ai/providers/testing';
 import { AlertManagerProvider } from '../../contexts/AlertManagerContext';
 import { SettingsProvider } from '../../contexts/SettingsContext';
+import { LocaleProvider } from '../../i18n';
 import Settings from './Settings';
 
 vi.unmock('../../hooks/useSettings');
 
-const renderSettings = () =>
+const renderSettings = (locale: 'en' | 'fr' = 'en') =>
   render(
-    <AlertManagerProvider>
-      <SettingsProvider>
-        <Settings />
-      </SettingsProvider>
-    </AlertManagerProvider>,
+    <LocaleProvider initial={locale}>
+      <AlertManagerProvider>
+        <SettingsProvider>
+          <Settings />
+        </SettingsProvider>
+      </AlertManagerProvider>
+    </LocaleProvider>,
   );
 
 const chooseProvider = async (label: string) => {
@@ -179,6 +182,28 @@ describe('Settings', () => {
       await screen.findByText(
         /Couldn't reach Ollama at http:\/\/localhost:11434/,
       ),
+    ).toBeInTheDocument();
+  });
+
+  it('is fully in French when the interface is French', () => {
+    renderSettings('fr');
+    expect(
+      screen.getByRole('heading', { name: 'Réglages du générateur' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('combobox', { name: 'Fournisseur' }),
+    ).toHaveTextContent("Pas d'IA");
+    expect(
+      screen.getByRole('button', { name: 'Enregistrer' }),
+    ).toBeInTheDocument();
+  });
+
+  it('changes the interface language', async () => {
+    renderSettings('en');
+    await userEvent.click(screen.getByRole('combobox', { name: 'Language' }));
+    await userEvent.click(screen.getByRole('option', { name: 'French' }));
+    expect(
+      screen.getByRole('button', { name: 'Enregistrer' }),
     ).toBeInTheDocument();
   });
 });

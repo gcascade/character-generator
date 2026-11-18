@@ -46,8 +46,8 @@ describe('LocaleProvider', () => {
     expect(renderLocale().result.current.locale).toBe('fr');
   });
 
-  it('throws outside the provider', () => {
-    vi.spyOn(console, 'error').mockImplementation(() => {});
-    expect(() => renderHook(() => useT())).toThrow(/LocaleProvider/);
+  it('reads English outside the provider', () => {
+    const { result } = renderHook(() => useT());
+    expect(result.current('language.label')).toBe('Language');
   });
 });

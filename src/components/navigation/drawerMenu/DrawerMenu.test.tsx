@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router';
+import { LocaleProvider } from '../../../i18n';
 import DrawerMenu from './DrawerMenu';
 
 const renderMenu = (props: Partial<React.ComponentProps<typeof DrawerMenu>>) =>
@@ -40,5 +41,29 @@ describe('DrawerMenu', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Settings' }));
 
     expect(onClose).toHaveBeenCalled();
+  });
+});
+
+describe('DrawerMenu language selector', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('switches the whole menu to French and remembers it', () => {
+    render(
+      <LocaleProvider initial="en">
+        <MemoryRouter>
+          <DrawerMenu width={240} />
+        </MemoryRouter>
+      </LocaleProvider>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'French' }));
+
+    expect(
+      screen.getByRole('link', { name: 'Mes personnages' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Français' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(localStorage.getItem('locale')).toBe('fr');
   });
 });

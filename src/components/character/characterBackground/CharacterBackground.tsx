@@ -4,12 +4,14 @@ import React, { FC, useContext, useMemo, useState } from 'react';
 import { CharacterContext } from '../../../contexts/CharacterContext';
 import CharacterTypography from '../characterTypography/CharacterTypography';
 import './CharacterBackground.css';
+import { useT } from '../../../i18n';
 
 const MAX_LENGTH = 500;
 
 const CharacterBackground: FC = () => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
+  const t = useT();
   const context = useContext(CharacterContext);
 
   if (!context) {
@@ -71,7 +73,7 @@ const CharacterBackground: FC = () => {
   return (
     <>
       <CharacterTypography>
-        <strong>History:</strong>
+        <strong>{t('character.history')}</strong>
       </CharacterTypography>
       <Typography variant="h5" className="background-title">
         {title}
@@ -95,7 +97,7 @@ const CharacterBackground: FC = () => {
           textTransform: 'none',
         }}
       >
-        {isExpanded ? 'Show Less' : 'Show More...'}
+        {isExpanded ? t('character.showLess') : t('character.showMore')}
       </Button>
     </>
   );

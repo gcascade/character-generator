@@ -1,0 +1,22 @@
+{
+  "race.Human": "{{Humain|Humaine|Humain}}",
+  "race.Elf": "Elfe",
+  "race.Dwarf": "{{Nain|Naine|Nain}}",
+  "race.Orc": "Orque",
+  "class.Warrior": "{{Guerrier|Guerrière|Guerrier}}",
+  "class.Mage": "Mage",
+  "class.Rogue": "{{Roublard|Roublarde|Roublard}}",
+  "class.Cleric": "Clerc",
+  "gender.Male": "Masculin",
+  "gender.Female": "Féminin",
+  "gender.Non-binary": "Non-binaire",
+  "alignment.Lawful Good": "{{Loyal Bon|Loyale Bonne|Loyal Bon}}",
+  "alignment.Neutral Good": "{{Neutre Bon|Neutre Bonne|Neutre Bon}}",
+  "alignment.Chaotic Good": "{{Chaotique Bon|Chaotique Bonne|Chaotique Bon}}",
+  "alignment.Lawful Neutral": "{{Loyal Neutre|Loyale Neutre|Loyal Neutre}}",
+  "alignment.True Neutral": "{{Neutre strict|Neutre stricte|Neutre strict}}",
+  "alignment.Chaotic Neutral": "Chaotique Neutre",
+  "alignment.Lawful Evil": "{{Loyal Mauvais|Loyale Mauvaise|Loyal Mauvais}}",
+  "alignment.Neutral Evil": "{{Neutre Mauvais|Neutre Mauvaise|Neutre Mauvais}}",
+  "alignment.Chaotic Evil": "{{Chaotique Mauvais|Chaotique Mauvaise|Chaotique Mauvais}}"
+}

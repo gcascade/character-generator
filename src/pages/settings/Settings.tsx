@@ -28,24 +28,27 @@ import ApiKeyField from '../../components/settings/apiKeyField/ApiKeyField';
 import ConnectionTest from '../../components/settings/connectionTest/ConnectionTest';
 import useAlert from '../../hooks/useAlert';
 import useSettings from '../../hooks/useSettings';
+import {
+  type Locale,
+  LOCALES,
+  type MessageKey,
+  useLocale,
+  useT,
+} from '../../i18n';
 
-const PROVIDER_LABELS: Record<ProviderType, string> = {
-  none: 'No AI',
-  ollama: 'Ollama (local)',
-  anthropic: 'Claude (Anthropic)',
-  'openai-compatible': 'OpenAI-compatible',
+const PROVIDER_KEYS: Record<ProviderType, string> = {
+  none: 'none',
+  ollama: 'ollama',
+  anthropic: 'anthropic',
+  'openai-compatible': 'openaiCompatible',
 };
 
-const PROVIDER_HINTS: Record<ProviderType, string> = {
-  none: 'Characters are generated from the built-in content only.',
-  ollama:
-    'A model running on your machine with Ollama. To use it from this site, allow it with the OLLAMA_ORIGINS setting.',
-  anthropic: 'Claude models from Anthropic, with your Anthropic API key.',
-  'openai-compatible':
-    'Any service speaking the OpenAI API: OpenAI, GitHub Models, Azure AI, Mistral, Gemini, OpenRouter, LM Studio…',
-};
+const providerLabel = (type: ProviderType): MessageKey =>
+  `settings.provider.${PROVIDER_KEYS[type]}` as MessageKey;
+const providerHint = (type: ProviderType): MessageKey =>
+  `settings.hint.${PROVIDER_KEYS[type]}` as MessageKey;
 
-type FieldErrors = Partial<Record<'baseUrl' | 'model', string>>;
+type FieldErrors = Partial<Record<'baseUrl' | 'model', MessageKey>>;
 
 const isKeyed = (type: ProviderType): type is KeyedProviderType =>
   type === 'anthropic' || type === 'openai-compatible';
@@ -70,11 +73,11 @@ const validate = (draft: ProviderSettings): FieldErrors => {
   const errors: FieldErrors = {};
   const baseUrl = baseUrlOf(draft);
   if (baseUrl !== undefined && !urlSchema.safeParse(baseUrl).success) {
-    errors.baseUrl = 'Enter an http or https address';
+    errors.baseUrl = 'settings.address.invalid';
   }
   const model = modelOf(draft);
   if (model !== undefined && !modelSchema.safeParse(model).success) {
-    errors.model = 'Enter a model name';
+    errors.model = 'settings.model.invalid';
   }
   return errors;
 };
@@ -83,6 +86,8 @@ const Settings: FC = () => {
   const { settings, keys, updateSettings, setKey, setRememberKey, forgetKey } =
     useSettings();
   const { addSuccess } = useAlert();
+  const t = useT();
+  const { locale, setLocale } = useLocale();
 
   // Edits stay a draft until saved, so a half-typed address is never used.
   const [draft, setDraft] = useState<ProviderSettings>(settings);
@@ -128,7 +133,7 @@ const Settings: FC = () => {
     if (Object.keys(found).length) return;
     updateSettings(() => ({ ...draft, rememberKey: settings.rememberKey }));
     if (isKeyed(type)) setKey(type, draftKeys[type] ?? '');
-    addSuccess('Settings saved');
+    addSuccess(t('settings.saved'));
   };
 
   const onTest = (signal: AbortSignal): Promise<ConnectionTestResult> => {
@@ -162,7 +167,7 @@ const Settings: FC = () => {
         elevation={3}
         sx={{ minHeight: '95vh', padding: { xs: 1.5, sm: 2.5 } }}
       >
-        <PageTitle>Character Generator Settings</PageTitle>
+        <PageTitle>{t('page.settings')}</PageTitle>
         <Box
           component="form"
           noValidate
@@ -179,19 +184,18 @@ const Settings: FC = () => {
         >
           <Box>
             <Typography variant="h5" component="h2" gutterBottom>
-              AI generation
+              {t('settings.ai.title')}
             </Typography>
-            <Typography variant="body1">
-              Optionally let an AI write names, epithets and backgrounds. The
-              generator works without it.
-            </Typography>
+            <Typography variant="body1">{t('settings.ai.intro')}</Typography>
           </Box>
 
           <FormControl fullWidth>
-            <InputLabel id="provider-label">Provider</InputLabel>
+            <InputLabel id="provider-label">
+              {t('settings.provider')}
+            </InputLabel>
             <Select
               labelId="provider-label"
-              label="Provider"
+              label={t('settings.provider')}
               value={type}
               onChange={(event) =>
                 setDraft((previous) => ({
@@ -200,29 +204,30 @@ const Settings: FC = () => {
                 }))
               }
             >
-              {(Object.keys(PROVIDER_LABELS) as ProviderType[]).map((key) => (
+              {(Object.keys(PROVIDER_KEYS) as ProviderType[]).map((key) => (
                 <MenuItem key={key} value={key}>
-                  {PROVIDER_LABELS[key]}
+                  {t(providerLabel(key))}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
           <Typography variant="body2" color="text.secondary">
-            {PROVIDER_HINTS[type]}
+            {t(providerHint(type))}
           </Typography>
 
           {(type === 'ollama' || type === 'openai-compatible') && (
             <TextField
-              label="Address"
+              label={t('settings.address')}
               fullWidth
               value={baseUrlOf(draft)}
               onChange={(event) => setBaseUrl(event.target.value)}
               error={Boolean(errors.baseUrl)}
               helperText={
-                errors.baseUrl ??
-                (type === 'ollama'
-                  ? 'Usually http://localhost:11434'
-                  : 'Base URL of the API, e.g. https://api.openai.com/v1')
+                errors.baseUrl
+                  ? t(errors.baseUrl)
+                  : type === 'ollama'
+                    ? t('settings.address.hint.ollama')
+                    : t('settings.address.hint.openaiCompatible')
               }
             />
           )}
@@ -241,13 +246,14 @@ const Settings: FC = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Model"
+                  label={t('settings.model')}
                   error={Boolean(errors.model)}
                   helperText={
-                    errors.model ??
-                    (models[type]
-                      ? 'Pick a model from the list or type its name.'
-                      : 'Run "Test connection" to list the available models.')
+                    errors.model
+                      ? t(errors.model)
+                      : models[type]
+                        ? t('settings.model.hint.list')
+                        : t('settings.model.hint.test')
                   }
                 />
               )}
@@ -256,7 +262,7 @@ const Settings: FC = () => {
 
           {isKeyed(type) && (
             <ApiKeyField
-              providerName={provider?.name ?? PROVIDER_LABELS[type]}
+              providerName={provider?.name ?? t(providerLabel(type))}
               value={draftKeys[type] ?? ''}
               onChange={(value) =>
                 setDraftKeys((previous) => ({ ...previous, [type]: value }))
@@ -279,8 +285,29 @@ const Settings: FC = () => {
           )}
 
           <Box>
+            <Typography variant="h5" component="h2" gutterBottom>
+              {t('settings.language.title')}
+            </Typography>
+            <FormControl fullWidth>
+              <InputLabel id="language-label">{t('language.label')}</InputLabel>
+              <Select
+                labelId="language-label"
+                label={t('language.label')}
+                value={locale}
+                onChange={(event) => setLocale(event.target.value as Locale)}
+              >
+                {LOCALES.map((code) => (
+                  <MenuItem key={code} value={code} lang={code}>
+                    {t(`language.${code}`)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+
+          <Box>
             <Button variant="contained" color="primary" type="submit">
-              Save settings
+              {t('settings.save')}
             </Button>
           </Box>
         </Box>

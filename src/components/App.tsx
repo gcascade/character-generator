@@ -18,7 +18,7 @@ import { DataProvider } from '../contexts/DataContext';
 import { HistoryProvider } from '../contexts/HistoryContext';
 import { RequestProvider } from '../contexts/RequestContext';
 import { SettingsProvider } from '../contexts/SettingsContext';
-import { LocaleProvider } from '../i18n';
+import { LocaleProvider, useT } from '../i18n';
 import routes from '../routes';
 import theme from '../themes/themes';
 import { generateRandomCharacter } from '../utils/character';
@@ -37,6 +37,7 @@ const initialCharacter = generateRandomCharacter({});
 // Permanent side menu on wide screens; app bar + collapsible menu below `md`.
 const AppLayout: React.FC = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const t = useT();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -48,14 +49,14 @@ const AppLayout: React.FC = () => {
             <IconButton
               color="inherit"
               edge="start"
-              aria-label="Open menu"
+              aria-label={t('app.openMenu')}
               onClick={() => setIsMenuOpen(true)}
               sx={{ mr: 2 }}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" noWrap>
-              Character Generator
+              {t('app.title')}
             </Typography>
           </Toolbar>
         </AppBar>

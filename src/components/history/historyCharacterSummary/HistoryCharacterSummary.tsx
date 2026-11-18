@@ -3,6 +3,8 @@ import React from 'react';
 import { CharacterClass, CharacterRace } from '../../../types/character';
 import ClassIcon from '../../common/icons/class/ClassIcon';
 import RaceIcon from '../../common/icons/race/RaceIcon';
+import { useLocale } from '../../../i18n';
+import { label } from '../../../content/labels';
 
 type CharacterInfoProps = {
   race: CharacterRace;
@@ -21,6 +23,7 @@ const HistoryCharacterSummary: React.FC<CharacterInfoProps> = ({
   age,
   textStyle,
 }) => {
+  const { locale } = useLocale();
   return (
     <Box
       sx={{
@@ -30,12 +33,12 @@ const HistoryCharacterSummary: React.FC<CharacterInfoProps> = ({
         width: '100%',
       }}
     >
-      <Tooltip title={race}>
+      <Tooltip title={label('race', race, 'Male', locale)}>
         <Box sx={{ padding: '2px' }}>
           <RaceIcon characterRace={race} />
         </Box>
       </Tooltip>
-      <Tooltip title={characterClass}>
+      <Tooltip title={label('class', characterClass, 'Male', locale)}>
         <Box sx={{ padding: '2px' }}>
           <ClassIcon characterClass={characterClass} />
         </Box>

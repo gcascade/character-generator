@@ -16,9 +16,15 @@ type LocaleContextType = {
   t: (key: MessageKey, params?: MessageParams) => string;
 };
 
-export const LocaleContext = createContext<LocaleContextType | undefined>(
-  undefined,
-);
+/**
+ * Without a provider (isolated tests, stories), components read English and
+ * cannot change language. The app always renders inside LocaleProvider.
+ */
+export const LocaleContext = createContext<LocaleContextType>({
+  locale: 'en',
+  setLocale: () => {},
+  t: (key, params) => translate('en', key, params),
+});
 
 const readStored = () => {
   try {

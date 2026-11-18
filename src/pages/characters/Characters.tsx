@@ -5,9 +5,11 @@ import Carousel from '../../components/common/carousel/Carousel';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 
 import { DataContext } from '../../contexts/DataContext';
+import { useT } from '../../i18n';
 
 const Characters = () => {
   const context = useContext(DataContext);
+  const t = useT();
 
   if (!context) {
     throw new Error('Characters must be used within a DataProvider');
@@ -37,7 +39,7 @@ const Characters = () => {
           padding: { xs: 1.5, sm: 2.5 },
         }}
       >
-        <PageTitle>My Characters</PageTitle>
+        <PageTitle>{t('page.characters')}</PageTitle>
         {characters.length > 0 && (
           <Carousel cardsPerPage={cardsPerPage} height={600}>
             {children}

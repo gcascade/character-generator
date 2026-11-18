@@ -45,14 +45,14 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 **Independent test**: quickstart scenario 1; SC-001 review of every page.
 
-- [ ] T009 [P] [US1] Write src/data/locales/en/ui.json with every interface text (navigation, page titles, buttons, labels, helper texts, empty states, settings, alerts, AI messages from src/ai/messages.ts, ConnectionTest, ApiKeyField, history, carousel aria labels)
-- [ ] T010 [P] [US1] Write src/data/locales/fr/ui.json with the same keys and placeholders (French UI copy reviewed for tone and typography: non-breaking spaces before « : ; ! ? »)
-- [ ] T011 [P] [US1] Write labels for races, classes, alignments and genders in src/data/locales/en/labels.json and src/data/locales/fr/labels.json as GenderedText (French: agreement for m/f, category name for n — research R3)
-- [ ] T012 [US1] Implement `label(kind, value, gender, locale)` in src/content/labels.ts with tests in src/content/labels.test.ts ("Naine Guerrière", "Loyale Bonne" for a female dwarf warrior)
-- [ ] T013 [US1] Replace hard-coded texts with `useT()` in src/components/navigation/drawerMenu/DrawerMenu.tsx, src/components/App.tsx (app bar), src/pages/home/Home.tsx, src/pages/characters/Characters.tsx, src/pages/settings/Settings.tsx, src/components/settings/**, src/components/history/**, src/components/character/** (property labels via `label()`), src/components/common/** (alerts, carousel, error boundary)
-- [ ] T014 [US1] Make src/ai/messages.ts return message keys + params instead of English sentences, rendered with `useT` in src/hooks/useCharacterRequest.ts and src/components/settings/connectionTest/ConnectionTest.tsx; update src/ai/messages.test.ts
-- [ ] T015 [US1] Add the language selector ("EN | FR" toggle, labelled for screen readers) at the bottom of src/components/navigation/drawerMenu/DrawerMenu.tsx and a "Language" field in src/pages/settings/Settings.tsx; tests in DrawerMenu.test.tsx and Settings.test.tsx; story in DrawerMenu.stories.tsx
-- [ ] T016 [US1] Update every test and story that checks English text to render inside `LocaleProvider` (default English) and add one French render test per page in src/pages/**/*.test.tsx
+- [X] T009 [P] [US1] Write src/data/locales/en/ui.json with every interface text (navigation, page titles, buttons, labels, helper texts, empty states, settings, alerts, AI messages from src/ai/messages.ts, ConnectionTest, ApiKeyField, history, carousel aria labels)
+- [X] T010 [P] [US1] Write src/data/locales/fr/ui.json with the same keys and placeholders (French UI copy reviewed for tone and typography: non-breaking spaces before « : ; ! ? »)
+- [X] T011 [P] [US1] Write labels for races, classes, alignments and genders in src/data/locales/en/labels.json and src/data/locales/fr/labels.json as GenderedText (French: agreement for m/f, category name for n — research R3)
+- [X] T012 [US1] Implement `label(kind, value, gender, locale)` in src/content/labels.ts with tests in src/content/labels.test.ts ("Naine Guerrière", "Loyale Bonne" for a female dwarf warrior)
+- [X] T013 [US1] Replace hard-coded texts with `useT()` in src/components/navigation/drawerMenu/DrawerMenu.tsx, src/components/App.tsx (app bar), src/pages/home/Home.tsx, src/pages/characters/Characters.tsx, src/pages/settings/Settings.tsx, src/components/settings/**, src/components/history/**, src/components/character/** (property labels via `label()`), src/components/common/** (alerts, carousel, error boundary)
+- [X] T014 [US1] Make src/ai/messages.ts return message keys + params instead of English sentences, rendered with `useT` in src/hooks/useCharacterRequest.ts and src/components/settings/connectionTest/ConnectionTest.tsx; update src/ai/messages.test.ts
+- [X] T015 [US1] Add the language selector ("EN | FR" toggle, labelled for screen readers) at the bottom of src/components/navigation/drawerMenu/DrawerMenu.tsx and a "Language" field in src/pages/settings/Settings.tsx; tests in DrawerMenu.test.tsx and Settings.test.tsx; story in DrawerMenu.stories.tsx
+- [X] T016 [US1] Update every test and story that checks English text to render inside `LocaleProvider` (default English) and add one French render test per page in src/pages/**/*.test.tsx
 
 **Checkpoint**: the interface is fully bilingual; characters still use the old content.
 

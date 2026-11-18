@@ -8,6 +8,7 @@ describe('CharacterProperty', () => {
   it('renders without crashing', () => {
     render(
       <CharacterProperty
+        tooltip="Reroll"
         label="Test Label"
         value="Test Value"
         onButtonClick={mockOnButtonClick}
@@ -18,6 +19,7 @@ describe('CharacterProperty', () => {
   it('displays the correct label and value', () => {
     render(
       <CharacterProperty
+        tooltip="Reroll"
         label="Test Label"
         value="Test Value"
         onButtonClick={mockOnButtonClick}
@@ -31,6 +33,7 @@ describe('CharacterProperty', () => {
   it('calls onButtonClick when reroll button is clicked', () => {
     render(
       <CharacterProperty
+        tooltip="Reroll"
         label="Test Label"
         value="Test Value"
         onButtonClick={mockOnButtonClick}

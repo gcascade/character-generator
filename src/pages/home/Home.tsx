@@ -5,9 +5,11 @@ import PageTitle from '../../components/common/pageTitle/PageTitle';
 import HistoryCard from '../../components/history/historyCard/HistoryCard';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import useCharacterHistory from '../../hooks/useCharacterHistory';
+import { useT } from '../../i18n';
 
 const Home: FC = () => {
   const { history, addToHistory } = useCharacterHistory();
+  const t = useT();
 
   const characterContext = useContext(CharacterContext);
 
@@ -26,7 +28,7 @@ const Home: FC = () => {
   return (
     <Container maxWidth={false} disableGutters>
       <Paper elevation={3} sx={{ padding: { xs: 1.5, sm: 2.5 } }}>
-        <PageTitle>Character Generator</PageTitle>
+        <PageTitle>{t('page.generator')}</PageTitle>
         <Grid
           container
           spacing={2}

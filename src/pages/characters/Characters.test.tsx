@@ -4,23 +4,29 @@ import { characterList } from '../../../test/stubs/Character.stubs';
 import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { DataContext } from '../../contexts/DataContext';
 import { Character } from '../../types/character';
+import { LocaleProvider } from '../../i18n';
 import Characters from './Characters';
 
-const renderCharactersWithContext = (characters: Character[] = []) => {
+const renderCharactersWithContext = (
+  characters: Character[] = [],
+  locale: 'en' | 'fr' = 'en',
+) => {
   return render(
-    <DataContext.Provider
-      value={{
-        characters,
-        saveCharacter: vi.fn(),
-        removeCharacter: vi.fn(),
-      }}
-    >
-      <AlertManagerContext.Provider
-        value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
+    <LocaleProvider initial={locale}>
+      <DataContext.Provider
+        value={{
+          characters,
+          saveCharacter: vi.fn(),
+          removeCharacter: vi.fn(),
+        }}
       >
-        <Characters />
-      </AlertManagerContext.Provider>
-    </DataContext.Provider>,
+        <AlertManagerContext.Provider
+          value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
+        >
+          <Characters />
+        </AlertManagerContext.Provider>
+      </DataContext.Provider>
+    </LocaleProvider>,
   );
 };
 
@@ -47,5 +53,12 @@ describe('Characters', () => {
     renderCharactersWithContext(characterList);
     expect(screen.getByText('My Characters')).toBeInTheDocument();
     expect(screen.getByTestId('carousel')).toBeInTheDocument();
+  });
+
+  it('shows its title in French', () => {
+    renderCharactersWithContext([], 'fr');
+    expect(
+      screen.getByRole('heading', { name: 'Mes personnages' }),
+    ).toBeInTheDocument();
   });
 });
