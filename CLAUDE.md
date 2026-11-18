@@ -50,7 +50,8 @@ src/
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
   i18n/                            Locale detection, LocaleProvider, useT / useLocale
   content/                         renderText (gendered text), generate (random characters, rerolls),
-                                   character (renderCharacter per locale), labels, storedCharacter (zod)
+                                   character (renderCharacter per locale), labels, storedCharacter (zod),
+                                   template (CharacterTemplate, locks, compatible race/gender), storedLocks
   data/content/                    Fragment and epithet ids, name lists per race (language-independent)
   data/locales/<locale>/           ui.json, labels.json, and one text file per fragment category
   types/                           Domain types; enums are `as const` objects + derived union types
@@ -81,6 +82,14 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 - French: neutral phrasing for non-binary characters (no "iel", no point médian); narrow no-break space (U+202F)
   before `: ; ! ?` and inside « »; never put `{firstName}` after an elidable word (de, que, le…).
 - Interface strings go through `useT()` with keys from `src/data/locales/en/ui.json`; never hard-code UI text.
+
+## Locks (spec 003)
+
+- `LockProvider` (inside `CharacterProvider`) holds which properties are locked; values are read from the current
+  character with `templateOf`. Generation goes through `generateRandomCharacter(template)`; dice through
+  `rerollWithApp(character, property, locked)`, which returns the same object when nothing else fits.
+- Saved in `localStorage["locks"]` as `{ version: 1, template }`, parsed field by field by `parseStoredLocks`.
+- `CharacterTemplate` is meant to be reused by the party generator.
 
 ## Direction
 

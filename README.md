@@ -74,6 +74,14 @@ npm run storybook
 npm run build-storybook
 ```
 
+# Locking properties
+
+Each property of the generated character has a padlock. A locked property keeps its value when you click
+**Generate**; the others are drawn at random among the values that fit it (a locked age of 300 only gives elves and
+dwarves, a locked first name only the genders whose name list has it). The dice still reroll a locked property, and
+the lock keeps the new value. Locks are remembered on this device; **Unlock all** clears them. With an AI provider,
+locked values are given to the AI as fixed facts.
+
 # Content
 
 Without AI, each background is assembled from fragments: a title, an origin (by race), a training (by class), a

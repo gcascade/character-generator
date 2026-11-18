@@ -90,10 +90,10 @@ description: 'Task list for property locking'
 
 ## Phase 7: Polish & Cross-Cutting
 
-- [ ] T020 [P] Update README.md (locks section) and CLAUDE.md (src/content/template.ts, LockContext, `locks` storage key)
-- [ ] T021 [P] Check the phone layout with padlocks and long French labels (no horizontal scroll)
-- [ ] T022 Run lint, typecheck, test:run, build and build-storybook; fix anything failing
-- [ ] T023 Browser validation of quickstart.md scenarios with screenshots (EN and FR, phone and desktop)
+- [x] T020 [P] Update README.md (locks section) and CLAUDE.md (src/content/template.ts, LockContext, `locks` storage key)
+- [x] T021 [P] Check the phone layout with padlocks and long French labels (no horizontal scroll)
+- [x] T022 Run lint, typecheck, test:run, build and build-storybook; fix anything failing
+- [x] T023 Browser validation of quickstart.md scenarios with screenshots (EN and FR, phone and desktop)
 
 ---
 
