@@ -60,23 +60,30 @@ locale.
 
 ## Character (stored)
 
-| Field                                                  | Type                                                                                                | Notes               |
-| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------- | ------------------- |
-| `firstName`, `lastName`                                | string                                                                                              |                     |
-| `race`, `characterClass`, `gender`, `alignment`, `age` | as today                                                                                            |                     |
-| `content`                                              | `{ titleId, originId, trainingId, turningPointId, goalId, epithetId }`                              | app-made characters |
-| `written`                                              | `{ language: Locale; source: "ai" \| "legacy"; epithet: string; background: { title; content[] } }` | AI or legacy text   |
+| Field                                                  | Type                                                                   | Notes                               |
+| ------------------------------------------------------ | ---------------------------------------------------------------------- | ----------------------------------- |
+| `firstName`, `lastName`                                | string                                                                 |                                     |
+| `race`, `characterClass`, `gender`, `alignment`, `age` | as today                                                               |                                     |
+| `content`                                              | `{ titleId, originId, trainingId, turningPointId, goalId, epithetId }` | always set for new characters       |
+| `epithet`                                              | string (optional)                                                      | written text, overrides `epithetId` |
+| `background`                                           | `{ title; content[] }` (optional)                                      | written text, overrides fragments   |
+| `textLanguage`                                         | `Locale` (optional)                                                    | language of the written text        |
+| `textSource`                                           | `"ai" \| "legacy"` (optional)                                          | who wrote it                        |
 
-Exactly one of `content` / `written` is present.
+Implementation note: the planned exclusive `content` / `written` pair became flat optional text fields over
+`content`, so that rerolling a property without AI can drop only the text that no longer fits (the background
+after a race change, the epithet after an epithet reroll) and fall back to fragments for it.
 
 Transitions:
 
-- generate without AI → `content`;
-- generate with AI, success → `written` (`source: "ai"`, current locale); AI failure → `content`;
-- reroll race/class/alignment without AI → the matching `content` id changes; with AI and `written`, the AI rewrites
-  `written.background` in the current locale (spec 001 behaviour);
-- "Translate with AI" → `written.language` and texts replaced;
-- legacy stored character (`background` text, no `content`) → read as `written` (`language: "en"`, `source: "legacy"`).
+- generate without AI → `content` only;
+- generate with AI, success → `content` plus AI `epithet`/`background` (`textSource: "ai"`, current locale);
+  AI failure → `content` only;
+- reroll race/class/alignment without AI → the matching `content` id changes and the written background is dropped;
+  with AI, the AI rewrites `background` in the current locale (spec 001 behaviour);
+- "Translate with AI" → `textLanguage` and texts replaced;
+- legacy stored character (`background` text, no `content`) → `textLanguage: "en"`, `textSource: "legacy"`;
+  `content` is created at its first reroll.
 
 ## Rendered character (display only)
 

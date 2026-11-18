@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { characterList } from '../../../test/stubs/Character.stubs';
 import { AlertManagerContext } from '../../contexts/AlertManagerContext';
-import { DataContext } from '../../contexts/DataContext';
+import { DataContext, DataProvider } from '../../contexts/DataContext';
+import { AlertManagerProvider } from '../../contexts/AlertManagerContext';
 import { Character } from '../../types/character';
 import { LocaleProvider } from '../../i18n';
 import Characters from './Characters';
@@ -60,5 +61,39 @@ describe('Characters', () => {
     expect(
       screen.getByRole('heading', { name: 'Mes personnages' }),
     ).toBeInTheDocument();
+  });
+
+  it('opens characters saved by the previous version, keeping their English text', () => {
+    const legacy = {
+      firstName: 'Korvus',
+      lastName: 'Blackiron',
+      characterClass: 'Warrior',
+      gender: 'Male',
+      race: 'Dwarf',
+      alignment: 'Lawful Good',
+      age: 120,
+      epithet: 'the Unbreakable',
+      background: { title: 'Forged in Fire', content: ['An old story.'] },
+    };
+    localStorage.setItem(
+      'characters',
+      JSON.stringify([legacy, { broken: true }]),
+    );
+
+    render(
+      <LocaleProvider initial="fr">
+        <AlertManagerProvider>
+          <DataProvider>
+            <Characters />
+          </DataProvider>
+        </AlertManagerProvider>
+      </LocaleProvider>,
+    );
+
+    expect(screen.getByText('Korvus Blackiron')).toBeInTheDocument();
+    expect(screen.getByText('The Unbreakable')).toBeInTheDocument();
+    expect(screen.getByText('Écrit en anglais')).toBeInTheDocument();
+    expect(screen.getByText('Nain')).toBeInTheDocument();
+    localStorage.clear();
   });
 });

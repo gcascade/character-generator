@@ -1,6 +1,8 @@
 # Character Generator
 
 This app generates detailed fantasy characters, including attributes like race, class, and background.
+It is available in English and French: the language follows your browser, and can be changed at the bottom of the
+menu or in **Settings**.
 
 [Try me](https://gcascade.github.io/character-generator/)
 
@@ -72,11 +74,39 @@ npm run storybook
 npm run build-storybook
 ```
 
+# Content
+
+Without AI, each background is assembled from fragments: a title, an origin (by race), a training (by class), a
+turning point (by alignment) and a goal. Characters store only fragment ids, so the same character reads the same
+story in every language.
+
+- `src/data/content/fragments.json` lists the fragment ids and what they apply to (race, class, alignment);
+  `src/data/content/epithets.json` lists epithet ids; `src/data/content/names/<race>.json` holds first names
+  (masculine, feminine, neutral) and last names.
+- `src/data/locales/<locale>/` holds the texts: `ui.json` (interface), `labels.json` (race, class, gender and
+  alignment names) and one file per fragment category plus `epithets.json`.
+
+Texts may use `{firstName}`, `{lastName}`, `{fullName}`, `{epithet}` and `{Epithet}`, and
+`{{masculine|feminine|non-binary}}` for words that depend on the gender. French non-binary forms use neutral
+phrasing (the name, epicene words), never neopronouns or inclusive punctuation. `src/data/content.test.ts` checks
+that every locale has every text, with the same placeholders, and that each one renders for every gender.
+
+- **Add a fragment**: add its id to `fragments.json`, then its text in every locale.
+- **Add a race**: add it to `CharacterRaces` in `src/types/character.ts`, its labels, a name list, origin
+  fragments in every locale, and portraits under `public/images/<race>/`.
+- **Add a language**: add a folder under `src/data/locales/` with every file, register it in `src/i18n/` and
+  `src/content/data.ts`; the tests list what is missing.
+
+Characters saved by earlier versions keep their English text, labelled "Written in English" in other languages.
+
 # AI generation (optional)
 
 The generator works without any AI. Optionally, an AI provider can write names, epithets and backgrounds; race,
 class, gender, alignment and age are always chosen by the app. If the AI fails or answers badly, you still get a
 complete character and a message explaining what happened.
+
+The AI writes in the interface language. Its text keeps that language when you switch: it is then labelled, and a
+**Translate with AI** button rewrites it in the new language.
 
 Choose a provider in **Settings**, then use **Test connection**: it checks the provider and lists its models.
 

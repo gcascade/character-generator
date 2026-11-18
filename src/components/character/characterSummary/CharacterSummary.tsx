@@ -19,6 +19,7 @@ import { useLocale, useT } from '../../../i18n';
 import { label } from '../../../content/labels';
 import { renderCharacter } from '../../../content/character';
 import { capitalize } from '../../../content/renderText';
+import WrittenInNotice from '../writtenInNotice/WrittenInNotice';
 
 type CharacterSummaryProps = {
   character: Character;
@@ -48,6 +49,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
 
   const { firstName, lastName, age, race, characterClass, gender, alignment } =
     character;
+  const rendered = renderCharacter(character, locale);
 
   const onDeleteClick = () => {
     if (confirmDelete) {
@@ -94,7 +96,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
         }
         subheader={
           <Typography variant="subtitle1" align="center">
-            {capitalize(renderCharacter(character, locale).epithet)}
+            {capitalize(rendered.epithet)}
           </Typography>
         }
         action={
@@ -118,6 +120,12 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
       />
       <CharacterImage height={256} width={'100%'} {...character} />
       <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+        {rendered.writtenIn && rendered.writtenBy && (
+          <WrittenInNotice
+            language={rendered.writtenIn}
+            by={rendered.writtenBy}
+          />
+        )}
         <Divider />
         <Typography variant="body2" align="left">
           <strong>
