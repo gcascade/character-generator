@@ -99,8 +99,8 @@ values, and the first character shown already respects them.
 
 ### Edge Cases
 
-- A die (reroll of one property) on a locked property: [NEEDS CLARIFICATION: is the die disabled while locked, or
-  does it still reroll the value (locks only affect Generate)?]
+- A die (reroll of one property) on a locked property still rerolls it, and the lock keeps the new value: locks
+  only affect Generate.
 - Rerolling the race with its die while the age is locked: the new race must allow the locked age.
 - Rerolling the gender with its die while the first name is locked: the gender is drawn among those that fit the
   name; if only the current gender fits, the die tells the user nothing else fits instead of doing nothing silently.
@@ -109,6 +109,15 @@ values, and the first character shown already respects them.
 - Loading a character from the history or a saved character while locks are on: the shown character replaces the
   locked values (locks keep their state and now hold the new values).
 - Switching language: locks and values are unaffected.
+
+## Clarifications
+
+### Session 2026-11-18
+
+- Q: What does the die of a locked property do? → A: It still rerolls the value, and the lock keeps the new value;
+  locks only affect Generate.
+- Q: When race, class or alignment is locked, does its background paragraph stay the same? → A: No, a new paragraph
+  is drawn for the same value at each generation.
 
 ## Requirements _(mandatory)_
 
@@ -126,9 +135,8 @@ values, and the first character shown already respects them.
   allows a locked age, genders whose list contains a locked first name (any gender when no list does), first and
   last names from the lists of the (locked or drawn) race and gender.
 - **FR-006**: The generated background MUST be consistent with the final values (origin by race, training by class,
-  turning point by alignment), whatever is locked.
-  [NEEDS CLARIFICATION: when the race, class or alignment is locked, does its paragraph of the background stay the
-  same between generations, or is a new paragraph drawn for the same value?]
+  turning point by alignment), whatever is locked. When the race, class or alignment is locked, a new paragraph is drawn for the same value at each generation (the
+  lock holds the value, not the text).
 - **FR-007**: With an AI provider, locked values MUST be given to the AI as fixed facts, the AI MUST only be asked
   for the unlocked names and epithet plus a background, and any value the AI returns for a locked property MUST be
   ignored.
