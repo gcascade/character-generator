@@ -126,8 +126,10 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
         <Stack
           direction="row"
           spacing={2}
+          useFlexGap
           sx={{
             width: '100%',
+            flexWrap: 'wrap',
           }}
         >
           <Button
@@ -135,7 +137,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             color="primary"
             startIcon={<DoubleArrowIcon />}
             sx={{
-              flex: 1,
+              flex: '1 1 auto',
               backgroundColor: theme.palette.primary.main,
               color: theme.palette.common.white,
             }}
@@ -149,7 +151,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             color={isSaved ? 'success' : 'secondary'}
             startIcon={<SaveIcon />}
             sx={{
-              flex: 1,
+              flex: '1 1 auto',
             }}
             onClick={onSaveButtonClick}
             disabled={isSaved || isActionButtonDisabled}

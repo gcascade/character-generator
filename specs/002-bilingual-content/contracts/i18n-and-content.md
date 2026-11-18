@@ -56,6 +56,7 @@ reference (research R6).
 ## AI layer additions (`src/ai/`)
 
 - `newCharacterPrompt`, `backgroundRewritePrompt`, `nameRerollPrompt` take a `locale` and state the writing language.
-- `GenerationOutcome.character` for AI results carries `written: { language: locale, source: 'ai', … }`.
-- `translateWritten(provider, character, locale, signal): Promise<GenerationOutcome>` — rewrites `written` in `locale`;
+- `GenerationOutcome.character` for AI results carries the AI `epithet`/`background` with `textLanguage: locale`,
+  `textSource: 'ai'`.
+- `translateWritten(provider, character, locale, signal): Promise<GenerationOutcome>` — rewrites the written epithet and background in `locale`;
   on failure returns the unchanged character with `failure` set.

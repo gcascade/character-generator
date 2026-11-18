@@ -31,7 +31,8 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
   `@mui/icons-material/X` break under Vite's CJS interop).
 - Optional AI generation lives in `src/ai/` (framework-free, see its README): providers "Ollama",
   "OpenAI-compatible" (both through one `fetch` adapter) and "Claude" (official `@anthropic-ai/sdk`, browser mode).
-  zod validates AI answers and stored settings. Without AI, everything comes from `src/data/`.
+  zod validates AI answers, stored settings and stored characters. Without AI, everything comes from `src/data/`.
+- Bilingual (en, fr) with an in-house i18n in `src/i18n/` (`LocaleProvider`, `useT`, `useLocale`); no i18n library.
 
 ## CI / deploy
 
@@ -47,14 +48,17 @@ src/
   contexts/                        One React context per concern (character, history, settings, ...)
   ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
-  utils/character.ts               Random generation from static data
-  data/                            backgrounds.json (templated with {{firstName}} etc.), characterNames.json
+  i18n/                            Locale detection, LocaleProvider, useT / useLocale
+  content/                         renderText (gendered text), generate (random characters, rerolls),
+                                   character (renderCharacter per locale), labels, storedCharacter (zod)
+  data/content/                    Fragment and epithet ids, name lists per race (language-independent)
+  data/locales/<locale>/           ui.json, labels.json, and one text file per fragment category
   types/                           Domain types; enums are `as const` objects + derived union types
 test/                              Shared Storybook/test decorators and stubs
 public/images/<race>/<class>/<gender>1.png   Portraits
 ```
 
-Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Components/*`, `@Contexts/*`, `@Types/*`, `@Test/*`, `@Ai/*`.
+Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Components/*`, `@Contexts/*`, `@Types/*`, `@Test/*`, `@Ai/*`, `@Content/*`, `@I18n/*`.
 
 ## Conventions
 
@@ -68,11 +72,19 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 
 - Characters are compared by reference (no `id`).
 
+## Content and languages
+
+- Characters store fragment ids (`content`); `renderCharacter(character, locale)` turns them into text. Written
+  text (AI, or legacy characters) is stored with `textLanguage`/`textSource` and overrides fragments.
+- Texts use `{firstName}`-style placeholders and `{{masculine|feminine|non-binary}}` selections. Every text exists
+  in every locale with the same placeholders; `src/data/content.test.ts` enforces it.
+- French: neutral phrasing for non-binary characters (no "iel", no point médian); narrow no-break space (U+202F)
+  before `: ; ! ?` and inside « »; never put `{firstName}` after an elidable word (de, que, le…).
+- Interface strings go through `useT()` with keys from `src/data/locales/en/ui.json`; never hard-code UI text.
+
 ## Direction
 
-- Rich content without AI is a goal: static content (backgrounds, names, epithets) is meant to grow,
-  likely as composable fragments (origin by race, training by class, turning point by alignment)
-  with pronoun placeholders instead of one copy per gender.
+- Content without AI should keep growing: more fragments, names and epithets, in both languages.
 - New features are specified with Spec Kit before implementation (see below).
 
 ## Spec-driven development (Spec Kit)
