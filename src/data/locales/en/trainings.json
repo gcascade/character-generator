@@ -1,0 +1,18 @@
+{
+  "training-warrior-militia": "At fifteen, {firstName} joined the city militia. Years of night watches and tavern brawls taught {{him|her|them}} never to leave a comrade behind.",
+  "training-warrior-arena": "{firstName} learned to fight in the arenas of the south, where the crowd decides who lives, and won {{his|her|their}} freedom with a broken sword.",
+  "training-warrior-knight": "An old knight took {firstName} into service and taught {{him|her|them}} that a shield is raised for others before oneself.",
+  "training-warrior-mercenary": "{firstName} sold {{his|her|their}} sword to the Free Companies, crossed a dozen wars, and learned that loyalty is the rarest currency of all.",
+  "training-mage-academy": "{firstName} studied at the Arcanum of Civitas, spending more nights in the library than in bed, and left with a master's ring and far too many questions.",
+  "training-mage-hedge": "No academy would take {firstName}, so {{he|she|they}} learned magic from an old hedge-witch who paid in riddles and burned more soup than spells.",
+  "training-mage-wild": "Magic awoke in {firstName} during a storm and set a barn on fire. Learning to master it took years of patience, and a few more barns.",
+  "training-mage-grimoire": "{firstName} found a forbidden grimoire in a ruined chapel and taught {{himself|herself|themself}} from its whispering pages.",
+  "training-rogue-guild": "The Shadow Guild took {firstName} in and taught {{him|her|them}} locks, rooftops, and the art of vanishing into a crowd.",
+  "training-rogue-street": "On the streets, {firstName} survived on quick hands and quicker wits, until a queen of pickpockets saw talent where others saw trouble.",
+  "training-rogue-scout": "{firstName} served with the scouts of a border fort, learning to move without a sound and to read the forest like an open book.",
+  "training-rogue-spy": "A noble house trained {firstName} in espionage, teaching {{him|her|them}} to smile, to listen, and to forget nothing.",
+  "training-cleric-temple": "{firstName} was raised in the temple of the Dawnfather, where prayers began before sunrise and healing was learned at the bedside of the poor.",
+  "training-cleric-vision": "A fever brought a vision that changed everything: {firstName} woke with a god's voice in {{his|her|their}} heart and the power to heal in {{his|her|their}} hands.",
+  "training-cleric-battle": "{firstName} followed the armies as a battle priest, a mace in one hand and bandages in the other.",
+  "training-cleric-pilgrim": "{firstName} walked the long pilgrimage to the Seven Shrines and came back with calloused feet and an unshakable faith."
+}

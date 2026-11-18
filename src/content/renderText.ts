@@ -17,10 +17,16 @@ export const PLACEHOLDERS = [
   'lastName',
   'fullName',
   'epithet',
+  'Epithet',
 ] as const;
 
-const SELECTION = /\{\{([^{}]*)\}\}/g;
+// `{{a|b|c}}`, where each form may contain name placeholders such as `{firstName}`.
+const SELECTION = /\{\{((?:[^{}]|\{\w+\})*)\}\}/g;
 const PLACEHOLDER = /\{(\w+)\}/g;
+
+/** Capitalizes the first letter (for epithets at the start of a title or sentence). */
+export const capitalize = (text: string) =>
+  text.charAt(0).toUpperCase() + text.slice(1);
 
 const genderIndex = (gender: Gender): 0 | 1 | 2 =>
   gender === 'Male' ? 0 : gender === 'Female' ? 1 : 2;
@@ -50,6 +56,7 @@ export const renderText = (
     lastName: names.lastName,
     fullName: `${names.firstName} ${names.lastName}`,
     epithet: names.epithet ?? '',
+    Epithet: capitalize(names.epithet ?? ''),
   };
   return selectGender(text, gender).replace(
     PLACEHOLDER,
@@ -59,7 +66,3 @@ export const renderText = (
     },
   );
 };
-
-/** Capitalizes the first letter (for epithets at the start of a title or sentence). */
-export const capitalize = (text: string) =>
-  text.charAt(0).toUpperCase() + text.slice(1);

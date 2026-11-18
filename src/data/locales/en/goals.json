@@ -1,0 +1,12 @@
+{
+  "goal-relic": "Today, {fullName}, {epithet}, travels the roads in search of a lost relic said to mend what was broken.",
+  "goal-revenge": "Today, {firstName} follows the trail of an old enemy, sworn that the hunt will end only with one of them in the grave.",
+  "goal-home": "All {firstName} wants now is to find the way home, wherever home turns out to be.",
+  "goal-crown": "{fullName}, {epithet}, has set {{his|her|their}} eyes on a crown, and the road to it runs through every tavern, court and battlefield of the realm.",
+  "goal-map": "In {{his|her|their}} pack lies a torn map pointing to a city swallowed by the sands, and {firstName} intends to find it before anyone else.",
+  "goal-letter": "An oath made to a dying friend binds {firstName} to deliver a sealed letter to a queen who may not want to read it.",
+  "goal-company": "{firstName} is gathering a company of adventurers, convinced that the coming storm cannot be faced alone.",
+  "goal-dragon": "Rumours of a dragon waking in the north have reached {firstName}, who is already sharpening blades and plans.",
+  "goal-redemption": "Haunted by an old mistake, {firstName} wanders from town to town, hoping each good deed weighs a little against the past.",
+  "goal-legend": "{fullName} wants only one thing: that bards will still sing of {{his|her|their}} deeds long after the last candle has gone out."
+}

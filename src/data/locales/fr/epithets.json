@@ -1,0 +1,140 @@
+{
+  "epithet-bold": {
+    "m": "le Hardi",
+    "f": "la Hardie",
+    "n": "au Cœur hardi"
+  },
+  "epithet-wise": {
+    "m": "le Sage",
+    "f": "la Sage",
+    "n": "à l'Esprit sage"
+  },
+  "epithet-grim": {
+    "m": "le Sombre",
+    "f": "la Sombre",
+    "n": "au Regard sombre"
+  },
+  "epithet-swift": {
+    "m": "le Vif",
+    "f": "la Vive",
+    "n": "à la Main vive"
+  },
+  "epithet-unyielding": "l'Inflexible",
+  "epithet-silent": {
+    "m": "le Silencieux",
+    "f": "la Silencieuse",
+    "n": "au Pas silencieux"
+  },
+  "epithet-lionhearted": "Cœur-de-Lion",
+  "epithet-red": {
+    "m": "le Rouge",
+    "f": "la Rouge",
+    "n": "à la Cape rouge"
+  },
+  "epithet-wanderer": {
+    "m": "le Vagabond",
+    "f": "la Vagabonde",
+    "n": "aux Mille Chemins"
+  },
+  "epithet-stormborn": "de l'Orage",
+  "epithet-ironhand": "Main-de-Fer",
+  "epithet-just": {
+    "m": "le Juste",
+    "f": "la Juste",
+    "n": "à la Balance juste"
+  },
+  "epithet-fearless": "l'Intrépide",
+  "epithet-cunning": {
+    "m": "le Rusé",
+    "f": "la Rusée",
+    "n": "aux Mille Ruses"
+  },
+  "epithet-fierce": {
+    "m": "le Farouche",
+    "f": "la Farouche",
+    "n": "au Cœur farouche"
+  },
+  "epithet-grey": {
+    "m": "le Gris",
+    "f": "la Grise",
+    "n": "à la Cape grise"
+  },
+  "epithet-ashwalker": "Marche-Cendres",
+  "epithet-truthful": {
+    "m": "le Franc",
+    "f": "la Franche",
+    "n": "à la Parole franche"
+  },
+  "epithet-merciless": "l'Impitoyable",
+  "epithet-gentle": {
+    "m": "le Doux",
+    "f": "la Douce",
+    "n": "à la Main douce"
+  },
+  "epithet-wolf": {
+    "m": "le Loup",
+    "f": "la Louve",
+    "n": "Cœur-de-Loup"
+  },
+  "epithet-starseeker": {
+    "m": "le Chercheur d'Étoiles",
+    "f": "la Chercheuse d'Étoiles",
+    "n": "aux Yeux d'Étoiles"
+  },
+  "epithet-oathkeeper": "Garde-Serment",
+  "epithet-shadow": "l'Ombre",
+  "epithet-blessed": {
+    "m": "le Béni",
+    "f": "la Bénie",
+    "n": "à la Lumière bénie"
+  },
+  "epithet-unbroken": "l'Inébranlable",
+  "epithet-thunder": "Tonnerre-Grondant",
+  "epithet-lucky": {
+    "m": "le Chanceux",
+    "f": "la Chanceuse",
+    "n": "à la Bonne Étoile"
+  },
+  "epithet-nameless": {
+    "m": "le Sans-Nom",
+    "f": "la Sans-Nom",
+    "n": "Sans-Nom"
+  },
+  "epithet-golden": "à la Voix d'Or",
+  "epithet-flamebearer": "Porte-Flamme",
+  "epithet-steadfast": {
+    "m": "le Constant",
+    "f": "la Constante",
+    "n": "au Pas constant"
+  },
+  "epithet-healer": {
+    "m": "le Guérisseur",
+    "f": "la Guérisseuse",
+    "n": "aux Mains guérisseuses"
+  },
+  "epithet-exile": {
+    "m": "l'Exilé",
+    "f": "l'Exilée",
+    "n": "Sans-Patrie"
+  },
+  "epithet-hawkeye": "Œil-de-Faucon",
+  "epithet-laughing": {
+    "m": "le Rieur",
+    "f": "la Rieuse",
+    "n": "au Rire clair"
+  },
+  "epithet-cursed": {
+    "m": "le Maudit",
+    "f": "la Maudite",
+    "n": "à l'Ombre maudite"
+  },
+  "epithet-northern": "du Nord",
+  "epithet-thornheart": "Cœur-d'Épines",
+  "epithet-lantern": "Porte-Lanterne",
+  "epithet-dreamer": {
+    "m": "le Rêveur",
+    "f": "la Rêveuse",
+    "n": "aux Yeux rêveurs"
+  },
+  "epithet-stoneskin": "Peau-de-Pierre"
+}

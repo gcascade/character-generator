@@ -1,0 +1,8 @@
+{
+  "title-epithet": "{Epithet}",
+  "title-tale": "{firstName} {epithet}",
+  "title-ballad": "Ballade pour {fullName}",
+  "title-road": "Sur la route avec {firstName}",
+  "title-chronicle": "Chronique : {fullName}",
+  "title-legend": "Une légende en marche : {firstName}"
+}
