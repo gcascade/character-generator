@@ -1,0 +1,18 @@
+{
+  "origin-human-harbour": "{fullName} a grandi sur les quais de Salmer, une cité portuaire où chaque marée apportait des inconnus et des histoires. {{Très tôt, il a appris|Très tôt, elle a appris|Très tôt, {firstName} a appris}} à lire les visages plus vite que les lettres.",
+  "origin-human-farm": "{firstName} a passé son enfance dans une ferme au bord du Grisebois, entre les champs de blé dorés et la lisière sombre d'une forêt dont tous les adultes se méfiaient.",
+  "origin-human-noble": "{fullName} a reçu l'éducation d'une petite maison noble de Civitas, où les bonnes manières tranchaient plus que les épées et où chaque dîner était une négociation.",
+  "origin-human-refugee": "Des pillards ont incendié le village où {firstName} vivait, à l'âge de six ans à peine. Les années suivantes se sont écoulées dans un camp de réfugiés sur la route du Roi, où la bonté et la faim dormaient souvent sous la même tente.",
+  "origin-elf-forest": "{fullName} a ouvert les yeux pour la première fois sous la canopée argentée d'Elysion, la plus ancienne forêt des elfes, où les chants sont plus vieux que les royaumes.",
+  "origin-elf-tower": "Dans la tour des astrologues de Flèche-Lune, {firstName} connaissait le nom de chaque constellation avant même de faire ses premiers pas.",
+  "origin-elf-exile": "{fullName} appartient à une famille bannie des cours elfiques il y a trois siècles. Une enfance passée parmi les humains lui a laissé le sentiment de n'appartenir vraiment à aucun lieu.",
+  "origin-elf-coast": "Sur les rivages brumeux d'Aelinor, {firstName} a grandi en regardant les navires des elfes de la mer partir vers l'ouest, sans jamais revenir.",
+  "origin-dwarf-forge": "{fullName} a vu le jour dans la forteresse-forge du Pic de Kragnir, où le cœur de la montagne bat au rythme de mille marteaux.",
+  "origin-dwarf-mine": "Au fond des mines de la Fosse, {firstName} a grandi à la lueur des lanternes, parmi des mineurs capables de reconnaître l'or véritable à son chant.",
+  "origin-dwarf-clan": "{fullName} appartient au clan {lastName}, une fière lignée de gardiens de la pierre dont les noms sont gravés sur la Grande Porte.",
+  "origin-dwarf-surface": "Contrairement à la plupart des siens, {firstName} a grandi à la surface, dans un comptoir où nains, humains et parfois un elfe marchandaient le fer et la laine.",
+  "origin-orc-steppe": "{fullName} a grandi dans les steppes balayées par le vent de Khar-Duun, où les clans orques suivent les troupeaux et les orages.",
+  "origin-orc-city": "À l'ombre des remparts humains, {firstName} a passé sa jeunesse dans le quartier orque de Civitas, où le respect se gagnait deux fois.",
+  "origin-orc-warband": "{fullName} a grandi au sein de la horde des Défenses de Fer, où les enfants apprennent à monter les loups avant de savoir lire.",
+  "origin-orc-shaman": "Parmi les cercles de pierre des Collines de Cendre, {firstName} a grandi sous la garde d'une chamane aveugle qui entendait les esprits dans la pluie."
+}

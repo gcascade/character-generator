@@ -1,0 +1,12 @@
+{
+  "goal-relic": "Aujourd'hui, {fullName}, {epithet}, parcourt les routes à la recherche d'une relique perdue qui pourrait réparer ce qui a été brisé.",
+  "goal-revenge": "Aujourd'hui, {firstName} suit la piste d'un vieil ennemi, avec le serment que la traque ne s'achèvera que dans la tombe de l'un des deux.",
+  "goal-home": "Désormais, {firstName} ne cherche qu'une chose : retrouver le chemin de chez soi, où que ce soit.",
+  "goal-crown": "{fullName}, {epithet}, a désormais une couronne en vue, et la route qui y mène traverse toutes les tavernes, les cours et les champs de bataille du royaume.",
+  "goal-map": "Dans son sac repose une carte déchirée qui indique une cité engloutie par les sables, et {firstName} compte bien la trouver avant tout le monde.",
+  "goal-letter": "Un serment fait à un ami mourant oblige {firstName} à remettre une lettre scellée à une reine qui n'a peut-être aucune envie de la lire.",
+  "goal-company": "{firstName} rassemble une compagnie d'aventuriers, avec la certitude que la tempête qui vient ne pourra pas être affrontée sans aide.",
+  "goal-dragon": "Les rumeurs d'un dragon qui s'éveille dans le Nord sont parvenues jusqu'à {firstName}, qui affûte déjà ses lames et ses plans.",
+  "goal-redemption": "Une vieille erreur hante encore {firstName}, qui erre de ville en ville en espérant que chaque bonne action pèse un peu face au passé.",
+  "goal-legend": "{fullName} ne veut qu'une chose : que les bardes chantent encore ses exploits bien après l'extinction de la dernière bougie."
+}

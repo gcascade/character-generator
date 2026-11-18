@@ -25,6 +25,20 @@ describe('renderText', () => {
     );
   });
 
+  it('allows names inside a gender form', () => {
+    expect(
+      renderText(
+        '{{Il a grandi|Elle a grandi|{firstName} a grandi}}.',
+        'Non-binary',
+        names,
+      ),
+    ).toBe('Aria a grandi.');
+  });
+
+  it('capitalizes {Epithet} for titles', () => {
+    expect(renderText('{Epithet}', 'Male', names)).toBe('The Bold');
+  });
+
   it('keeps an empty form', () => {
     expect(renderText('né{{||}}', 'Female', names)).toBe('né');
   });

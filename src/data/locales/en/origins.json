@@ -1,0 +1,18 @@
+{
+  "origin-human-harbour": "{fullName} grew up among the docks of Saltmere, a harbour city where every tide brought strangers and stories. {{He|She|They}} learned early to read faces faster than letters.",
+  "origin-human-farm": "{firstName} spent {{his|her|their}} childhood on a farm at the edge of the Greywold, between golden wheat fields and the dark line of a forest every adult warned about.",
+  "origin-human-noble": "{fullName} was raised in a minor noble house of Civitas, where manners cut deeper than swords and every dinner was a negotiation.",
+  "origin-human-refugee": "Raiders burned {{his|her|their}} village when {firstName} was barely six. The years that followed were spent in a refugee camp on the King's Road, where kindness and hunger often slept under the same tent.",
+  "origin-elf-forest": "{fullName} first opened {{his|her|their}} eyes beneath the silver canopy of Elysion, the oldest forest of the elves, where songs are older than kingdoms.",
+  "origin-elf-tower": "Raised among the star-readers of the Moonspire, {firstName} knew the name of every constellation before taking a first step.",
+  "origin-elf-exile": "{fullName} belongs to a family banished from the elven courts three centuries ago. Growing up among humans, {{he|she|they}} never quite belonged anywhere.",
+  "origin-elf-coast": "On the misty shores of Aelinor, {firstName} grew up watching the sea-elves' ships sail west, never to return.",
+  "origin-dwarf-forge": "{fullName} was born in the forge-hold of Kragnir's Spire, where the heartbeat of the mountain is the sound of a thousand hammers.",
+  "origin-dwarf-mine": "Deep in the mines of the Delve, {firstName} grew up by lantern light, among miners who could tell true gold from fool's gold by its song.",
+  "origin-dwarf-clan": "{fullName} comes from clan {lastName}, a proud line of stonewardens whose names are carved on the Great Gate.",
+  "origin-dwarf-surface": "Unlike most of {{his|her|their}} kin, {firstName} was raised on the surface, in a trading post where dwarves, humans and the odd elf haggled over iron and wool.",
+  "origin-orc-steppe": "{fullName} grew up on the wind-swept steppes of Khar-Duun, where the orc clans follow the herds and the storms.",
+  "origin-orc-city": "{firstName} spent {{his|her|their}} youth in the shadow of human walls, in the orc quarter of Civitas, where respect had to be earned twice.",
+  "origin-orc-warband": "{fullName} was raised in the Iron Tusk warband, where children learn to ride wolves before they learn to read.",
+  "origin-orc-shaman": "Among the stone circles of the Ashen Hills, {firstName} grew up under the watch of a blind shaman who heard the spirits in the rain."
+}

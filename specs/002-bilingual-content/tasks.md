@@ -64,10 +64,10 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 **Independent test**: SC-002 distinctness test; quickstart scenarios 2–5.
 
-- [ ] T017 [US2] Declare fragment ids in src/data/content/fragments.json (category; `race` for origins, `characterClass` for trainings, `alignment` for turning points) — minimums "4 origins per race, 4 trainings per class, 3 turning points per alignment, 10 goals, 6 titles"
-- [ ] T018 [P] [US2] Write English fragment texts (content task, reuse the best passages of src/data/backgrounds.json) in src/data/locales/en/{titles,origins,trainings,turningPoints,goals}.json with `{{He|She|They}}`-style selections
-- [ ] T019 [P] [US2] Write French fragment texts (content task) in src/data/locales/fr/{titles,origins,trainings,turningPoints,goals}.json with agreement for m/f and neutral phrasing for n
-- [ ] T020 [US2] Extend src/data/content.test.ts with the FR-009 minimum counts per race, class and alignment and a check that every fragment renders for every gender in every locale without leftover `{` or `}`
+- [X] T017 [US2] Declare fragment ids in src/data/content/fragments.json (category; `race` for origins, `characterClass` for trainings, `alignment` for turning points) — minimums "4 origins per race, 4 trainings per class, 3 turning points per alignment, 10 goals, 6 titles"
+- [X] T018 [P] [US2] Write English fragment texts (content task, reuse the best passages of src/data/backgrounds.json) in src/data/locales/en/{titles,origins,trainings,turningPoints,goals}.json with `{{He|She|They}}`-style selections
+- [X] T019 [P] [US2] Write French fragment texts (content task) in src/data/locales/fr/{titles,origins,trainings,turningPoints,goals}.json with agreement for m/f and neutral phrasing for n
+- [X] T020 [US2] Extend src/data/content.test.ts with the FR-009 minimum counts per race, class and alignment and a check that every fragment renders for every gender in every locale without leftover `{` or `}`
 - [ ] T021 [US2] Implement `pickFragments(character)` and `renderCharacter(character, locale)` in src/content/character.ts (title + origin + training + turning point + goal; `writtenIn`/`writtenBy` for `written` characters); tests in src/content/character.test.ts including SC-002 (≥ 60 distinct backgrounds in 100 draws for a fixed combination, per locale)
 - [ ] T022 [US2] Move generation from src/utils/character.ts to src/content/generate.ts: `generateRandomCharacter` returns `content` references; `rerollWithApp` changes only the dependent reference (race → `originId`, class → `trainingId`, alignment → `turningPointId`) and keeps names on race rerolls; delete src/utils/character.ts and src/data/backgrounds.json; update imports in src/ai/generate.ts and its tests
 - [ ] T023 [US2] Render characters through `renderCharacter` in src/components/character/characterBackground/CharacterBackground.tsx, Character.tsx, CharacterInformation.tsx, CharacterSummary.tsx and src/components/history/**; update their tests and stories (test/stubs/Character.stubs.ts gets `content` references)
@@ -82,9 +82,9 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 **Independent test**: SC-004 test over 200 characters; quickstart scenario 6.
 
-- [ ] T024 [P] [US3] Write name lists (content task) in src/data/content/names/{human,elf,dwarf,orc}.json: `first.male`, `first.female`, `first.neutral` "≥ 40 unique names each", `last` "≥ 40 unique names"; each race with its own naming style; delete src/data/characterNames.json once unused
-- [ ] T025 [P] [US3] Write epithets (content task): ids in src/data/content/epithets.json (≥ 40), English in src/data/locales/en/epithets.json, French with masculine, feminine and neutral forms in src/data/locales/fr/epithets.json
-- [ ] T026 [US3] Extend src/data/content.test.ts with name list sizes, uniqueness, and epithet coverage in every locale
+- [X] T024 [P] [US3] Write name lists (content task) in src/data/content/names/{human,elf,dwarf,orc}.json: `first.male`, `first.female`, `first.neutral` "≥ 40 unique names each", `last` "≥ 40 unique names"; each race with its own naming style; delete src/data/characterNames.json once unused
+- [X] T025 [P] [US3] Write epithets (content task): ids in src/data/content/epithets.json (≥ 40), English in src/data/locales/en/epithets.json, French with masculine, feminine and neutral forms in src/data/locales/fr/epithets.json
+- [X] T026 [US3] Extend src/data/content.test.ts with name list sizes, uniqueness, and epithet coverage in every locale
 - [ ] T027 [US3] Use race/gender name lists and epithet ids in src/content/generate.ts (non-binary → `first.neutral`; gender reroll keeps the first name only if it is in the new gender's list); tests for SC-004 in src/content/generate.test.ts
 
 ---

@@ -1,0 +1,18 @@
+{
+  "training-warrior-militia": "À quinze ans, {firstName} a rejoint la milice de la ville. Des années de rondes de nuit et de bagarres de taverne lui ont appris à ne jamais abandonner un compagnon d'armes.",
+  "training-warrior-arena": "{firstName} a appris à se battre dans les arènes du Sud, où la foule décide qui vit, et a gagné sa liberté avec une épée brisée.",
+  "training-warrior-knight": "Un vieux chevalier a pris {firstName} à son service et lui a enseigné qu'un bouclier se lève d'abord pour les autres.",
+  "training-warrior-mercenary": "{firstName} a vendu son épée aux Compagnies libres, traversé une douzaine de guerres et appris que la loyauté est la plus rare des monnaies.",
+  "training-mage-academy": "{firstName} a étudié à l'Arcanum de Civitas, en passant plus de nuits à la bibliothèque qu'au lit, pour en repartir avec un anneau de maître et beaucoup trop de questions.",
+  "training-mage-hedge": "Faute d'académie prête à l'accueillir, {firstName} a appris la magie auprès d'une vieille sorcière des haies qui payait en énigmes et brûlait plus de soupes que de sorts.",
+  "training-mage-wild": "La magie s'est éveillée chez {firstName} pendant un orage, en mettant le feu à une grange. Apprendre à la maîtriser a demandé des années de patience, et quelques granges de plus.",
+  "training-mage-grimoire": "Dans une chapelle en ruine, {firstName} a découvert un grimoire interdit et a tout appris en autodidacte, au fil de ses pages chuchotantes.",
+  "training-rogue-guild": "La Guilde de l'Ombre a recueilli {firstName} et lui a enseigné les serrures, les toits et l'art de disparaître dans une foule.",
+  "training-rogue-street": "Dans la rue, {firstName} a survécu grâce à des mains agiles et un esprit plus vif encore, jusqu'à ce qu'une reine des pickpockets voie du talent là où d'autres ne voyaient que des ennuis.",
+  "training-rogue-scout": "{firstName} a servi parmi les éclaireurs d'un fort frontalier, en apprenant à se déplacer sans un bruit et à lire la forêt comme un livre ouvert.",
+  "training-rogue-spy": "Une maison noble a formé {firstName} à l'espionnage, en lui apprenant à sourire, à écouter et à ne rien oublier.",
+  "training-cleric-temple": "Au temple du Père de l'Aube, {firstName} a grandi au rythme de prières commencées avant le lever du soleil, et a appris à soigner au chevet des pauvres.",
+  "training-cleric-vision": "Une fièvre a apporté une vision qui a tout changé : à son réveil, {firstName} entendait la voix d'un dieu dans son cœur et sentait le pouvoir de guérir dans ses mains.",
+  "training-cleric-battle": "{firstName} a suivi les armées pour y porter la foi, une masse dans une main et des bandages dans l'autre.",
+  "training-cleric-pilgrim": "Le long pèlerinage des Sept Sanctuaires a laissé à {firstName} des pieds calleux et une foi inébranlable."
+}

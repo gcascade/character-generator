@@ -7,7 +7,12 @@ import {
   type GenderedText,
   renderText as fillText,
 } from '../content/renderText';
-import { Genders } from '../types/character';
+import {
+  CharacterAlignments,
+  CharacterClasses,
+  CharacterRaces,
+  Genders,
+} from '../types/character';
 
 type LocaleFiles = Record<string, Record<string, unknown>>;
 
@@ -82,6 +87,113 @@ describe('locale files', () => {
     for (const [file, entries] of Object.entries(fr)) {
       for (const text of texts(entries)) {
         expect(text, `${file}: ${text}`).not.toMatch(forbidden);
+      }
+    }
+  });
+});
+
+describe('fragments and names', () => {
+  type Fragment = {
+    id: string;
+    category: string;
+    race?: string;
+    characterClass?: string;
+    alignment?: string;
+  };
+  const fragments = import.meta.glob<{ default: Fragment[] }>(
+    './content/fragments.json',
+    {
+      eager: true,
+    },
+  )['./content/fragments.json'].default;
+  const count = (category: string, key?: keyof Fragment, value?: string) =>
+    fragments.filter(
+      (f) => f.category === category && (!key || f[key] === value),
+    ).length;
+
+  it('has unique ids, each with text in both languages', () => {
+    const ids = fragments.map((f) => f.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    const file: Record<string, string> = {
+      title: 'titles',
+      origin: 'origins',
+      training: 'trainings',
+      turningPoint: 'turningPoints',
+      goal: 'goals',
+    };
+    for (const fragment of fragments) {
+      expect(
+        en[file[fragment.category]][fragment.id],
+        fragment.id,
+      ).toBeDefined();
+      expect(
+        fr[file[fragment.category]][fragment.id],
+        fragment.id,
+      ).toBeDefined();
+    }
+  });
+
+  it('meets the minimum counts (FR-009)', () => {
+    expect(count('title')).toBeGreaterThanOrEqual(6);
+    expect(count('goal')).toBeGreaterThanOrEqual(10);
+    for (const race of Object.values(CharacterRaces)) {
+      expect(count('origin', 'race', race), race).toBeGreaterThanOrEqual(4);
+    }
+    for (const characterClass of Object.values(CharacterClasses)) {
+      expect(
+        count('training', 'characterClass', characterClass),
+        characterClass,
+      ).toBeGreaterThanOrEqual(4);
+    }
+    for (const alignment of Object.values(CharacterAlignments)) {
+      expect(
+        count('turningPoint', 'alignment', alignment),
+        alignment,
+      ).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('has at least 40 epithets, in both languages', () => {
+    const ids = import.meta.glob<{ default: string[] }>(
+      './content/epithets.json',
+      { eager: true },
+    )['./content/epithets.json'].default;
+    expect(ids.length).toBeGreaterThanOrEqual(40);
+    for (const id of ids) {
+      expect(en.epithets[id], id).toBeDefined();
+      expect(fr.epithets[id], id).toBeDefined();
+    }
+  });
+
+  it.each(Object.values(CharacterRaces))(
+    'has 40 unique names per list for %s',
+    (race) => {
+      const names = import.meta.glob<{
+        default: { first: Record<string, string[]>; last: string[] };
+      }>('./content/names/*.json', { eager: true })[
+        `./content/names/${race.toLowerCase()}.json`
+      ].default;
+      const lists = [...Object.values(names.first), names.last];
+      expect(Object.keys(names.first).sort()).toEqual([
+        'female',
+        'male',
+        'neutral',
+      ]);
+      for (const list of lists) {
+        expect(list.length).toBeGreaterThanOrEqual(40);
+        expect(new Set(list).size).toBe(list.length);
+      }
+      const firstNames = Object.values(names.first).flat();
+      expect(new Set(firstNames).size).toBe(firstNames.length);
+    },
+  );
+
+  it('never puts an article or "de" right before a name in French (no elision issue)', () => {
+    const elision =
+      /\b(de|que|le|la|ne|se|jusque|lorsque|puisque) \{(firstName|lastName|fullName)\}/i;
+    for (const [file, entries] of Object.entries(fr)) {
+      for (const text of texts(entries)) {
+        expect(text, `${file}: ${text}`).not.toMatch(elision);
       }
     }
   });

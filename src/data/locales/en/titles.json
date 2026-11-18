@@ -1,0 +1,8 @@
+{
+  "title-epithet": "{Epithet}",
+  "title-tale": "The Tale of {firstName} {epithet}",
+  "title-ballad": "Ballad of {fullName}",
+  "title-road": "On the Road with {firstName}",
+  "title-chronicle": "Chronicle: {fullName}",
+  "title-legend": "A Legend in the Making: {firstName}"
+}

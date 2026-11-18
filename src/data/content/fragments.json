@@ -1,0 +1,361 @@
+[
+  {
+    "id": "title-epithet",
+    "category": "title"
+  },
+  {
+    "id": "title-tale",
+    "category": "title"
+  },
+  {
+    "id": "title-ballad",
+    "category": "title"
+  },
+  {
+    "id": "title-road",
+    "category": "title"
+  },
+  {
+    "id": "title-chronicle",
+    "category": "title"
+  },
+  {
+    "id": "title-legend",
+    "category": "title"
+  },
+  {
+    "id": "origin-human-harbour",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-human-farm",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-human-noble",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-human-refugee",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-elf-forest",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-elf-tower",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-elf-exile",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-elf-coast",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-dwarf-forge",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-dwarf-mine",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-dwarf-clan",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-dwarf-surface",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-orc-steppe",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-orc-city",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-orc-warband",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-orc-shaman",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "training-warrior-militia",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-warrior-arena",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-warrior-knight",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-warrior-mercenary",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-mage-academy",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-mage-hedge",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-mage-wild",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-mage-grimoire",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-rogue-guild",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-rogue-street",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-rogue-scout",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-rogue-spy",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-cleric-temple",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "training-cleric-vision",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "training-cleric-battle",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "training-cleric-pilgrim",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "turning-lg-gallows",
+    "category": "turningPoint",
+    "alignment": "Lawful Good"
+  },
+  {
+    "id": "turning-lg-bridge",
+    "category": "turningPoint",
+    "alignment": "Lawful Good"
+  },
+  {
+    "id": "turning-lg-order",
+    "category": "turningPoint",
+    "alignment": "Lawful Good"
+  },
+  {
+    "id": "turning-ng-plague",
+    "category": "turningPoint",
+    "alignment": "Neutral Good"
+  },
+  {
+    "id": "turning-ng-market",
+    "category": "turningPoint",
+    "alignment": "Neutral Good"
+  },
+  {
+    "id": "turning-ng-stranger",
+    "category": "turningPoint",
+    "alignment": "Neutral Good"
+  },
+  {
+    "id": "turning-cg-taxes",
+    "category": "turningPoint",
+    "alignment": "Chaotic Good"
+  },
+  {
+    "id": "turning-cg-prison",
+    "category": "turningPoint",
+    "alignment": "Chaotic Good"
+  },
+  {
+    "id": "turning-cg-chains",
+    "category": "turningPoint",
+    "alignment": "Chaotic Good"
+  },
+  {
+    "id": "turning-ln-contract",
+    "category": "turningPoint",
+    "alignment": "Lawful Neutral"
+  },
+  {
+    "id": "turning-ln-court",
+    "category": "turningPoint",
+    "alignment": "Lawful Neutral"
+  },
+  {
+    "id": "turning-ln-collapse",
+    "category": "turningPoint",
+    "alignment": "Lawful Neutral"
+  },
+  {
+    "id": "turning-tn-balance",
+    "category": "turningPoint",
+    "alignment": "True Neutral"
+  },
+  {
+    "id": "turning-tn-survive",
+    "category": "turningPoint",
+    "alignment": "True Neutral"
+  },
+  {
+    "id": "turning-tn-wander",
+    "category": "turningPoint",
+    "alignment": "True Neutral"
+  },
+  {
+    "id": "turning-cn-banquet",
+    "category": "turningPoint",
+    "alignment": "Chaotic Neutral"
+  },
+  {
+    "id": "turning-cn-cage",
+    "category": "turningPoint",
+    "alignment": "Chaotic Neutral"
+  },
+  {
+    "id": "turning-cn-dice",
+    "category": "turningPoint",
+    "alignment": "Chaotic Neutral"
+  },
+  {
+    "id": "turning-le-ladder",
+    "category": "turningPoint",
+    "alignment": "Lawful Evil"
+  },
+  {
+    "id": "turning-le-warlord",
+    "category": "turningPoint",
+    "alignment": "Lawful Evil"
+  },
+  {
+    "id": "turning-le-letter",
+    "category": "turningPoint",
+    "alignment": "Lawful Evil"
+  },
+  {
+    "id": "turning-ne-purse",
+    "category": "turningPoint",
+    "alignment": "Neutral Evil"
+  },
+  {
+    "id": "turning-ne-betrayal",
+    "category": "turningPoint",
+    "alignment": "Neutral Evil"
+  },
+  {
+    "id": "turning-ne-power",
+    "category": "turningPoint",
+    "alignment": "Neutral Evil"
+  },
+  {
+    "id": "turning-ce-fire",
+    "category": "turningPoint",
+    "alignment": "Chaotic Evil"
+  },
+  {
+    "id": "turning-ce-topple",
+    "category": "turningPoint",
+    "alignment": "Chaotic Evil"
+  },
+  {
+    "id": "turning-ce-shrine",
+    "category": "turningPoint",
+    "alignment": "Chaotic Evil"
+  },
+  {
+    "id": "goal-relic",
+    "category": "goal"
+  },
+  {
+    "id": "goal-revenge",
+    "category": "goal"
+  },
+  {
+    "id": "goal-home",
+    "category": "goal"
+  },
+  {
+    "id": "goal-crown",
+    "category": "goal"
+  },
+  {
+    "id": "goal-map",
+    "category": "goal"
+  },
+  {
+    "id": "goal-letter",
+    "category": "goal"
+  },
+  {
+    "id": "goal-company",
+    "category": "goal"
+  },
+  {
+    "id": "goal-dragon",
+    "category": "goal"
+  },
+  {
+    "id": "goal-redemption",
+    "category": "goal"
+  },
+  {
+    "id": "goal-legend",
+    "category": "goal"
+  }
+]
