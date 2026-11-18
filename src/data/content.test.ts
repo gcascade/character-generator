@@ -3,7 +3,10 @@
  * locale, gender selections are well formed, placeholders are known, and French
  * non-binary text uses neutral phrasing.
  */
-import { type GenderedText, renderText } from '../content/renderText';
+import {
+  type GenderedText,
+  renderText as fillText,
+} from '../content/renderText';
 import { Genders } from '../types/character';
 
 type LocaleFiles = Record<string, Record<string, unknown>>;
@@ -65,7 +68,7 @@ describe('locale files', () => {
         const entries = (locale === 'en' ? en : fr)[file];
         for (const [id, text] of Object.entries(entries)) {
           for (const gender of Object.values(Genders)) {
-            const output = renderText(text as GenderedText, gender, names);
+            const output = fillText(text as GenderedText, gender, names);
             expect(output, `${id} (${gender})`).not.toMatch(/[{}]/);
             expect(output.trim(), `${id} (${gender})`).not.toBe('');
           }
