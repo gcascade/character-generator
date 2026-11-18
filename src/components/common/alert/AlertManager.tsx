@@ -3,10 +3,12 @@ import { Alert, Grow, IconButton, Stack, Typography } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
+import { useT } from '../../../i18n';
 
 // Bottom-right so alerts never cover the navigation menu.
 const AlertManager: FC = () => {
   const context = useContext(AlertManagerContext);
+  const t = useT();
 
   if (!context) {
     throw new Error('AlertManager must be used within an AlertManagerProvider');
@@ -36,7 +38,7 @@ const AlertManager: FC = () => {
               }}
               action={
                 <IconButton
-                  aria-label="close"
+                  aria-label={t('alert.close')}
                   color="inherit"
                   size="small"
                   onClick={() => removeAlert(alert.id)}

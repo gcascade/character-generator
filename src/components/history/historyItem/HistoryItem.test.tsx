@@ -70,7 +70,7 @@ describe('HistoryItem', () => {
       />,
     );
 
-    fireEvent.click(screen.getByLabelText('delete'));
+    fireEvent.click(screen.getByLabelText('Delete from history'));
 
     expect(onDeleteClick).toHaveBeenCalledWith(character);
   });

@@ -21,6 +21,8 @@ import '../Character.css';
 import CharacterBackground from '../characterBackground/CharacterBackground';
 import CharacterImage from '../characterImage/CharacterImage';
 import CharacterInformation from '../characterInformation/CharacterInformation';
+import { useLocale, useT } from '../../../i18n';
+import { label } from '../../../content/labels';
 
 type CharacterProps = {
   onGenerateCallback: VoidFunction;
@@ -41,6 +43,8 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   const { saveCharacter, characters } = dataContext;
 
   const theme = useTheme();
+  const t = useT();
+  const { locale } = useLocale();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { character } = characterContext;
   const { firstName, lastName, gender, race, characterClass } = character;
@@ -60,11 +64,11 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   const onSaveButtonClick = useCallback(() => {
     try {
       saveCharacter(character);
-      addSuccess('Character saved');
+      addSuccess(t('character.savedAlert'));
     } catch {
-      addError('Failed to save character');
+      addError(t('character.saveFailed'));
     }
-  }, [saveCharacter, character, addSuccess, addError]);
+  }, [saveCharacter, character, addSuccess, addError, t]);
 
   return (
     <Card
@@ -80,7 +84,13 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
         }
         subheader={
           <div className="character-subheader">
-            {race} {characterClass}
+            {t('character.subtitle', {
+              race:
+                locale === 'fr'
+                  ? label('race', race, gender, locale).toLowerCase()
+                  : label('race', race, gender, locale),
+              characterClass: label('class', characterClass, gender, locale),
+            })}
             <GenderIcon gender={gender} />
           </div>
         }
@@ -128,7 +138,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             onClick={onGenerateButtonClick}
             disabled={isActionButtonDisabled}
           >
-            Generate
+            {t('character.generate')}
           </Button>
           <Button
             variant="outlined"
@@ -140,7 +150,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             onClick={onSaveButtonClick}
             disabled={isSaved || isActionButtonDisabled}
           >
-            {isSaved ? 'Saved' : 'Save Character'}
+            {isSaved ? t('character.saved') : t('character.save')}
           </Button>
         </Stack>
       </CardActions>

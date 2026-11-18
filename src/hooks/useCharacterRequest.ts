@@ -9,6 +9,7 @@ import { Character } from '../types/character';
 import useAlert from './useAlert';
 import useCharacterGenerator from './useCharacterGenerator';
 import useSettings from './useSettings';
+import { useT } from '../i18n';
 
 type CharacterRequestOptions = {
   /** Called once the request is over, whatever its outcome. */
@@ -33,6 +34,7 @@ const useCharacterRequest = () => {
   const { generateNewCharacter, rerollCharacterProperty } =
     useCharacterGenerator();
   const { addSuccess, addInfo, addWarning, addError } = useAlert();
+  const t = useT();
   const controller = useRef<AbortController | null>(null);
 
   // A result arriving after the component is gone must not change anything.
@@ -57,7 +59,12 @@ const useCharacterRequest = () => {
           createProvider(settings, keys),
           current.signal,
         );
-        const alert = outcomeToAlert(outcome, kind, providerContext(settings));
+        const alert = outcomeToAlert(
+          outcome,
+          kind,
+          providerContext(settings),
+          t,
+        );
         const show = {
           success: addSuccess,
           info: addInfo,
@@ -75,7 +82,7 @@ const useCharacterRequest = () => {
         console.error('Character request failed', caught);
         setError('Something went wrong');
         setRequestStatus('failure');
-        addError('Something went wrong while generating the character.');
+        addError(t('ai.unexpected'));
       } finally {
         if (!current.signal.aborted) doneCallback?.();
       }
@@ -89,6 +96,7 @@ const useCharacterRequest = () => {
       addInfo,
       addWarning,
       addError,
+      t,
     ],
   );
 

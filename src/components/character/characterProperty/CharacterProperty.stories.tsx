@@ -34,6 +34,7 @@ export const RerollButtonEnabled: Story = {
   args: {
     label: 'Lorem Ipsum',
     value: 'Dolor sit amet',
+    tooltip: 'Reroll the lorem ipsum',
     onButtonClick: fn(),
     isRerollButtonDisabled: false,
   },

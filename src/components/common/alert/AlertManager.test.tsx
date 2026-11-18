@@ -53,7 +53,7 @@ describe('AlertManager', () => {
   test('calls removeAlert when close button is clicked', () => {
     renderWithProvider();
 
-    const closeButtons = screen.getAllByLabelText('close');
+    const closeButtons = screen.getAllByLabelText('Close');
     fireEvent.click(closeButtons[0]);
 
     expect(mockRemoveAlert).toHaveBeenCalledWith(mockAlerts[0].id);

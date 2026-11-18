@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { Character } from '../../../types/character';
 import '../History.css';
 import HistoryCharacterSummary from '../historyCharacterSummary/HistoryCharacterSummary';
+import { useT } from '../../../i18n';
 
 type SelectedHistoryItemProps = {
   character: Character;
@@ -14,6 +15,7 @@ const SelectedHistoryItem: FC<SelectedHistoryItemProps> = ({
   character,
   onDeleteClick,
 }) => {
+  const t = useT();
   const { firstName, lastName, age, race, characterClass } = character;
 
   return (
@@ -38,7 +40,7 @@ const SelectedHistoryItem: FC<SelectedHistoryItemProps> = ({
           onDeleteClick(character);
         }}
         edge="end"
-        aria-label="delete"
+        aria-label={t('history.delete')}
       >
         <DeleteIcon />
       </IconButton>

@@ -51,14 +51,14 @@ describe('CharacterSummary', () => {
 
   it('shows confirmation tooltip when delete button is clicked once', () => {
     renderComponent();
-    const deleteButton = screen.getByLabelText('delete');
+    const deleteButton = screen.getByLabelText('Delete');
     fireEvent.click(deleteButton);
     expect(screen.getByText('Click again to confirm')).toBeInTheDocument();
   });
 
   it('removes character and shows success alert when delete button is clicked twice', () => {
     renderComponent();
-    const deleteButton = screen.getByLabelText('delete');
+    const deleteButton = screen.getByLabelText('Delete');
     fireEvent.click(deleteButton);
     fireEvent.click(deleteButton);
     expect(mockRemoveCharacter).toHaveBeenCalledWith(eryndorThorne);
@@ -67,7 +67,7 @@ describe('CharacterSummary', () => {
 
   it('resets confirmation if clicking outside the delete button', () => {
     renderComponent();
-    const deleteButton = screen.getByLabelText('delete');
+    const deleteButton = screen.getByLabelText('Delete');
     fireEvent.click(deleteButton);
     expect(screen.getByText('Click again to confirm')).toBeInTheDocument();
     fireEvent.mouseDown(document.body);

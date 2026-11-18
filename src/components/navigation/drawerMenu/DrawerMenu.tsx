@@ -9,10 +9,13 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router';
+import { LOCALES, useLocale, useT } from '../../../i18n';
 import './DrawerMenu.css';
 
 type DrawerMenuProps = {
@@ -29,6 +32,9 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
   open = false,
   onClose,
 }) => {
+  const t = useT();
+  const { locale, setLocale } = useLocale();
+
   return (
     <Drawer
       variant={variant}
@@ -56,37 +62,51 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
         }}
       >
         <Typography variant="h6" noWrap>
-          Menu
+          {t('nav.menu')}
         </Typography>
       </Box>
       <Divider />
-      <List component="nav" aria-label="Main navigation" onClick={onClose}>
+      <List component="nav" aria-label={t('nav.label')} onClick={onClose}>
         <ListItemButton component={Link} to="/">
           <ListItemIcon className="listItemIcon">
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="Character Generator" />
+          <ListItemText primary={t('nav.generator')} />
         </ListItemButton>
         <ListItemButton component={Link} to="/characters">
           <ListItemIcon className="listItemIcon">
             <GroupIcon />
           </ListItemIcon>
-          <ListItemText primary="My Characters" />
+          <ListItemText primary={t('nav.characters')} />
         </ListItemButton>
-        {/* <ListItemButton component={Link} to="/import-export">
-          <ListItemIcon className="listItemIcon">
-            <ImportExportIcon />
-          </ListItemIcon>
-          <ListItemText primary="Import/Export" />
-        </ListItemButton> */}
         <ListItemButton component={Link} to="/settings">
           <ListItemIcon className="listItemIcon">
             <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary={t('nav.settings')} />
         </ListItemButton>
       </List>
       <Divider />
+      <Box sx={{ mt: 'auto', p: 2, display: 'flex', justifyContent: 'center' }}>
+        <ToggleButtonGroup
+          exclusive
+          size="small"
+          value={locale}
+          aria-label={t('language.switch')}
+          onChange={(_, value) => value && setLocale(value)}
+        >
+          {LOCALES.map((code) => (
+            <ToggleButton
+              key={code}
+              value={code}
+              aria-label={t(`language.${code}`)}
+              lang={code}
+            >
+              {code.toUpperCase()}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Box>
     </Drawer>
   );
 };

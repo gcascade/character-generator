@@ -3,6 +3,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { isCallerAbort } from '../../../ai/errors';
 import { describeFailure, type ProviderContext } from '../../../ai/messages';
 import type { ConnectionTestResult } from '../../../ai/types';
+import { useT } from '../../../i18n';
 
 type ConnectionTestProps = {
   provider: ProviderContext;
@@ -20,6 +21,7 @@ const ConnectionTest: FC<ConnectionTestProps> = ({
   disabled = false,
 }) => {
   const [running, setRunning] = useState(false);
+  const t = useT();
   const [result, setResult] = useState<ConnectionTestResult>();
   const controller = useRef<AbortController | null>(null);
 
@@ -51,20 +53,23 @@ const ConnectionTest: FC<ConnectionTestProps> = ({
           disabled={disabled || running}
           startIcon={running ? <CircularProgress size={16} /> : undefined}
         >
-          {running ? 'Testing…' : 'Test connection'}
+          {running ? t('connection.testing') : t('connection.test')}
         </Button>
       </Box>
       {result?.ok === true && (
         <Alert severity="success">
-          {`Connected to ${provider.name} with the model "${result.model}".`}
+          {t('connection.success', {
+            provider: provider.name,
+            model: result.model,
+          })}
           {result.models
-            ? ` ${result.models.length} models available: pick one in the list.`
+            ? ` ${t('connection.models', { count: result.models.length })}`
             : ''}
         </Alert>
       )}
       {result?.ok === false && (
         <Alert severity="error">
-          {describeFailure(result.error, provider)}
+          {describeFailure(result.error, provider, t)}
         </Alert>
       )}
     </Box>

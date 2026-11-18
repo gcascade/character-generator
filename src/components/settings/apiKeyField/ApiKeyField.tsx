@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { FC } from 'react';
+import { useT } from '../../../i18n';
 
 type ApiKeyFieldProps = {
   providerName: string;
@@ -32,55 +33,55 @@ const ApiKeyField: FC<ApiKeyFieldProps> = ({
   hasStoredKey,
   required = false,
   error,
-}) => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-    <TextField
-      label="API key"
-      type="password"
-      autoComplete="off"
-      fullWidth
-      required={required}
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      error={Boolean(error)}
-      helperText={
-        error ??
-        `Your key is stored only in this browser and sent only to ${providerName}.`
-      }
-    />
-    <Box
-      sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 1,
-      }}
-    >
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={remember}
-            onChange={(event) => onRememberChange(event.target.checked)}
-          />
-        }
-        label="Remember on this device"
+}) => {
+  const t = useT();
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <TextField
+        label={t('apiKey.label')}
+        type="password"
+        autoComplete="off"
+        fullWidth
+        required={required}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        error={Boolean(error)}
+        helperText={error ?? t('apiKey.notice', { provider: providerName })}
       />
-      <Button
-        variant="text"
-        color="error"
-        onClick={onForget}
-        disabled={!hasStoredKey}
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+        }}
       >
-        Forget key
-      </Button>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={remember}
+              onChange={(event) => onRememberChange(event.target.checked)}
+            />
+          }
+          label={t('apiKey.remember')}
+        />
+        <Button
+          variant="text"
+          color="error"
+          onClick={onForget}
+          disabled={!hasStoredKey}
+        >
+          {t('apiKey.forget')}
+        </Button>
+      </Box>
+      {!remember && (
+        <Typography variant="caption" color="text.secondary">
+          {t('apiKey.sessionOnly')}
+        </Typography>
+      )}
     </Box>
-    {!remember && (
-      <Typography variant="caption" color="text.secondary">
-        The key will be deleted when you close this tab.
-      </Typography>
-    )}
-  </Box>
-);
+  );
+};
 
 export default ApiKeyField;

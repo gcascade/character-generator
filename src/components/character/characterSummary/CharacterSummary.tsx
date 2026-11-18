@@ -15,6 +15,8 @@ import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
 import '../Character.css';
 import CharacterImage from '../characterImage/CharacterImage';
+import { useLocale, useT } from '../../../i18n';
+import { label } from '../../../content/labels';
 
 type CharacterSummaryProps = {
   character: Character;
@@ -38,6 +40,8 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
   const { removeCharacter } = dataContext;
 
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const t = useT();
+  const { locale } = useLocale();
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
   const {
@@ -54,7 +58,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
   const onDeleteClick = () => {
     if (confirmDelete) {
       removeCharacter(character);
-      addSuccess('Character removed');
+      addSuccess(t('character.removedAlert'));
     } else {
       setConfirmDelete(true);
     }
@@ -101,14 +105,14 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
         }
         action={
           <Tooltip
-            title={confirmDelete ? 'Click again to confirm' : ''}
+            title={confirmDelete ? t('character.confirmDelete') : ''}
             open={confirmDelete}
             placement="top"
             arrow
           >
             <IconButton
               edge="end"
-              aria-label="delete"
+              aria-label={t('character.delete')}
               onClick={onDeleteClick}
               ref={deleteButtonRef}
               sx={{ marginRight: '5px' }}
@@ -122,19 +126,39 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
       <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
         <Divider />
         <Typography variant="body2" align="left">
-          <strong>Gender:</strong> {gender}
+          <strong>
+            {t('field.gender')}
+            {t('punct.colon')}
+          </strong>{' '}
+          {label('gender', gender, gender, locale)}
         </Typography>
         <Typography variant="body2" align="left">
-          <strong>Age:</strong> {age}
+          <strong>
+            {t('field.age')}
+            {t('punct.colon')}
+          </strong>{' '}
+          {age}
         </Typography>
         <Typography variant="body2" align="left">
-          <strong>Race:</strong> {race}
+          <strong>
+            {t('field.race')}
+            {t('punct.colon')}
+          </strong>{' '}
+          {label('race', race, gender, locale)}
         </Typography>
         <Typography variant="body2" align="left">
-          <strong>Class:</strong> {characterClass}
+          <strong>
+            {t('field.class')}
+            {t('punct.colon')}
+          </strong>{' '}
+          {label('class', characterClass, gender, locale)}
         </Typography>
         <Typography variant="body2" align="left">
-          <strong>Alignment:</strong> {alignment}
+          <strong>
+            {t('field.alignment')}
+            {t('punct.colon')}
+          </strong>{' '}
+          {label('alignment', alignment, gender, locale)}
         </Typography>
       </CardContent>
     </Card>

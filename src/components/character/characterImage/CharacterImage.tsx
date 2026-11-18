@@ -3,6 +3,8 @@ import { CardMedia } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import { isImage } from '../../../utils/image';
 import './CharacterImage.css';
+import { useLocale, useT } from '../../../i18n';
+import { label } from '../../../content/labels';
 
 const DEFAULT_IMAGE_PATH = `${import.meta.env.BASE_URL}images/default-portrait.png`;
 
@@ -22,6 +24,8 @@ const CharacterImage: FC<CharacterImageProps> = ({
   width,
 }) => {
   const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
+  const t = useT();
+  const { locale } = useLocale();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -56,7 +60,11 @@ const CharacterImage: FC<CharacterImageProps> = ({
     <CardMedia
       component="img"
       className="character-portrait"
-      alt={`${race ?? 'unknown race'} ${characterClass ?? 'unknown class'}`}
+      alt={
+        race && characterClass
+          ? `${label('race', race, gender ?? 'Male', locale)} ${label('class', characterClass, gender ?? 'Male', locale)}`
+          : t('character.portrait')
+      }
       onClick={handleClick}
       image={portraitPath}
       height={height}

@@ -14,8 +14,10 @@ import '../../common/Common.css';
 import '../History.css';
 import EmptyHistory from '../emptyHistory/EmptyHistory';
 import HistoryList from '../historyList/HistoryList';
+import { useT } from '../../../i18n';
 
 const HistoryCard: FC = () => {
+  const t = useT();
   const { history, clearHistory, removeFromHistory } = useCharacterHistory();
   const [confirmClear, setConfirmClear] = useState(false);
   const { addSuccess } = useAlert();
@@ -34,7 +36,7 @@ const HistoryCard: FC = () => {
     event.stopPropagation();
     if (confirmClear) {
       clearHistory();
-      addSuccess('History cleared');
+      addSuccess(t('history.cleared'));
     }
     setConfirmClear(!confirmClear);
   };
@@ -51,7 +53,7 @@ const HistoryCard: FC = () => {
       }}
     >
       <CardHeader
-        title="History"
+        title={t('history.title')}
         slotProps={{ title: { align: 'center', variant: 'h4' } }}
       />
       <CardContent sx={{ flexGrow: 1 }}>
@@ -72,7 +74,7 @@ const HistoryCard: FC = () => {
           startIcon={<DeleteIcon />}
           disabled={history.length === 0}
         >
-          {confirmClear ? 'Confirm?' : 'Clear History'}
+          {confirmClear ? t('history.confirmClear') : t('history.clear')}
         </Button>
       </CardActions>
     </Card>

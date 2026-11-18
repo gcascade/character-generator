@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { Character } from '../../../types/character';
 import '../History.css';
 import HistoryCharacterSummary from '../historyCharacterSummary/HistoryCharacterSummary';
+import { useT } from '../../../i18n';
 
 type HistoryItemProps = {
   character: Character;
@@ -16,6 +17,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
   onCharacterClick,
   onDeleteClick,
 }) => {
+  const t = useT();
   const { firstName, lastName, age, race, characterClass } = character;
 
   return (
@@ -45,7 +47,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
           onDeleteClick(character);
         }}
         edge="end"
-        aria-label="delete"
+        aria-label={t('history.delete')}
         sx={{
           flexShrink: 0,
         }}

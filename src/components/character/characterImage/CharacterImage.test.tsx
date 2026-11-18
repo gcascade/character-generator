@@ -37,7 +37,7 @@ describe('CharacterImage', () => {
       render(<CharacterImage height={512} width={512} />);
     });
     const image = (await screen.findByAltText(
-      'unknown race unknown class',
+      'Character portrait',
     )) as HTMLImageElement;
     expect(image.src).toContain('/images/default-portrait.png');
   });

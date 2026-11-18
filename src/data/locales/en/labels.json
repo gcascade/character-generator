@@ -1,0 +1,22 @@
+{
+  "race.Human": "Human",
+  "race.Elf": "Elf",
+  "race.Dwarf": "Dwarf",
+  "race.Orc": "Orc",
+  "class.Warrior": "Warrior",
+  "class.Mage": "Mage",
+  "class.Rogue": "Rogue",
+  "class.Cleric": "Cleric",
+  "gender.Male": "Male",
+  "gender.Female": "Female",
+  "gender.Non-binary": "Non-binary",
+  "alignment.Lawful Good": "Lawful Good",
+  "alignment.Neutral Good": "Neutral Good",
+  "alignment.Chaotic Good": "Chaotic Good",
+  "alignment.Lawful Neutral": "Lawful Neutral",
+  "alignment.True Neutral": "True Neutral",
+  "alignment.Chaotic Neutral": "Chaotic Neutral",
+  "alignment.Lawful Evil": "Lawful Evil",
+  "alignment.Neutral Evil": "Neutral Evil",
+  "alignment.Chaotic Evil": "Chaotic Evil"
+}

@@ -3,6 +3,7 @@ import { NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 import { Box, IconButton, Slide, Stack } from '@mui/material';
 
 import React, { FC, useState } from 'react';
+import { useT } from '../../../i18n';
 
 type CarouselProps = {
   children: React.ReactElement[];
@@ -16,6 +17,7 @@ const Carousel: FC<CarouselProps> = ({
   height,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const t = useT();
   const [slideDirection, setSlideDirection] = useState<
     'right' | 'left' | undefined
   >('left');
@@ -53,6 +55,7 @@ const Carousel: FC<CarouselProps> = ({
         sx={{ margin: { xs: 0, sm: 2 } }}
         disabled={page === 0}
         data-testid="navigate-before"
+        aria-label={t('carousel.previous')}
       >
         <NavigateBeforeIcon />
       </IconButton>
@@ -112,6 +115,7 @@ const Carousel: FC<CarouselProps> = ({
         sx={{ margin: { xs: 0, sm: 2 } }}
         disabled={page >= pageCount - 1}
         data-testid="navigate-next"
+        aria-label={t('carousel.next')}
       >
         <NavigateNextIcon />
       </IconButton>

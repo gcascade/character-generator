@@ -5,13 +5,7 @@ export { LocaleProvider } from './LocaleContext';
 export { detectLocale, isLocale, LOCALES, type Locale } from './locale';
 export { translate, type MessageKey, type MessageParams } from './messages';
 
-const useLocaleContext = () => {
-  const context = useContext(LocaleContext);
-  if (!context) {
-    throw new Error('useLocale must be used within a LocaleProvider');
-  }
-  return context;
-};
+const useLocaleContext = () => useContext(LocaleContext);
 
 /** Current interface language and the function to change it. */
 export const useLocale = () => {

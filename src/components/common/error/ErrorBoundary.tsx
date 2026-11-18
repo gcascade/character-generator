@@ -1,4 +1,5 @@
 import React from 'react';
+import { LocaleContext } from '../../../i18n/LocaleContext';
 
 interface Props {
   children: React.ReactNode;
@@ -10,6 +11,9 @@ interface State {
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
+  static contextType = LocaleContext;
+  declare context: React.ContextType<typeof LocaleContext>;
+
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -27,7 +31,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div>
-          <h1>Something went wrong.</h1>
+          <h1>{this.context.t('app.error')}</h1>
         </div>
       );
     }
