@@ -22,6 +22,9 @@ import { LocaleProvider, useT } from '../i18n';
 import routes from '../routes';
 import theme from '../themes/themes';
 import { generateRandomCharacter } from '../content/generate';
+import { loadLocks } from '../content/storedLocks';
+import { LOCKABLE_PROPERTIES } from '../content/template';
+import { LockProvider } from '../contexts/LockContext';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
 import DrawerMenu from './navigation/drawerMenu/DrawerMenu';
@@ -32,7 +35,6 @@ const AppRoutes = () => {
 };
 
 const drawerWidth = 240;
-const initialCharacter = generateRandomCharacter({});
 
 // Permanent side menu on wide screens; app bar + collapsible menu below `md`.
 const AppLayout: React.FC = () => {
@@ -83,25 +85,37 @@ const AppLayout: React.FC = () => {
   );
 };
 
+/** Locks saved on this device and a first character that respects them (spec 003 FR-009). */
+const loadStart = () => {
+  const template = loadLocks();
+  return {
+    character: generateRandomCharacter(template),
+    locked: LOCKABLE_PROPERTIES.filter((property) => property in template),
+  };
+};
+
 const App: React.FC = () => {
+  const [start] = useState(loadStart);
   return (
     <ThemeProvider theme={theme}>
       <LocaleProvider>
         <ErrorBoundary>
-          <CharacterProvider initCharacter={initialCharacter}>
-            <HistoryProvider>
-              <SettingsProvider>
-                <RequestProvider>
-                  <AlertManagerProvider>
-                    <DataProvider>
-                      <BrowserRouter basename={import.meta.env.BASE_URL}>
-                        <AppLayout />
-                      </BrowserRouter>
-                    </DataProvider>
-                  </AlertManagerProvider>
-                </RequestProvider>
-              </SettingsProvider>
-            </HistoryProvider>
+          <CharacterProvider initCharacter={start.character}>
+            <LockProvider initialLocked={start.locked}>
+              <HistoryProvider>
+                <SettingsProvider>
+                  <RequestProvider>
+                    <AlertManagerProvider>
+                      <DataProvider>
+                        <BrowserRouter basename={import.meta.env.BASE_URL}>
+                          <AppLayout />
+                        </BrowserRouter>
+                      </DataProvider>
+                    </AlertManagerProvider>
+                  </RequestProvider>
+                </SettingsProvider>
+              </HistoryProvider>
+            </LockProvider>
           </CharacterProvider>
         </ErrorBoundary>
       </LocaleProvider>

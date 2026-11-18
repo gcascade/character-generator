@@ -5,21 +5,21 @@ import {
   type CharacterClass,
   CharacterClasses,
   type CharacterRace,
-  CharacterRaces,
   type ContentRefs,
-  type Gender,
-  Genders,
 } from '../types/character';
 import { EPITHET_IDS, FRAGMENTS, type FragmentCategory, NAMES } from './data';
+import {
+  type CharacterTemplate,
+  compatibleRaceGenders,
+  firstNamesFor,
+  type LockableProperty,
+  MAX_AGE,
+  MIN_AGE,
+  type RaceGender,
+  templateOf,
+} from './template';
 
-const MIN_AGE = 15;
-
-const MAX_AGE: Record<CharacterRace, number> = {
-  Human: 85,
-  Elf: 500,
-  Dwarf: 400,
-  Orc: 60,
-};
+export { firstNamesFor };
 
 const pick = <T>(items: readonly T[]): T =>
   items[Math.floor(Math.random() * items.length)];
@@ -32,16 +32,6 @@ const pickOther = <T>(items: readonly T[], current: T | undefined): T => {
 
 const randomAge = (race: CharacterRace) =>
   MIN_AGE + Math.floor(Math.random() * (MAX_AGE[race] - MIN_AGE));
-
-/** First names that fit a race and gender: neutral names for non-binary characters (FR-010). */
-export const firstNamesFor = (race: CharacterRace, gender: Gender) => {
-  const { first } = NAMES[race];
-  return gender === 'Male'
-    ? first.male
-    : gender === 'Female'
-      ? first.female
-      : first.neutral;
-};
 
 const fragmentIds = (
   category: FragmentCategory,
@@ -68,35 +58,44 @@ const pickContent = (
   epithetId: pick(EPITHET_IDS),
 });
 
-/** A new character made from the app's content (no text, only references). */
+const orPick = <T>(value: T | undefined, items: readonly T[]) =>
+  value ?? pick(items);
+
+/**
+ * A new character made from the app's content, keeping every value of the
+ * template (spec 003 FR-004) and drawing the others among the values that fit
+ * them (FR-005). Content is drawn anew for the final race, class and alignment.
+ */
 export const generateRandomCharacter = (
-  template: Partial<
-    Pick<
-      Character,
-      | 'race'
-      | 'characterClass'
-      | 'gender'
-      | 'alignment'
-      | 'age'
-      | 'firstName'
-      | 'lastName'
-    >
-  > = {},
+  template: CharacterTemplate = {},
 ): Character => {
-  const race = template.race ?? pick(Object.values(CharacterRaces));
-  const characterClass =
-    template.characterClass ?? pick(Object.values(CharacterClasses));
-  const gender = template.gender ?? pick(Object.values(Genders));
-  const alignment =
-    template.alignment ?? pick(Object.values(CharacterAlignments));
+  const { race, gender } = pick(compatibleRaceGenders(template));
+  const characterClass = orPick(
+    template.characterClass,
+    Object.values(CharacterClasses),
+  );
+  const alignment = orPick(
+    template.alignment,
+    Object.values(CharacterAlignments),
+  );
   const rules = { race, characterClass, gender, alignment };
-  return {
+  const content = pickContent(rules);
+  const character: Character = {
     ...rules,
     age: template.age ?? randomAge(race),
     firstName: template.firstName ?? pick(firstNamesFor(race, gender)),
     lastName: template.lastName ?? pick(NAMES[race].last),
-    content: pickContent(rules),
+    content,
   };
+  const { epithet } = template;
+  if (epithet && 'id' in epithet) {
+    content.epithetId = epithet.id;
+  } else if (epithet) {
+    character.epithet = epithet.text;
+    character.textLanguage = epithet.language;
+    character.textSource = epithet.source;
+  }
+  return character;
 };
 
 /** Content references of a character, created for characters saved by older versions. */
@@ -117,19 +116,42 @@ const withoutBackgroundText = (character: Character): Character => {
  * Rerolls one property with the app's content (FR-012): only that property and
  * the content that depends on it change. Text written for the old value (AI or
  * legacy background) is dropped so the app's content is shown instead.
+ *
+ * The new value fits the other `locked` properties (spec 003 R5): the same
+ * character is returned when no other value does.
  */
 export const rerollWithApp = (
   character: Character,
   property: keyof Character,
+  locked: readonly LockableProperty[] = [],
 ): Character => {
   const content = contentOf(character);
+  const others = templateOf(
+    character,
+    locked.filter((p) => p !== property),
+  );
+  /** Values of `key` other than the current one, among the pairs that fit the other locks. */
+  const fitting = <K extends keyof RaceGender>(
+    key: K,
+    template: CharacterTemplate,
+  ) => [
+    ...new Set(
+      compatibleRaceGenders(template)
+        .map((pair) => pair[key])
+        .filter((value) => value !== character[key]),
+    ),
+  ];
   switch (property) {
     case 'race': {
-      const race = pickOther(Object.values(CharacterRaces), character.race);
+      const races = fitting('race', { ...others, gender: character.gender });
+      if (!races.length) return character;
+      const race = pick(races);
       return {
         ...withoutBackgroundText(character),
         race,
-        age: Math.min(character.age, MAX_AGE[race]),
+        age: locked.includes('age')
+          ? character.age
+          : Math.min(character.age, MAX_AGE[race]),
         content: {
           ...content,
           originId: pick(fragmentIds('origin', { ...character, race })),
@@ -169,15 +191,15 @@ export const rerollWithApp = (
       };
     }
     case 'gender': {
-      const gender = pickOther<Gender>(
-        Object.values(Genders),
-        character.gender,
-      );
+      const genders = fitting('gender', { ...others, race: character.race });
+      if (!genders.length) return character;
+      const gender = pick(genders);
       const names = firstNamesFor(character.race, gender);
-      // Keep the first name unless it no longer fits the new gender (spec edge case).
-      const firstName = names.includes(character.firstName)
-        ? character.firstName
-        : pick(names);
+      // Keep the first name if it is locked or still fits the new gender (spec edge case).
+      const firstName =
+        locked.includes('firstName') || names.includes(character.firstName)
+          ? character.firstName
+          : pick(names);
       return {
         ...withoutBackgroundText(character),
         gender,

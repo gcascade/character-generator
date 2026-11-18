@@ -1,4 +1,5 @@
 import { CharacterProvider } from '@Contexts/CharacterContext';
+import { LockProvider } from '@Contexts/LockContext';
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
 import type { Decorator } from '@storybook/react-vite';
 import React from 'react';
@@ -37,7 +38,9 @@ const CharacterDecorator: Decorator<ContextProps> = (Story, context) => {
 
   return (
     <CharacterProvider initCharacter={character}>
-      <Story />
+      <LockProvider>
+        <Story />
+      </LockProvider>
     </CharacterProvider>
   );
 };

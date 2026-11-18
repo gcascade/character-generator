@@ -7,9 +7,13 @@ import { Character } from '../../../types/character';
 import CharacterProperty from '../characterProperty/CharacterProperty';
 import { renderCharacter } from '../../../content/character';
 import { capitalize } from '../../../content/renderText';
+import type { LockableProperty } from '../../../content/template';
+import useLocks from '../../../hooks/useLocks';
+import { LockReset as UnlockAllIcon } from '@mui/icons-material';
+import { Button } from '@mui/material';
 
 type Field = {
-  property: keyof Character;
+  property: LockableProperty;
   label: MessageKey;
 };
 
@@ -43,6 +47,7 @@ const CharacterInformation: FC = () => {
   }
 
   const { requestStatus, rerollCharacterProperty } = useCharacterRequest();
+  const { locked, isLocked, toggle, unlockAll } = useLocks();
   const { character } = characterContext;
   const isRerollButtonDisabled = requestStatus === 'loading';
 
@@ -68,8 +73,23 @@ const CharacterInformation: FC = () => {
           tooltip={t(`reroll.${field.property}` as MessageKey)}
           onButtonClick={() => rerollCharacterProperty(field.property)}
           isRerollButtonDisabled={isRerollButtonDisabled}
+          locked={isLocked(field.property)}
+          onToggleLock={() => toggle(field.property)}
+          lockLabel={t(
+            `${isLocked(field.property) ? 'unlock' : 'lock'}.${field.property}`,
+          )}
         />
       ))}
+      {locked.length > 0 && (
+        <Button
+          size="small"
+          startIcon={<UnlockAllIcon />}
+          onClick={unlockAll}
+          sx={{ alignSelf: 'flex-start' }}
+        >
+          {t('lock.unlockAll')}
+        </Button>
+      )}
     </>
   );
 };

@@ -13,6 +13,9 @@ import {
   CharacterProvider,
 } from '../contexts/CharacterContext';
 import { RequestContext, RequestProvider } from '../contexts/RequestContext';
+import { LockProvider } from '../contexts/LockContext';
+import type { LockableProperty } from '../content/template';
+import type { Character } from '../types/character';
 import useCharacterRequest from './useCharacterRequest';
 import useSettings from './useSettings';
 import { renderCharacter } from '../content/character';
@@ -47,6 +50,49 @@ const withSettings = (settings: Partial<ProviderSettings>) =>
 const background = { title: 'New Dawn', content: ['A new story.'] };
 const chatAnswer = (content: unknown) =>
   json({ choices: [{ message: { content: JSON.stringify(content) } }] });
+
+const lockedWrapper =
+  (character: Character, locked: LockableProperty[]) =>
+  ({ children }: { children: ReactNode }) => (
+    <AlertManagerProvider>
+      <RequestProvider>
+        <CharacterProvider initCharacter={character}>
+          <LockProvider initialLocked={locked}>{children}</LockProvider>
+        </CharacterProvider>
+      </RequestProvider>
+    </AlertManagerProvider>
+  );
+
+describe('useCharacterRequest with locks (spec 003)', () => {
+  afterEach(() => localStorage.clear());
+
+  it('keeps the locked values when generating', async () => {
+    withSettings({ activeType: 'none' });
+    const { result } = renderHook(useEverything, {
+      wrapper: lockedWrapper(korvusBlackiron, ['race', 'firstName']),
+    });
+    for (let i = 0; i < 10; i++) {
+      await act(() => result.current.request.generateNewCharacter());
+      expect(result.current.character).toMatchObject({
+        race: korvusBlackiron.race,
+        firstName: korvusBlackiron.firstName,
+      });
+    }
+  });
+
+  it('tells when no other value fits the locked properties', async () => {
+    withSettings({ activeType: 'none' });
+    const elder = { ...korvusBlackiron, race: 'Elf' as const, age: 450 };
+    const { result } = renderHook(useEverything, {
+      wrapper: lockedWrapper(elder, ['age']),
+    });
+    await act(() => result.current.request.rerollCharacterProperty('race'));
+    expect(result.current.character).toBe(elder);
+    expect(result.current.alerts.map((a) => [a.severity, a.message])).toEqual([
+      ['info', 'No other value fits the locked properties.'],
+    ]);
+  });
+});
 
 describe('useCharacterRequest', () => {
   afterEach(() => vi.unstubAllGlobals());

@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { LockProvider } from '../../../contexts/LockContext';
 import React from 'react';
 import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../../contexts/CharacterContext';
@@ -55,32 +56,34 @@ describe('Character', () => {
         <CharacterContext.Provider
           value={{ character: mockCharacter, setCharacter }}
         >
-          <RequestContext.Provider
-            value={{
-              requestStatus: mockRequestStatus,
-              setRequestStatus: vi.fn(),
-              error: '',
-              setError: vi.fn(),
-            }}
-          >
-            <AlertManagerContext.Provider
+          <LockProvider>
+            <RequestContext.Provider
               value={{
-                addAlert: mockAddAlert,
-                removeAlert: vi.fn(),
-                alerts: [],
+                requestStatus: mockRequestStatus,
+                setRequestStatus: vi.fn(),
+                error: '',
+                setError: vi.fn(),
               }}
             >
-              <DataContext.Provider
+              <AlertManagerContext.Provider
                 value={{
-                  characters,
-                  saveCharacter: mockSaveCharacter,
-                  removeCharacter: vi.fn(),
+                  addAlert: mockAddAlert,
+                  removeAlert: vi.fn(),
+                  alerts: [],
                 }}
               >
-                <Character onGenerateCallback={mockOnGenerateCallback} />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
+                <DataContext.Provider
+                  value={{
+                    characters,
+                    saveCharacter: mockSaveCharacter,
+                    removeCharacter: vi.fn(),
+                  }}
+                >
+                  <Character onGenerateCallback={mockOnGenerateCallback} />
+                </DataContext.Provider>
+              </AlertManagerContext.Provider>
+            </RequestContext.Provider>
+          </LockProvider>
         </CharacterContext.Provider>
       </ThemeProvider>,
     );

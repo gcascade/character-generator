@@ -41,6 +41,81 @@ const expectComplete = (character: Character) => {
   expect(shown.background.content.length).toBeGreaterThan(0);
 };
 
+describe('generateCharacter with locks (spec 003)', () => {
+  const template = {
+    race: 'Elf',
+    firstName: 'Lathlaer',
+    epithet: { id: 'epithet-bold' },
+  } as const;
+
+  it('keeps locked names and epithet whatever the AI answers (SC-005)', async () => {
+    const { provider, requests } = fakeProvider([fullAnswer]);
+    const outcome = await generateCharacter(
+      provider,
+      activeSignal(),
+      'en',
+      template,
+    );
+    expect(outcome.source).toBe('ai');
+    expect(outcome.character).toMatchObject({
+      race: 'Elf',
+      firstName: 'Lathlaer',
+      lastName: 'Vale',
+      background,
+    });
+    expect(outcome.character.epithet).toBeUndefined();
+    expect(outcome.character.content?.epithetId).toBe('epithet-bold');
+    expect(requests[0].prompt).toContain('First name: Lathlaer');
+    expect(requests[0].prompt).toContain('Epithet: the Bold');
+    expect(requests[0].prompt).not.toContain('"firstName"');
+  });
+
+  it('does not count locked fields as completed by the app', async () => {
+    const { provider } = fakeProvider([{ background }]);
+    const outcome = await generateCharacter(
+      provider,
+      activeSignal(),
+      'en',
+      template,
+    );
+    expect(outcome.completedFields).toEqual(['lastName']);
+  });
+
+  it('respects every lock when the AI fails (FR-008)', async () => {
+    const { provider } = fakeProvider([new TypeError('Failed to fetch')]);
+    const outcome = await generateCharacter(
+      provider,
+      activeSignal(),
+      'en',
+      template,
+    );
+    expect(outcome.source).toBe('app');
+    expect(outcome.failure).toBeDefined();
+    expect(outcome.character).toMatchObject({
+      race: 'Elf',
+      firstName: 'Lathlaer',
+    });
+  });
+});
+
+describe('rerollProperty with locks (spec 003)', () => {
+  it('does not call the AI when nothing else fits', async () => {
+    const { provider, requests } = fakeProvider([fullAnswer]);
+    const elder = { ...korvusBlackiron, race: 'Elf' as const, age: 450 };
+    const outcome = await rerollProperty(
+      provider,
+      elder,
+      'race',
+      activeSignal(),
+      'en',
+      ['age'],
+    );
+    expect(outcome.unchanged).toBe(true);
+    expect(outcome.character).toBe(elder);
+    expect(requests).toHaveLength(0);
+  });
+});
+
 describe('generateCharacter', () => {
   it('generates a character instantly without a provider, with no failure', async () => {
     const outcome = await generateCharacter(undefined, activeSignal());

@@ -88,6 +88,9 @@ export const outcomeToAlert = (
 ): AlertContent => {
   const done = t(`ai.done.${kind}`);
 
+  if (outcome.unchanged) {
+    return { severity: 'info', message: t('reroll.nothingElseFits') };
+  }
   if (!provider || (outcome.source === 'app' && !outcome.failure)) {
     return { severity: 'success', message: done };
   }

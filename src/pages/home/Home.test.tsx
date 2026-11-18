@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { LockProvider } from '../../contexts/LockContext';
 import React from 'react';
 import { AlertManagerContext } from '../../contexts/AlertManagerContext';
 import { CharacterContext } from '../../contexts/CharacterContext';
@@ -51,32 +52,34 @@ describe('Home', () => {
   test('renders Home component without crashing', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <HistoryContext.Provider
-          value={{ history, addToHistory, removeFromHistory, clearHistory }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: setRequestStatus,
-              error: '',
-              setError: setError,
-            }}
+        <LockProvider>
+          <HistoryContext.Provider
+            value={{ history, addToHistory, removeFromHistory, clearHistory }}
           >
-            <AlertManagerContext.Provider
-              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
+            <RequestContext.Provider
+              value={{
+                requestStatus: 'success',
+                setRequestStatus: setRequestStatus,
+                error: '',
+                setError: setError,
+              }}
             >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: vi.fn(),
-                  removeCharacter: vi.fn(),
-                }}
+              <AlertManagerContext.Provider
+                value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
               >
-                <Home />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </HistoryContext.Provider>
+                <DataContext.Provider
+                  value={{
+                    characters: [],
+                    saveCharacter: vi.fn(),
+                    removeCharacter: vi.fn(),
+                  }}
+                >
+                  <Home />
+                </DataContext.Provider>
+              </AlertManagerContext.Provider>
+            </RequestContext.Provider>
+          </HistoryContext.Provider>
+        </LockProvider>
       </CharacterContext.Provider>,
     );
   });
@@ -84,32 +87,34 @@ describe('Home', () => {
   test('renders Home title', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <HistoryContext.Provider
-          value={{ history, addToHistory, removeFromHistory, clearHistory }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: setRequestStatus,
-              error: '',
-              setError: setError,
-            }}
+        <LockProvider>
+          <HistoryContext.Provider
+            value={{ history, addToHistory, removeFromHistory, clearHistory }}
           >
-            <AlertManagerContext.Provider
-              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
+            <RequestContext.Provider
+              value={{
+                requestStatus: 'success',
+                setRequestStatus: setRequestStatus,
+                error: '',
+                setError: setError,
+              }}
             >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: vi.fn(),
-                  removeCharacter: vi.fn(),
-                }}
+              <AlertManagerContext.Provider
+                value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
               >
-                <Home />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </HistoryContext.Provider>
+                <DataContext.Provider
+                  value={{
+                    characters: [],
+                    saveCharacter: vi.fn(),
+                    removeCharacter: vi.fn(),
+                  }}
+                >
+                  <Home />
+                </DataContext.Provider>
+              </AlertManagerContext.Provider>
+            </RequestContext.Provider>
+          </HistoryContext.Provider>
+        </LockProvider>
       </CharacterContext.Provider>,
     );
     const title = screen.getByText('Character Generator');
@@ -119,32 +124,34 @@ describe('Home', () => {
   test('renders initial character on load', () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <HistoryContext.Provider
-          value={{ history, addToHistory, removeFromHistory, clearHistory }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: setRequestStatus,
-              error: '',
-              setError: setError,
-            }}
+        <LockProvider>
+          <HistoryContext.Provider
+            value={{ history, addToHistory, removeFromHistory, clearHistory }}
           >
-            <AlertManagerContext.Provider
-              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
+            <RequestContext.Provider
+              value={{
+                requestStatus: 'success',
+                setRequestStatus: setRequestStatus,
+                error: '',
+                setError: setError,
+              }}
             >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: vi.fn(),
-                  removeCharacter: vi.fn(),
-                }}
+              <AlertManagerContext.Provider
+                value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
               >
-                <Home />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </HistoryContext.Provider>
+                <DataContext.Provider
+                  value={{
+                    characters: [],
+                    saveCharacter: vi.fn(),
+                    removeCharacter: vi.fn(),
+                  }}
+                >
+                  <Home />
+                </DataContext.Provider>
+              </AlertManagerContext.Provider>
+            </RequestContext.Provider>
+          </HistoryContext.Provider>
+        </LockProvider>
       </CharacterContext.Provider>,
     );
     const initialCharacters = screen.getAllByText(/\w+/);
@@ -155,32 +162,34 @@ describe('Home', () => {
   test('clicking the generate button updates the character', async () => {
     render(
       <CharacterContext.Provider value={{ character, setCharacter }}>
-        <HistoryContext.Provider
-          value={{ history, addToHistory, removeFromHistory, clearHistory }}
-        >
-          <RequestContext.Provider
-            value={{
-              requestStatus: 'success',
-              setRequestStatus: setRequestStatus,
-              error: '',
-              setError: setError,
-            }}
+        <LockProvider>
+          <HistoryContext.Provider
+            value={{ history, addToHistory, removeFromHistory, clearHistory }}
           >
-            <AlertManagerContext.Provider
-              value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
+            <RequestContext.Provider
+              value={{
+                requestStatus: 'success',
+                setRequestStatus: setRequestStatus,
+                error: '',
+                setError: setError,
+              }}
             >
-              <DataContext.Provider
-                value={{
-                  characters: [],
-                  saveCharacter: vi.fn(),
-                  removeCharacter: vi.fn(),
-                }}
+              <AlertManagerContext.Provider
+                value={{ addAlert: vi.fn(), removeAlert: vi.fn(), alerts: [] }}
               >
-                <Home />
-              </DataContext.Provider>
-            </AlertManagerContext.Provider>
-          </RequestContext.Provider>
-        </HistoryContext.Provider>
+                <DataContext.Provider
+                  value={{
+                    characters: [],
+                    saveCharacter: vi.fn(),
+                    removeCharacter: vi.fn(),
+                  }}
+                >
+                  <Home />
+                </DataContext.Provider>
+              </AlertManagerContext.Provider>
+            </RequestContext.Provider>
+          </HistoryContext.Provider>
+        </LockProvider>
       </CharacterContext.Provider>,
     );
     const button = screen.getByText('Generate');

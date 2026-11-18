@@ -161,7 +161,8 @@ values, and the first character shown already respects them.
 - **SC-001**: With any combination of locks, 100% of 1,000 generated characters keep every locked value and are
   valid (age within the race's lifespan, first name from the right list unless it was locked, background matching
   race, class and alignment).
-- **SC-002**: With one property locked, each unlocked property takes at least 2 different values over 50 generations.
+- **SC-002**: With one property locked, each unlocked property takes at least 2 different values over 50 generations,
+  except a race or gender that is the only one fitting a locked name or age (US2).
 - **SC-003**: A user can lock a property and generate in 2 interactions, with mouse or keyboard alone.
 - **SC-004**: After a reload, 100% of valid stored locks are restored with their values.
 - **SC-005**: With AI and a locked first name, the generated character keeps the locked first name in 100% of cases,
