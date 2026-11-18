@@ -19,7 +19,7 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 ## Phase 1: Setup
 
-- [ ] T001 Create folders `src/i18n/`, `src/content/`, `src/data/content/names/`, `src/data/locales/en/`, `src/data/locales/fr/`; add `@Content/*` and `@I18n/*` aliases in tsconfig.json and vite.config.ts (keep both in sync)
+- [X] T001 Create folders `src/i18n/`, `src/content/`, `src/data/content/names/`, `src/data/locales/en/`, `src/data/locales/fr/`; add `@Content/*` and `@I18n/*` aliases in tsconfig.json and vite.config.ts (keep both in sync)
 
 ---
 
@@ -27,13 +27,13 @@ description: 'Task list for the bilingual app and fragment-based content'
 
 **⚠️ No user story work can begin until this phase is complete**
 
-- [ ] T002 Implement `renderText(text, gender, names)` in src/content/renderText.ts: `{{m|f|n}}` selection (exactly 3 options), `{ m, f, n }` objects, placeholders `{firstName}`, `{lastName}`, `{fullName}`, `{epithet}`; throws on unknown placeholder in development; tests in src/content/renderText.test.ts for each gender and both syntaxes
-- [ ] T003 [P] Implement the i18n module in src/i18n/: `detectLocale(stored, browserLanguages)` ("fr*" → `fr`, else `en`; invalid stored value ignored), `LocaleProvider` (lazy init from `localStorage["locale"]`, saves on change, sets `document.documentElement.lang`), `useLocale()`, `useT()` with `{param}` interpolation and keys typed from src/data/locales/en/ui.json; tests in src/i18n/i18n.test.tsx
+- [X] T002 Implement `renderText(text, gender, names)` in src/content/renderText.ts: `{{m|f|n}}` selection (exactly 3 options), `{ m, f, n }` objects, placeholders `{firstName}`, `{lastName}`, `{fullName}`, `{epithet}`; throws on unknown placeholder in development; tests in src/content/renderText.test.ts for each gender and both syntaxes
+- [X] T003 [P] Implement the i18n module in src/i18n/: `detectLocale(stored, browserLanguages)` ("fr*" → `fr`, else `en`; invalid stored value ignored), `LocaleProvider` (lazy init from `localStorage["locale"]`, saves on change, sets `document.documentElement.lang`), `useLocale()`, `useT()` with `{param}` interpolation and keys typed from src/data/locales/en/ui.json; tests in src/i18n/i18n.test.tsx
 - [ ] T004 [P] Extend `Character` in src/types/character.ts with `content?: { titleId; originId; trainingId; turningPointId; goalId; epithetId }` and `written?: { language: 'en' | 'fr'; source: 'ai' | 'legacy'; epithet: string; background: CharacterBackground }` ("Exactly one of `content` / `written` is present"); keep `background`/`epithet` only as legacy input
 - [ ] T005 Write zod schemas for stored characters in src/content/storedCharacter.ts: current shape (`content` xor `written`) and the legacy shape (`background` text, no `content`) converted to `written: { language: 'en', source: 'legacy' }`; invalid entries dropped; tests in src/content/storedCharacter.test.ts
 - [ ] T006 Use the stored-character schema when loading `characters` in src/contexts/DataContext.tsx and `characterHistory` in src/contexts/HistoryContext.tsx; compare characters by value-independent identity is out of scope (keep reference comparison); update their tests
-- [ ] T007 Write the content data test skeleton in src/data/content.test.ts: every id exists in every locale, every `{{…}}` has 3 options, only known placeholders, French texts contain no "iel"/"iels", no "·", no ".e" / "(e)" inclusive forms, UI keys and their `{param}` placeholders identical in `en/ui.json` and `fr/ui.json`
-- [ ] T008 Wrap the app in `LocaleProvider` in src/components/App.tsx and add a `LocaleDecorator` in test/decorators/LocaleDecorator.tsx; add it where stories/tests render components that will call `useT`
+- [X] T007 Write the content data test skeleton in src/data/content.test.ts: every id exists in every locale, every `{{…}}` has 3 options, only known placeholders, French texts contain no "iel"/"iels", no "·", no ".e" / "(e)" inclusive forms, UI keys and their `{param}` placeholders identical in `en/ui.json` and `fr/ui.json`
+- [X] T008 Wrap the app in `LocaleProvider` in src/components/App.tsx and add a `LocaleDecorator` in test/decorators/LocaleDecorator.tsx; add it where stories/tests render components that will call `useT`
 
 **Checkpoint**: app builds and behaves as before.
 

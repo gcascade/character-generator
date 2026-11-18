@@ -18,6 +18,7 @@ import { DataProvider } from '../contexts/DataContext';
 import { HistoryProvider } from '../contexts/HistoryContext';
 import { RequestProvider } from '../contexts/RequestContext';
 import { SettingsProvider } from '../contexts/SettingsContext';
+import { LocaleProvider } from '../i18n';
 import routes from '../routes';
 import theme from '../themes/themes';
 import { generateRandomCharacter } from '../utils/character';
@@ -84,23 +85,25 @@ const AppLayout: React.FC = () => {
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
-      <ErrorBoundary>
-        <CharacterProvider initCharacter={initialCharacter}>
-          <HistoryProvider>
-            <SettingsProvider>
-              <RequestProvider>
-                <AlertManagerProvider>
-                  <DataProvider>
-                    <BrowserRouter basename={import.meta.env.BASE_URL}>
-                      <AppLayout />
-                    </BrowserRouter>
-                  </DataProvider>
-                </AlertManagerProvider>
-              </RequestProvider>
-            </SettingsProvider>
-          </HistoryProvider>
-        </CharacterProvider>
-      </ErrorBoundary>
+      <LocaleProvider>
+        <ErrorBoundary>
+          <CharacterProvider initCharacter={initialCharacter}>
+            <HistoryProvider>
+              <SettingsProvider>
+                <RequestProvider>
+                  <AlertManagerProvider>
+                    <DataProvider>
+                      <BrowserRouter basename={import.meta.env.BASE_URL}>
+                        <AppLayout />
+                      </BrowserRouter>
+                    </DataProvider>
+                  </AlertManagerProvider>
+                </RequestProvider>
+              </SettingsProvider>
+            </HistoryProvider>
+          </CharacterProvider>
+        </ErrorBoundary>
+      </LocaleProvider>
     </ThemeProvider>
   );
 };
