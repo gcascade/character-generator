@@ -24,6 +24,12 @@ jobs:
       - run: npm run test:run
       - run: npm run build
 
+      # Every story must still compile (stories are also reused by the tests).
+      - name: Build Storybook
+        run: npm run build-storybook -- --quiet
+        env:
+          STORYBOOK_DISABLE_TELEMETRY: 1
+
       - name: Upload build
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v4

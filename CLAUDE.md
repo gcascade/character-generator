@@ -36,7 +36,7 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 
 ## CI / deploy
 
-`.github/workflows/ci.yml`: lint, typecheck, tests and build on every push and PR. Pushes to
+`.github/workflows/ci.yml`: lint, typecheck, tests, build and Storybook build on every push and PR. Pushes to
 `master` then deploy `dist/` to the `gh-pages` branch (with `404.html` = `index.html` for deep links).
 
 ## Layout
