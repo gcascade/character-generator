@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain (2 open: saving a whole party, alignment rule; 1 asked in chat: party text)
+- [ ] No [NEEDS CLARIFICATION] markers remain (2 open: saving a whole party, alignment rule)
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
