@@ -7,7 +7,6 @@
   "app.openMenu": "Ouvrir le menu",
   "app.error": "Une erreur est survenue.",
   "nav.label": "Navigation principale",
-  "nav.menu": "Menu",
   "nav.generator": "Générateur de personnages",
   "nav.characters": "Mes personnages",
   "nav.settings": "Réglages",
@@ -22,9 +21,6 @@
   "character.removedAlert": "Personnage supprimé",
   "character.confirmDelete": "Cliquez à nouveau pour confirmer",
   "character.delete": "Supprimer",
-  "character.history": "Histoire :",
-  "character.showMore": "Lire la suite…",
-  "character.showLess": "Réduire",
   "character.portraitAlt": "{race} {characterClass}",
   "character.writtenByAi": "Écrit par l'IA en {language}",
   "character.writtenIn": "Écrit en {language}",
@@ -136,5 +132,12 @@
   "lock.alignment": "Verrouiller l'alignement",
   "unlock.alignment": "Déverrouiller l'alignement",
   "lock.unlockAll": "Tout déverrouiller",
-  "reroll.nothingElseFits": "Aucune autre valeur ne convient aux propriétés verrouillées."
+  "reroll.nothingElseFits": "Aucune autre valeur ne convient aux propriétés verrouillées.",
+  "story.read": "Lire l'histoire",
+  "story.close": "Fermer",
+  "colorMode.label": "Thème",
+  "colorMode.light": "Clair",
+  "colorMode.dark": "Sombre",
+  "colorMode.system": "Système",
+  "character.age": "{age} ans"
 }

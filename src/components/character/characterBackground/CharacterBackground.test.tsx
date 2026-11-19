@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import * as CharacterBackgroundStories from './CharacterBackground.stories';
 
@@ -26,19 +27,26 @@ describe('CharacterBackground', () => {
     ).toBeInTheDocument();
   });
 
-  test('expands and collapses the content when the button is clicked', () => {
+  test('shows the first paragraph whole and opens the full story', async () => {
     render(<LongContent />);
+    const first = screen.getByText(/^Eira was born deep within/);
+    expect(first.textContent).toMatch(/hard labor\.$/);
+    expect(screen.queryByText(/Starheart crystal/)).toBeNull();
 
-    // Initially, the button should say "Show More..."
-    const button = screen.getByText('Show More...');
-    expect(button).toBeInTheDocument();
+    const read = screen.getByRole('button', { name: 'Read the story' });
+    await userEvent.click(read);
+    const dialog = screen.getByRole('dialog', {
+      name: 'Outcast of the Deep Delve',
+    });
+    expect(dialog).toHaveTextContent(/Starheart crystal/);
 
-    // After clicking the button, it should say "Show Less"
-    fireEvent.click(button);
-    expect(button.textContent).toBe('Show Less');
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    expect(read).toHaveFocus();
+  });
 
-    // After clicking the button again, it should say "Show More..."
-    fireEvent.click(button);
-    expect(button.textContent).toBe('Show More...');
+  test('offers no reading view for a one-paragraph story', () => {
+    render(<ShortContent />);
+    expect(screen.queryByRole('button', { name: 'Read the story' })).toBeNull();
   });
 });

@@ -1,4 +1,4 @@
-import { Container, Paper, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
 import React, { useContext } from 'react';
 import CharacterSummary from '../../components/character/characterSummary/CharacterSummary';
 import Carousel from '../../components/common/carousel/Carousel';
@@ -32,20 +32,14 @@ const Characters = () => {
 
   return (
     <Container maxWidth={false} disableGutters>
-      <Paper
-        elevation={3}
-        sx={{
-          minHeight: '95vh',
-          padding: { xs: 1.5, sm: 2.5 },
-        }}
-      >
+      <Box sx={{ minHeight: '95vh', padding: { xs: 0.5, sm: 2 } }}>
         <PageTitle>{t('page.characters')}</PageTitle>
         {characters.length > 0 && (
           <Carousel cardsPerPage={cardsPerPage} height={600}>
             {children}
           </Carousel>
         )}
-      </Paper>
+      </Box>
     </Container>
   );
 };

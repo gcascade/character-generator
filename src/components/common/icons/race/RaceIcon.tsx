@@ -11,17 +11,23 @@ type RaceIconsProps = {
   characterRace: CharacterRace;
 };
 
-const ClassIcon: FC<RaceIconsProps> = ({ characterRace }) => {
+const RaceIcon: FC<RaceIconsProps> = ({ characterRace }) => {
   switch (characterRace) {
     case 'Human':
-      return <PersonOutlined data-testid="human-icon" />;
+      return (
+        <PersonOutlined sx={{ color: 'race.Human' }} data-testid="human-icon" />
+      );
     case 'Elf':
-      return <Forest style={{ color: 'green' }} data-testid="elf-icon" />;
+      return <Forest sx={{ color: 'race.Elf' }} data-testid="elf-icon" />;
     case 'Orc':
-      return <SportsKabaddi data-testid="orc-icon" />;
+      return (
+        <SportsKabaddi sx={{ color: 'race.Orc' }} data-testid="orc-icon" />
+      );
     case 'Dwarf':
-      return <Construction data-testid="dwarf-icon" />;
+      return (
+        <Construction sx={{ color: 'race.Dwarf' }} data-testid="dwarf-icon" />
+      );
   }
 };
 
-export default ClassIcon;
+export default RaceIcon;

@@ -7,7 +7,6 @@
   "app.openMenu": "Open menu",
   "app.error": "Something went wrong.",
   "nav.label": "Main navigation",
-  "nav.menu": "Menu",
   "nav.generator": "Character Generator",
   "nav.characters": "My Characters",
   "nav.settings": "Settings",
@@ -22,9 +21,6 @@
   "character.removedAlert": "Character removed",
   "character.confirmDelete": "Click again to confirm",
   "character.delete": "Delete",
-  "character.history": "History:",
-  "character.showMore": "Show More...",
-  "character.showLess": "Show Less",
   "character.portraitAlt": "{race} {characterClass}",
   "character.writtenByAi": "Written by AI in {language}",
   "character.writtenIn": "Written in {language}",
@@ -136,5 +132,12 @@
   "lock.alignment": "Lock the alignment",
   "unlock.alignment": "Unlock the alignment",
   "lock.unlockAll": "Unlock all",
-  "reroll.nothingElseFits": "No other value fits the locked properties."
+  "reroll.nothingElseFits": "No other value fits the locked properties.",
+  "story.read": "Read the story",
+  "story.close": "Close",
+  "colorMode.label": "Theme",
+  "colorMode.light": "Light",
+  "colorMode.dark": "Dark",
+  "colorMode.system": "System",
+  "character.age": "{age} years old"
 }

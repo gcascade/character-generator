@@ -27,7 +27,7 @@ describe('CharacterProperty', () => {
       />,
     );
 
-    expect(screen.getByText('Test Label:')).toBeInTheDocument();
+    expect(screen.getByText('Test Label')).toBeInTheDocument();
     expect(screen.getByText('Test Value')).toBeInTheDocument();
   });
 

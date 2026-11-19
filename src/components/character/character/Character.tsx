@@ -1,11 +1,11 @@
 import { DoubleArrow as DoubleArrowIcon } from '@mui/icons-material';
 import { Save as SaveIcon } from '@mui/icons-material';
 import {
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Stack,
   useMediaQuery,
 } from '@mui/material';
@@ -16,13 +16,12 @@ import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
 import useCharacterRequest from '../../../hooks/useCharacterRequest';
 import '../../common/Common.css';
-import { GenderIcon } from '../../common/icons/gender/GenderIcon';
 import '../Character.css';
 import CharacterBackground from '../characterBackground/CharacterBackground';
 import CharacterImage from '../characterImage/CharacterImage';
 import CharacterInformation from '../characterInformation/CharacterInformation';
-import { useLocale, useT } from '../../../i18n';
-import { label } from '../../../content/labels';
+import { useT } from '../../../i18n';
+import CharacterHeader from '../characterHeader/CharacterHeader';
 
 type CharacterProps = {
   onGenerateCallback: VoidFunction;
@@ -44,10 +43,9 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const theme = useTheme();
   const t = useT();
-  const { locale } = useLocale();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { character } = characterContext;
-  const { firstName, lastName, gender, race, characterClass } = character;
+  const { gender, race, characterClass } = character;
 
   const { requestStatus, generateNewCharacter, translateCharacter, canUseAi } =
     useCharacterRequest();
@@ -75,54 +73,43 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
     <Card
       data-testid="character-card"
       className="paper-card"
-      sx={{
-        backgroundColor: theme.palette.background.paper,
-      }}
+      sx={{ width: '100%' }}
     >
-      <CardHeader
-        title={
-          <span data-testid="character-name">{`${firstName} ${lastName}`}</span>
-        }
-        subheader={
-          <div className="character-subheader">
-            {t('character.subtitle', {
-              race:
-                locale === 'fr'
-                  ? label('race', race, gender, locale).toLowerCase()
-                  : label('race', race, gender, locale),
-              characterClass: label('class', characterClass, gender, locale),
-            })}
-            <GenderIcon gender={gender} />
-          </div>
-        }
-        slotProps={{
-          title: { align: 'center', variant: 'h4' },
-          subheader: { align: 'center', variant: 'subtitle1' },
-        }}
-      />
-      <CardContent sx={{ display: 'flex', px: { xs: 1, sm: 2 } }}>
-        {!isMobile && (
+      <CardContent
+        sx={{ px: { xs: 1.5, sm: 3 }, pt: { xs: 1.5, sm: 2.5 }, pb: 1 }}
+      >
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'minmax(0, 1fr)',
+              sm: '200px minmax(0, 1fr)',
+            },
+            gap: { xs: 2, sm: 3 },
+            alignItems: 'start',
+          }}
+        >
           <CharacterImage
             gender={gender}
             race={race}
             characterClass={characterClass}
-            height={512}
-            width={'30%'}
+            height={isMobile ? 180 : 290}
+            width="100%"
+            crop
           />
-        )}
-        <div
-          style={
-            isMobile ? { width: '100%' } : { marginLeft: '20px', width: '70%' }
-          }
-        >
-          <CharacterInformation />
-          <CharacterBackground
-            onTranslate={canUseAi ? () => translateCharacter() : undefined}
-            translating={requestStatus === 'loading'}
-          />
-        </div>
+          <Box sx={{ minWidth: 0 }}>
+            <Box data-testid="character-name" sx={{ mb: 1 }}>
+              <CharacterHeader character={character} />
+            </Box>
+            <CharacterInformation />
+          </Box>
+        </Box>
+        <CharacterBackground
+          onTranslate={canUseAi ? () => translateCharacter() : undefined}
+          translating={requestStatus === 'loading'}
+        />
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ px: { xs: 1.5, sm: 3 }, pb: { xs: 1.5, sm: 2.5 } }}>
         <Stack
           direction="row"
           spacing={2}
@@ -138,8 +125,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             startIcon={<DoubleArrowIcon />}
             sx={{
               flex: '1 1 auto',
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.common.white,
+              boxShadow: '0 3px 0 rgba(0, 0, 0, 0.25)',
             }}
             onClick={onGenerateButtonClick}
             disabled={isActionButtonDisabled}
@@ -148,7 +134,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
           </Button>
           <Button
             variant="outlined"
-            color={isSaved ? 'success' : 'secondary'}
+            color={isSaved ? 'success' : 'primary'}
             startIcon={<SaveIcon />}
             sx={{
               flex: '1 1 auto',

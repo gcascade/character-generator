@@ -43,10 +43,13 @@ const AppLayout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <Box sx={{ backgroundColor: 'background.paper', minHeight: '100vh' }}>
-      <CssBaseline />
+    <Box sx={{ minHeight: '100vh' }}>
+      <CssBaseline enableColorScheme />
       {!isDesktop && (
-        <AppBar position="sticky" sx={{ backgroundColor: '#3f51b5' }}>
+        <AppBar
+          position="sticky"
+          sx={{ bgcolor: 'menu.main', color: 'menu.contrastText' }}
+        >
           <Toolbar>
             <IconButton
               color="inherit"
@@ -97,7 +100,7 @@ const loadStart = () => {
 const App: React.FC = () => {
   const [start] = useState(loadStart);
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} defaultMode="system">
       <LocaleProvider>
         <ErrorBoundary>
           <CharacterProvider initCharacter={start.character}>

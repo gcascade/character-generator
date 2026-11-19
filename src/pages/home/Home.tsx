@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import Character from '../../components/character/character/Character';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
@@ -27,7 +27,7 @@ const Home: FC = () => {
 
   return (
     <Container maxWidth={false} disableGutters>
-      <Paper elevation={3} sx={{ padding: { xs: 1.5, sm: 2.5 } }}>
+      <Box sx={{ padding: { xs: 0.5, sm: 2 }, maxWidth: 1400, mx: 'auto' }}>
         <PageTitle>{t('page.generator')}</PageTitle>
         <Grid
           container
@@ -41,7 +41,7 @@ const Home: FC = () => {
             <HistoryCard />
           </Grid>
         </Grid>
-      </Paper>
+      </Box>
     </Container>
   );
 };

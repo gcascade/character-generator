@@ -1,11 +1,11 @@
 .gender-icon {
-  color: blue;
+  color: var(--mui-palette-text-secondary);
 }
 
 .gender-icon.female {
-  color: pink;
+  color: var(--mui-palette-text-secondary);
 }
 
 .gender-icon.non-binary {
-  color: purple;
+  color: var(--mui-palette-text-secondary);
 }

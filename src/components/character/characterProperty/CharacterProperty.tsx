@@ -2,11 +2,9 @@ import {
   Lock as LockIcon,
   LockOpen as LockOpenIcon,
 } from '@mui/icons-material';
-import { IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import RerollButton from '../../common/buttons/RerollButton';
-import CharacterTypography from '../characterTypography/CharacterTypography';
-import { useT } from '../../../i18n';
 
 type CharacterPropertyProps = {
   label: string;
@@ -23,6 +21,11 @@ type CharacterPropertyProps = {
   lockLabel?: string;
 };
 
+/**
+ * One cell of the property grid (spec 005 R3): label above the value; the die
+ * and padlock show on hover or keyboard focus, always when locked, and always
+ * on touch screens.
+ */
 const CharacterProperty: FC<CharacterPropertyProps> = ({
   label,
   value,
@@ -32,42 +35,94 @@ const CharacterProperty: FC<CharacterPropertyProps> = ({
   locked = false,
   onToggleLock,
   lockLabel,
-}) => {
-  const t = useT();
-  return (
-    <CharacterTypography>
-      <span style={{ display: 'flex', alignItems: 'center' }}>
-        <strong style={{ marginRight: '5px', whiteSpace: 'nowrap' }}>
-          {label}
-          {t('punct.colon')}
-        </strong>
-        <span>{value}</span>
-        {onToggleLock && (
-          <Tooltip title={lockLabel}>
-            <IconButton
-              size="small"
-              aria-label={lockLabel}
-              aria-pressed={locked}
-              color={locked ? 'primary' : 'default'}
-              onClick={onToggleLock}
-              sx={{ ml: 0.5 }}
-            >
-              {locked ? (
-                <LockIcon fontSize="small" />
-              ) : (
-                <LockOpenIcon fontSize="small" />
-              )}
-            </IconButton>
-          </Tooltip>
-        )}
-        <RerollButton
-          tooltip={tooltip}
-          onButtonClick={onButtonClick}
-          disabled={!!isRerollButtonDisabled}
-        />
-      </span>
-    </CharacterTypography>
-  );
-};
+}) => (
+  <Box
+    sx={{
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 1,
+      px: 1.25,
+      py: 0.5,
+      borderRadius: 2,
+      minWidth: 0,
+      '&:hover, &:focus-within': {
+        bgcolor: 'rgba(154, 107, 18, 0.10)',
+        '& .property-actions': { opacity: 1 },
+      },
+      // Touch screens have no hover: actions always shown, in the flow.
+      '@media (hover: none)': {
+        '& .property-actions': {
+          opacity: 1,
+          position: 'static',
+          transform: 'none',
+        },
+      },
+    }}
+  >
+    <Box sx={{ minWidth: 0 }}>
+      <Typography
+        component="div"
+        sx={{
+          fontSize: '0.8rem',
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'text.secondary',
+        }}
+      >
+        {label}
+      </Typography>
+      <Typography
+        component="div"
+        sx={{ fontWeight: 500, fontSize: '1.05rem', overflowWrap: 'anywhere' }}
+      >
+        {value}
+      </Typography>
+    </Box>
+    <Box
+      className="property-actions"
+      sx={{
+        display: 'flex',
+        flexShrink: 0,
+        opacity: locked ? 1 : 0,
+        transition: 'opacity 0.15s',
+        // Hidden actions take no room, so values do not wrap for nothing;
+        // a locked property keeps its padlock in the flow.
+        ...(!locked && {
+          position: 'absolute',
+          right: 4,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+        }),
+      }}
+    >
+      {onToggleLock && (
+        <Tooltip title={lockLabel}>
+          <IconButton
+            size="small"
+            aria-label={lockLabel}
+            aria-pressed={locked}
+            onClick={onToggleLock}
+            sx={{ color: locked ? 'secondary.main' : 'text.secondary' }}
+          >
+            {locked ? (
+              <LockIcon fontSize="small" />
+            ) : (
+              <LockOpenIcon fontSize="small" />
+            )}
+          </IconButton>
+        </Tooltip>
+      )}
+      <RerollButton
+        tooltip={tooltip}
+        onButtonClick={onButtonClick}
+        disabled={!!isRerollButtonDisabled}
+      />
+    </Box>
+  </Box>
+);
 
 export default CharacterProperty;

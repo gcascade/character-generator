@@ -74,6 +74,13 @@ npm run storybook
 npm run build-storybook
 ```
 
+# Look and feel
+
+A heroic fantasy theme: Cinzel titles, Alegreya story text and Alegreya Sans interface (self-hosted, no request to a
+font service), a parchment light mode and a candle-lit dark mode. The mode follows the system by default and can be
+changed at the bottom of the menu or in **Settings**. Colours live in `src/themes/palette.ts`; a test checks that every
+text and badge colour meets WCAG AA contrast in both modes.
+
 # Locking properties
 
 Each property of the generated character has a padlock. A locked property keeps its value when you click

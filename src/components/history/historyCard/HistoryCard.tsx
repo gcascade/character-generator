@@ -9,7 +9,6 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import useAlert from '../../../hooks/useAlert';
 import useCharacterHistory from '../../../hooks/useCharacterHistory';
-import theme from '../../../themes/themes';
 import '../../common/Common.css';
 import '../History.css';
 import EmptyHistory from '../emptyHistory/EmptyHistory';
@@ -45,7 +44,7 @@ const HistoryCard: FC = () => {
     <Card
       className="paper-card"
       sx={{
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: 'background.paper',
         width: '100%',
         display: 'flex',
         justifyContent: 'space-between',

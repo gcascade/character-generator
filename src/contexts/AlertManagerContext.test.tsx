@@ -42,15 +42,13 @@ describe('AlertManagerContext', () => {
     );
   });
 
-  it('gives each alert a unique id, even when added at the same time', () => {
+  it('gives each alert a new id, so a replacement shows as a new notification', () => {
     const { result } = renderAlerts();
 
-    act(() => {
-      result.current.addAlert(success('one'));
-      result.current.addAlert(success('two'));
-    });
-
-    const [first, second] = result.current.alerts;
+    act(() => result.current.addAlert(success('one')));
+    const [first] = result.current.alerts;
+    act(() => result.current.addAlert(success('one')));
+    const [second] = result.current.alerts;
     expect(first.id).not.toBe(second.id);
   });
 
@@ -60,11 +58,11 @@ describe('AlertManagerContext', () => {
     act(() => result.current.addAlert(success('saved')));
     expect(result.current.alerts).toHaveLength(1);
 
-    act(() => vi.advanceTimersByTime(ALERT_DURATION_MS.success));
+    act(() => vi.advanceTimersByTime(ALERT_DURATION_MS.success!));
     expect(result.current.alerts).toHaveLength(0);
   });
 
-  it('keeps errors on screen longer than successes', () => {
+  it('keeps errors on screen until closed or replaced', () => {
     const { result } = renderAlerts();
 
     act(() =>
@@ -74,28 +72,23 @@ describe('AlertManagerContext', () => {
         message: 'boom',
       }),
     );
-    act(() => vi.advanceTimersByTime(ALERT_DURATION_MS.success));
+    act(() => vi.advanceTimersByTime(60_000));
     expect(result.current.alerts).toHaveLength(1);
 
-    act(() =>
-      vi.advanceTimersByTime(
-        ALERT_DURATION_MS.error - ALERT_DURATION_MS.success,
-      ),
-    );
-    expect(result.current.alerts).toHaveLength(0);
+    act(() => result.current.addAlert(success('saved')));
+    expect(result.current.alerts.map((a) => a.message)).toEqual(['saved']);
   });
 
-  it(`shows at most ${MAX_VISIBLE_ALERTS} alerts, dropping the oldest`, () => {
+  it('shows one notification at a time, the latest one', () => {
     const { result } = renderAlerts();
 
     act(() => {
-      for (let i = 1; i <= MAX_VISIBLE_ALERTS + 2; i++) {
+      for (let i = 1; i <= 5; i++) {
         result.current.addAlert(success(`alert ${i}`));
       }
     });
 
-    expect(result.current.alerts.map((a) => a.message)).toEqual(
-      Array.from({ length: MAX_VISIBLE_ALERTS }, (_, i) => `alert ${i + 3}`),
-    );
+    expect(MAX_VISIBLE_ALERTS).toBe(1);
+    expect(result.current.alerts.map((a) => a.message)).toEqual(['alert 5']);
   });
 });

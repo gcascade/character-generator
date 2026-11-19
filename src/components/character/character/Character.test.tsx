@@ -96,11 +96,17 @@ describe('Character', () => {
   test('displays character properties correctly', () => {
     renderComponent();
     expect(screen.getByText('John Character')).toBeInTheDocument();
-    expect(screen.getByText('The Great')).toBeInTheDocument();
-    expect(screen.getByText('Elf')).toBeInTheDocument();
-    expect(screen.getByText('Warrior')).toBeInTheDocument();
+    // The epithet is under the name and in the property grid.
+    expect(screen.getAllByText('The Great')).toHaveLength(2);
+    // Race and class appear as badges and in the property grid.
+    expect(screen.getAllByText('Elf')).toHaveLength(2);
+    expect(screen.getAllByText('Warrior')).toHaveLength(2);
     expect(screen.getByText('Male')).toBeInTheDocument();
+    expect(screen.getByText('Male · 100 years old')).toBeInTheDocument();
     expect(screen.getByText('100')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'John Character' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('True Neutral')).toBeInTheDocument();
   });
 
@@ -122,14 +128,6 @@ describe('Character', () => {
     await waitFor(() => {
       expect(mockGenerateNewCharacter).toHaveBeenCalled();
     });
-  });
-
-  test('applies theme colors correctly to card', () => {
-    renderComponent();
-    const card = screen.getByTestId('character-card');
-    expect(card).toHaveStyle(
-      `background-color: ${theme.palette.background.paper}`,
-    );
   });
 
   test('disables Generate button when loading', () => {
@@ -157,7 +155,7 @@ describe('Character', () => {
     expect(cardMedia).toBeInTheDocument();
   });
 
-  test('does not render character portrait on mobile', () => {
+  test('renders a smaller portrait on mobile', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: true,
       media: query,
@@ -170,10 +168,10 @@ describe('Character', () => {
     }));
 
     renderComponent();
-    const cardMedia = screen.queryByAltText(
+    const cardMedia = screen.getByAltText(
       `${mockCharacter.race} ${mockCharacter.characterClass}`,
     );
-    expect(cardMedia).not.toBeInTheDocument();
+    expect(cardMedia).toHaveAttribute('height', '180');
   });
 
   test('calls saveCharacter function when Save button is clicked', async () => {

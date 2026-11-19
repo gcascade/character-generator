@@ -23,6 +23,7 @@ import type {
   ProviderSettings,
   ProviderType,
 } from '../../ai/types';
+import ColorModeToggle from '../../components/common/colorModeToggle/ColorModeToggle';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import ApiKeyField from '../../components/settings/apiKeyField/ApiKeyField';
 import ConnectionTest from '../../components/settings/connectionTest/ConnectionTest';
@@ -163,11 +164,16 @@ const Settings: FC = () => {
 
   return (
     <Container maxWidth={false} disableGutters>
+      <PageTitle>{t('page.settings')}</PageTitle>
       <Paper
-        elevation={3}
-        sx={{ minHeight: '95vh', padding: { xs: 1.5, sm: 2.5 } }}
+        variant="outlined"
+        sx={{
+          padding: { xs: 2, sm: 3 },
+          maxWidth: 800,
+          mx: 'auto',
+          borderRadius: 3.5,
+        }}
       >
-        <PageTitle>{t('page.settings')}</PageTitle>
         <Box
           component="form"
           noValidate
@@ -303,6 +309,13 @@ const Settings: FC = () => {
                 ))}
               </Select>
             </FormControl>
+          </Box>
+
+          <Box>
+            <Typography variant="h5" component="h2" gutterBottom>
+              {t('colorMode.label')}
+            </Typography>
+            <ColorModeToggle variant="select" />
           </Box>
 
           <Box>
