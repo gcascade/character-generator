@@ -25,6 +25,7 @@ import { generateRandomCharacter } from '../content/generate';
 import { loadLocks } from '../content/storedLocks';
 import { LOCKABLE_PROPERTIES } from '../content/template';
 import { LockProvider } from '../contexts/LockContext';
+import { PartyProvider } from '../contexts/PartyContext';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
 import DrawerMenu from './navigation/drawerMenu/DrawerMenu';
@@ -110,9 +111,11 @@ const App: React.FC = () => {
                   <RequestProvider>
                     <AlertManagerProvider>
                       <DataProvider>
-                        <BrowserRouter basename={import.meta.env.BASE_URL}>
-                          <AppLayout />
-                        </BrowserRouter>
+                        <PartyProvider>
+                          <BrowserRouter basename={import.meta.env.BASE_URL}>
+                            <AppLayout />
+                          </BrowserRouter>
+                        </PartyProvider>
                       </DataProvider>
                     </AlertManagerProvider>
                   </RequestProvider>

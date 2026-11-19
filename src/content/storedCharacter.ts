@@ -19,7 +19,7 @@ const backgroundSchema = z.object({
  * older versions have `epithet` and `background` text but no `content`: they
  * are read as English text written by the app (FR-016).
  */
-const storedCharacterSchema = z
+export const storedCharacterSchema = z
   .object({
     id: z.string().trim().min(1).max(100).optional(),
     firstName: text,
