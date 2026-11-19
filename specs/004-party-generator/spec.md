@@ -70,9 +70,8 @@ The user likes a party and saves it, or saves only one member, to "My characters
 
 1. **Given** a party, **When** the user saves one member, **Then** that member appears in "My characters" like any
    saved character.
-2. **Given** a party, **When** the user saves the whole party, **Then** [NEEDS CLARIFICATION: is the party kept as
-   a group (its own entry with the party text, shown in a "Parties" section of "My characters"), or are its members
-   simply added one by one to "My characters"?]
+2. **Given** a party, **When** the user saves the whole party, **Then** the party is kept as a group: its own entry with its
+   members and party text, shown in a "Parties" section of "My characters", where it can be opened again or deleted
 3. **Given** saved data from before this feature, **When** the app loads, **Then** saved characters are unchanged.
 
 ---
@@ -108,6 +107,15 @@ every member's facts are unchanged; with a failing provider, the app's party tex
 - Switching language: members and party text re-render in the new language (app content), as on the home page.
 - Phone width: cards stack in one column without horizontal scroll.
 
+## Clarifications
+
+### Session 2026-11-19
+
+- Q: How is a whole party saved? → A: As a group, with its members and party text, in a "Parties" section of "My
+  characters".
+- Q: Which alignment rule applies within a party? → A: A user choice between "Harmonious" (default; no Good member
+  with an Evil member) and "Anything goes".
+
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
@@ -118,15 +126,15 @@ every member's facts are unchanged; with a failing provider, the app's party tex
   (names by race and gender, age within the race's lifespan, background matching race, class and alignment).
 - **FR-004**: Without a shared class, classes MUST be all different up to the number of classes, then every class
   MUST appear before any repeats.
-- **FR-005**: Alignments within a party MUST be compatible: [NEEDS CLARIFICATION: which rule? e.g. no Good member
-  together with an Evil member; or a user choice between "harmonious" and "anything goes"]
+- **FR-005**: Alignments within a party MUST be compatible: the user chooses between "Harmonious" (default:
+  never a Good member together with an Evil member; Neutral members fit with anyone) and "Anything goes" (no rule).
 - **FR-006**: No two members of a party MUST share a first name.
 - **FR-007**: Users MUST be able to set shared constraints (race, class, gender, alignment, or "any") that apply to
   every member, using the same consistency rules as spec 003 locks.
 - **FR-008**: Users MUST be able to lock a member (kept on regeneration) and reroll a single member.
 - **FR-009**: Every party MUST have a party text built from bilingual app content (how the members met, the goal they
   share), naming the members, with correct gender agreement in French and neutral phrasing for non-binary members.
-- **FR-010**: Users MUST be able to save one member, or the whole party, to "My characters" (see US3 clarification).
+- **FR-010**: Users MUST be able to save one member, or the whole party, to "My characters" (a saved party keeps its members and party text together).
 - **FR-011**: With an AI provider, the party text MAY be written by the AI; member facts MUST NOT change; on failure
   the app's text is used and the reason is shown.
 - **FR-012**: The party page MUST work on phone width without horizontal scroll, and every control MUST be usable
@@ -136,8 +144,8 @@ every member's facts are unchanged; with a failing provider, the app's party tex
 
 ### Key Entities
 
-- **Party**: an ordered list of 2–6 members, the party text references (or AI text with its language), and the shared
-  constraints it was generated with.
+- **Party**: an ordered list of 2–6 members, the party text references (or AI text with its language), the shared
+  constraints and the alignment mode it was generated with.
 - **Party member**: a character (as everywhere in the app) plus whether it is locked in the party.
 - **Shared constraints**: a character template (spec 003) applied to every member.
 - **Party text**: fragments for how the party met and its common goal, written once per language.
