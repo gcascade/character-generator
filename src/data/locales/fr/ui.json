@@ -139,5 +139,13 @@
   "colorMode.light": "Clair",
   "colorMode.dark": "Sombre",
   "colorMode.system": "Système",
-  "character.age": "{age} ans"
+  "character.age": "{age} ans",
+  "details.back": "Retour à mes personnages",
+  "details.openInGenerator": "Ouvrir dans le générateur",
+  "details.delete": "Supprimer",
+  "details.confirmDelete": "Cliquez à nouveau pour supprimer",
+  "details.deleted": "Personnage supprimé",
+  "details.notFound": "Personnage introuvable",
+  "details.notFoundHint": "Il a peut-être été supprimé.",
+  "details.open": "Ouvrir {name}"
 }

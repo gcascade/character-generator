@@ -21,6 +21,7 @@ const backgroundSchema = z.object({
  */
 const storedCharacterSchema = z
   .object({
+    id: z.string().trim().min(1).max(100).optional(),
     firstName: text,
     lastName: z.string().trim().max(4000),
     race: z.enum(Object.values(CharacterRaces)),
@@ -74,5 +75,21 @@ export const parseStoredCharacters = (raw: string | null): Character[] => {
   return data.flatMap((entry) => {
     const parsed = storedCharacterSchema.safeParse(entry);
     return parsed.success ? [parsed.data] : [];
+  });
+};
+
+/**
+ * Gives an id to saved characters without one, or sharing one with an earlier
+ * entry (older versions, hand-edited data) — spec 006 FR-001.
+ */
+export const withIds = (characters: Character[]): Character[] => {
+  const seen = new Set<string>();
+  return characters.map((character) => {
+    const id =
+      character.id && !seen.has(character.id)
+        ? character.id
+        : crypto.randomUUID();
+    seen.add(id);
+    return id === character.id ? character : { ...character, id };
   });
 };

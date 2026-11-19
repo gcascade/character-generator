@@ -19,6 +19,8 @@ const renderCharactersWithContext = (
           characters,
           saveCharacter: vi.fn(),
           removeCharacter: vi.fn(),
+          updateCharacter: vi.fn(),
+          findCharacter: vi.fn(),
         }}
       >
         <AlertManagerContext.Provider

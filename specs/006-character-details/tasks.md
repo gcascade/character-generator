@@ -17,7 +17,7 @@ description: 'Task list for saved character details'
 
 ## Phase 1: Setup
 
-- [ ] T001 Add ui keys in src/data/locales/en/ui.json and src/data/locales/fr/ui.json: `details.back`, `details.openInGenerator`, `details.delete`, `details.confirmDelete`, `details.deleted`, `details.notFound`, `details.notFoundHint`, `details.open` (texts in contracts/details.md)
+- [x] T001 Add ui keys in src/data/locales/en/ui.json and src/data/locales/fr/ui.json: `details.back`, `details.openInGenerator`, `details.delete`, `details.confirmDelete`, `details.deleted`, `details.notFound`, `details.notFoundHint`, `details.open` (texts in contracts/details.md)
 
 ---
 
@@ -25,9 +25,9 @@ description: 'Task list for saved character details'
 
 **⚠️ Blocks every user story**
 
-- [ ] T002 Add `id?: string` to `Character` in src/types/character.ts and to the stored-character schema in src/content/storedCharacter.ts ("set on saved characters only; unique among saved characters; 1–100 chars"); add `withIds(characters)` giving a new `crypto.randomUUID()` to entries without an id or with a duplicate; tests in src/content/storedCharacter.test.ts
-- [ ] T003 Rework src/contexts/DataContext.tsx: load with `withIds` (saved back by the existing effect), `saveCharacter` stores `{ ...character, id }` and returns it, `removeCharacter(id)`, `updateCharacter(character)` (replace by id), `findCharacter(id)`; tests in src/contexts/DataContext.test.tsx (migration, two identical-looking characters deleted one at a time — SC-004)
-- [ ] T004 Use ids on the home page (research R2): in src/components/character/character/Character.tsx set the current character to the saved copy after saving and compute `isSaved` by id; in src/hooks/useCharacterGenerator.ts drop `id` from characters produced by generate, reroll and translate; update src/components/character/characterSummary/CharacterSummary.tsx to delete by id; update affected tests (Character, CharacterSummary, useCharacterGenerator, Characters page)
+- [x] T002 Add `id?: string` to `Character` in src/types/character.ts and to the stored-character schema in src/content/storedCharacter.ts ("set on saved characters only; unique among saved characters; 1–100 chars"); add `withIds(characters)` giving a new `crypto.randomUUID()` to entries without an id or with a duplicate; tests in src/content/storedCharacter.test.ts
+- [x] T003 Rework src/contexts/DataContext.tsx: load with `withIds` (saved back by the existing effect), `saveCharacter` stores `{ ...character, id }` and returns it, `removeCharacter(id)`, `updateCharacter(character)` (replace by id), `findCharacter(id)`; tests in src/contexts/DataContext.test.tsx (migration, two identical-looking characters deleted one at a time — SC-004)
+- [x] T004 Use ids on the home page (research R2): in src/components/character/character/Character.tsx set the current character to the saved copy after saving and compute `isSaved` by id; in src/hooks/useCharacterGenerator.ts drop `id` from characters produced by generate, reroll and translate; update src/components/character/characterSummary/CharacterSummary.tsx to delete by id; update affected tests (Character, CharacterSummary, useCharacterGenerator, Characters page)
 
 **Checkpoint**: same behaviour as before, with ids.
 

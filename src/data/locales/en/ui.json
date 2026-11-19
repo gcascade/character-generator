@@ -139,5 +139,13 @@
   "colorMode.light": "Light",
   "colorMode.dark": "Dark",
   "colorMode.system": "System",
-  "character.age": "{age} years old"
+  "character.age": "{age} years old",
+  "details.back": "Back to my characters",
+  "details.openInGenerator": "Open in the generator",
+  "details.delete": "Delete",
+  "details.confirmDelete": "Click again to delete",
+  "details.deleted": "Character deleted",
+  "details.notFound": "Character not found",
+  "details.notFoundHint": "It may have been deleted.",
+  "details.open": "Open {name}"
 }

@@ -1,5 +1,5 @@
 import { generateRandomCharacter } from './generate';
-import { parseStoredCharacters } from './storedCharacter';
+import { parseStoredCharacters, withIds } from './storedCharacter';
 
 const legacy = {
   firstName: 'Eira',
@@ -50,4 +50,28 @@ describe('parseStoredCharacters', () => {
       expect(parseStoredCharacters(raw)).toEqual([]);
     },
   );
+});
+
+describe('withIds', () => {
+  const base = generateRandomCharacter({ race: 'Elf' });
+
+  it('gives an id to characters without one and keeps existing ones', () => {
+    const [a, b] = withIds([base, { ...base, id: 'kept' }]);
+    expect(a.id).toMatch(/^[0-9a-f-]{36}$/);
+    expect(b.id).toBe('kept');
+  });
+
+  it('replaces duplicate ids', () => {
+    const [a, b] = withIds([
+      { ...base, id: 'same' },
+      { ...base, id: 'same' },
+    ]);
+    expect(a.id).toBe('same');
+    expect(b.id).not.toBe('same');
+  });
+
+  it('reads the id back from storage', () => {
+    const raw = JSON.stringify([{ ...base, id: 'abc' }]);
+    expect(parseStoredCharacters(raw)[0].id).toBe('abc');
+  });
 });

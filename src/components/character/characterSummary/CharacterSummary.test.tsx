@@ -28,12 +28,14 @@ describe('CharacterSummary', () => {
           characters: [],
           saveCharacter: vi.fn(),
           removeCharacter: mockRemoveCharacter,
+          updateCharacter: vi.fn(),
+          findCharacter: vi.fn(),
         }}
       >
         <AlertManagerContext.Provider
           value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
         >
-          <CharacterSummary character={eryndorThorne} />
+          <CharacterSummary character={{ ...eryndorThorne, id: 'eryndor' }} />
         </AlertManagerContext.Provider>
       </DataContext.Provider>,
     );
@@ -61,7 +63,7 @@ describe('CharacterSummary', () => {
     const deleteButton = screen.getByLabelText('Delete');
     fireEvent.click(deleteButton);
     fireEvent.click(deleteButton);
-    expect(mockRemoveCharacter).toHaveBeenCalledWith(eryndorThorne);
+    expect(mockRemoveCharacter).toHaveBeenCalledWith('eryndor');
     expect(mockAddSuccess).toHaveBeenCalledWith('Character removed');
   });
 

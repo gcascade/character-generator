@@ -51,7 +51,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
 
   const onDeleteClick = () => {
     if (confirmDelete) {
-      removeCharacter(character);
+      if (character.id) removeCharacter(character.id);
       addSuccess(t('character.removedAlert'));
     } else {
       setConfirmDelete(true);

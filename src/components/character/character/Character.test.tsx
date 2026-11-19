@@ -14,6 +14,7 @@ import Character from './Character';
 
 describe('Character', () => {
   const mockCharacter: CharacterType = {
+    id: 'john',
     firstName: 'John',
     lastName: 'Character',
     epithet: 'The Great',
@@ -77,6 +78,8 @@ describe('Character', () => {
                     characters,
                     saveCharacter: mockSaveCharacter,
                     removeCharacter: vi.fn(),
+                    updateCharacter: vi.fn(),
+                    findCharacter: vi.fn(),
                   }}
                 >
                   <Character onGenerateCallback={mockOnGenerateCallback} />

@@ -9,6 +9,8 @@ export type ContentRefs = {
 };
 
 export type Character = {
+  /** Set on saved characters only (spec 006). */
+  id?: string;
   firstName: string;
   lastName: string;
   characterClass: CharacterClass;
