@@ -89,9 +89,9 @@ props), and saved characters already have ids.
 
 ## Phase 7: Polish
 
-- [ ] T020 [P] Update README.md (party section) and CLAUDE.md (party module, storage keys)
-- [ ] T021 Run lint, typecheck, test:run, build and build-storybook; fix anything failing
-- [ ] T022 Browser validation of quickstart.md (sizes, constraints, locks, reroll, save/open, French, dark mode, phone, axe) with screenshots; sample of party stories in both languages for the maintainer's review
+- [x] T020 [P] Update README.md (party section) and CLAUDE.md (party module, storage keys)
+- [x] T021 Run lint, typecheck, test:run, build and build-storybook; fix anything failing
+- [x] T022 Browser validation of quickstart.md (sizes, constraints, locks, reroll, save/open, French, dark mode, phone, axe) with screenshots; sample of party stories in both languages for the maintainer's review
 
 ---
 

@@ -44,14 +44,15 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 ```
 src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
-  pages/                           Home (generator), Characters (saved), CharacterDetails (/characters/:id), Settings
+  pages/                           Home (generator), Party, Characters (saved + parties tab), CharacterDetails, Settings
   contexts/                        One React context per concern (character, history, settings, ...)
   ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
   i18n/                            Locale detection, LocaleProvider, useT / useLocale
   content/                         renderText (gendered text), generate (random characters, rerolls),
                                    character (renderCharacter per locale), labels, storedCharacter (zod),
-                                   template (CharacterTemplate, locks, compatible race/gender), storedLocks
+                                   template (CharacterTemplate, locks, compatible race/gender), storedLocks,
+                                   party (party rules, renderParty), storedParty
   data/content/                    Fragment and epithet ids, name lists per race (language-independent)
   data/locales/<locale>/           ui.json, labels.json, and one text file per fragment category
   themes/                          MUI theme (light/dark colour schemes), palette + race/class colours, fonts, contrast
@@ -78,6 +79,16 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 - `CharacterDetail` is a read-only view whose actions are optional props (reused for party members).
 - History entries are still compared by reference.
 
+## Party (spec 004)
+
+- `src/content/party.ts` holds the rules (class variety, alignment modes, unique first names, locked members) as pure
+  functions; `checkParty` lists violations and is used by the 1,000-party tests.
+- Party texts (`src/data/locales/<locale>/party.json`) use `{members}`, `{first}`, `{count}` and keep "the company" /
+  "la compagnie" as the subject: no gender selection, no agreement with members.
+- `PartyProvider` stores the current party in `localStorage["party"]` and saved parties in `localStorage["parties"]`
+  (`{ version: 1, ... }`, parsed by `storedParty.ts`). A rerolled party gets a new id, so it is no longer "saved".
+- With AI, `generatePartyStory` writes the name and story only (`usePartyGenerator`).
+
 ## Content and languages
 
 - Characters store fragment ids (`content`); `renderCharacter(character, locale)` turns them into text. Written
@@ -103,7 +114,6 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   character with `templateOf`. Generation goes through `generateRandomCharacter(template)`; dice through
   `rerollWithApp(character, property, locked)`, which returns the same object when nothing else fits.
 - Saved in `localStorage["locks"]` as `{ version: 1, template }`, parsed field by field by `parseStoredLocks`.
-- `CharacterTemplate` is meant to be reused by the party generator.
 
 ## Direction
 

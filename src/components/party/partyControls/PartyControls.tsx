@@ -115,10 +115,14 @@ const PartyControls: FC<PartyControlsProps> = ({
         </FormControl>
         {CONSTRAINTS.map(({ key, field, kind, values }) => (
           <FormControl key={key} size="small" sx={{ minWidth: 150 }}>
-            <InputLabel id={`party-${key}-label`}>{t(field)}</InputLabel>
+            {/* "Any" is shown as a value, so the label stays raised. */}
+            <InputLabel id={`party-${key}-label`} shrink>
+              {t(field)}
+            </InputLabel>
             <Select
               labelId={`party-${key}-label`}
               label={t(field)}
+              notched
               value={constraints[key] ?? ''}
               displayEmpty
               renderValue={(value) =>
