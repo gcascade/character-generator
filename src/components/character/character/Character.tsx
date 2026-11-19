@@ -44,7 +44,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   const theme = useTheme();
   const t = useT();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { character } = characterContext;
+  const { character, setCharacter } = characterContext;
   const { gender, race, characterClass } = character;
 
   const { requestStatus, generateNewCharacter, translateCharacter, canUseAi } =
@@ -52,7 +52,9 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const { addError, addSuccess } = useAlert();
 
-  const isSaved = characters.some((c) => c === character);
+  // The current character becomes the saved copy, so they share an id (spec 006 R2).
+  const isSaved =
+    character.id !== undefined && characters.some((c) => c.id === character.id);
 
   const isActionButtonDisabled = requestStatus === 'loading';
 
@@ -62,12 +64,12 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
 
   const onSaveButtonClick = useCallback(() => {
     try {
-      saveCharacter(character);
+      setCharacter(saveCharacter(character));
       addSuccess(t('character.savedAlert'));
     } catch {
       addError(t('character.saveFailed'));
     }
-  }, [saveCharacter, character, addSuccess, addError, t]);
+  }, [saveCharacter, setCharacter, character, addSuccess, addError, t]);
 
   return (
     <Card

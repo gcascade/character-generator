@@ -188,3 +188,35 @@ describe('useCharacterRequest', () => {
     expect(alerts().length).toBe(before);
   });
 });
+
+describe('useCharacterRequest.translateOther (spec 006)', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('translates another character and leaves the current one alone', async () => {
+    withSettings({ activeType: 'ollama' });
+    vi.stubGlobal(
+      'fetch',
+      queuedFetch(
+        chatAnswer({
+          epithet: "l'Inflexible",
+          background: { title: 'Titre', content: ['Texte.'] },
+        }),
+      ),
+    );
+    const saved = {
+      ...korvusBlackiron,
+      id: 'saved',
+      textLanguage: 'en' as const,
+      textSource: 'ai' as const,
+    };
+    const onTranslated = vi.fn();
+    const { result } = renderHook(useEverything, { wrapper });
+
+    await act(() => result.current.request.translateOther(saved, onTranslated));
+
+    expect(onTranslated).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'saved', epithet: "l'Inflexible" }),
+    );
+    expect(result.current.character).toBe(korvusBlackiron);
+  });
+});

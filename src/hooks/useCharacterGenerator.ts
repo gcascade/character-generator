@@ -24,7 +24,17 @@ const useCharacterGenerator = () => {
     );
   }
 
-  const { character, setCharacter } = context;
+  const { character, setCharacter: setContextCharacter } = context;
+
+  // A new or changed character is not the saved one any more (spec 006 R2).
+  const setCharacter = useCallback(
+    (next: Character) => {
+      const copy = { ...next };
+      delete copy.id;
+      setContextCharacter(copy);
+    },
+    [setContextCharacter],
+  );
 
   const generateNewCharacter = useCallback(
     async (

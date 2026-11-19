@@ -11,7 +11,7 @@ type CharacterHeaderProps = {
   /** Smaller, centred version for saved-character cards. */
   compact?: boolean;
   /** Heading level of the name. */
-  headingLevel?: 'h2' | 'h3';
+  headingLevel?: 'h1' | 'h2' | 'h3';
 };
 
 /** Name, epithet and race / class / gender badges (spec 005 US2). */

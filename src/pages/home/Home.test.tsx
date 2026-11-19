@@ -72,6 +72,8 @@ describe('Home', () => {
                     characters: [],
                     saveCharacter: vi.fn(),
                     removeCharacter: vi.fn(),
+                    updateCharacter: vi.fn(),
+                    findCharacter: vi.fn(),
                   }}
                 >
                   <Home />
@@ -107,6 +109,8 @@ describe('Home', () => {
                     characters: [],
                     saveCharacter: vi.fn(),
                     removeCharacter: vi.fn(),
+                    updateCharacter: vi.fn(),
+                    findCharacter: vi.fn(),
                   }}
                 >
                   <Home />
@@ -144,6 +148,8 @@ describe('Home', () => {
                     characters: [],
                     saveCharacter: vi.fn(),
                     removeCharacter: vi.fn(),
+                    updateCharacter: vi.fn(),
+                    findCharacter: vi.fn(),
                   }}
                 >
                   <Home />
@@ -182,6 +188,8 @@ describe('Home', () => {
                     characters: [],
                     saveCharacter: vi.fn(),
                     removeCharacter: vi.fn(),
+                    updateCharacter: vi.fn(),
+                    findCharacter: vi.fn(),
                   }}
                 >
                   <Home />

@@ -62,3 +62,30 @@ describe('useCharacterGenerator without AI', () => {
     });
   });
 });
+
+describe('useCharacterGenerator and saved characters (spec 006)', () => {
+  it('drops the saved id when a saved character is rerolled', async () => {
+    const saved = { ...korvusBlackiron, id: 'saved-1' };
+    const { result } = renderHook(
+      () => ({
+        generator: useCharacterGenerator(),
+        character: useContext(CharacterContext)!.character,
+      }),
+      {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <CharacterProvider initCharacter={saved}>
+            {children}
+          </CharacterProvider>
+        ),
+      },
+    );
+    await act(() =>
+      result.current.generator.rerollCharacterProperty(
+        'age',
+        undefined,
+        new AbortController().signal,
+      ),
+    );
+    expect(result.current.character.id).toBeUndefined();
+  });
+});

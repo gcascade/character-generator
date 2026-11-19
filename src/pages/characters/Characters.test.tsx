@@ -6,6 +6,7 @@ import { DataContext, DataProvider } from '../../contexts/DataContext';
 import { AlertManagerProvider } from '../../contexts/AlertManagerContext';
 import { Character } from '../../types/character';
 import { LocaleProvider } from '../../i18n';
+import { MemoryRouter } from 'react-router';
 import Characters from './Characters';
 
 const renderCharactersWithContext = (
@@ -13,21 +14,25 @@ const renderCharactersWithContext = (
   locale: 'en' | 'fr' = 'en',
 ) => {
   return render(
-    <LocaleProvider initial={locale}>
-      <DataContext.Provider
-        value={{
-          characters,
-          saveCharacter: vi.fn(),
-          removeCharacter: vi.fn(),
-        }}
-      >
-        <AlertManagerContext.Provider
-          value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
+    <MemoryRouter>
+      <LocaleProvider initial={locale}>
+        <DataContext.Provider
+          value={{
+            characters,
+            saveCharacter: vi.fn(),
+            removeCharacter: vi.fn(),
+            updateCharacter: vi.fn(),
+            findCharacter: vi.fn(),
+          }}
         >
-          <Characters />
-        </AlertManagerContext.Provider>
-      </DataContext.Provider>
-    </LocaleProvider>,
+          <AlertManagerContext.Provider
+            value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
+          >
+            <Characters />
+          </AlertManagerContext.Provider>
+        </DataContext.Provider>
+      </LocaleProvider>
+    </MemoryRouter>,
   );
 };
 
@@ -39,9 +44,13 @@ describe('Characters', () => {
       return;
     });
 
-    expect(() => render(<Characters />)).toThrow(
-      'Characters must be used within a DataProvider',
-    );
+    expect(() =>
+      render(
+        <MemoryRouter>
+          <Characters />
+        </MemoryRouter>,
+      ),
+    ).toThrow('Characters must be used within a DataProvider');
   });
 
   it('does not display the carousel when there are no characters', () => {
@@ -81,13 +90,15 @@ describe('Characters', () => {
     );
 
     render(
-      <LocaleProvider initial="fr">
-        <AlertManagerProvider>
-          <DataProvider>
-            <Characters />
-          </DataProvider>
-        </AlertManagerProvider>
-      </LocaleProvider>,
+      <MemoryRouter>
+        <LocaleProvider initial="fr">
+          <AlertManagerProvider>
+            <DataProvider>
+              <Characters />
+            </DataProvider>
+          </AlertManagerProvider>
+        </LocaleProvider>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText('Korvus Blackiron')).toBeInTheDocument();
