@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import React, { FC } from 'react';
 
 type CharacterTypographyProps = {
@@ -7,10 +6,8 @@ type CharacterTypographyProps = {
 };
 
 const CharacterTypography: FC<CharacterTypographyProps> = ({ children }) => {
-  const theme = useTheme();
-
   return (
-    <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
+    <Typography variant="body1" sx={{ color: 'text.primary' }}>
       {children}
     </Typography>
   );

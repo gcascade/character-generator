@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { LOCALES, useLocale, useT } from '../../../i18n';
 import './DrawerMenu.css';
 
@@ -34,6 +34,12 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
 }) => {
   const t = useT();
   const { locale, setLocale } = useLocale();
+  const { pathname } = useLocation();
+  const item = (to: string) => ({
+    component: Link,
+    to,
+    selected: pathname === to,
+  });
 
   return (
     <Drawer
@@ -50,36 +56,49 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
           width: width,
           boxSizing: 'border-box',
           boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.2)',
+          bgcolor: 'menu.main',
+          color: 'menu.contrastText',
+          borderRight: 'none',
+        },
+        '& .MuiListItemButton-root': {
+          borderLeft: '3px solid transparent',
+          '&.Mui-selected, &.Mui-selected:hover': {
+            bgcolor: 'rgba(232, 211, 160, 0.14)',
+            borderLeftColor: '#E0B567',
+          },
+          '&:hover': { bgcolor: 'rgba(232, 211, 160, 0.08)' },
+        },
+        '& .MuiDivider-root': { borderColor: 'rgba(232, 211, 160, 0.25)' },
+        '& .MuiToggleButton-root': {
+          color: 'inherit',
+          borderColor: 'rgba(232, 211, 160, 0.4)',
+          '&.Mui-selected': {
+            color: 'inherit',
+            bgcolor: 'rgba(232, 211, 160, 0.25)',
+          },
         },
       }}
     >
-      <Box
-        sx={{
-          padding: '16px',
-          textAlign: 'center',
-          backgroundColor: '#3f51b5',
-          color: 'white',
-        }}
-      >
-        <Typography variant="h6" noWrap>
-          {t('nav.menu')}
+      <Box sx={{ px: 2, py: 3, textAlign: 'center' }}>
+        <Typography variant="h5" component="p" sx={{ lineHeight: 1.3 }}>
+          {t('app.title')}
         </Typography>
       </Box>
       <Divider />
       <List component="nav" aria-label={t('nav.label')} onClick={onClose}>
-        <ListItemButton component={Link} to="/">
+        <ListItemButton {...item('/')}>
           <ListItemIcon className="listItemIcon">
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary={t('nav.generator')} />
         </ListItemButton>
-        <ListItemButton component={Link} to="/characters">
+        <ListItemButton {...item('/characters')}>
           <ListItemIcon className="listItemIcon">
             <GroupIcon />
           </ListItemIcon>
           <ListItemText primary={t('nav.characters')} />
         </ListItemButton>
-        <ListItemButton component={Link} to="/settings">
+        <ListItemButton {...item('/settings')}>
           <ListItemIcon className="listItemIcon">
             <SettingsIcon />
           </ListItemIcon>

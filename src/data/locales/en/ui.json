@@ -136,5 +136,11 @@
   "lock.alignment": "Lock the alignment",
   "unlock.alignment": "Unlock the alignment",
   "lock.unlockAll": "Unlock all",
-  "reroll.nothingElseFits": "No other value fits the locked properties."
+  "reroll.nothingElseFits": "No other value fits the locked properties.",
+  "story.read": "Read the story",
+  "story.close": "Close",
+  "colorMode.label": "Theme",
+  "colorMode.light": "Light",
+  "colorMode.dark": "Dark",
+  "colorMode.system": "System"
 }
