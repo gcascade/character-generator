@@ -23,6 +23,7 @@ import type {
   ProviderSettings,
   ProviderType,
 } from '../../ai/types';
+import ColorModeToggle from '../../components/common/colorModeToggle/ColorModeToggle';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import ApiKeyField from '../../components/settings/apiKeyField/ApiKeyField';
 import ConnectionTest from '../../components/settings/connectionTest/ConnectionTest';
@@ -308,6 +309,13 @@ const Settings: FC = () => {
                 ))}
               </Select>
             </FormControl>
+          </Box>
+
+          <Box>
+            <Typography variant="h5" component="h2" gutterBottom>
+              {t('colorMode.label')}
+            </Typography>
+            <ColorModeToggle variant="select" />
           </Box>
 
           <Box>

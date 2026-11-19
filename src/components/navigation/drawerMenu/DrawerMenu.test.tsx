@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { LocaleProvider } from '../../../i18n';
@@ -65,5 +65,19 @@ describe('DrawerMenu language selector', () => {
       'true',
     );
     expect(localStorage.getItem('locale')).toBe('fr');
+  });
+});
+
+describe('DrawerMenu colour mode', () => {
+  it('offers light, system and dark next to the language', () => {
+    render(
+      <MemoryRouter>
+        <DrawerMenu width={240} />
+      </MemoryRouter>,
+    );
+    const group = screen.getByRole('group', { name: 'Theme' });
+    for (const name of ['Light', 'System', 'Dark']) {
+      expect(within(group).getByRole('button', { name })).toBeInTheDocument();
+    }
   });
 });

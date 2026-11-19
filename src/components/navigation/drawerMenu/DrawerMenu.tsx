@@ -17,6 +17,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router';
 import { LOCALES, useLocale, useT } from '../../../i18n';
 import './DrawerMenu.css';
+import ColorModeToggle from '../../common/colorModeToggle/ColorModeToggle';
 
 type DrawerMenuProps = {
   width: number;
@@ -106,7 +107,16 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
         </ListItemButton>
       </List>
       <Divider />
-      <Box sx={{ mt: 'auto', p: 2, display: 'flex', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          mt: 'auto',
+          p: 2,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 1,
+          justifyContent: 'center',
+        }}
+      >
         <ToggleButtonGroup
           exclusive
           size="small"
@@ -125,6 +135,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
+        <ColorModeToggle />
       </Box>
     </Drawer>
   );
