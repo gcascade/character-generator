@@ -72,7 +72,7 @@ props), and saved characters already have ids.
 
 - [x] T015 [US3] Create src/content/storedParty.ts (`parseStoredParty`, `parseStoredParties`, zod, members reuse the stored-character schema, invalid entries dropped) with tests; persist the current party (`localStorage["party"]`) and saved parties (`localStorage["parties"]`) in PartyContext (FR-013)
 - [x] T016 [US3] "Save the party" (copy with a new id; disabled once saved) and "Save this member" (through `DataContext.saveCharacter`) on the party page; tests
-- [ ] T017 [US3] Add tabs "Characters" / "Parties" to src/pages/characters/Characters.tsx and create src/components/party/savedParties/SavedParties.tsx (cards with the party name and members; open → becomes the current party and navigates to `/party`; delete with confirmation); tests and stories
+- [x] T017 [US3] Add tabs "Characters" / "Parties" to src/pages/characters/Characters.tsx and create src/components/party/savedParties/SavedParties.tsx (cards with the party name and members; open → becomes the current party and navigates to `/party`; delete with confirmation); tests and stories
 
 ---
 

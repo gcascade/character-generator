@@ -1,9 +1,17 @@
-import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Container,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import React, { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import CharacterSummary from '../../components/character/characterSummary/CharacterSummary';
 import Carousel from '../../components/common/carousel/Carousel';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
+import SavedParties from '../../components/party/savedParties/SavedParties';
 
 import { DataContext } from '../../contexts/DataContext';
 import { useT } from '../../i18n';
@@ -26,9 +34,16 @@ const Characters = () => {
   // The carousel page lives in this history entry, so coming back restores it (spec 006).
   const location = useLocation();
   const navigate = useNavigate();
-  const page = (location.state as { page?: number } | null)?.page ?? 0;
+  const state = (location.state ?? {}) as {
+    page?: number;
+    tab?: 'characters' | 'parties';
+  };
+  const page = state.page ?? 0;
+  const tab = state.tab ?? 'characters';
   const setPage = (next: number) =>
-    navigate('.', { replace: true, state: { page: next } });
+    navigate('.', { replace: true, state: { ...state, page: next } });
+  const setTab = (next: 'characters' | 'parties') =>
+    navigate('.', { replace: true, state: { ...state, tab: next } });
 
   const children = characters.map((character, index) => (
     <CharacterSummary
@@ -43,7 +58,17 @@ const Characters = () => {
     <Container maxWidth={false} disableGutters>
       <Box sx={{ minHeight: '95vh', padding: { xs: 0.5, sm: 2 } }}>
         <PageTitle>{t('page.characters')}</PageTitle>
-        {characters.length > 0 && (
+        <Tabs
+          value={tab}
+          onChange={(_, next) => setTab(next)}
+          centered
+          sx={{ mb: 1 }}
+        >
+          <Tab value="characters" label={t('characters.tab.characters')} />
+          <Tab value="parties" label={t('characters.tab.parties')} />
+        </Tabs>
+        {tab === 'parties' && <SavedParties />}
+        {tab === 'characters' && characters.length > 0 && (
           <Carousel
             cardsPerPage={cardsPerPage}
             height={600}
