@@ -16,6 +16,8 @@ type CharacterImageProps = {
   width: string | number;
   /** Fill the frame and crop around the face instead of showing the whole image. */
   crop?: boolean;
+  /** Opens the full image on click (off when the image is inside a link). */
+  zoomable?: boolean;
 };
 
 const CharacterImage: FC<CharacterImageProps> = ({
@@ -25,6 +27,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
   height,
   width,
   crop = false,
+  zoomable = true,
 }) => {
   const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
   const t = useT();
@@ -68,12 +71,12 @@ const CharacterImage: FC<CharacterImageProps> = ({
           ? `${label('race', race, gender ?? 'Male', locale)} ${label('class', characterClass, gender ?? 'Male', locale)}`
           : t('character.portrait')
       }
-      onClick={handleClick}
+      onClick={zoomable ? handleClick : undefined}
       image={portraitPath}
       height={height}
       style={{ width: width }}
       sx={{
-        cursor: 'zoom-in',
+        cursor: zoomable ? 'zoom-in' : 'inherit',
         ...(crop && { objectFit: 'cover', objectPosition: 'center 15%' }),
       }}
     />

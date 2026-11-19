@@ -9,14 +9,24 @@ type CarouselProps = {
   children: React.ReactElement[];
   cardsPerPage?: number;
   height?: number | string;
+  /** Controlled page (optional), e.g. to come back to the same page. */
+  page?: number;
+  onPageChange?: (page: number) => void;
 };
 
 const Carousel: FC<CarouselProps> = ({
   children,
   cardsPerPage = 3,
   height,
+  page: controlledPage,
+  onPageChange,
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [internalPage, setInternalPage] = useState(controlledPage ?? 0);
+  const currentPage = controlledPage ?? internalPage;
+  const setCurrentPage = (next: number) => {
+    setInternalPage(next);
+    onPageChange?.(next);
+  };
   const t = useT();
   const [slideDirection, setSlideDirection] = useState<
     'right' | 'left' | undefined

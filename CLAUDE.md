@@ -44,7 +44,7 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 ```
 src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
-  pages/                           Home (generator), Characters (saved), Settings
+  pages/                           Home (generator), Characters (saved), CharacterDetails (/characters/:id), Settings
   contexts/                        One React context per concern (character, history, settings, ...)
   ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
@@ -70,9 +70,13 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   `useState` initializer and saved in an effect; hooks like `useSettings` only read the context.
 - Domain enums: add the value to the `as const` object in `src/types/character.ts`; the union type follows.
 
-## Known issues (from the November 2026 review)
+## Saved characters (spec 006)
 
-- Characters are compared by reference (no `id`).
+- Saved characters have an `id` (`crypto.randomUUID()`), given on save and on load for older data (`withIds`);
+  `DataContext` saves, deletes, updates and finds by id. The generator's current character becomes the saved copy
+  after saving; generate/reroll/translate drop the id, so `isSaved` compares ids.
+- `CharacterDetail` is a read-only view whose actions are optional props (reused for party members).
+- History entries are still compared by reference.
 
 ## Content and languages
 

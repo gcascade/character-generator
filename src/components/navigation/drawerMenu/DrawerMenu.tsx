@@ -39,7 +39,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
   const item = (to: string) => ({
     component: Link,
     to,
-    selected: pathname === to,
+    selected: to === '/' ? pathname === '/' : pathname.startsWith(to),
   });
 
   return (

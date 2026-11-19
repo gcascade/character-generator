@@ -39,10 +39,10 @@ description: 'Task list for saved character details'
 
 **Independent Test**: save a character, open it, check every property and paragraph, go back.
 
-- [ ] T005 [P] [US1] Create src/components/character/propertyList/PropertyList.tsx (read-only label/value grid: first name, last name, epithet, race, class, gender, age, alignment; 1 column on phones, 2 on tablets, 3 on desktop; labels per locale); test and stories
-- [ ] T006 [US1] Create src/components/character/characterDetail/CharacterDetail.tsx (portrait via `CharacterImage`, `CharacterHeader` with heading level `h1`, `PropertyList`, story title + every paragraph with the drop cap of `storyParagraphSx`, `WrittenInNotice`; actions shown only when their handler is given: Back, Open in the generator, Delete with confirmation, Translate); test (all fields, actions present/absent) and stories (app content, AI text in the other language, legacy without story)
-- [ ] T007 [US1] Create src/pages/characterDetails/CharacterDetails.tsx and the `/characters/:id` route in src/routes.tsx: find the character by id in `DataContext`, render `CharacterDetail` with Back; page test with a MemoryRouter
-- [ ] T008 [US1] Make each card of src/pages/characters/Characters.tsx open its detail page (the card links to `/characters/<id>`, accessible name `details.open`), keeping the delete button working without opening the card; give src/components/common/carousel/Carousel.tsx optional `page`/`onPageChange` props and keep the page in the router location state so Back returns to it (research R4); tests
+- [x] T005 [P] [US1] Create src/components/character/propertyList/PropertyList.tsx (read-only label/value grid: first name, last name, epithet, race, class, gender, age, alignment; 1 column on phones, 2 on tablets, 3 on desktop; labels per locale); test and stories
+- [x] T006 [US1] Create src/components/character/characterDetail/CharacterDetail.tsx (portrait via `CharacterImage`, `CharacterHeader` with heading level `h1`, `PropertyList`, story title + every paragraph with the drop cap of `storyParagraphSx`, `WrittenInNotice`; actions shown only when their handler is given: Back, Open in the generator, Delete with confirmation, Translate); test (all fields, actions present/absent) and stories (app content, AI text in the other language, legacy without story)
+- [x] T007 [US1] Create src/pages/characterDetails/CharacterDetails.tsx and the `/characters/:id` route in src/routes.tsx: find the character by id in `DataContext`, render `CharacterDetail` with Back; page test with a MemoryRouter
+- [x] T008 [US1] Make each card of src/pages/characters/Characters.tsx open its detail page (the card links to `/characters/<id>`, accessible name `details.open`), keeping the delete button working without opening the card; give src/components/common/carousel/Carousel.tsx optional `page`/`onPageChange` props and keep the page in the router location state so Back returns to it (research R4); tests
 
 ---
 
@@ -52,7 +52,7 @@ description: 'Task list for saved character details'
 
 **Independent Test**: reload a detail page; open an unknown id.
 
-- [ ] T009 [US2] Not-found state in src/pages/characterDetails/CharacterDetails.tsx (`details.notFound`, `details.notFoundHint`, link to My characters); tests for reload (provider re-created from localStorage) and unknown id; legacy entry without id opens after load (SC-002)
+- [x] T009 [US2] Not-found state in src/pages/characterDetails/CharacterDetails.tsx (`details.notFound`, `details.notFoundHint`, link to My characters); tests for reload (provider re-created from localStorage) and unknown id; legacy entry without id opens after load (SC-002)
 
 ---
 
@@ -62,15 +62,15 @@ description: 'Task list for saved character details'
 
 **Independent Test**: open in the generator, delete another one.
 
-- [ ] T010 [US3] "Open in the generator" in src/pages/characterDetails/CharacterDetails.tsx: previous current character added to the history if not already there, current character set to the saved one, navigate to `/`; test (Save disabled on home, previous character in history)
-- [ ] T011 [US3] Delete from the detail page (confirmation, `details.deleted` alert, back to the list) and Translate with AI for AI text in another language: `translateCharacter` in src/hooks/useCharacterRequest.ts accepts `{ character, onTranslated }` (research R5) and the page passes `updateCharacter`; tests
+- [x] T010 [US3] "Open in the generator" in src/pages/characterDetails/CharacterDetails.tsx: previous current character added to the history if not already there, current character set to the saved one, navigate to `/`; test (Save disabled on home, previous character in history)
+- [x] T011 [US3] Delete from the detail page (confirmation, `details.deleted` alert, back to the list) and Translate with AI for AI text in another language: `translateCharacter` in src/hooks/useCharacterRequest.ts accepts `{ character, onTranslated }` (research R5) and the page passes `updateCharacter`; tests
 
 ---
 
 ## Phase 6: Polish
 
-- [ ] T012 [P] Update CLAUDE.md (ids on saved characters, remove the "compared by reference" known issue for saved characters, detail page) and README.md (My characters section)
-- [ ] T013 Run lint, typecheck, test:run, build and build-storybook; browser validation of quickstart.md (axe, 360 px, both languages and modes) with screenshots
+- [x] T012 [P] Update CLAUDE.md (ids on saved characters, remove the "compared by reference" known issue for saved characters, detail page) and README.md (My characters section)
+- [x] T013 Run lint, typecheck, test:run, build and build-storybook; browser validation of quickstart.md (axe, 360 px, both languages and modes) with screenshots
 
 ---
 

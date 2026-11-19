@@ -49,6 +49,7 @@ describe('Character', () => {
       error: '',
       rerollCharacterProperty: vi.fn(),
       translateCharacter: vi.fn(),
+      translateOther: vi.fn(),
       canUseAi: false,
     }));
 

@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { isCallerAbort } from '../ai/errors';
 import { outcomeToAlert, providerContext } from '../ai/messages';
+import { translateWritten } from '../ai/generate';
 import { createProvider } from '../ai/providers';
 import type { AiProvider } from '../ai/providers';
 import type { GenerationOutcome } from '../ai/types';
@@ -155,8 +156,34 @@ const useCharacterRequest = () => {
     [run, translateCharacter],
   );
 
+  /** Translates the AI text of a character that is not the current one, e.g. a saved one (spec 006). */
+  const translateOther = useCallback(
+    (
+      target: Character,
+      onTranslated: (translated: Character) => void,
+      options: CharacterRequestOptions = {},
+    ) =>
+      run(
+        'translate',
+        async (provider, signal, language) => {
+          if (!provider) throw new DOMException('No provider', 'AbortError');
+          const outcome = await translateWritten(
+            provider,
+            target,
+            language,
+            signal,
+          );
+          if (!outcome.failure) onTranslated(outcome.character);
+          return outcome;
+        },
+        options,
+      ),
+    [run],
+  );
+
   return {
     canUseAi: settings.activeType !== 'none',
+    translateOther,
     translateCharacter: translate,
     requestStatus,
     error,

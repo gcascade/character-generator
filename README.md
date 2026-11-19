@@ -81,6 +81,12 @@ font service), a parchment light mode and a candle-lit dark mode. The mode follo
 changed at the bottom of the menu or in **Settings**. Colours live in `src/themes/palette.ts`; a test checks that every
 text and badge colour meets WCAG AA contrast in both modes.
 
+# My characters
+
+Saved characters are listed in **My characters**. Click one to open its page (`/characters/<id>`): portrait, every
+property and the full story. From there you can open it again in the generator, delete it, or translate AI-written
+text.
+
 # Locking properties
 
 Each property of the generated character has a padlock. A locked property keeps its value when you click

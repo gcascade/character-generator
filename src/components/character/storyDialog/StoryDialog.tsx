@@ -96,6 +96,7 @@ const StoryDialog: FC<StoryDialogProps> = ({
           <Typography
             key={index}
             variant="story"
+            component="p"
             sx={{ ...storyParagraphSx(index === 0), fontSize: '1.2rem' }}
           >
             {paragraph}

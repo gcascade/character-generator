@@ -2,6 +2,7 @@ import { Character } from '@Types/character';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import {
   Card,
+  CardActionArea,
   CardContent,
   CardHeader,
   IconButton,
@@ -10,6 +11,7 @@ import {
 } from '@mui/material';
 
 import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router';
 import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
 import '../Character.css';
@@ -24,12 +26,15 @@ type CharacterSummaryProps = {
   character: Character;
   width?: number | string | undefined;
   height?: number | string | undefined;
+  /** Address of the detail page; makes the card open it (spec 006). */
+  to?: string;
 };
 
 const CharacterSummary: FC<CharacterSummaryProps> = ({
   character,
   width,
   height,
+  to,
 }) => {
   const dataContext = useContext(DataContext);
 
@@ -75,6 +80,32 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
     };
   }, []);
 
+  const body = (
+    <>
+      <CharacterImage
+        height={256}
+        width={'100%'}
+        {...character}
+        zoomable={!to}
+      />
+      <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+        {rendered.writtenIn && rendered.writtenBy && (
+          <WrittenInNotice
+            language={rendered.writtenIn}
+            by={rendered.writtenBy}
+          />
+        )}
+        <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
+          <strong>
+            {t('field.alignment')}
+            {t('punct.colon')}
+          </strong>{' '}
+          {label('alignment', alignment, gender, locale)}
+        </Typography>
+      </CardContent>
+    </>
+  );
+
   return (
     <Card
       sx={{
@@ -109,22 +140,27 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
           </Tooltip>
         }
       />
-      <CharacterImage height={256} width={'100%'} {...character} />
-      <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
-        {rendered.writtenIn && rendered.writtenBy && (
-          <WrittenInNotice
-            language={rendered.writtenIn}
-            by={rendered.writtenBy}
-          />
-        )}
-        <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
-          <strong>
-            {t('field.alignment')}
-            {t('punct.colon')}
-          </strong>{' '}
-          {label('alignment', alignment, gender, locale)}
-        </Typography>
-      </CardContent>
+      {to ? (
+        <CardActionArea
+          component={Link}
+          to={to}
+          state={{ fromList: true }}
+          aria-label={t('details.open', {
+            name: `${character.firstName} ${character.lastName}`,
+          })}
+          sx={{
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            justifyContent: 'flex-start',
+          }}
+        >
+          {body}
+        </CardActionArea>
+      ) : (
+        body
+      )}
     </Card>
   );
 };
