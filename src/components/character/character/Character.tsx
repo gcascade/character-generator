@@ -95,6 +95,8 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             gender={gender}
             race={race}
             characterClass={characterClass}
+            firstName={character.firstName}
+            lastName={character.lastName}
             height={isMobile ? 180 : 290}
             width="100%"
             crop

@@ -8,10 +8,33 @@ import { label } from '../../../content/labels';
 
 const DEFAULT_IMAGE_PATH = `${import.meta.env.BASE_URL}images/default-portrait.png`;
 
+/**
+ * Portrait file of a character. Non-binary characters use the masculine or
+ * feminine portrait, chosen from their name so that the same character always
+ * shows the same portrait, on every page.
+ */
+export const portraitFor = (
+  race: CharacterRace,
+  characterClass: CharacterClass,
+  gender: Gender,
+  name = '',
+) => {
+  const variant =
+    gender === 'Non-binary'
+      ? [...name].reduce((sum, c) => sum + c.charCodeAt(0), 0) % 2 === 0
+        ? 'Male'
+        : 'Female'
+      : gender;
+  return `${import.meta.env.BASE_URL}images/${race}/${characterClass}/${variant}1.png`.toLowerCase();
+};
+
 type CharacterImageProps = {
   gender?: Gender;
   race?: CharacterRace;
   characterClass?: CharacterClass;
+  /** Picks the portrait of non-binary characters (see portraitFor). */
+  firstName?: string;
+  lastName?: string;
   height: string | number;
   width: string | number;
   /** Fill the frame and crop around the face instead of showing the whole image. */
@@ -24,6 +47,8 @@ const CharacterImage: FC<CharacterImageProps> = ({
   gender,
   race,
   characterClass,
+  firstName = '',
+  lastName = '',
   height,
   width,
   crop = false,
@@ -36,14 +61,13 @@ const CharacterImage: FC<CharacterImageProps> = ({
   useEffect(() => {
     const abortController = new AbortController();
 
-    const imagePath =
-      `${import.meta.env.BASE_URL}images/${race}/${characterClass}/${
-        gender === 'Non-binary'
-          ? Math.random() < 0.5
-            ? 'Male'
-            : 'Female'
-          : (gender as Gender)
-      }1.png`.toLowerCase();
+    if (!race || !characterClass || !gender) return;
+    const imagePath = portraitFor(
+      race,
+      characterClass,
+      gender,
+      `${firstName} ${lastName}`,
+    );
 
     isImage(imagePath, abortController.signal).then((exists) => {
       if (abortController.signal.aborted) {
@@ -56,7 +80,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
     return () => {
       abortController.abort();
     };
-  }, [race, characterClass, gender]);
+  }, [race, characterClass, gender, firstName, lastName]);
 
   const handleClick = () => {
     window.open(portraitPath, '_blank');
