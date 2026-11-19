@@ -9,14 +9,15 @@ import React, {
 } from 'react';
 import { Alert } from '../types/alerts';
 
-export const MAX_VISIBLE_ALERTS = 3;
+/** One notification at a time: a new one replaces it (spec 005 US4). */
+export const MAX_VISIBLE_ALERTS = 1;
 
-// Errors and warnings stay longer so they can be read.
-export const ALERT_DURATION_MS: Record<Alert['severity'], number> = {
-  success: 4000,
-  info: 4000,
-  warning: 8000,
-  error: 8000,
+// Successes and infos leave on their own; warnings and errors stay until closed or replaced.
+export const ALERT_DURATION_MS: Record<Alert['severity'], number | null> = {
+  success: 5000,
+  info: 5000,
+  warning: null,
+  error: null,
 };
 
 type AlertManagerContextType = {
@@ -45,13 +46,26 @@ export const AlertManagerProvider: FC<{ children: ReactNode }> = ({
   const addAlert = useCallback(
     (alert: Omit<Alert, 'id'>) => {
       const id = nextId.current++;
-      setAlerts((prevAlerts) =>
-        [...prevAlerts, { ...alert, id }].slice(-MAX_VISIBLE_ALERTS),
-      );
-      timers.current.set(
-        id,
-        setTimeout(() => removeAlert(id), ALERT_DURATION_MS[alert.severity]),
-      );
+      setAlerts((prevAlerts) => {
+        const kept = [...prevAlerts, { ...alert, id }].slice(
+          -MAX_VISIBLE_ALERTS,
+        );
+        // Replaced alerts no longer need their timer.
+        for (const { id: gone } of prevAlerts) {
+          if (!kept.some((a) => a.id === gone)) {
+            clearTimeout(timers.current.get(gone));
+            timers.current.delete(gone);
+          }
+        }
+        return kept;
+      });
+      const duration = ALERT_DURATION_MS[alert.severity];
+      if (duration !== null) {
+        timers.current.set(
+          id,
+          setTimeout(() => removeAlert(id), duration),
+        );
+      }
     },
     [removeAlert],
   );

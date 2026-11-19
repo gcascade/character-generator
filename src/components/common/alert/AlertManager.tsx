@@ -5,7 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 import { AlertManagerContext } from '../../../contexts/AlertManagerContext';
 import { useT } from '../../../i18n';
 
-// Bottom-right so alerts never cover the navigation menu.
+// One notification at a time, bottom-right so it never covers the navigation menu.
 const AlertManager: FC = () => {
   const context = useContext(AlertManagerContext);
   const t = useT();
@@ -31,10 +31,18 @@ const AlertManager: FC = () => {
           <Grow key={alert.id}>
             <Alert
               severity={alert.severity}
+              variant="outlined"
+              // Successes are announced politely, problems right away.
+              role={
+                alert.severity === 'success' || alert.severity === 'info'
+                  ? 'status'
+                  : 'alert'
+              }
               sx={{
                 mb: 2,
                 boxShadow: 3,
-                border: '1px solid',
+                bgcolor: 'background.paper',
+                borderLeftWidth: 4,
               }}
               action={
                 <IconButton
@@ -50,7 +58,7 @@ const AlertManager: FC = () => {
                 </IconButton>
               }
             >
-              <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 {alert.message}
               </Typography>
             </Alert>

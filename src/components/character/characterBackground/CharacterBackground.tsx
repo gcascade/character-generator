@@ -1,14 +1,12 @@
-import { Button, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import React, { FC, useContext, useMemo, useState } from 'react';
-import { CharacterContext } from '../../../contexts/CharacterContext';
-import CharacterTypography from '../characterTypography/CharacterTypography';
-import './CharacterBackground.css';
-import { useLocale, useT } from '../../../i18n';
+import { MenuBook as MenuBookIcon } from '@mui/icons-material';
+import { Box, Button, Typography } from '@mui/material';
+import React, { FC, useContext, useRef, useState } from 'react';
 import { renderCharacter } from '../../../content/character';
+import { label } from '../../../content/labels';
+import { CharacterContext } from '../../../contexts/CharacterContext';
+import { useLocale, useT } from '../../../i18n';
+import StoryDialog, { storyParagraphSx } from '../storyDialog/StoryDialog';
 import WrittenInNotice from '../writtenInNotice/WrittenInNotice';
-
-const MAX_LENGTH = 500;
 
 type CharacterBackgroundProps = {
   /** Rewrites AI-written text in the interface language; offered when an AI provider is configured. */
@@ -16,12 +14,16 @@ type CharacterBackgroundProps = {
   translating?: boolean;
 };
 
+/**
+ * The story of the current character (spec 005 US3): its title and first
+ * paragraph with a drop cap; the whole story opens in a reading view.
+ */
 const CharacterBackground: FC<CharacterBackgroundProps> = ({
   onTranslate,
   translating,
 }) => {
-  const theme = useTheme();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [reading, setReading] = useState(false);
+  const opener = useRef<HTMLButtonElement>(null);
   const t = useT();
   const { locale } = useLocale();
   const context = useContext(CharacterContext);
@@ -31,60 +33,28 @@ const CharacterBackground: FC<CharacterBackgroundProps> = ({
       'CharacterBackground must be used within a CharacterProvider',
     );
   }
-  const rendered = renderCharacter(context.character, locale);
-  const { background } = rendered;
-  const { content, title } = background;
-
-  const processedContent = useMemo(() => {
-    if (!content) {
-      return null;
-    }
-    let charactersLeft = MAX_LENGTH;
-    return content
-      .map((paragraph) => {
-        if (isExpanded) {
-          return paragraph;
-        }
-        if (charactersLeft <= 0) {
-          return null;
-        }
-        if (paragraph.length <= charactersLeft) {
-          charactersLeft -= paragraph.length;
-          return paragraph;
-        }
-        const truncated = `${paragraph.substring(0, charactersLeft)}... `;
-        charactersLeft = 0;
-        return truncated;
-      })
-      .filter(Boolean);
-  }, [content, isExpanded]);
-
-  const toggleIsExpanded = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  if (!background) {
-    return;
-  }
-
-  function simpleHash(str: string | null | undefined) {
-    if (!str) {
-      return 0;
-    }
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-  }
+  const { character } = context;
+  const rendered = renderCharacter(character, locale);
+  const { title, content } = rendered.background;
+  const { race, characterClass, gender, alignment } = character;
+  const raceLabel = label('race', race, gender, locale);
+  const subtitle = `${t('character.subtitle', {
+    race: locale === 'fr' ? raceLabel.toLowerCase() : raceLabel,
+    characterClass: label('class', characterClass, gender, locale),
+  })} · ${label('alignment', alignment, gender, locale)}`;
 
   return (
-    <>
-      <CharacterTypography>
-        <strong>{t('character.history')}</strong>
-      </CharacterTypography>
-      <Typography variant="h5" className="background-title">
+    <Box
+      component="section"
+      aria-labelledby="character-story-title"
+      sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: 'divider' }}
+    >
+      <Typography
+        id="character-story-title"
+        variant="h4"
+        component="h3"
+        sx={{ color: 'primary.main', mb: 1 }}
+      >
         {title}
       </Typography>
       {rendered.writtenIn && (
@@ -95,28 +65,29 @@ const CharacterBackground: FC<CharacterBackgroundProps> = ({
           translating={translating}
         />
       )}
-      {processedContent?.map((paragraph) => (
-        <div
-          key={`content-${simpleHash(paragraph)}`}
-          style={{ padding: '5px' }}
+      {content.length > 0 && (
+        <Typography variant="story" sx={storyParagraphSx(true)}>
+          {content[0]}
+        </Typography>
+      )}
+      {content.length > 1 && (
+        <Button
+          ref={opener}
+          startIcon={<MenuBookIcon />}
+          onClick={() => setReading(true)}
+          sx={{ textTransform: 'none', fontSize: '1rem', px: 0.5 }}
         >
-          <CharacterTypography>{paragraph}</CharacterTypography>
-        </div>
-      ))}
-      <Button
-        onClick={toggleIsExpanded}
-        variant="text"
-        size="small"
-        style={{
-          color: theme.palette.text.primary,
-          fontSize: theme.typography.body1.fontSize,
-          fontFamily: theme.typography.fontFamily,
-          textTransform: 'none',
-        }}
-      >
-        {isExpanded ? t('character.showLess') : t('character.showMore')}
-      </Button>
-    </>
+          {t('story.read')}
+        </Button>
+      )}
+      <StoryDialog
+        open={reading}
+        onClose={() => setReading(false)}
+        title={title}
+        subtitle={subtitle}
+        paragraphs={content}
+      />
+    </Box>
   );
 };
 
