@@ -54,6 +54,7 @@ src/
                                    template (CharacterTemplate, locks, compatible race/gender), storedLocks
   data/content/                    Fragment and epithet ids, name lists per race (language-independent)
   data/locales/<locale>/           ui.json, labels.json, and one text file per fragment category
+  themes/                          MUI theme (light/dark colour schemes), palette + race/class colours, fonts, contrast
   types/                           Domain types; enums are `as const` objects + derived union types
 test/                              Shared Storybook/test decorators and stubs
 public/images/<race>/<class>/<gender>1.png   Portraits
@@ -82,6 +83,15 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 - French: neutral phrasing for non-binary characters (no "iel", no point médian); narrow no-break space (U+202F)
   before `: ; ! ?` and inside « »; never put `{firstName}` after an elidable word (de, que, le…).
 - Interface strings go through `useT()` with keys from `src/data/locales/en/ui.json`; never hard-code UI text.
+
+## Theme (spec 005)
+
+- Colours only come from the theme (`src/themes/palette.ts`): use `sx` tokens such as `text.secondary`,
+  `race.Elf` or `characterClass.Mage`, never hex values or `theme.palette.*` (CSS variables carry the dark mode).
+- `src/themes/palette.test.ts` checks WCAG AA contrast for every token and badge in both modes; keep it green.
+- Fonts are self-hosted with `@fontsource` (latin subsets, imported in `src/themes/fonts.ts`).
+- Colour mode (light / dark / system) is MUI's `useColorScheme`, stored by MUI (`mui-mode`).
+- One notification at a time (`AlertManagerContext`); warnings and errors stay until closed or replaced.
 
 ## Locks (spec 003)
 

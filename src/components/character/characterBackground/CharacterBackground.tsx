@@ -47,7 +47,7 @@ const CharacterBackground: FC<CharacterBackgroundProps> = ({
     <Box
       component="section"
       aria-labelledby="character-story-title"
-      sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: 'divider' }}
+      sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}
     >
       <Typography
         id="character-story-title"
@@ -66,7 +66,7 @@ const CharacterBackground: FC<CharacterBackgroundProps> = ({
         />
       )}
       {content.length > 0 && (
-        <Typography variant="story" sx={storyParagraphSx(true)}>
+        <Typography variant="story" sx={{ ...storyParagraphSx(true), mb: 0.5 }}>
           {content[0]}
         </Typography>
       )}

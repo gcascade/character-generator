@@ -111,6 +111,17 @@ const theme: Theme = responsiveFontSizes(
           },
         }),
       },
+      // MUI buttons remove the browser outline; give keyboard focus a clear gold ring (FR-003).
+      MuiButtonBase: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            '&.Mui-focusVisible': {
+              outline: `3px solid ${theme.vars?.palette.secondary.main}`,
+              outlineOffset: 2,
+            },
+          }),
+        },
+      },
       MuiTypography: {
         defaultProps: { variantMapping: { story: 'p' } },
       },

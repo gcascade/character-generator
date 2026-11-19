@@ -38,19 +38,27 @@ const CharacterProperty: FC<CharacterPropertyProps> = ({
 }) => (
   <Box
     sx={{
+      position: 'relative',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: 1,
       px: 1.25,
-      py: 0.75,
+      py: 0.5,
       borderRadius: 2,
       minWidth: 0,
       '&:hover, &:focus-within': {
         bgcolor: 'rgba(154, 107, 18, 0.10)',
         '& .property-actions': { opacity: 1 },
       },
-      '@media (hover: none)': { '& .property-actions': { opacity: 1 } },
+      // Touch screens have no hover: actions always shown, in the flow.
+      '@media (hover: none)': {
+        '& .property-actions': {
+          opacity: 1,
+          position: 'static',
+          transform: 'none',
+        },
+      },
     }}
   >
     <Box sx={{ minWidth: 0 }}>
@@ -79,6 +87,16 @@ const CharacterProperty: FC<CharacterPropertyProps> = ({
         flexShrink: 0,
         opacity: locked ? 1 : 0,
         transition: 'opacity 0.15s',
+        // Hidden actions take no room, so values do not wrap for nothing;
+        // a locked property keeps its padlock in the flow.
+        ...(!locked && {
+          position: 'absolute',
+          right: 4,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+        }),
       }}
     >
       {onToggleLock && (

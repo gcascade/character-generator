@@ -96,10 +96,10 @@ description: 'Task list for the visual refresh'
 
 ## Phase 8: Polish & Cross-Cutting
 
-- [ ] T019 [P] Check long French labels and epithets in badges and the grid (wrap, no overflow) and 360 px width on every page in both modes
-- [ ] T020 [P] Update README.md (screenshot, theme section) and CLAUDE.md (themes folder, colours only through the theme, fonts self-hosted)
-- [ ] T021 Run lint, typecheck, test:run, build and build-storybook; fix anything failing
-- [ ] T022 Browser validation (quickstart.md): screenshots light/dark/phone compared with the mock-ups, axe-core on home, my characters and settings in both modes, keyboard path through the card, notification count, card height before/after (SC-003)
+- [x] T019 [P] Check long French labels and epithets in badges and the grid (wrap, no overflow) and 360 px width on every page in both modes
+- [x] T020 [P] Update README.md (screenshot, theme section) and CLAUDE.md (themes folder, colours only through the theme, fonts self-hosted)
+- [x] T021 Run lint, typecheck, test:run, build and build-storybook; fix anything failing
+- [x] T022 Browser validation (quickstart.md): screenshots light/dark/phone compared with the mock-ups, axe-core on home, my characters and settings in both modes, keyboard path through the card, notification count, card height before/after (SC-003)
 
 ---
 

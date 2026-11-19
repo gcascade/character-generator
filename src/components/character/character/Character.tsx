@@ -75,13 +75,15 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
       className="paper-card"
       sx={{ width: '100%' }}
     >
-      <CardContent sx={{ px: { xs: 1.5, sm: 3 }, pt: { xs: 1.5, sm: 3 } }}>
+      <CardContent
+        sx={{ px: { xs: 1.5, sm: 3 }, pt: { xs: 1.5, sm: 2.5 }, pb: 1 }}
+      >
         <Box
           sx={{
             display: 'grid',
             gridTemplateColumns: {
               xs: 'minmax(0, 1fr)',
-              sm: '220px minmax(0, 1fr)',
+              sm: '200px minmax(0, 1fr)',
             },
             gap: { xs: 2, sm: 3 },
             alignItems: 'start',
@@ -91,12 +93,12 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             gender={gender}
             race={race}
             characterClass={characterClass}
-            height={isMobile ? 180 : 330}
+            height={isMobile ? 180 : 290}
             width="100%"
             crop
           />
           <Box sx={{ minWidth: 0 }}>
-            <Box data-testid="character-name" sx={{ mb: 2 }}>
+            <Box data-testid="character-name" sx={{ mb: 1 }}>
               <CharacterHeader character={character} />
             </Box>
             <CharacterInformation />
@@ -107,7 +109,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
           translating={requestStatus === 'loading'}
         />
       </CardContent>
-      <CardActions sx={{ px: { xs: 1.5, sm: 3 }, pb: { xs: 1.5, sm: 3 } }}>
+      <CardActions sx={{ px: { xs: 1.5, sm: 3 }, pb: { xs: 1.5, sm: 2.5 } }}>
         <Stack
           direction="row"
           spacing={2}
