@@ -13,8 +13,8 @@ appear on hover/focus and stay visible when locked or on touch screens, small po
 background as a story with a drop cap and a reading dialog, show a single notification at a time, and add a
 light/dark/system toggle. No change to generation, locks, AI or storage of characters.
 
-Mock-ups: [desktop light](./mockups/desktop-light.png), [desktop dark](./mockups/desktop-dark.png),
-[phone light](./mockups/phone-light.png), [phone reading view, dark](./mockups/phone-dark-reading.png).
+Mock-ups: [desktop light](./mockups/desktop-light.jpg), [desktop dark](./mockups/desktop-dark.jpg),
+[phone light](./mockups/phone-light.jpg), [phone reading view, dark](./mockups/phone-dark-reading.jpg).
 
 ## Technical Context
 
