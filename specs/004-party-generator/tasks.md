@@ -20,8 +20,8 @@ props), and saved characters already have ids.
 
 ## Phase 1: Setup
 
-- [ ] T001 Add the ui keys of contracts/party.md in src/data/locales/en/ui.json and src/data/locales/fr/ui.json, plus `party.member.open` (Read {name}'s story / Lire l'histoire de {name}) and `party.story` (The company's story / L'histoire de la compagnie)
-- [ ] T002 [P] Create src/types/party.ts: `AlignmentMode = 'harmonious' | 'anything'`, `PartyConstraints` (optional `race`, `characterClass`, `gender`, `alignment`), `PartyMember { id; character; locked }`, `Party { id; members; constraints; alignmentMode; content: { nameId; meetingId; goalId }; text?: { name; story: string[]; language: Locale; source: 'ai' } }`
+- [x] T001 Add the ui keys of contracts/party.md in src/data/locales/en/ui.json and src/data/locales/fr/ui.json, plus `party.member.open` (Read {name}'s story / Lire l'histoire de {name}) and `party.story` (The company's story / L'histoire de la compagnie)
+- [x] T002 [P] Create src/types/party.ts: `AlignmentMode = 'harmonious' | 'anything'`, `PartyConstraints` (optional `race`, `characterClass`, `gender`, `alignment`), `PartyMember { id; character; locked }`, `Party { id; members; constraints; alignmentMode; content: { nameId; meetingId; goalId }; text?: { name; story: string[]; language: Locale; source: 'ai' } }`
 
 ---
 
@@ -29,9 +29,9 @@ props), and saved characters already have ids.
 
 **⚠️ Blocks every user story**
 
-- [ ] T003 Create src/data/content/party.json (ids for ≥ 10 `name`, ≥ 10 `meeting`, ≥ 10 `goal` fragments) and their texts in src/data/locales/en/party.json and src/data/locales/fr/party.json (heroic fantasy tone; placeholders `{members}`, `{first}`, `{count}` only; the party is the grammatical subject — "the company" / "la compagnie", "le groupe" — so no word agrees with a member's gender; no `{{…|…|…}}` selection; French typography rules of spec 002) — content to be reviewed by the maintainer
-- [ ] T004 Register party texts in src/content/data.ts (`PARTY_FRAGMENTS`, `PARTY_TEXTS[locale]`) and extend src/data/content.test.ts: same ids and placeholders in every locale, only the allowed placeholders, no gender selection, French rules, ≥ 10 per category (SC-004)
-- [ ] T005 Implement `renderParty(party, locale)` in src/content/party.ts: `{members}` joined with commas and "and"/"et", `{first}` = first member's first name, `{count}` in words (two…six / deux…six); AI `text` shown as written with `writtenIn`/`writtenBy` like `renderCharacter`; tests in src/content/party.test.ts (both locales, 2 and 6 members, no placeholder left; ≥ 20 distinct stories in 100 draws per locale — SC-005)
+- [x] T003 Create src/data/content/party.json (ids for ≥ 10 `name`, ≥ 10 `meeting`, ≥ 10 `goal` fragments) and their texts in src/data/locales/en/party.json and src/data/locales/fr/party.json (heroic fantasy tone; placeholders `{members}`, `{first}`, `{count}` only; the party is the grammatical subject — "the company" / "la compagnie", "le groupe" — so no word agrees with a member's gender; no `{{…|…|…}}` selection; French typography rules of spec 002) — content to be reviewed by the maintainer
+- [x] T004 Register party texts in src/content/data.ts (`PARTY_FRAGMENTS`, `PARTY_TEXTS[locale]`) and extend src/data/content.test.ts: same ids and placeholders in every locale, only the allowed placeholders, no gender selection, French rules, ≥ 10 per category (SC-004)
+- [x] T005 Implement `renderParty(party, locale)` in src/content/party.ts: `{members}` joined with commas and "and"/"et", `{first}` = first member's first name, `{count}` in words (two…six / deux…six); AI `text` shown as written with `writtenIn`/`writtenBy` like `renderCharacter`; tests in src/content/party.test.ts (both locales, 2 and 6 members, no placeholder left; ≥ 20 distinct stories in 100 draws per locale — SC-005)
 
 ---
 
@@ -41,8 +41,8 @@ props), and saved characters already have ids.
 
 **Independent Test**: without AI, every size 2–6 gives valid members, varied classes and a party text in the current language.
 
-- [ ] T006 [US1] Implement in src/content/party.ts: `MIN_PARTY_SIZE`, `MAX_PARTY_SIZE`, `DEFAULT_PARTY_SIZE`, the class plan (research R1: all different up to 4, every class before any repeat, locked members count), `allowedAlignments(mode, constraints, lockedMembers)` (research R2), unique first names (bounded redraw then any unused name of the list), `generateParty({ size, constraints, alignmentMode, keep })`, `checkParty(party)` returning rule violations
-- [ ] T007 [US1] Tests in src/content/party.test.ts: 1,000 parties per size and mode satisfy class variety, alignment mode, unique names and valid members (SC-002)
+- [x] T006 [US1] Implement in src/content/party.ts: `MIN_PARTY_SIZE`, `MAX_PARTY_SIZE`, `DEFAULT_PARTY_SIZE`, the class plan (research R1: all different up to 4, every class before any repeat, locked members count), `allowedAlignments(mode, constraints, lockedMembers)` (research R2), unique first names (bounded redraw then any unused name of the list), `generateParty({ size, constraints, alignmentMode, keep })`, `checkParty(party)` returning rule violations
+- [x] T007 [US1] Tests in src/content/party.test.ts: 1,000 parties per size and mode satisfy class variety, alignment mode, unique names and valid members (SC-002)
 - [ ] T008 [US1] Create src/contexts/PartyContext.tsx (current party, size, constraints, alignment mode, `generate`) and src/hooks/useParty.ts (throws "useParty must be used within a PartyProvider"); wrap the app in src/components/App.tsx; tests
 - [ ] T009 [P] [US1] Create src/components/party/partyStory/PartyStory.tsx (party name in Cinzel, story paragraphs with drop cap, `WrittenInNotice` for AI text); test and stories
 - [ ] T010 [P] [US1] Create src/components/party/partyMemberCard/PartyMemberCard.tsx (cropped portrait, compact `CharacterHeader`, alignment, first story paragraph, "Read the story" opening `CharacterDetail` in a dialog, slots for actions); test and stories

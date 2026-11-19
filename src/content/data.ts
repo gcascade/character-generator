@@ -1,5 +1,8 @@
 import epithetIds from '../data/content/epithets.json';
 import fragments from '../data/content/fragments.json';
+import partyFragments from '../data/content/party.json';
+import enParty from '../data/locales/en/party.json';
+import frParty from '../data/locales/fr/party.json';
 import dwarf from '../data/content/names/dwarf.json';
 import elf from '../data/content/names/elf.json';
 import human from '../data/content/names/human.json';
@@ -73,4 +76,16 @@ export const TEXTS: Record<
     goal: frGoals,
     epithet: frEpithets,
   },
+};
+
+export type PartyFragmentCategory = 'name' | 'meeting' | 'goal';
+
+export type PartyFragment = { id: string; category: PartyFragmentCategory };
+
+/** Party name, meeting and goal fragments (spec 004); texts use {members}, {first}, {count}. */
+export const PARTY_FRAGMENTS = partyFragments as PartyFragment[];
+
+export const PARTY_TEXTS: Record<Locale, Record<string, string>> = {
+  en: enParty,
+  fr: frParty,
 };

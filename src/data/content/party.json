@@ -1,0 +1,146 @@
+[
+  {
+    "id": "party-name-silver-lion",
+    "category": "name"
+  },
+  {
+    "id": "party-name-ember-road",
+    "category": "name"
+  },
+  {
+    "id": "party-name-broken-oath",
+    "category": "name"
+  },
+  {
+    "id": "party-name-last-lantern",
+    "category": "name"
+  },
+  {
+    "id": "party-name-grey-wolves",
+    "category": "name"
+  },
+  {
+    "id": "party-name-thorn-crown",
+    "category": "name"
+  },
+  {
+    "id": "party-name-wandering-blades",
+    "category": "name"
+  },
+  {
+    "id": "party-name-dawn-watch",
+    "category": "name"
+  },
+  {
+    "id": "party-name-iron-quill",
+    "category": "name"
+  },
+  {
+    "id": "party-name-seventh-star",
+    "category": "name"
+  },
+  {
+    "id": "party-name-lost-banner",
+    "category": "name"
+  },
+  {
+    "id": "party-name-storm-heirs",
+    "category": "name"
+  },
+  {
+    "id": "party-meeting-tavern",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-caravan",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-prison",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-notice",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-shipwreck",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-duel",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-fair",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-letters",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-guild",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-haunted-inn",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-war",
+    "category": "meeting"
+  },
+  {
+    "id": "party-meeting-torn-map",
+    "category": "meeting"
+  },
+  {
+    "id": "party-goal-crown",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-grey-peaks",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-lich-debt",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-relic",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-moon-map",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-tourney",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-silent-child",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-rift",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-song",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-blood-list",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-ruined-keep",
+    "category": "goal"
+  },
+  {
+    "id": "party-goal-fallen-star",
+    "category": "goal"
+  }
+]
