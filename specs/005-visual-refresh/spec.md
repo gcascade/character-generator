@@ -72,8 +72,9 @@ story is reachable in one action and closable with the keyboard.
 
 1. **Given** a background, **When** it is shown, **Then** the first paragraph starts with a drop cap and the text keeps
    a comfortable line length.
-2. **Given** a long background, **When** it does not fit, **Then** [NEEDS CLARIFICATION: how is the full story read?
-   expanded in place inside the card, or opened in a reading view over the page (full screen on phone)?]
+2. **Given** a long background, **When** it does not fit, **Then** the card shows the first paragraph in full and a
+   "Read the story" button opens a reading view over the page (full screen on phone), closable with Escape and a
+   close button, returning focus to the button
 3. **Given** any shortened view, **When** it is shown, **Then** it ends on a whole paragraph or sentence, never in the
    middle of a word.
 
@@ -126,6 +127,13 @@ setting automatically.
 - Users who prefer reduced motion: no decorative animation (notifications and reading view appear without motion).
 - Storybook and tests keep working under both colour modes.
 
+## Clarifications
+
+### Session 2026-11-19
+
+- Q: How is the full story read? → A: In a reading view opened over the page (full screen on phone); the card shows
+  the first paragraph in full and a "Read the story" button.
+
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
@@ -140,7 +148,7 @@ setting automatically.
   keyboard, and locked properties MUST show their padlock at all times.
 - **FR-006**: On phone width the card MUST show a smaller portrait at the top and stay without horizontal scroll.
 - **FR-007**: Backgrounds MUST be presented with their title and a drop cap on the first paragraph; shortened views
-  MUST never cut a word; the full story MUST be reachable in one action (see US3 clarification).
+  MUST never cut a word; the full story MUST be reachable in one action (a reading view opened from the card).
 - **FR-008**: Only one notification MUST be visible at a time; a new outcome replaces it; success disappears on its
   own, warnings and errors stay until closed or replaced.
 - **FR-009**: Users MUST be able to choose light, dark or system mode; the choice MUST be remembered; the default
