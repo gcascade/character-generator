@@ -80,6 +80,8 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
               gender={character.gender}
               race={character.race}
               characterClass={character.characterClass}
+              firstName={character.firstName}
+              lastName={character.lastName}
               height={isPhone ? 220 : 340}
               width="100%"
               crop

@@ -3,7 +3,7 @@ import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { korvusBlackiron } from '../../../../test/stubs/Character.stubs';
 import { isImage } from '../../../utils/image';
-import CharacterImage from './CharacterImage';
+import CharacterImage, { portraitFor } from './CharacterImage';
 
 vi.mock('../../../utils/image');
 
@@ -40,5 +40,34 @@ describe('CharacterImage', () => {
       'Character portrait',
     )) as HTMLImageElement;
     expect(image.src).toContain('/images/default-portrait.png');
+  });
+});
+
+describe('portraitFor', () => {
+  it('always gives the same portrait to the same non-binary character', () => {
+    const paths = new Set(
+      Array.from({ length: 20 }, () =>
+        portraitFor('Elf', 'Mage', 'Non-binary', 'Lathlaer Riverglen'),
+      ),
+    );
+    expect(paths.size).toBe(1);
+  });
+
+  it('uses both portraits across non-binary characters', () => {
+    const variants = new Set(
+      ['Ash', 'Brin', 'Cael', 'Dara', 'Eli', 'Fen'].map(
+        (name) =>
+          portraitFor('Human', 'Rogue', 'Non-binary', name).match(
+            /\/(male|female)1\.png$/,
+          )![1],
+      ),
+    );
+    expect(variants).toEqual(new Set(['male', 'female']));
+  });
+
+  it('follows the gender of other characters', () => {
+    expect(portraitFor('Dwarf', 'Cleric', 'Female', 'x')).toMatch(
+      /dwarf\/cleric\/female1\.png$/,
+    );
   });
 });

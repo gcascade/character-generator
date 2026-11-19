@@ -97,6 +97,8 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
         gender={character.gender}
         race={character.race}
         characterClass={character.characterClass}
+        firstName={character.firstName}
+        lastName={character.lastName}
         height={200}
         width="100%"
         crop
