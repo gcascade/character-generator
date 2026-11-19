@@ -175,5 +175,6 @@
   "parties.confirmDelete": "Cliquez à nouveau pour supprimer",
   "parties.empty": "Aucun groupe sauvegardé",
   "parties.deleted": "Groupe supprimé",
-  "party.done.generate": "Nouveau groupe généré"
+  "ai.done.party": "Nouveau groupe généré",
+  "ai.fallback.party": "L'histoire de la compagnie vient du générateur."
 }

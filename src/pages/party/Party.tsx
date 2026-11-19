@@ -8,6 +8,7 @@ import { matchesConstraints } from '../../content/party';
 import { DataContext } from '../../contexts/DataContext';
 import useAlert from '../../hooks/useAlert';
 import useParty from '../../hooks/useParty';
+import usePartyGenerator from '../../hooks/usePartyGenerator';
 import { useT } from '../../i18n';
 
 /** The party generator page (spec 004). */
@@ -15,14 +16,14 @@ const Party: FC = () => {
   const t = useT();
   const data = useContext(DataContext);
   const { addSuccess } = useAlert();
-  const { party, constraints, generate, saveParty, rerollMember, toggleLock } =
+  const { party, constraints, saveParty, rerollMember, toggleLock } =
     useParty();
+  const { generateParty, writing } = usePartyGenerator();
 
   if (!data) throw new Error('Party must be used within a DataProvider');
 
   const onGenerate = () => {
-    generate();
-    addSuccess(t('party.done.generate'));
+    void generateParty();
   };
 
   const onSave = () => {
@@ -33,7 +34,11 @@ const Party: FC = () => {
   return (
     <Box sx={{ padding: { xs: 0.5, sm: 2 }, maxWidth: 1400, mx: 'auto' }}>
       <PageTitle>{t('page.party')}</PageTitle>
-      <PartyControls onGenerate={onGenerate} onSave={onSave} />
+      <PartyControls
+        onGenerate={onGenerate}
+        onSave={onSave}
+        generating={writing}
+      />
       {party ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
           <PartyStory party={party} />

@@ -77,11 +77,14 @@ export const describeFailure = (
   });
 };
 
-export type OutcomeKind = 'generate' | 'reroll' | 'translate';
+export type OutcomeKind = 'generate' | 'reroll' | 'translate' | 'party';
 
 /** Chooses the alert shown after a generation, a reroll or a translation (FR-016). */
 export const outcomeToAlert = (
-  outcome: GenerationOutcome,
+  outcome: Pick<
+    GenerationOutcome,
+    'source' | 'completedFields' | 'failure' | 'unchanged'
+  >,
   kind: OutcomeKind,
   provider: ProviderContext | undefined,
   t: Translate = english,

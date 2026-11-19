@@ -175,5 +175,6 @@
   "parties.confirmDelete": "Click again to delete",
   "parties.empty": "No saved party yet",
   "parties.deleted": "Party deleted",
-  "party.done.generate": "New party generated"
+  "ai.done.party": "New party generated",
+  "ai.fallback.party": "The company's story comes from the generator."
 }

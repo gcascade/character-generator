@@ -21,7 +21,7 @@ export const SYSTEM_PROMPT = [
   'Always answer with a single JSON object and nothing else.',
 ].join(' ');
 
-const LANGUAGE_NAME: Record<Locale, string> = {
+export const LANGUAGE_NAME: Record<Locale, string> = {
   en: 'English',
   fr: 'French',
 };

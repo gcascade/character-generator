@@ -82,8 +82,8 @@ props), and saved characters already have ids.
 
 **Independent Test**: mocked provider → AI story, members unchanged; failing provider → app story and explanation.
 
-- [ ] T018 [US4] Add `partyStorySchema`, `partyStoryPrompt(party, locale)` (members' names, races, classes, alignments, epithets as fixed facts; language rules of spec 002) and `generatePartyStory(provider, party, locale, signal)` in src/ai/; tests (valid answer, invalid answer, failure, member facts never read from the answer)
-- [ ] T019 [US4] Use it on generate in PartyContext through the request/alert flow of `useCharacterRequest` (one notification, fallback message); tests
+- [x] T018 [US4] Add `partyStorySchema`, `partyStoryPrompt(party, locale)` (members' names, races, classes, alignments, epithets as fixed facts; language rules of spec 002) and `generatePartyStory(provider, party, locale, signal)` in src/ai/; tests (valid answer, invalid answer, failure, member facts never read from the answer)
+- [x] T019 [US4] Use it on generate in PartyContext through the request/alert flow of `useCharacterRequest` (one notification, fallback message); tests
 
 ---
 

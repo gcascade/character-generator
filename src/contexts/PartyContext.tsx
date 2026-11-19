@@ -34,7 +34,7 @@ export type PartyContextType = PartySettings & {
   /** A new party from the app's content, keeping locked members. */
   generate: () => Party;
   /** Replaces the current party (e.g. with an AI-written story). */
-  setParty: (party: Party) => void;
+  setParty: React.Dispatch<React.SetStateAction<Party | undefined>>;
   rerollMember: (memberId: string) => void;
   toggleLock: (memberId: string) => void;
   saveParty: VoidFunction;
