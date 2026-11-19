@@ -56,6 +56,9 @@ describe('locale files', () => {
       );
     });
 
+    // Party texts use their own placeholders, checked below.
+    if (file === 'party') return;
+
     if (file === 'ui') {
       it('uses the same {params} in both languages', () => {
         for (const [key, text] of Object.entries(en.ui)) {
@@ -195,6 +198,65 @@ describe('fragments and names', () => {
       for (const text of texts(entries)) {
         expect(text, `${file}: ${text}`).not.toMatch(elision);
       }
+    }
+  });
+});
+
+describe('party fragments (spec 004)', () => {
+  type PartyFragment = { id: string; category: string };
+  const fragments = import.meta.glob<{ default: PartyFragment[] }>(
+    './content/party.json',
+    { eager: true },
+  )['./content/party.json'].default;
+
+  it('has unique ids with text in both languages, at least 10 per category', () => {
+    const ids = fragments.map((f) => f.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(Object.keys(en.party).sort()).toEqual([...ids].sort());
+    for (const category of ['name', 'meeting', 'goal']) {
+      expect(
+        fragments.filter((f) => f.category === category).length,
+      ).toBeGreaterThanOrEqual(10);
+    }
+  });
+
+  it.each(['en', 'fr'] as const)(
+    'only uses {members}, {first} and {count}, with no gender selection, in %s',
+    (locale) => {
+      for (const [id, text] of Object.entries(
+        (locale === 'en' ? en : fr).party,
+      )) {
+        const value = text as string;
+        // Agreement-free by construction: works for any mix of genders (SC-004).
+        expect(value, id).not.toContain('{{');
+        for (const param of params(value)) {
+          expect(['members', 'first', 'count'], `${id}: ${param}`).toContain(
+            param,
+          );
+        }
+        expect(params(fr.party[id] as string), id).toEqual(params(value));
+      }
+    },
+  );
+
+  it('names the members in every meeting text (FR-009)', () => {
+    for (const { id, category } of fragments) {
+      if (category !== 'meeting') continue;
+      expect(en.party[id] as string, id).toContain('{members}');
+    }
+  });
+
+  it('never elides before a member name in French', () => {
+    const elision =
+      /\b(de|que|le|la|ne|se|jusque|lorsque|puisque) \{(members|first)\}/i;
+    for (const text of texts(fr.party)) {
+      expect(text).not.toMatch(elision);
+    }
+  });
+
+  it('uses narrow no-break spaces before French high punctuation', () => {
+    for (const text of texts(fr.party)) {
+      expect(text).not.toMatch(/ [:;!?»]|« /);
     }
   });
 });

@@ -1,4 +1,5 @@
 import { Group as GroupIcon } from '@mui/icons-material';
+import { Groups as PartyIcon } from '@mui/icons-material';
 import { Home as HomeIcon } from '@mui/icons-material';
 import { Settings as SettingsIcon } from '@mui/icons-material';
 import {
@@ -92,6 +93,12 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary={t('nav.generator')} />
+        </ListItemButton>
+        <ListItemButton {...item('/party')}>
+          <ListItemIcon className="listItemIcon">
+            <PartyIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('nav.party')} />
         </ListItemButton>
         <ListItemButton {...item('/characters')}>
           <ListItemIcon className="listItemIcon">

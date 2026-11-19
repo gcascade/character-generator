@@ -26,6 +26,8 @@ import WrittenInNotice from '../writtenInNotice/WrittenInNotice';
 type CharacterDetailProps = {
   character: Character;
   onBack?: VoidFunction;
+  /** Label of the back action; "Back to my characters" by default. */
+  backLabel?: string;
   onOpenInGenerator?: VoidFunction;
   onDelete?: VoidFunction;
   /** Offered for AI text written in another language. */
@@ -40,6 +42,7 @@ type CharacterDetailProps = {
 const CharacterDetail: FC<CharacterDetailProps> = ({
   character,
   onBack,
+  backLabel,
   onOpenInGenerator,
   onDelete,
   onTranslate,
@@ -57,7 +60,7 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
     <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
       {onBack && (
         <Button startIcon={<BackIcon />} onClick={onBack} sx={{ mb: 1.5 }}>
-          {t('details.back')}
+          {backLabel ?? t('details.back')}
         </Button>
       )}
       <Card>

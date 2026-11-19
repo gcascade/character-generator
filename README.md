@@ -81,6 +81,14 @@ font service), a parchment light mode and a candle-lit dark mode. The mode follo
 changed at the bottom of the menu or in **Settings**. Colours live in `src/themes/palette.ts`; a test checks that every
 text and badge colour meets WCAG AA contrast in both modes.
 
+# Party generator
+
+The **Party** page generates 2 to 6 adventurers at once: classes are all different (every class appears before any
+repeats), alignments are **Harmonious** (never Good with Evil) or **Anything goes**, and no two members share a first
+name. Shared settings (race, class, gender, alignment) apply to every member; keep a member with its padlock, or
+replace just one. The company gets a name and a story in both languages (written by the AI when a provider is set).
+Save a member or the whole party: saved parties are in the **Parties** tab of **My characters**.
+
 # My characters
 
 Saved characters are listed in **My characters**. Click one to open its page (`/characters/<id>`): portrait, every

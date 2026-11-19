@@ -53,7 +53,7 @@ const writtenByAi = (character: Character, locale: Locale): Character => ({
 });
 
 /** Calls the provider and turns the answer into a JSON value (or undefined). */
-const ask = async (
+export const ask = async (
   provider: AiProvider,
   { system, prompt, schema }: Prompt,
   signal: AbortSignal,
@@ -71,7 +71,7 @@ const ask = async (
  * Normalises any failure: a caller abort (component gone) is rethrown so the
  * caller can ignore it; everything else becomes an AiError.
  */
-const toAiError = (error: unknown, provider: AiProvider): AiError => {
+export const toAiError = (error: unknown, provider: AiProvider): AiError => {
   if (isCallerAbort(error)) throw error;
   return error instanceof AiError
     ? error

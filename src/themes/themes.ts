@@ -141,6 +141,14 @@ const theme: Theme = responsiveFontSizes(
           outlined: { borderWidth: 2, '&:hover': { borderWidth: 2 } },
         },
       },
+      // MUI's unselected toggle text is too pale on parchment (axe, FR-003).
+      MuiToggleButton: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            color: theme.vars?.palette.text.secondary,
+          }),
+        },
+      },
       MuiChip: {
         styleOverrides: { label: { fontWeight: 700, letterSpacing: '0.02em' } },
       },
