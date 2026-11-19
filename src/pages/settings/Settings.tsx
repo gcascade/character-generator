@@ -163,11 +163,16 @@ const Settings: FC = () => {
 
   return (
     <Container maxWidth={false} disableGutters>
+      <PageTitle>{t('page.settings')}</PageTitle>
       <Paper
-        elevation={3}
-        sx={{ minHeight: '95vh', padding: { xs: 1.5, sm: 2.5 } }}
+        variant="outlined"
+        sx={{
+          padding: { xs: 2, sm: 3 },
+          maxWidth: 800,
+          mx: 'auto',
+          borderRadius: 3.5,
+        }}
       >
-        <PageTitle>{t('page.settings')}</PageTitle>
         <Box
           component="form"
           noValidate

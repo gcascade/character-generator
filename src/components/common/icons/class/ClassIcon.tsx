@@ -14,13 +14,33 @@ type ClassIconProps = {
 const ClassIcon: FC<ClassIconProps> = ({ characterClass }) => {
   switch (characterClass) {
     case 'Warrior':
-      return <Security data-testid="warrior-icon" />;
+      return (
+        <Security
+          sx={{ color: 'characterClass.Warrior' }}
+          data-testid="warrior-icon"
+        />
+      );
     case 'Mage':
-      return <AutoFixHigh data-testid="mage-icon" />;
+      return (
+        <AutoFixHigh
+          sx={{ color: 'characterClass.Mage' }}
+          data-testid="mage-icon"
+        />
+      );
     case 'Rogue':
-      return <VisibilityOff data-testid="rogue-icon" />;
+      return (
+        <VisibilityOff
+          sx={{ color: 'characterClass.Rogue' }}
+          data-testid="rogue-icon"
+        />
+      );
     case 'Cleric':
-      return <EmojiSymbols data-testid="cleric-icon" />;
+      return (
+        <EmojiSymbols
+          sx={{ color: 'characterClass.Cleric' }}
+          data-testid="cleric-icon"
+        />
+      );
   }
 };
 

@@ -142,5 +142,6 @@
   "colorMode.label": "Thème",
   "colorMode.light": "Clair",
   "colorMode.dark": "Sombre",
-  "colorMode.system": "Système"
+  "colorMode.system": "Système",
+  "character.age": "{age} ans"
 }

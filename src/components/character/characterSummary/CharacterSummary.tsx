@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Divider,
   IconButton,
   Tooltip,
   Typography,
@@ -18,8 +17,8 @@ import CharacterImage from '../characterImage/CharacterImage';
 import { useLocale, useT } from '../../../i18n';
 import { label } from '../../../content/labels';
 import { renderCharacter } from '../../../content/character';
-import { capitalize } from '../../../content/renderText';
 import WrittenInNotice from '../writtenInNotice/WrittenInNotice';
+import CharacterHeader from '../characterHeader/CharacterHeader';
 
 type CharacterSummaryProps = {
   character: Character;
@@ -47,8 +46,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
   const { locale } = useLocale();
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { firstName, lastName, age, race, characterClass, gender, alignment } =
-    character;
+  const { gender, alignment } = character;
   const rendered = renderCharacter(character, locale);
 
   const onDeleteClick = () => {
@@ -88,16 +86,9 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
       }}
     >
       <CardHeader
-        sx={{ paddingBottom: 0 }}
+        sx={{ paddingBottom: 1, alignItems: 'flex-start' }}
         title={
-          <Typography variant="h5" align="center">
-            {`${firstName} ${lastName}`}
-          </Typography>
-        }
-        subheader={
-          <Typography variant="subtitle1" align="center">
-            {capitalize(rendered.epithet)}
-          </Typography>
+          <CharacterHeader character={character} compact headingLevel="h3" />
         }
         action={
           <Tooltip
@@ -126,36 +117,7 @@ const CharacterSummary: FC<CharacterSummaryProps> = ({
             by={rendered.writtenBy}
           />
         )}
-        <Divider />
-        <Typography variant="body2" align="left">
-          <strong>
-            {t('field.gender')}
-            {t('punct.colon')}
-          </strong>{' '}
-          {label('gender', gender, gender, locale)}
-        </Typography>
-        <Typography variant="body2" align="left">
-          <strong>
-            {t('field.age')}
-            {t('punct.colon')}
-          </strong>{' '}
-          {age}
-        </Typography>
-        <Typography variant="body2" align="left">
-          <strong>
-            {t('field.race')}
-            {t('punct.colon')}
-          </strong>{' '}
-          {label('race', race, gender, locale)}
-        </Typography>
-        <Typography variant="body2" align="left">
-          <strong>
-            {t('field.class')}
-            {t('punct.colon')}
-          </strong>{' '}
-          {label('class', characterClass, gender, locale)}
-        </Typography>
-        <Typography variant="body2" align="left">
+        <Typography variant="body2" sx={{ textAlign: 'center', mt: 1 }}>
           <strong>
             {t('field.alignment')}
             {t('punct.colon')}

@@ -32,7 +32,7 @@ export const TOKENS = {
 
 export type BadgeColor = { main: string; contrastText: string };
 
-const RACE: Record<Mode, Record<CharacterRace, string>> = {
+export const RACE: Record<Mode, Record<CharacterRace, string>> = {
   light: {
     Human: '#3E5A7A',
     Elf: '#2F5D3A',
@@ -47,7 +47,7 @@ const RACE: Record<Mode, Record<CharacterRace, string>> = {
   },
 };
 
-const CLASS: Record<Mode, Record<CharacterClass, string>> = {
+export const CLASS: Record<Mode, Record<CharacterClass, string>> = {
   light: {
     Warrior: '#8E2424',
     Mage: '#3B3F8C',
@@ -62,7 +62,10 @@ const CLASS: Record<Mode, Record<CharacterClass, string>> = {
   },
 };
 
-const BADGE_TEXT: Record<Mode, string> = { light: '#FFFFFF', dark: '#17120D' };
+export const BADGE_TEXT: Record<Mode, string> = {
+  light: '#FFFFFF',
+  dark: '#17120D',
+};
 
 export const raceColor = (race: CharacterRace, mode: Mode): BadgeColor => ({
   main: RACE[mode][race],

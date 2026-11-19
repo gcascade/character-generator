@@ -10,7 +10,7 @@ import { capitalize } from '../../../content/renderText';
 import type { LockableProperty } from '../../../content/template';
 import useLocks from '../../../hooks/useLocks';
 import { LockReset as UnlockAllIcon } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 type Field = {
   property: LockableProperty;
@@ -64,33 +64,45 @@ const CharacterInformation: FC = () => {
   };
 
   return (
-    <>
-      {FIELDS.map((field) => (
-        <CharacterProperty
-          key={field.property}
-          label={t(field.label)}
-          value={display(field.property)}
-          tooltip={t(`reroll.${field.property}` as MessageKey)}
-          onButtonClick={() => rerollCharacterProperty(field.property)}
-          isRerollButtonDisabled={isRerollButtonDisabled}
-          locked={isLocked(field.property)}
-          onToggleLock={() => toggle(field.property)}
-          lockLabel={t(
-            `${isLocked(field.property) ? 'unlock' : 'lock'}.${field.property}`,
-          )}
-        />
-      ))}
+    <Box>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: 'minmax(0, 1fr)',
+            sm: 'repeat(2, minmax(0, 1fr))',
+          },
+          columnGap: 2,
+          rowGap: 0.25,
+        }}
+      >
+        {FIELDS.map((field) => (
+          <CharacterProperty
+            key={field.property}
+            label={t(field.label)}
+            value={display(field.property)}
+            tooltip={t(`reroll.${field.property}` as MessageKey)}
+            onButtonClick={() => rerollCharacterProperty(field.property)}
+            isRerollButtonDisabled={isRerollButtonDisabled}
+            locked={isLocked(field.property)}
+            onToggleLock={() => toggle(field.property)}
+            lockLabel={t(
+              `${isLocked(field.property) ? 'unlock' : 'lock'}.${field.property}`,
+            )}
+          />
+        ))}
+      </Box>
       {locked.length > 0 && (
         <Button
           size="small"
           startIcon={<UnlockAllIcon />}
           onClick={unlockAll}
-          sx={{ alignSelf: 'flex-start' }}
+          sx={{ mt: 0.5 }}
         >
           {t('lock.unlockAll')}
         </Button>
       )}
-    </>
+    </Box>
   );
 };
 

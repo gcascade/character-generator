@@ -14,6 +14,8 @@ type CharacterImageProps = {
   characterClass?: CharacterClass;
   height: string | number;
   width: string | number;
+  /** Fill the frame and crop around the face instead of showing the whole image. */
+  crop?: boolean;
 };
 
 const CharacterImage: FC<CharacterImageProps> = ({
@@ -22,6 +24,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
   characterClass,
   height,
   width,
+  crop = false,
 }) => {
   const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
   const t = useT();
@@ -70,12 +73,8 @@ const CharacterImage: FC<CharacterImageProps> = ({
       height={height}
       style={{ width: width }}
       sx={{
-        boxShadow:
-          '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
-        transition: 'transform 0.3s ease-in-out',
-        '&:hover': {
-          transform: 'scale(1.05)',
-        },
+        cursor: 'zoom-in',
+        ...(crop && { objectFit: 'cover', objectPosition: 'center 15%' }),
       }}
     />
   );
