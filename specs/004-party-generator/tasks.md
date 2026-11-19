@@ -43,10 +43,10 @@ props), and saved characters already have ids.
 
 - [x] T006 [US1] Implement in src/content/party.ts: `MIN_PARTY_SIZE`, `MAX_PARTY_SIZE`, `DEFAULT_PARTY_SIZE`, the class plan (research R1: all different up to 4, every class before any repeat, locked members count), `allowedAlignments(mode, constraints, lockedMembers)` (research R2), unique first names (bounded redraw then any unused name of the list), `generateParty({ size, constraints, alignmentMode, keep })`, `checkParty(party)` returning rule violations
 - [x] T007 [US1] Tests in src/content/party.test.ts: 1,000 parties per size and mode satisfy class variety, alignment mode, unique names and valid members (SC-002)
-- [ ] T008 [US1] Create src/contexts/PartyContext.tsx (current party, size, constraints, alignment mode, `generate`) and src/hooks/useParty.ts (throws "useParty must be used within a PartyProvider"); wrap the app in src/components/App.tsx; tests
-- [ ] T009 [P] [US1] Create src/components/party/partyStory/PartyStory.tsx (party name in Cinzel, story paragraphs with drop cap, `WrittenInNotice` for AI text); test and stories
-- [ ] T010 [P] [US1] Create src/components/party/partyMemberCard/PartyMemberCard.tsx (cropped portrait, compact `CharacterHeader`, alignment, first story paragraph, "Read the story" opening `CharacterDetail` in a dialog, slots for actions); test and stories
-- [ ] T011 [US1] Create src/components/party/partyControls/PartyControls.tsx (size select 2–6, Generate) and src/pages/party/Party.tsx (controls, story, member grid: 1/2/3 columns); `/party` route in src/routes.tsx and a menu entry in src/components/navigation/drawerMenu/DrawerMenu.tsx; page test
+- [x] T008 [US1] Create src/contexts/PartyContext.tsx (current party, size, constraints, alignment mode, `generate`) and src/hooks/useParty.ts (throws "useParty must be used within a PartyProvider"); wrap the app in src/components/App.tsx; tests
+- [x] T009 [P] [US1] Create src/components/party/partyStory/PartyStory.tsx (party name in Cinzel, story paragraphs with drop cap, `WrittenInNotice` for AI text); test and stories
+- [x] T010 [P] [US1] Create src/components/party/partyMemberCard/PartyMemberCard.tsx (cropped portrait, compact `CharacterHeader`, alignment, first story paragraph, "Read the story" opening `CharacterDetail` in a dialog, slots for actions); test and stories
+- [x] T011 [US1] Create src/components/party/partyControls/PartyControls.tsx (size select 2–6, Generate) and src/pages/party/Party.tsx (controls, story, member grid: 1/2/3 columns); `/party` route in src/routes.tsx and a menu entry in src/components/navigation/drawerMenu/DrawerMenu.tsx; page test
 
 **Checkpoint**: a party can be generated and read, without AI.
 
@@ -58,9 +58,9 @@ props), and saved characters already have ids.
 
 **Independent Test**: race = Elf + one locked member, 20 regenerations: all elves, the locked member never changes.
 
-- [ ] T012 [US2] Add shared constraint selects (race, class, gender, alignment, each with "Any") and the alignment mode toggle (Harmonious / Anything goes) to PartyControls; store them in PartyContext
-- [ ] T013 [US2] Implement `rerollMember(party, memberId)` in src/content/party.ts (respects constraints, mode, class variety and the other names; keeps `content`, drops AI `text`) and lock/unlock in PartyContext; member card actions: padlock (`aria-pressed`, `party.member.lock`/`unlock`) and reroll
-- [ ] T014 [US2] Tests: 1,000 parties with constraints and locked members keep them (SC-003); a locked member that no longer matches a new constraint is kept and flagged with `party.notMatching`; reroll changes only one member
+- [x] T012 [US2] Add shared constraint selects (race, class, gender, alignment, each with "Any") and the alignment mode toggle (Harmonious / Anything goes) to PartyControls; store them in PartyContext
+- [x] T013 [US2] Implement `rerollMember(party, memberId)` in src/content/party.ts (respects constraints, mode, class variety and the other names; keeps `content`, drops AI `text`) and lock/unlock in PartyContext; member card actions: padlock (`aria-pressed`, `party.member.lock`/`unlock`) and reroll
+- [x] T014 [US2] Tests: 1,000 parties with constraints and locked members keep them (SC-003); a locked member that no longer matches a new constraint is kept and flagged with `party.notMatching`; reroll changes only one member
 
 ---
 
@@ -70,8 +70,8 @@ props), and saved characters already have ids.
 
 **Independent Test**: save a party and a member, reload, find them in My characters.
 
-- [ ] T015 [US3] Create src/content/storedParty.ts (`parseStoredParty`, `parseStoredParties`, zod, members reuse the stored-character schema, invalid entries dropped) with tests; persist the current party (`localStorage["party"]`) and saved parties (`localStorage["parties"]`) in PartyContext (FR-013)
-- [ ] T016 [US3] "Save the party" (copy with a new id; disabled once saved) and "Save this member" (through `DataContext.saveCharacter`) on the party page; tests
+- [x] T015 [US3] Create src/content/storedParty.ts (`parseStoredParty`, `parseStoredParties`, zod, members reuse the stored-character schema, invalid entries dropped) with tests; persist the current party (`localStorage["party"]`) and saved parties (`localStorage["parties"]`) in PartyContext (FR-013)
+- [x] T016 [US3] "Save the party" (copy with a new id; disabled once saved) and "Save this member" (through `DataContext.saveCharacter`) on the party page; tests
 - [ ] T017 [US3] Add tabs "Characters" / "Parties" to src/pages/characters/Characters.tsx and create src/components/party/savedParties/SavedParties.tsx (cards with the party name and members; open → becomes the current party and navigates to `/party`; delete with confirmation); tests and stories
 
 ---
