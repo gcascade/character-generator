@@ -239,6 +239,13 @@ describe('party fragments (spec 004)', () => {
     },
   );
 
+  it('names the members in every meeting text (FR-009)', () => {
+    for (const { id, category } of fragments) {
+      if (category !== 'meeting') continue;
+      expect(en.party[id] as string, id).toContain('{members}');
+    }
+  });
+
   it('never elides before a member name in French', () => {
     const elision =
       /\b(de|que|le|la|ne|se|jusque|lorsque|puisque) \{(members|first)\}/i;
