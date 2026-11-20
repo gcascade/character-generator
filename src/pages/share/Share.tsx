@@ -1,9 +1,21 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Typography,
+} from '@mui/material';
 import React, { FC, useContext, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import CharacterDetail from '../../components/character/characterDetail/CharacterDetail';
 import PartyMemberCard from '../../components/party/partyMemberCard/PartyMemberCard';
 import PartyStory from '../../components/party/partyStory/PartyStory';
+import AdventureHook from '../../components/party/adventureHook/AdventureHook';
+import PartyBalance from '../../components/party/partyBalance/PartyBalance';
+import PartyTies from '../../components/party/partyTies/PartyTies';
+import RoleMenu from '../../components/party/roleMenu/RoleMenu';
+
 import { parseShareHash, sameCharacter } from '../../content/share';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { DataContext } from '../../contexts/DataContext';
@@ -80,7 +92,31 @@ const SharedParty: FC<{ party: Party }> = ({ party }) => {
       >
         {t('share.sharedParty')}
       </Typography>
-      <PartyStory party={party} />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+        <PartyStory party={party} />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'minmax(0, 1fr)',
+              md: 'repeat(2, minmax(0, 1fr))',
+            },
+            gap: 2.5,
+          }}
+        >
+          <Card>
+            <CardContent sx={{ px: { xs: 2, sm: 3 } }}>
+              <PartyTies party={party} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent sx={{ px: { xs: 2, sm: 3 } }}>
+              <PartyBalance party={party} />
+            </CardContent>
+          </Card>
+        </Box>
+        <AdventureHook party={party} />
+      </Box>
       <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', my: 2.5 }}>
         <Button
           variant="contained"
@@ -117,6 +153,13 @@ const SharedParty: FC<{ party: Party }> = ({ party }) => {
           <PartyMemberCard
             key={member.id}
             member={member}
+            roleControl={
+              <RoleMenu
+                role={member.role}
+                gender={member.character.gender}
+                name={member.character.firstName}
+              />
+            }
             onSave={
               data.characters.some((c) => sameCharacter(c, member.character))
                 ? undefined

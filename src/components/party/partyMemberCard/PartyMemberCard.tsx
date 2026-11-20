@@ -37,6 +37,8 @@ type PartyMemberCardProps = {
   onToggleLock?: VoidFunction;
   onReroll?: VoidFunction;
   onSave?: VoidFunction;
+  /** Role chip or menu, under the header (spec 008). */
+  roleControl?: React.ReactNode;
   /** Shows a share action for this member (spec 007). */
   shareable?: boolean;
   /** The member no longer matches the party's shared settings. */
@@ -51,6 +53,7 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
   onReroll,
   onSave,
   shareable = false,
+  roleControl,
   notMatching = false,
   disabled = false,
 }) => {
@@ -111,6 +114,11 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <CharacterHeader character={character} compact headingLevel="h3" />
+        {roleControl && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+            {roleControl}
+          </Box>
+        )}
         <Typography
           variant="body2"
           sx={{ textAlign: 'center', mt: 1, color: 'text.secondary' }}

@@ -44,7 +44,10 @@ describe('Party page', () => {
       screen.getByRole('button', { name: 'Generate a party' }),
     );
     expect(members()).toHaveLength(4);
-    expect(screen.getByRole('region', { name: /./ })).toBeInTheDocument();
+    expect(screen.getByText("The company's story")).toBeInTheDocument();
+    for (const name of ['Ties', 'Balance', 'Where it begins']) {
+      expect(screen.getByRole('region', { name })).toBeInTheDocument();
+    }
   });
 
   it('applies the size and shared race', async () => {
@@ -112,5 +115,46 @@ describe('Party page', () => {
       screen.getByRole('button', { name: 'Générer un groupe' }),
     );
     expect(members()).toHaveLength(4);
+  });
+
+  it('changes a role, rerolls the hook and handles ties', async () => {
+    renderPage();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Generate a party' }),
+    );
+    const card = members()[0];
+    const firstName = card.getAttribute('aria-label')!.split(' ')[0];
+    await userEvent.click(
+      within(card).getByRole('button', {
+        name: new RegExp(`^Role of ${firstName}`),
+      }),
+    );
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Scholar' }));
+    expect(
+      within(members()[0]).getByRole('button', {
+        name: `Role of ${firstName}: Scholar`,
+      }),
+    ).toBeInTheDocument();
+
+    const hook = screen.getByRole('region', { name: 'Where it begins' });
+    const before = hook.textContent;
+    await userEvent.click(
+      within(hook).getByRole('button', { name: 'Draw another starting point' }),
+    );
+    expect(
+      screen.getByRole('region', { name: 'Where it begins' }).textContent,
+    ).not.toBe(before);
+
+    const ties = screen.getByRole('region', { name: 'Ties' });
+    for (const remove of within(ties).queryAllByRole('button', {
+      name: 'Remove this tie',
+    })) {
+      await userEvent.click(remove);
+    }
+    expect(
+      within(screen.getByRole('region', { name: 'Ties' })).getByText(
+        'These adventurers have just met.',
+      ),
+    ).toBeInTheDocument();
   });
 });

@@ -1,5 +1,9 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import React, { FC, useContext } from 'react';
+import AdventureHook from '../../components/party/adventureHook/AdventureHook';
+import PartyBalance from '../../components/party/partyBalance/PartyBalance';
+import PartyTies from '../../components/party/partyTies/PartyTies';
+import RoleMenu from '../../components/party/roleMenu/RoleMenu';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import PartyControls from '../../components/party/partyControls/PartyControls';
 import PartyMemberCard from '../../components/party/partyMemberCard/PartyMemberCard';
@@ -19,8 +23,17 @@ const Party: FC = () => {
   const { locale } = useLocale();
   const data = useContext(DataContext);
   const { addSuccess } = useAlert();
-  const { party, constraints, saveParty, rerollMember, toggleLock } =
-    useParty();
+  const {
+    party,
+    constraints,
+    saveParty,
+    rerollMember,
+    toggleLock,
+    rerollTie,
+    removeTie,
+    setRole,
+    rerollHook,
+  } = useParty();
   const { generateParty, writing } = usePartyGenerator();
 
   if (!data) throw new Error('Party must be used within a DataProvider');
@@ -45,6 +58,32 @@ const Party: FC = () => {
       {party ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
           <PartyStory party={party} />
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'minmax(0, 1fr)',
+                md: 'repeat(2, minmax(0, 1fr))',
+              },
+              gap: 2.5,
+            }}
+          >
+            <Card>
+              <CardContent sx={{ px: { xs: 2, sm: 3 } }}>
+                <PartyTies
+                  party={party}
+                  onReroll={rerollTie}
+                  onRemove={removeTie}
+                />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent sx={{ px: { xs: 2, sm: 3 } }}>
+                <PartyBalance party={party} />
+              </CardContent>
+            </Card>
+          </Box>
+          <AdventureHook party={party} onReroll={rerollHook} />
           <Box sx={{ mt: -1.5 }}>
             <ShareButton
               label={t('share.party')}
@@ -73,6 +112,14 @@ const Party: FC = () => {
                 onToggleLock={() => toggleLock(member.id)}
                 onReroll={() => rerollMember(member.id)}
                 shareable
+                roleControl={
+                  <RoleMenu
+                    role={member.role}
+                    gender={member.character.gender}
+                    name={member.character.firstName}
+                    onChange={(role) => setRole(member.id, role)}
+                  />
+                }
                 onSave={() => {
                   data.saveCharacter(member.character);
                   addSuccess(
