@@ -63,4 +63,27 @@ describe('generatePartyStory', () => {
     expect(outcome.failure).toBeDefined();
     expect(outcome.party.text).toBeUndefined();
   });
+
+  it('keeps an AI starting point, and the app one when the AI gives none', async () => {
+    const withHook = await generatePartyStory(
+      fakeProvider([{ ...answer, hook: 'At the ford, a stranger waits.' }])
+        .provider,
+      party,
+      'en',
+      activeSignal(),
+    );
+    expect(withHook.party.text?.hook).toBe('At the ford, a stranger waits.');
+    const without = await generatePartyStory(
+      fakeProvider([answer]).provider,
+      party,
+      'en',
+      activeSignal(),
+    );
+    expect(without.party.text?.hook).toBeUndefined();
+    expect(without.party.hook).toEqual(party.hook);
+  });
+
+  it('asks for the starting point', () => {
+    expect(partyStoryPrompt(party, 'en').prompt).toContain('"hook"');
+  });
 });

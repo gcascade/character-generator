@@ -59,14 +59,14 @@ description: 'Task list for party depth'
 
 - [x] T014 [US4] Implement `drawHook`, `rerollHook`, `renderHook` in src/content/partyDepth.ts; hook in `generateParty`; tests (≥ 20 distinct hooks in 100 draws per locale — SC-003)
 - [x] T015 [US4] Create src/components/party/adventureHook/AdventureHook.tsx (hook paragraph, reroll, "written by AI" notice); `rerollHook` in PartyContext; on the Party page; tests and stories
-- [ ] T016 [US4] AI: optional `hook` in `partyStorySchema` / prompt (src/ai/party.ts), stored as `text.hook`; tests (valid, missing hook keeps the app's, failure)
+- [x] T016 [US4] AI: optional `hook` in `partyStorySchema` / prompt (src/ai/party.ts), stored as `text.hook`; tests (valid, missing hook keeps the app's, failure)
 
 ---
 
 ## Phase 7: Persistence and sharing (FR-007)
 
 - [x] T017 Storage: new optional fields in src/content/storedParty.ts; `completeParty` fills roles and hook for older parties on load in PartyContext; tests
-- [ ] T018 Share links: `p2` format with ties, roles and hook in src/content/share.ts; `p1` still decoded and completed; shared party page shows ties, roles, balance and hook; tests (round trip of 1,000 parties, old `p1` link — SC-005)
+- [x] T018 Share links: `p2` format with ties, roles and hook in src/content/share.ts; `p1` still decoded and completed; shared party page shows ties, roles, balance and hook; tests (round trip of 1,000 parties, old `p1` link — SC-005)
 
 ---
 

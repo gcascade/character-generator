@@ -1,5 +1,6 @@
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
 import type { Character } from '../types/character';
+import type { Party } from '../types/party';
 import { generateRandomCharacter } from './generate';
 import { generateParty } from './party';
 import {
@@ -201,5 +202,63 @@ describe('sameCharacter', () => {
     expect(
       sameCharacter(character, { ...character, age: character.age + 1 }),
     ).toBe(false);
+  });
+});
+
+describe('party links with ties, roles and hook (spec 008)', () => {
+  const tiesByIndex = (party: Party) =>
+    (party.ties ?? []).map((t) => [
+      t.type,
+      party.members.findIndex((m) => m.id === t.from),
+      party.members.findIndex((m) => m.id === t.to),
+    ]);
+
+  it('keep ties, roles and hook over 1,000 parties (SC-005)', () => {
+    for (let i = 0; i < 1000; i++) {
+      const party = generateParty({ size: 2 + (i % 5) });
+      if (i % 5 === 0) {
+        party.text = {
+          name: 'N',
+          story: ['S.', 'T.'],
+          hook: 'Somewhere, someone needs help.',
+          language: 'en',
+          source: 'ai',
+        };
+      }
+      const decoded = decodeParty(encodeParty(party))!;
+      expect(decoded.members.map((m) => m.role)).toEqual(
+        party.members.map((m) => m.role),
+      );
+      expect(tiesByIndex(decoded)).toEqual(tiesByIndex(party));
+      expect(decoded.hook).toEqual(party.hook);
+      expect(decoded.text).toEqual(party.text);
+    }
+  });
+
+  it('still opens links made before ties and roles (p1), with roles and a hook drawn', () => {
+    const party = generateParty({ size: 3 });
+    const v1 = [
+      ...JSON.parse(
+        new TextDecoder().decode(
+          Uint8Array.from(
+            atob(encodeParty(party).replace(/-/g, '+').replace(/_/g, '/')),
+            (c) => c.charCodeAt(0),
+          ),
+        ),
+      ).slice(0, 6),
+    ];
+    const data = btoa(JSON.stringify(v1))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+    const shared = parseShareHash(`#p1.${data}`);
+    expect(shared?.kind).toBe('party');
+    const decoded = (shared as { party: Party }).party;
+    expect(decoded.members.map((m) => m.character)).toEqual(
+      party.members.map((m) => m.character),
+    );
+    expect(decoded.members.every((m) => m.role)).toBe(true);
+    expect(decoded.ties).toEqual([]);
+    expect(decoded.hook).toBeDefined();
   });
 });
