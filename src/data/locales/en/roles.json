@@ -1,0 +1,12 @@
+{
+  "role-leader": "Leader",
+  "role-scout": "Scout",
+  "role-healer": "Healer",
+  "role-face": "Face",
+  "role-strategist": "Strategist",
+  "role-muscle": "Muscle",
+  "role-guardian": "Guardian",
+  "role-scholar": "Scholar",
+  "role-trickster": "Trickster",
+  "role-chronicler": "Chronicler"
+}

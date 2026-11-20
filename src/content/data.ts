@@ -1,6 +1,13 @@
 import epithetIds from '../data/content/epithets.json';
 import fragments from '../data/content/fragments.json';
 import partyFragments from '../data/content/party.json';
+import partyDepth from '../data/content/partyDepth.json';
+import enHooks from '../data/locales/en/hooks.json';
+import enRoles from '../data/locales/en/roles.json';
+import enTies from '../data/locales/en/ties.json';
+import frHooks from '../data/locales/fr/hooks.json';
+import frRoles from '../data/locales/fr/roles.json';
+import frTies from '../data/locales/fr/ties.json';
 import enParty from '../data/locales/en/party.json';
 import frParty from '../data/locales/fr/party.json';
 import dwarf from '../data/content/names/dwarf.json';
@@ -25,6 +32,7 @@ import type {
   CharacterClass,
   CharacterRace,
 } from '../types/character';
+import type { BalanceArea } from '../types/party';
 import type { GenderedText } from './renderText';
 
 export type FragmentCategory =
@@ -88,4 +96,35 @@ export const PARTY_FRAGMENTS = partyFragments as PartyFragment[];
 export const PARTY_TEXTS: Record<Locale, Record<string, string>> = {
   en: enParty,
   fr: frParty,
+};
+
+// --- Party depth (spec 008) ---
+
+export type TieType = { id: string; directed: boolean };
+
+export type RoleDefinition = {
+  id: string;
+  unique: boolean;
+  area: BalanceArea;
+  classes: Record<CharacterClass, number>;
+  alignment: Partial<Record<'lawful' | 'chaotic' | 'good' | 'evil', number>>;
+};
+
+export const TIE_TYPES = partyDepth.ties as TieType[];
+export const ROLES = partyDepth.roles as RoleDefinition[];
+export const HOOK_IDS = partyDepth.hooks as Record<
+  'place' | 'patron' | 'threat',
+  string[]
+>;
+
+export const DEPTH_TEXTS: Record<
+  Locale,
+  {
+    ties: Record<string, string>;
+    roles: Record<string, string>;
+    hooks: Record<string, string>;
+  }
+> = {
+  en: { ties: enTies, roles: enRoles, hooks: enHooks },
+  fr: { ties: frTies, roles: frRoles, hooks: frHooks },
 };

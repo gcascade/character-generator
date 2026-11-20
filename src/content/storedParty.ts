@@ -6,7 +6,7 @@ import {
   Genders,
 } from '../types/character';
 import type { AlignmentMode, Party, PartyConstraints } from '../types/party';
-import { PARTY_FRAGMENTS } from './data';
+import { HOOK_IDS, PARTY_FRAGMENTS, ROLES, TIE_TYPES } from './data';
 import { DEFAULT_PARTY_SIZE, MAX_PARTY_SIZE, MIN_PARTY_SIZE } from './party';
 import { storedCharacterSchema } from './storedCharacter';
 
@@ -40,6 +40,7 @@ const partySchema = z
           id: z.string().min(1).max(100),
           character: storedCharacterSchema,
           locked: z.boolean(),
+          role: z.string().max(60).optional(),
         }),
       )
       .min(MIN_PARTY_SIZE)
@@ -55,12 +56,60 @@ const partySchema = z
       .object({
         name: z.string().trim().min(1).max(200),
         story: z.array(z.string().trim().min(1).max(4000)).min(1).max(10),
+        hook: z.string().trim().min(1).max(4000).optional(),
         language: z.enum(['en', 'fr']),
         source: z.literal('ai'),
       })
       .optional(),
+    ties: z
+      .array(
+        z.object({
+          id: z.string().min(1).max(100),
+          type: z.string().max(60),
+          from: z.string().max(100),
+          to: z.string().max(100),
+        }),
+      )
+      .max(20)
+      .optional(),
+    hook: z
+      .object({
+        placeId: z.string().max(60),
+        patronId: z.string().max(60),
+        threatId: z.string().max(60),
+      })
+      .optional(),
   })
-  .transform((party) => party as Party);
+  // Unknown roles, ties and hook fragments are dropped, not the whole party (spec 008).
+  .transform((party): Party => {
+    const memberIds = new Set(party.members.map((m) => m.id));
+    const members = party.members.map((m) => {
+      if (m.role && ROLES.some((r) => r.id === m.role)) return m;
+      const copy = { ...m };
+      delete copy.role;
+      return copy;
+    });
+    const ties = party.ties?.filter(
+      (t) =>
+        TIE_TYPES.some((type) => type.id === t.type) &&
+        memberIds.has(t.from) &&
+        memberIds.has(t.to) &&
+        t.from !== t.to,
+    );
+    const hook =
+      party.hook &&
+      HOOK_IDS.place.includes(party.hook.placeId) &&
+      HOOK_IDS.patron.includes(party.hook.patronId) &&
+      HOOK_IDS.threat.includes(party.hook.threatId)
+        ? party.hook
+        : undefined;
+    const result = { ...party, members } as Party;
+    if (ties) result.ties = ties;
+    else delete result.ties;
+    if (hook) result.hook = hook;
+    else delete result.hook;
+    return result;
+  });
 
 export type PartySettings = {
   size: number;

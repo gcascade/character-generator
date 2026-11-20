@@ -12,6 +12,7 @@ import type {
   PartyConstraints,
   PartyContentRefs,
   PartyMember,
+  Tie,
 } from '../types/party';
 import {
   PARTY_FRAGMENTS,
@@ -19,6 +20,12 @@ import {
   type PartyFragmentCategory,
 } from './data';
 import { generateRandomCharacter } from './generate';
+import {
+  assignRoles,
+  drawHook,
+  drawTies,
+  tiesAfterReplacing,
+} from './partyDepth';
 import { firstNamesFor } from './template';
 
 export const MIN_PARTY_SIZE = 2;
@@ -112,6 +119,8 @@ export type PartyOptions = {
   alignmentMode?: AlignmentMode;
   /** Current members: the locked ones are kept at their place. */
   keep?: readonly PartyMember[];
+  /** Current ties: those between two kept members stay (spec 008). */
+  keepTies?: readonly Tie[];
 };
 
 /** A new party (spec 004 FR-002 to FR-009). */
@@ -120,6 +129,7 @@ export const generateParty = ({
   constraints = {},
   alignmentMode = 'harmonious',
   keep = [],
+  keepTies = [],
 }: PartyOptions): Party => {
   const count = Math.min(MAX_PARTY_SIZE, Math.max(MIN_PARTY_SIZE, size));
   const slots: (PartyMember | undefined)[] = Array.from(
@@ -147,12 +157,19 @@ export const generateParty = ({
         ),
     );
   }
+  const keptIds = new Set(kept.map((m) => m.id));
+  const withRoles = assignRoles(members);
   return {
     id: crypto.randomUUID(),
-    members,
+    members: withRoles,
     constraints,
     alignmentMode,
     content: pickContent(),
+    ties: drawTies(
+      withRoles,
+      keepTies.filter((t) => keptIds.has(t.from) && keptIds.has(t.to)),
+    ),
+    hook: drawHook(),
   };
 };
 
@@ -172,7 +189,17 @@ export const rerollMember = (party: Party, memberId: string): Party => {
   );
   const members = [...party.members];
   members[index] = member;
-  const rerolled = { ...party, members };
+  const withRoles = assignRoles(members);
+  const rerolled: Party = {
+    ...party,
+    members: withRoles,
+    ties: tiesAfterReplacing(
+      party.ties ?? [],
+      party.members[index].id,
+      withRoles,
+      member.id,
+    ),
+  };
   delete rerolled.text;
   return rerolled;
 };

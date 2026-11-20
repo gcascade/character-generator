@@ -1,0 +1,236 @@
+{
+  "ties": [
+    {
+      "id": "tie-rivals",
+      "directed": false
+    },
+    {
+      "id": "tie-life-debt",
+      "directed": true
+    },
+    {
+      "id": "tie-mentor",
+      "directed": true
+    },
+    {
+      "id": "tie-secret",
+      "directed": false
+    },
+    {
+      "id": "tie-childhood",
+      "directed": false
+    },
+    {
+      "id": "tie-betrayal",
+      "directed": true
+    },
+    {
+      "id": "tie-gold-debt",
+      "directed": true
+    },
+    {
+      "id": "tie-blood-oath",
+      "directed": false
+    },
+    {
+      "id": "tie-suspicion",
+      "directed": true
+    },
+    {
+      "id": "tie-jailbreak",
+      "directed": true
+    },
+    {
+      "id": "tie-dragon-bet",
+      "directed": false
+    },
+    {
+      "id": "tie-family-feud",
+      "directed": false
+    },
+    {
+      "id": "tie-admiration",
+      "directed": true
+    }
+  ],
+  "roles": [
+    {
+      "id": "role-leader",
+      "unique": true,
+      "area": "talking",
+      "classes": {
+        "Warrior": 2,
+        "Mage": 1,
+        "Rogue": 1,
+        "Cleric": 2
+      },
+      "alignment": {
+        "lawful": 1
+      }
+    },
+    {
+      "id": "role-scout",
+      "unique": false,
+      "area": "stealth",
+      "classes": {
+        "Warrior": 1,
+        "Mage": 0,
+        "Rogue": 3,
+        "Cleric": 0
+      },
+      "alignment": {}
+    },
+    {
+      "id": "role-healer",
+      "unique": false,
+      "area": "healing",
+      "classes": {
+        "Warrior": 0,
+        "Mage": 1,
+        "Rogue": 0,
+        "Cleric": 3
+      },
+      "alignment": {
+        "good": 1
+      }
+    },
+    {
+      "id": "role-face",
+      "unique": false,
+      "area": "talking",
+      "classes": {
+        "Warrior": 1,
+        "Mage": 1,
+        "Rogue": 2,
+        "Cleric": 2
+      },
+      "alignment": {
+        "good": 1
+      }
+    },
+    {
+      "id": "role-strategist",
+      "unique": false,
+      "area": "fighting",
+      "classes": {
+        "Warrior": 2,
+        "Mage": 2,
+        "Rogue": 1,
+        "Cleric": 1
+      },
+      "alignment": {
+        "lawful": 1
+      }
+    },
+    {
+      "id": "role-muscle",
+      "unique": false,
+      "area": "fighting",
+      "classes": {
+        "Warrior": 3,
+        "Mage": 0,
+        "Rogue": 1,
+        "Cleric": 1
+      },
+      "alignment": {
+        "chaotic": 1
+      }
+    },
+    {
+      "id": "role-guardian",
+      "unique": false,
+      "area": "fighting",
+      "classes": {
+        "Warrior": 3,
+        "Mage": 0,
+        "Rogue": 0,
+        "Cleric": 2
+      },
+      "alignment": {
+        "good": 1
+      }
+    },
+    {
+      "id": "role-scholar",
+      "unique": false,
+      "area": "magic",
+      "classes": {
+        "Warrior": 0,
+        "Mage": 3,
+        "Rogue": 1,
+        "Cleric": 2
+      },
+      "alignment": {}
+    },
+    {
+      "id": "role-trickster",
+      "unique": false,
+      "area": "stealth",
+      "classes": {
+        "Warrior": 0,
+        "Mage": 1,
+        "Rogue": 3,
+        "Cleric": 0
+      },
+      "alignment": {
+        "chaotic": 1
+      }
+    },
+    {
+      "id": "role-chronicler",
+      "unique": false,
+      "area": "talking",
+      "classes": {
+        "Warrior": 0,
+        "Mage": 2,
+        "Rogue": 1,
+        "Cleric": 2
+      },
+      "alignment": {}
+    }
+  ],
+  "hooks": {
+    "place": [
+      "hook-place-marsh",
+      "hook-place-wolfstooth",
+      "hook-place-capital",
+      "hook-place-abbey",
+      "hook-place-docks",
+      "hook-place-mistwood",
+      "hook-place-oasis",
+      "hook-place-mining-town",
+      "hook-place-fog-island",
+      "hook-place-border-fort",
+      "hook-place-festival",
+      "hook-place-tomb"
+    ],
+    "patron": [
+      "hook-patron-ferryman",
+      "hook-patron-priestess",
+      "hook-patron-merchant",
+      "hook-patron-child",
+      "hook-patron-noble",
+      "hook-patron-innkeeper",
+      "hook-patron-ghost",
+      "hook-patron-guild",
+      "hook-patron-captain",
+      "hook-patron-sage",
+      "hook-patron-envoy",
+      "hook-patron-rival-band"
+    ],
+    "threat": [
+      "hook-threat-singing-water",
+      "hook-threat-walking-dead",
+      "hook-threat-grey-cult",
+      "hook-threat-young-dragon",
+      "hook-threat-sleeping-sickness",
+      "hook-threat-crown-jewels",
+      "hook-threat-wolves",
+      "hook-threat-mirror",
+      "hook-threat-barons-war",
+      "hook-threat-fallen-bridge",
+      "hook-threat-eclipse",
+      "hook-threat-white-feathers"
+    ]
+  }
+}

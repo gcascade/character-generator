@@ -1,0 +1,15 @@
+{
+  "tie-rivals": "{a} and {b} have been rivals since a contest neither will admit losing.",
+  "tie-life-debt": "{a} owes {b} a life debt, and has not yet found a way to repay it.",
+  "tie-mentor": "Long ago, {b} taught {a} the basics of the trade.",
+  "tie-secret": "{a} and {b} share a secret that would ruin them both.",
+  "tie-childhood": "{a} and {b} grew up in the same street and still understand each other without a word.",
+  "tie-betrayal": "{a} once betrayed {b}; {b} has never said whether it is forgiven.",
+  "tie-gold-debt": "{a} owes {b} a large sum of gold, and the interest keeps growing.",
+  "tie-blood-oath": "{a} and {b} swore a blood oath to stand by each other, whatever happens.",
+  "tie-suspicion": "{a} suspects {b} of hiding something, and watches every move.",
+  "tie-jailbreak": "{b} once broke {a} out of a prison cell, no questions asked.",
+  "tie-dragon-bet": "{a} and {b} have a running bet on who will slay the first dragon.",
+  "tie-family-feud": "{a} and {b} come from two families feuding for three generations, and do their best to forget it.",
+  "tie-admiration": "{a} secretly admires {b}, and would never admit it."
+}
