@@ -1,5 +1,9 @@
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import type { Character } from '../types/character';
+import {
+  type Character,
+  CharacterClasses,
+  CharacterRaces,
+} from '../types/character';
 import type { Party } from '../types/party';
 import { generateRandomCharacter } from './generate';
 import { generateParty } from './party';
@@ -45,6 +49,41 @@ describe('character links', () => {
       textLanguage: 'en',
       textSource: 'legacy',
     });
+  });
+
+  it('keep reading links made before the new races and classes (spec 009, SC-005)', () => {
+    // Made by the app with 4 races and 4 classes: Orc = 3, Cleric = 3.
+    const old =
+      'WyJMdXJ6YSIsIkZpcmViZWxseSIsMywzLDEsMiw0MixbImxlZ2VuZCIsInNoYW1hbiIsInRlbXBsZSIsInByaXNvbiIsInJlbGljIiwidGhvcm5oZWFydCJdXQ';
+    expect(decodeCharacter(old)).toMatchObject({
+      firstName: 'Lurza',
+      race: 'Orc',
+      characterClass: 'Cleric',
+      gender: 'Female',
+      alignment: 'Chaotic Good',
+      age: 42,
+    });
+    expect(Object.values(CharacterRaces).slice(0, 4)).toEqual([
+      'Human',
+      'Elf',
+      'Dwarf',
+      'Orc',
+    ]);
+    expect(Object.values(CharacterClasses).slice(0, 4)).toEqual([
+      'Warrior',
+      'Mage',
+      'Rogue',
+      'Cleric',
+    ]);
+  });
+
+  it('share the new races and classes', () => {
+    for (const race of Object.values(CharacterRaces)) {
+      for (const characterClass of Object.values(CharacterClasses)) {
+        const character = generateRandomCharacter({ race, characterClass });
+        expect(decodeCharacter(encodeCharacter(character))).toEqual(character);
+      }
+    }
   });
 
   it('never share the saved id', () => {

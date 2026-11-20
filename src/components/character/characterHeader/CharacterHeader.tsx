@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { renderCharacter } from '../../../content/character';
 import { label } from '../../../content/labels';
 import { capitalize } from '../../../content/renderText';
+import { classToken, raceToken } from '../../../themes/palette';
 import { useLocale, useT } from '../../../i18n';
 import type { Character } from '../../../types/character';
 
@@ -63,10 +64,10 @@ const CharacterHeader: FC<CharacterHeaderProps> = ({
           justifyContent: compact ? 'center' : 'flex-start',
         }}
       >
-        {badge(label('race', race, gender, locale), `race.${race}`)}
+        {badge(label('race', race, gender, locale), raceToken(race))}
         {badge(
           label('class', characterClass, gender, locale),
-          `characterClass.${characterClass}`,
+          classToken(characterClass),
         )}
         <Chip
           size={compact ? 'small' : 'medium'}

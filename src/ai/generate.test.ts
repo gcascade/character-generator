@@ -101,7 +101,7 @@ describe('generateCharacter with locks (spec 003)', () => {
 describe('rerollProperty with locks (spec 003)', () => {
   it('does not call the AI when nothing else fits', async () => {
     const { provider, requests } = fakeProvider([fullAnswer]);
-    const elder = { ...korvusBlackiron, race: 'Elf' as const, age: 450 };
+    const elder = { ...korvusBlackiron, race: 'Elf' as const, age: 480 };
     const outcome = await rerollProperty(
       provider,
       elder,

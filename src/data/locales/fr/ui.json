@@ -113,6 +113,7 @@
   "reroll.alignment": "Relancer l'alignement",
   "punct.colon": " :",
   "character.portrait": "Portrait du personnage",
+  "character.emblem": "Emblème : {race} {characterClass}",
   "language.inline.en": "anglais",
   "language.inline.fr": "français",
   "lock.firstName": "Verrouiller le prénom",

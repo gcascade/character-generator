@@ -28,6 +28,15 @@ describe('prompts', () => {
     expect(prompt).toMatch(/4 to 6 paragraphs/);
   });
 
+  it('explains the original Ashborn race to the AI (spec 009)', () => {
+    const { prompt } = newCharacterPrompt({
+      ...korvusBlackiron,
+      epithet: 'the Bold',
+      race: 'Ashborn',
+    });
+    expect(prompt).toMatch(/Race: Ashborn \(.*infernal ancestry/);
+  });
+
   it('gives locked names as fixed facts and does not ask for them (spec 003)', () => {
     const { prompt, schema } = newCharacterPrompt(
       { ...korvusBlackiron, epithet: 'the Unyielding' },

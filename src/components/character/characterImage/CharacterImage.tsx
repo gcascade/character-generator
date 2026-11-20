@@ -5,6 +5,8 @@ import { isImage } from '../../../utils/image';
 import './CharacterImage.css';
 import { useLocale, useT } from '../../../i18n';
 import { label } from '../../../content/labels';
+import { slug } from '../../../content/slug';
+import RaceEmblem from '../raceEmblem/RaceEmblem';
 
 const DEFAULT_IMAGE_PATH = `${import.meta.env.BASE_URL}images/default-portrait.png`;
 
@@ -25,7 +27,7 @@ export const portraitFor = (
         ? 'Male'
         : 'Female'
       : gender;
-  return `${import.meta.env.BASE_URL}images/${race}/${characterClass}/${variant}1.png`.toLowerCase();
+  return `${import.meta.env.BASE_URL}images/${slug(race)}/${slug(characterClass)}/${variant.toLowerCase()}1.png`;
 };
 
 type CharacterImageProps = {
@@ -55,6 +57,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
   zoomable = true,
 }) => {
   const [portraitPath, setPortraitPath] = useState(DEFAULT_IMAGE_PATH);
+  const [missing, setMissing] = useState(false);
   const t = useT();
   const { locale } = useLocale();
 
@@ -75,6 +78,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
       }
 
       setPortraitPath(exists ? imagePath : DEFAULT_IMAGE_PATH);
+      setMissing(!exists);
     });
 
     return () => {
@@ -85,6 +89,19 @@ const CharacterImage: FC<CharacterImageProps> = ({
   const handleClick = () => {
     window.open(portraitPath, '_blank');
   };
+
+  if (missing && race && characterClass) {
+    // No portrait yet for this race and class: show its emblem (spec 009).
+    return (
+      <RaceEmblem
+        race={race}
+        characterClass={characterClass}
+        gender={gender}
+        height={height}
+        width={width}
+      />
+    );
+  }
 
   return (
     <CardMedia

@@ -62,7 +62,12 @@
         "Warrior": 2,
         "Mage": 1,
         "Rogue": 1,
-        "Cleric": 2
+        "Cleric": 2,
+        "Ranger": 1,
+        "Paladin": 3,
+        "Bard": 2,
+        "Druid": 1,
+        "Barbarian": 1
       },
       "alignment": {
         "lawful": 1
@@ -76,7 +81,12 @@
         "Warrior": 1,
         "Mage": 0,
         "Rogue": 3,
-        "Cleric": 0
+        "Cleric": 0,
+        "Ranger": 3,
+        "Paladin": 0,
+        "Bard": 1,
+        "Druid": 2,
+        "Barbarian": 1
       },
       "alignment": {}
     },
@@ -88,7 +98,12 @@
         "Warrior": 0,
         "Mage": 1,
         "Rogue": 0,
-        "Cleric": 3
+        "Cleric": 3,
+        "Ranger": 1,
+        "Paladin": 2,
+        "Bard": 1,
+        "Druid": 3,
+        "Barbarian": 0
       },
       "alignment": {
         "good": 1
@@ -102,7 +117,12 @@
         "Warrior": 1,
         "Mage": 1,
         "Rogue": 2,
-        "Cleric": 2
+        "Cleric": 2,
+        "Ranger": 0,
+        "Paladin": 2,
+        "Bard": 3,
+        "Druid": 1,
+        "Barbarian": 0
       },
       "alignment": {
         "good": 1
@@ -116,7 +136,12 @@
         "Warrior": 2,
         "Mage": 2,
         "Rogue": 1,
-        "Cleric": 1
+        "Cleric": 1,
+        "Ranger": 2,
+        "Paladin": 2,
+        "Bard": 1,
+        "Druid": 1,
+        "Barbarian": 0
       },
       "alignment": {
         "lawful": 1
@@ -130,7 +155,12 @@
         "Warrior": 3,
         "Mage": 0,
         "Rogue": 1,
-        "Cleric": 1
+        "Cleric": 1,
+        "Ranger": 1,
+        "Paladin": 2,
+        "Bard": 0,
+        "Druid": 0,
+        "Barbarian": 3
       },
       "alignment": {
         "chaotic": 1
@@ -144,7 +174,12 @@
         "Warrior": 3,
         "Mage": 0,
         "Rogue": 0,
-        "Cleric": 2
+        "Cleric": 2,
+        "Ranger": 1,
+        "Paladin": 3,
+        "Bard": 0,
+        "Druid": 1,
+        "Barbarian": 2
       },
       "alignment": {
         "good": 1
@@ -158,7 +193,12 @@
         "Warrior": 0,
         "Mage": 3,
         "Rogue": 1,
-        "Cleric": 2
+        "Cleric": 2,
+        "Ranger": 1,
+        "Paladin": 0,
+        "Bard": 2,
+        "Druid": 2,
+        "Barbarian": 0
       },
       "alignment": {}
     },
@@ -170,7 +210,12 @@
         "Warrior": 0,
         "Mage": 1,
         "Rogue": 3,
-        "Cleric": 0
+        "Cleric": 0,
+        "Ranger": 1,
+        "Paladin": 0,
+        "Bard": 3,
+        "Druid": 1,
+        "Barbarian": 0
       },
       "alignment": {
         "chaotic": 1
@@ -184,7 +229,12 @@
         "Warrior": 0,
         "Mage": 2,
         "Rogue": 1,
-        "Cleric": 2
+        "Cleric": 2,
+        "Ranger": 1,
+        "Paladin": 1,
+        "Bard": 3,
+        "Druid": 2,
+        "Barbarian": 0
       },
       "alignment": {}
     }

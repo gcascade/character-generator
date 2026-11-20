@@ -45,20 +45,29 @@ const EPITHET_STYLE: Record<Locale, string> = {
 const BACKGROUND_RULES =
   'The background has a short title and 4 to 6 paragraphs in the third person.';
 
+/** Races the AI may not know, explained in the prompt (spec 009). */
+const RACE_NOTES: Partial<Record<Character['race'], string>> = {
+  Ashborn:
+    'Ashborn (an original race of people with infernal ancestry: horns, ember eyes, often distrusted)',
+  'Dark elf': 'Dark elf (elves from cities deep underground)',
+};
+
+const raceText = (race: Character['race']) => RACE_NOTES[race] ?? race;
+
 const describe = (
   character: Pick<
     Character,
     'age' | 'gender' | 'race' | 'characterClass' | 'alignment'
   >,
 ) =>
-  `a ${character.age}-year-old ${character.gender.toLowerCase()} ${character.race} ${character.characterClass} of ${character.alignment} alignment`;
+  `a ${character.age}-year-old ${character.gender.toLowerCase()} ${raceText(character.race)} ${character.characterClass} of ${character.alignment} alignment`;
 
 const schemaText = (schema: ZodType) => JSON.stringify(z.toJSONSchema(schema));
 
 /** These properties are decided by the app; the AI must not change them (FR-007). */
 const fixedFacts = (character: Character) =>
   [
-    `Race: ${character.race}`,
+    `Race: ${raceText(character.race)}`,
     `Class: ${character.characterClass}`,
     `Gender: ${character.gender}`,
     `Alignment: ${character.alignment}`,

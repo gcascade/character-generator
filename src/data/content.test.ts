@@ -13,6 +13,7 @@ import {
   CharacterRaces,
   Genders,
 } from '../types/character';
+import { slug } from '../content/slug';
 
 type LocaleFiles = Record<string, Record<string, unknown>>;
 
@@ -174,7 +175,7 @@ describe('fragments and names', () => {
       const names = import.meta.glob<{
         default: { first: Record<string, string[]>; last: string[] };
       }>('./content/names/*.json', { eager: true })[
-        `./content/names/${race.toLowerCase()}.json`
+        `./content/names/${slug(race)}.json`
       ].default;
       const lists = [...Object.values(names.first), names.last];
       expect(Object.keys(names.first).sort()).toEqual([

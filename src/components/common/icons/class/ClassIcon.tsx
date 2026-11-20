@@ -1,47 +1,44 @@
 import {
   AutoFixHigh,
   EmojiSymbols,
+  Hiking,
+  MusicNote,
   Security,
+  Shield,
+  Spa,
   VisibilityOff,
+  Whatshot,
 } from '@mui/icons-material';
+import type { SvgIconComponent } from '@mui/icons-material';
 import React, { FC } from 'react';
 import { CharacterClass } from '../../../../types/character';
+import { slug } from '../../../../content/slug';
+import { classToken } from '../../../../themes/palette';
 
 type ClassIconProps = {
   characterClass: CharacterClass;
 };
 
+const ICONS: Record<CharacterClass, SvgIconComponent> = {
+  Warrior: Security,
+  Mage: AutoFixHigh,
+  Rogue: VisibilityOff,
+  Cleric: EmojiSymbols,
+  Ranger: Hiking,
+  Paladin: Shield,
+  Bard: MusicNote,
+  Druid: Spa,
+  Barbarian: Whatshot,
+};
+
 const ClassIcon: FC<ClassIconProps> = ({ characterClass }) => {
-  switch (characterClass) {
-    case 'Warrior':
-      return (
-        <Security
-          sx={{ color: 'characterClass.Warrior' }}
-          data-testid="warrior-icon"
-        />
-      );
-    case 'Mage':
-      return (
-        <AutoFixHigh
-          sx={{ color: 'characterClass.Mage' }}
-          data-testid="mage-icon"
-        />
-      );
-    case 'Rogue':
-      return (
-        <VisibilityOff
-          sx={{ color: 'characterClass.Rogue' }}
-          data-testid="rogue-icon"
-        />
-      );
-    case 'Cleric':
-      return (
-        <EmojiSymbols
-          sx={{ color: 'characterClass.Cleric' }}
-          data-testid="cleric-icon"
-        />
-      );
-  }
+  const Icon = ICONS[characterClass];
+  return (
+    <Icon
+      sx={{ color: classToken(characterClass) }}
+      data-testid={`${slug(characterClass)}-icon`}
+    />
+  );
 };
 
 export default ClassIcon;

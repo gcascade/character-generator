@@ -41,9 +41,35 @@ describe('CharacterImage', () => {
     )) as HTMLImageElement;
     expect(image.src).toContain('/images/default-portrait.png');
   });
+
+  test('shows the race emblem when no portrait exists for the race and class (spec 009)', async () => {
+    isImageMock.mockResolvedValue(false);
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => {
+      render(
+        <CharacterImage
+          height={512}
+          width={512}
+          {...korvusBlackiron}
+          race="Gnome"
+          characterClass="Bard"
+        />,
+      );
+    });
+    expect(
+      await screen.findByRole('img', { name: 'Emblem: Gnome Bard' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByAltText('Gnome Bard')).not.toBeInTheDocument();
+  });
 });
 
 describe('portraitFor', () => {
+  it('uses file-friendly folder names', () => {
+    expect(portraitFor('Dark elf', 'Ranger', 'Female')).toContain(
+      '/images/dark-elf/ranger/female1.png',
+    );
+  });
+
   it('always gives the same portrait to the same non-binary character', () => {
     const paths = new Set(
       Array.from({ length: 20 }, () =>

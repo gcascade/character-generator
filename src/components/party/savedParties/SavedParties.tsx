@@ -14,6 +14,7 @@ import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { label } from '../../../content/labels';
 import { renderParty } from '../../../content/party';
+import { classToken, raceToken } from '../../../themes/palette';
 import useAlert from '../../../hooks/useAlert';
 import useParty from '../../../hooks/useParty';
 import { useLocale, useT } from '../../../i18n';
@@ -52,12 +53,12 @@ const SavedPartyCard: FC<{ party: Party }> = ({ party }) => {
               </strong>{' '}
               <Box component="span" sx={{ color: 'text.secondary' }}>
                 ·{' '}
-                <Box component="span" sx={{ color: `race.${character.race}` }}>
+                <Box component="span" sx={{ color: raceToken(character.race) }}>
                   {label('race', character.race, character.gender, locale)}
                 </Box>{' '}
                 <Box
                   component="span"
-                  sx={{ color: `characterClass.${character.characterClass}` }}
+                  sx={{ color: classToken(character.characterClass) }}
                 >
                   {label(
                     'class',

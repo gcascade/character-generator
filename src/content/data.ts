@@ -14,6 +14,11 @@ import dwarf from '../data/content/names/dwarf.json';
 import elf from '../data/content/names/elf.json';
 import human from '../data/content/names/human.json';
 import orc from '../data/content/names/orc.json';
+import ashborn from '../data/content/names/ashborn.json';
+import darkElf from '../data/content/names/dark-elf.json';
+import gnome from '../data/content/names/gnome.json';
+import halfElf from '../data/content/names/half-elf.json';
+import halfling from '../data/content/names/halfling.json';
 import enEpithets from '../data/locales/en/epithets.json';
 import enGoals from '../data/locales/en/goals.json';
 import enOrigins from '../data/locales/en/origins.json';
@@ -59,6 +64,11 @@ export const NAMES: Record<CharacterRace, NameLists> = {
   Elf: elf,
   Dwarf: dwarf,
   Orc: orc,
+  Halfling: halfling,
+  Gnome: gnome,
+  'Half-elf': halfElf,
+  'Dark elf': darkElf,
+  Ashborn: ashborn,
 };
 
 type Texts = Record<string, GenderedText>;
