@@ -88,11 +88,14 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   "la compagnie" as the subject: no gender selection, no agreement with members.
 - `PartyProvider` stores the current party in `localStorage["party"]` and saved parties in `localStorage["parties"]`
   (`{ version: 1, ... }`, parsed by `storedParty.ts`). A rerolled party gets a new id, so it is no longer "saved".
-- With AI, `generatePartyStory` writes the name and story only (`usePartyGenerator`).
+- With AI, `generatePartyStory` writes the name, story and starting point only (`usePartyGenerator`).
+- Party depth (spec 008, `src/content/partyDepth.ts`): ties (`{a}`/`{b}` texts, agreement-free), roles (weights per
+  class and alignment in `src/data/content/partyDepth.json`, leader unique, ≤ 2 per role), balance (computed, not
+  stored) and adventure hook (place, patron, threat). `completeParty` fills roles and hook for older parties.
 
 ## Share links (spec 007)
 
-- `<app>/share#c1.<data>` (character) or `#p1.<data>` (party); `data` is base64url JSON of a positional array
+- `<app>/share#c1.<data>` (character) or `#p2.<data>` (party with ties, roles and hook; `#p1.` still read); `data` is base64url JSON of a positional array
   (`specs/007-share-link/data-model.md`), decoded and validated by `src/content/share.ts` before display.
 - Enum values are shared as indexes: keep the `as const` objects of `src/types/character.ts` append-only.
 - Fragment references are shared as short slugs; a slug that no longer exists is replaced by a fragment of the same

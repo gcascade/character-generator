@@ -72,8 +72,8 @@ description: 'Task list for party depth'
 
 ## Phase 8: Polish
 
-- [ ] T019 [P] Update README.md and CLAUDE.md (party depth data, share `p2`)
-- [ ] T020 Run lint, typecheck, test:run, build and build-storybook; browser validation of quickstart.md with screenshots; sample of ties and hooks in both languages for the maintainer
+- [x] T019 [P] Update README.md and CLAUDE.md (party depth data, share `p2`)
+- [x] T020 Run lint, typecheck, test:run, build and build-storybook; browser validation of quickstart.md with screenshots; sample of ties and hooks in both languages for the maintainer
 
 ---
 
