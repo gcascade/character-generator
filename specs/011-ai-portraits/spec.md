@@ -8,6 +8,15 @@
 
 **Input**: User description: "AI portraits (spec 011). Generate a portrait image with AI from a character's description (race, class or occupation, gender, age, alignment/epithet, a fixed painterly style matching the existing portraits), for characters and side characters, since 130 of 162 race/class portraits are missing and NPCs only have an emblem. Free image services discussed earlier: AI Horde (anonymous key, browser-capable, slow ~1 min) for in-app portraits; Cloudflare Workers AI (free daily quota, FLUX schnell) for a one-off batch of missing generic portraits committed to the repo. Must keep working without AI (emblem/static portraits remain the fallback)."
 
+## Clarifications
+
+### Session 2026-11-20
+
+- Q: Also fill the missing default portraits? → A: Yes, after in-app portraits, with a script the maintainer runs on
+  their own computer with their own account (no key goes through anyone else); it works without an account too
+  (free community queue), and optionally with a free account on a faster service.
+- Q: Which service in the app? → A: The free, no-account community service (AI Horde).
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - A portrait made for my character (Priority: P1)
@@ -59,8 +68,11 @@ party member card.
 
 ### User Story 3 - Fill the missing default portraits (Priority: P2)
 
-[NEEDS CLARIFICATION: Should this feature also produce the 130 missing default race/class portraits once, as files
-in the project (painted in a batch by the maintainer's tooling), or stay limited to in-app portraits?]
+The maintainer runs one command on their own computer: it lists the race/class/gender portraits that are missing,
+paints them one by one in the existing style, saves them at the right paths and size, and updates the portrait
+guide. It can run without any account (slow free queue) or with the maintainer's own free account on a faster
+service. It can be stopped and resumed (for example when a daily free quota is used up), and the maintainer reviews
+the images before committing them.
 
 **Why this priority**: Default portraits benefit every visitor, without waiting for a painting.
 
@@ -69,9 +81,14 @@ instead of the emblem.
 
 **Acceptance Scenarios**:
 
-1. **Given** the batch tool and a service account, **When** it runs, **Then** it writes the missing portraits at the
-   expected paths and size, in the existing style, and updates the portrait guide.
-2. **Given** a combination already painted by hand, **When** the batch runs, **Then** it is never overwritten.
+1. **Given** the script, **When** it runs with no account, **Then** it paints the missing portraits through the free
+   queue, writes them at the expected paths and size, and updates the portrait guide.
+2. **Given** the maintainer's own account key in their environment, **When** the script runs with the faster
+   service, **Then** it uses it; the key is never written to a file or printed.
+3. **Given** an existing portrait, **When** the script runs, **Then** it is never overwritten (unless asked for one
+   path explicitly).
+4. **Given** a quota or network error, **When** the script stops, **Then** what is done is kept and a new run
+   continues with what is left; a dry run lists what would be painted without calling any service.
 
 ---
 
@@ -103,8 +120,10 @@ instead of the emblem.
 - **FR-005**: Painted portraits of saved characters, side characters and party members MUST survive a reload;
   storage limits are handled without losing the character.
 - **FR-006**: Share links MUST stay as they are; a shared character shows its default portrait.
-- **FR-007**: The image service used MUST be [NEEDS CLARIFICATION: a free, no-account service only (slow queue), the
-  user's own image provider with a key (fast, may cost), or both?].
+- **FR-007**: In the app, portraits MUST be painted by a free service that needs no account (community queue);
+  other services may be added later.
+- **FR-010**: A script run by the maintainer MUST paint the missing default portraits (no account by default, the
+  maintainer's own account optionally), resumable, never overwriting existing portraits, with a dry run.
 - **FR-008**: Before the first painting, the user MUST be told which service receives the description.
 - **FR-009**: Changing a trait shown in the portrait MUST mark a painted portrait as possibly outdated.
 
