@@ -75,7 +75,13 @@ describe('Share page', () => {
     const character = generateRandomCharacter();
     renderLink(shareUrl({ kind: 'character', character }, BASE), 'fr');
     expect(
-      screen.getByText(renderCharacter(character, 'fr').background.content[0]),
+      // The DOM text is normalized (U+202F before French punctuation becomes a space); the expected text must be too.
+      screen.getByText(
+        renderCharacter(character, 'fr').background.content[0].replace(
+          /\s+/g,
+          ' ',
+        ),
+      ),
     ).toBeInTheDocument();
   });
 
