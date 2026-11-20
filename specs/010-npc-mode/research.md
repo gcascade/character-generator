@@ -58,9 +58,8 @@
 - **Decision**: `generateNpcSheet(provider, npc, locale)` asks for `{ firstName, lastName, look, daily, quirk,
 rumour, secret, opinion }` (zod, each 1–600 chars), fixed facts = race (with spec 009 notes), occupation, gender,
   age. Result stored as `text` with `language` and `source: 'ai'`; failure → the fragment NPC and the usual message.
-  Section dice on an AI NPC replace that section with a fragment and drop the AI text for it only... simplified:
-  rerolling a section of an AI-written NPC switches the whole sheet back to fragments (with a notice), as character
-  rerolls drop AI text.
+  Rerolling a section of an AI-written NPC switches the whole sheet back to fragments, as character rerolls drop
+  AI text.
 - **Rationale**: consistency with characters; keeps the data model simple (text is all-or-nothing).
 
 ## R9. Portrait
