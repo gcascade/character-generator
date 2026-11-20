@@ -9,10 +9,15 @@ import type {
   Gender,
 } from '../../../types/character';
 import RaceIcon from '../../common/icons/race/RaceIcon';
+import OccupationIcon from '../../npc/occupationIcon/OccupationIcon';
+import type { Occupation } from '../../../types/npc';
 
 type RaceEmblemProps = {
   race: CharacterRace;
-  characterClass: CharacterClass;
+  /** Frames the shield in the class colour (characters). */
+  characterClass?: CharacterClass;
+  /** Neutral frame with the occupation symbol (side characters, spec 010). */
+  occupation?: Occupation;
   gender?: Gender;
   height: string | number;
   width: string | number;
@@ -20,11 +25,13 @@ type RaceEmblemProps = {
 
 /**
  * Neutral portrait shown while no image exists for a race and class (spec 009):
- * a shield in the class colour carrying the race symbol.
+ * a shield in the class colour carrying the race symbol. Side characters get a
+ * neutral shield with their occupation's symbol (spec 010).
  */
 const RaceEmblem: FC<RaceEmblemProps> = ({
   race,
   characterClass,
+  occupation,
   gender = 'Male',
   height,
   width,
@@ -37,7 +44,9 @@ const RaceEmblem: FC<RaceEmblemProps> = ({
       role="img"
       aria-label={t('character.emblem', {
         race: label('race', race, gender, locale),
-        characterClass: label('class', characterClass, gender, locale),
+        characterClass: characterClass
+          ? label('class', characterClass, gender, locale)
+          : label('occupation', occupation ?? '', gender, locale),
       })}
       className="character-portrait"
       data-testid="race-emblem"
@@ -59,7 +68,7 @@ const RaceEmblem: FC<RaceEmblemProps> = ({
         sx={{
           height: '78%',
           maxWidth: '85%',
-          color: classToken(characterClass),
+          color: characterClass ? classToken(characterClass) : 'secondary.main',
         }}
       >
         <path
@@ -93,6 +102,25 @@ const RaceEmblem: FC<RaceEmblemProps> = ({
       >
         <RaceIcon characterRace={race} />
       </Box>
+      {occupation && (
+        <Box
+          aria-hidden
+          sx={{
+            position: 'absolute',
+            bottom: '6%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            p: 0.75,
+            borderRadius: '50%',
+            bgcolor: 'background.paper',
+            border: 2,
+            borderColor: 'secondary.main',
+          }}
+        >
+          <OccupationIcon occupation={occupation} />
+        </Box>
+      )}
     </Box>
   );
 };

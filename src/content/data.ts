@@ -2,6 +2,9 @@ import epithetIds from '../data/content/epithets.json';
 import fragments from '../data/content/fragments.json';
 import partyFragments from '../data/content/party.json';
 import partyDepth from '../data/content/partyDepth.json';
+import npcData from '../data/content/npc.json';
+import enNpc from '../data/locales/en/npc.json';
+import frNpc from '../data/locales/fr/npc.json';
 import enHooks from '../data/locales/en/hooks.json';
 import enRoles from '../data/locales/en/roles.json';
 import enTies from '../data/locales/en/ties.json';
@@ -38,6 +41,7 @@ import type {
   CharacterRace,
 } from '../types/character';
 import type { BalanceArea } from '../types/party';
+import type { NpcSection, Occupation } from '../types/npc';
 import type { GenderedText } from './renderText';
 
 export type FragmentCategory =
@@ -137,4 +141,27 @@ export const DEPTH_TEXTS: Record<
 > = {
   en: { ties: enTies, roles: enRoles, hooks: enHooks },
   fr: { ties: frTies, roles: frRoles, hooks: frHooks },
+};
+
+// --- Side characters (spec 010) ---
+
+export type OccupationDefinition = {
+  id: Occupation;
+  /** Youngest age for this occupation. */
+  minAge: number;
+};
+
+export type NpcFragment = {
+  id: string;
+  section: NpcSection;
+  /** Daily-life fragments belong to an occupation; the others are shared. */
+  occupation?: Occupation;
+};
+
+export const OCCUPATIONS = npcData.occupations as OccupationDefinition[];
+export const NPC_FRAGMENTS = npcData.fragments as NpcFragment[];
+
+export const NPC_TEXTS: Record<Locale, Record<string, GenderedText>> = {
+  en: enNpc,
+  fr: frNpc,
 };

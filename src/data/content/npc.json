@@ -1,0 +1,786 @@
+{
+  "occupations": [
+    {
+      "id": "Blacksmith",
+      "minAge": 16
+    },
+    {
+      "id": "Innkeeper",
+      "minAge": 16
+    },
+    {
+      "id": "Farmer",
+      "minAge": 16
+    },
+    {
+      "id": "Beggar",
+      "minAge": 15
+    },
+    {
+      "id": "Priest",
+      "minAge": 20
+    },
+    {
+      "id": "Merchant",
+      "minAge": 16
+    },
+    {
+      "id": "Guard",
+      "minAge": 16
+    },
+    {
+      "id": "Fisher",
+      "minAge": 16
+    },
+    {
+      "id": "Healer",
+      "minAge": 20
+    },
+    {
+      "id": "Scribe",
+      "minAge": 20
+    },
+    {
+      "id": "Hunter",
+      "minAge": 16
+    },
+    {
+      "id": "Miller",
+      "minAge": 16
+    },
+    {
+      "id": "Baker",
+      "minAge": 16
+    },
+    {
+      "id": "Tailor",
+      "minAge": 16
+    },
+    {
+      "id": "Stablehand",
+      "minAge": 15
+    },
+    {
+      "id": "Minstrel",
+      "minAge": 16
+    },
+    {
+      "id": "Sailor",
+      "minAge": 16
+    },
+    {
+      "id": "Noble",
+      "minAge": 15
+    },
+    {
+      "id": "Alchemist",
+      "minAge": 20
+    },
+    {
+      "id": "Gravedigger",
+      "minAge": 16
+    }
+  ],
+  "fragments": [
+    {
+      "id": "daily-blacksmith-dawn",
+      "section": "daily",
+      "occupation": "Blacksmith"
+    },
+    {
+      "id": "daily-blacksmith-repairs",
+      "section": "daily",
+      "occupation": "Blacksmith"
+    },
+    {
+      "id": "daily-blacksmith-masterpiece",
+      "section": "daily",
+      "occupation": "Blacksmith"
+    },
+    {
+      "id": "daily-innkeeper-crossroads",
+      "section": "daily",
+      "occupation": "Innkeeper"
+    },
+    {
+      "id": "daily-innkeeper-kitchen",
+      "section": "daily",
+      "occupation": "Innkeeper"
+    },
+    {
+      "id": "daily-innkeeper-ledger",
+      "section": "daily",
+      "occupation": "Innkeeper"
+    },
+    {
+      "id": "daily-farmer-fields",
+      "section": "daily",
+      "occupation": "Farmer"
+    },
+    {
+      "id": "daily-farmer-market",
+      "section": "daily",
+      "occupation": "Farmer"
+    },
+    {
+      "id": "daily-farmer-herd",
+      "section": "daily",
+      "occupation": "Farmer"
+    },
+    {
+      "id": "daily-beggar-steps",
+      "section": "daily",
+      "occupation": "Beggar"
+    },
+    {
+      "id": "daily-beggar-songs",
+      "section": "daily",
+      "occupation": "Beggar"
+    },
+    {
+      "id": "daily-beggar-wanderer",
+      "section": "daily",
+      "occupation": "Beggar"
+    },
+    {
+      "id": "daily-priest-chapel",
+      "section": "daily",
+      "occupation": "Priest"
+    },
+    {
+      "id": "daily-priest-alms",
+      "section": "daily",
+      "occupation": "Priest"
+    },
+    {
+      "id": "daily-priest-relics",
+      "section": "daily",
+      "occupation": "Priest"
+    },
+    {
+      "id": "daily-merchant-stall",
+      "section": "daily",
+      "occupation": "Merchant"
+    },
+    {
+      "id": "daily-merchant-caravan",
+      "section": "daily",
+      "occupation": "Merchant"
+    },
+    {
+      "id": "daily-merchant-curios",
+      "section": "daily",
+      "occupation": "Merchant"
+    },
+    {
+      "id": "daily-guard-gate",
+      "section": "daily",
+      "occupation": "Guard"
+    },
+    {
+      "id": "daily-guard-night",
+      "section": "daily",
+      "occupation": "Guard"
+    },
+    {
+      "id": "daily-guard-manor",
+      "section": "daily",
+      "occupation": "Guard"
+    },
+    {
+      "id": "daily-fisher-boat",
+      "section": "daily",
+      "occupation": "Fisher"
+    },
+    {
+      "id": "daily-fisher-nets",
+      "section": "daily",
+      "occupation": "Fisher"
+    },
+    {
+      "id": "daily-fisher-river",
+      "section": "daily",
+      "occupation": "Fisher"
+    },
+    {
+      "id": "daily-healer-herbs",
+      "section": "daily",
+      "occupation": "Healer"
+    },
+    {
+      "id": "daily-healer-midwife",
+      "section": "daily",
+      "occupation": "Healer"
+    },
+    {
+      "id": "daily-healer-remedies",
+      "section": "daily",
+      "occupation": "Healer"
+    },
+    {
+      "id": "daily-scribe-letters",
+      "section": "daily",
+      "occupation": "Scribe"
+    },
+    {
+      "id": "daily-scribe-archives",
+      "section": "daily",
+      "occupation": "Scribe"
+    },
+    {
+      "id": "daily-scribe-notary",
+      "section": "daily",
+      "occupation": "Scribe"
+    },
+    {
+      "id": "daily-hunter-woods",
+      "section": "daily",
+      "occupation": "Hunter"
+    },
+    {
+      "id": "daily-hunter-lord",
+      "section": "daily",
+      "occupation": "Hunter"
+    },
+    {
+      "id": "daily-hunter-wolves",
+      "section": "daily",
+      "occupation": "Hunter"
+    },
+    {
+      "id": "daily-miller-mill",
+      "section": "daily",
+      "occupation": "Miller"
+    },
+    {
+      "id": "daily-miller-windmill",
+      "section": "daily",
+      "occupation": "Miller"
+    },
+    {
+      "id": "daily-miller-flour",
+      "section": "daily",
+      "occupation": "Miller"
+    },
+    {
+      "id": "daily-baker-night",
+      "section": "daily",
+      "occupation": "Baker"
+    },
+    {
+      "id": "daily-baker-pastries",
+      "section": "daily",
+      "occupation": "Baker"
+    },
+    {
+      "id": "daily-baker-oven",
+      "section": "daily",
+      "occupation": "Baker"
+    },
+    {
+      "id": "daily-tailor-fittings",
+      "section": "daily",
+      "occupation": "Tailor"
+    },
+    {
+      "id": "daily-tailor-nobles",
+      "section": "daily",
+      "occupation": "Tailor"
+    },
+    {
+      "id": "daily-tailor-mending",
+      "section": "daily",
+      "occupation": "Tailor"
+    },
+    {
+      "id": "daily-stablehand-inn",
+      "section": "daily",
+      "occupation": "Stablehand"
+    },
+    {
+      "id": "daily-stablehand-post",
+      "section": "daily",
+      "occupation": "Stablehand"
+    },
+    {
+      "id": "daily-stablehand-lord",
+      "section": "daily",
+      "occupation": "Stablehand"
+    },
+    {
+      "id": "daily-minstrel-taverns",
+      "section": "daily",
+      "occupation": "Minstrel"
+    },
+    {
+      "id": "daily-minstrel-court",
+      "section": "daily",
+      "occupation": "Minstrel"
+    },
+    {
+      "id": "daily-minstrel-square",
+      "section": "daily",
+      "occupation": "Minstrel"
+    },
+    {
+      "id": "daily-sailor-docks",
+      "section": "daily",
+      "occupation": "Sailor"
+    },
+    {
+      "id": "daily-sailor-barge",
+      "section": "daily",
+      "occupation": "Sailor"
+    },
+    {
+      "id": "daily-sailor-shore",
+      "section": "daily",
+      "occupation": "Sailor"
+    },
+    {
+      "id": "daily-noble-estate",
+      "section": "daily",
+      "occupation": "Noble"
+    },
+    {
+      "id": "daily-noble-court",
+      "section": "daily",
+      "occupation": "Noble"
+    },
+    {
+      "id": "daily-noble-ruined",
+      "section": "daily",
+      "occupation": "Noble"
+    },
+    {
+      "id": "daily-alchemist-shop",
+      "section": "daily",
+      "occupation": "Alchemist"
+    },
+    {
+      "id": "daily-alchemist-tower",
+      "section": "daily",
+      "occupation": "Alchemist"
+    },
+    {
+      "id": "daily-alchemist-guild",
+      "section": "daily",
+      "occupation": "Alchemist"
+    },
+    {
+      "id": "daily-gravedigger-cemetery",
+      "section": "daily",
+      "occupation": "Gravedigger"
+    },
+    {
+      "id": "daily-gravedigger-night",
+      "section": "daily",
+      "occupation": "Gravedigger"
+    },
+    {
+      "id": "daily-gravedigger-plague",
+      "section": "daily",
+      "occupation": "Gravedigger"
+    },
+    {
+      "id": "look-scar",
+      "section": "look"
+    },
+    {
+      "id": "look-patched",
+      "section": "look"
+    },
+    {
+      "id": "look-jewels",
+      "section": "look"
+    },
+    {
+      "id": "look-tall",
+      "section": "look"
+    },
+    {
+      "id": "look-freckles",
+      "section": "look"
+    },
+    {
+      "id": "look-grey",
+      "section": "look"
+    },
+    {
+      "id": "look-tattoo",
+      "section": "look"
+    },
+    {
+      "id": "look-spectacles",
+      "section": "look"
+    },
+    {
+      "id": "look-braids",
+      "section": "look"
+    },
+    {
+      "id": "look-stout",
+      "section": "look"
+    },
+    {
+      "id": "look-pale",
+      "section": "look"
+    },
+    {
+      "id": "look-elegant",
+      "section": "look"
+    },
+    {
+      "id": "look-burns",
+      "section": "look"
+    },
+    {
+      "id": "look-hat",
+      "section": "look"
+    },
+    {
+      "id": "look-limp",
+      "section": "look"
+    },
+    {
+      "id": "look-apron",
+      "section": "look"
+    },
+    {
+      "id": "look-eyes",
+      "section": "look"
+    },
+    {
+      "id": "look-muddy",
+      "section": "look"
+    },
+    {
+      "id": "look-smile",
+      "section": "look"
+    },
+    {
+      "id": "look-nervous",
+      "section": "look"
+    },
+    {
+      "id": "quirk-questions",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-proverbs",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-whisper",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-names",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-humming",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-bargain",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-third",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-omens",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-laugh",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-food",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-counting",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-formal",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-stories",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-wink",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-silence",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-gossip",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-cat",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-pipe",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-weather",
+      "section": "quirk"
+    },
+    {
+      "id": "quirk-old",
+      "section": "quirk"
+    },
+    {
+      "id": "rumour-mill",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-lord",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-well",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-tax",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-wolves",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-treasure",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-ship",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-priest",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-children",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-bandits",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-dragon",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-tavern",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-wedding",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-plague",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-statue",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-mine",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-witch",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-soldiers",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-bells",
+      "section": "rumour"
+    },
+    {
+      "id": "rumour-map",
+      "section": "rumour"
+    },
+    {
+      "id": "secret-debt",
+      "section": "secret"
+    },
+    {
+      "id": "secret-noble",
+      "section": "secret"
+    },
+    {
+      "id": "secret-spy",
+      "section": "secret"
+    },
+    {
+      "id": "secret-fire",
+      "section": "secret"
+    },
+    {
+      "id": "secret-magic",
+      "section": "secret"
+    },
+    {
+      "id": "secret-cult",
+      "section": "secret"
+    },
+    {
+      "id": "secret-love",
+      "section": "secret"
+    },
+    {
+      "id": "secret-stolen",
+      "section": "secret"
+    },
+    {
+      "id": "secret-deserter",
+      "section": "secret"
+    },
+    {
+      "id": "secret-poison",
+      "section": "secret"
+    },
+    {
+      "id": "secret-twin",
+      "section": "secret"
+    },
+    {
+      "id": "secret-smuggler",
+      "section": "secret"
+    },
+    {
+      "id": "secret-letter",
+      "section": "secret"
+    },
+    {
+      "id": "secret-curse",
+      "section": "secret"
+    },
+    {
+      "id": "secret-gold",
+      "section": "secret"
+    },
+    {
+      "id": "secret-informer",
+      "section": "secret"
+    },
+    {
+      "id": "secret-forged",
+      "section": "secret"
+    },
+    {
+      "id": "secret-creature",
+      "section": "secret"
+    },
+    {
+      "id": "secret-heir",
+      "section": "secret"
+    },
+    {
+      "id": "secret-dream",
+      "section": "secret"
+    },
+    {
+      "id": "opinion-admire",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-wary",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-greedy",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-hostile",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-indifferent",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-former",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-pity",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-useful",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-help",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-fear",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-child",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-rival",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-songs",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-religious",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-bargain",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-curious",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-lawful",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-mocking",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-debt",
+      "section": "opinion"
+    },
+    {
+      "id": "opinion-cautious",
+      "section": "opinion"
+    }
+  ]
+}

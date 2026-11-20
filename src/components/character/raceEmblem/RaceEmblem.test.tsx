@@ -25,4 +25,19 @@ describe('RaceEmblem', () => {
     );
     expect(screen.getByTestId(`${slug(race)}-icon`)).toBeInTheDocument();
   });
+
+  it('shows the occupation of a side character (spec 010)', () => {
+    render(
+      <RaceEmblem
+        race="Halfling"
+        occupation="Baker"
+        height={200}
+        width={200}
+      />,
+    );
+    expect(
+      screen.getByRole('img', { name: 'Emblem: Halfling Baker' }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('baker-icon')).toBeInTheDocument();
+  });
 });
