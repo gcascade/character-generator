@@ -44,7 +44,8 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 ```
 src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
-  pages/                           Home (generator), Party, Characters (saved + parties tab), CharacterDetails, Share, Settings
+  pages/                           Home (generator), Party, Npcs, Characters (saved, parties, side characters tabs),
+                                   CharacterDetails, NpcDetails, Share, Settings
   contexts/                        One React context per concern (character, history, settings, ...)
   ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
@@ -95,6 +96,16 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 - Party depth (spec 008, `src/content/partyDepth.ts`): ties (`{a}`/`{b}` texts, agreement-free), roles (weights per
   class and alignment in `src/data/content/partyDepth.json`, leader unique, ≤ 2 per role), balance (computed, not
   stored) and adventure hook (place, patron, threat). `completeParty` fills roles and hook for older parties.
+
+## Side characters (spec 010)
+
+- `Npc` (`src/types/npc.ts`) is separate from `Character`: names, race, gender, age, `occupation` (`Occupations`,
+  append-only) and `content` = one fragment id per section (`look`, `daily`, `quirk`, `rumour`, `secret`,
+  `opinion`); AI-written `text` overrides it. `src/content/npc.ts`: `generateNpc`, `generateNpcs`, `rerollNpc`,
+  `renderNpc`; data in `src/data/content/npc.json` and `src/data/locales/<locale>/npc.json`.
+- `NpcProvider` stores the page state in `localStorage["npc"]` and saved NPCs in `["npcs"]` (`{ version: 1, ... }`,
+  parsed by `storedNpc.ts`); locks live in the NPC context, not `LockProvider`.
+- UI name "Side characters" / "Personnages secondaires"; routes `/npcs`, `/npcs/:id`; share prefix `#n1.`.
 
 ## Share links (spec 007)
 

@@ -130,11 +130,12 @@ describe('generateNpc', () => {
 });
 
 describe('generateNpcs', () => {
-  it('gives five NPCs with different first names, within the constraints', () => {
+  it('gives five NPCs with different first names and quirks, within the constraints', () => {
     for (let i = 0; i < 100; i++) {
       const npcs = generateNpcs(5, { occupation: 'Guard', race: 'Dwarf' });
       expect(npcs).toHaveLength(5);
       expect(new Set(npcs.map((n) => n.firstName)).size).toBe(5);
+      expect(new Set(npcs.map((n) => n.content.quirk)).size).toBe(5);
       expect(npcs.every((n) => n.occupation === 'Guard')).toBe(true);
       expect(npcs.every((n) => n.race === 'Dwarf')).toBe(true);
     }

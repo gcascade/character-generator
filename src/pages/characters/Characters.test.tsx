@@ -8,6 +8,8 @@ import { Character } from '../../types/character';
 import { LocaleProvider } from '../../i18n';
 import { MemoryRouter } from 'react-router';
 import Characters from './Characters';
+import userEvent from '@testing-library/user-event';
+import { NpcProvider } from '../../contexts/NpcContext';
 
 const renderCharactersWithContext = (
   characters: Character[] = [],
@@ -28,7 +30,9 @@ const renderCharactersWithContext = (
           <AlertManagerContext.Provider
             value={{ alerts: [], addAlert: vi.fn(), removeAlert: vi.fn() }}
           >
-            <Characters />
+            <NpcProvider>
+              <Characters />
+            </NpcProvider>
           </AlertManagerContext.Provider>
         </DataContext.Provider>
       </LocaleProvider>
@@ -106,5 +110,13 @@ describe('Characters', () => {
     expect(screen.getByText('Écrit en anglais')).toBeInTheDocument();
     expect(screen.getByText('Nain')).toBeInTheDocument();
     localStorage.clear();
+  });
+
+  it('lists saved side characters in their own tab (spec 010)', async () => {
+    renderCharactersWithContext();
+    await userEvent.click(screen.getByRole('tab', { name: 'Side characters' }));
+    expect(
+      screen.getByText(/No saved side characters yet/),
+    ).toBeInTheDocument();
   });
 });

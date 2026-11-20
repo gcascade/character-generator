@@ -17,6 +17,9 @@ import { PartyProvider } from '../../contexts/PartyContext';
 import useParty from '../../hooks/useParty';
 import { LocaleProvider } from '../../i18n';
 import Share from './Share';
+import { NpcProvider } from '../../contexts/NpcContext';
+import useNpcs from '../../hooks/useNpcs';
+import { generateNpc } from '../../content/npc';
 
 const BASE = 'https://example.org/app/';
 const current = generateRandomCharacter({ race: 'Orc' });
@@ -25,6 +28,7 @@ const HomeProbe = () => (
   <p>current: {useContext(CharacterContext)!.character.firstName}</p>
 );
 const PartyProbe = () => <p>party size: {useParty().party?.members.length}</p>;
+const NpcProbe = () => <p>current npc: {useNpcs().npc.firstName}</p>;
 
 const renderLink = (url: string, locale: 'en' | 'fr' = 'en') =>
   render(
@@ -35,11 +39,14 @@ const renderLink = (url: string, locale: 'en' | 'fr' = 'en') =>
             <HistoryProvider>
               <DataProvider>
                 <PartyProvider>
-                  <Routes>
-                    <Route path="/" element={<HomeProbe />} />
-                    <Route path="/party" element={<PartyProbe />} />
-                    <Route path="/share" element={<Share />} />
-                  </Routes>
+                  <NpcProvider>
+                    <Routes>
+                      <Route path="/" element={<HomeProbe />} />
+                      <Route path="/party" element={<PartyProbe />} />
+                      <Route path="/npcs" element={<NpcProbe />} />
+                      <Route path="/share" element={<Share />} />
+                    </Routes>
+                  </NpcProvider>
                 </PartyProvider>
               </DataProvider>
             </HistoryProvider>
@@ -145,5 +152,38 @@ describe('Share page', () => {
     expect(
       screen.getByRole('link', { name: 'Go to the generator' }),
     ).toHaveAttribute('href', '/');
+  });
+
+  describe('side characters (spec 010)', () => {
+    it('shows a shared side character in the visitor language and saves it once', async () => {
+      const npc = generateNpc({ occupation: 'Miller', gender: 'Female' });
+      renderLink(shareUrl({ kind: 'npc', npc }, BASE), 'fr');
+      expect(
+        screen.getByText('Personnage secondaire partagé'),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', {
+          level: 1,
+          name: `${npc.firstName} ${npc.lastName}`,
+        }),
+      ).toBeInTheDocument();
+      expect(screen.getByText('Meunière')).toBeInTheDocument();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sauvegarder' }),
+      );
+      expect(screen.getByRole('button', { name: 'Sauvegardé' })).toBeDisabled();
+      expect(stored('npcs').npcs).toHaveLength(1);
+    });
+
+    it('opens a shared side character on the side-character page', async () => {
+      const npc = generateNpc();
+      renderLink(shareUrl({ kind: 'npc', npc }, BASE));
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Open in Side characters' }),
+      );
+      expect(
+        screen.getByText(`current npc: ${npc.firstName}`),
+      ).toBeInTheDocument();
+    });
   });
 });

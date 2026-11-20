@@ -25,6 +25,9 @@ describe('DrawerMenu', () => {
       'href',
       '/settings',
     );
+    expect(
+      screen.getByRole('link', { name: 'Side characters' }),
+    ).toHaveAttribute('href', '/npcs');
   });
 
   it('hides the links when temporary and closed', () => {

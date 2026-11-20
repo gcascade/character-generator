@@ -62,7 +62,9 @@ const Characters = () => {
         <Tabs
           value={tab}
           onChange={(_, next) => setTab(next)}
-          centered
+          // Three tabs do not fit side by side on a phone: they share the width and wrap.
+          variant={isPhone ? 'fullWidth' : 'standard'}
+          centered={!isPhone}
           sx={{ mb: 1 }}
         >
           <Tab value="characters" label={t('characters.tab.characters')} />

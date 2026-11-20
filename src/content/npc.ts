@@ -100,7 +100,7 @@ export const generateNpc = (
   };
 };
 
-/** Several NPCs with different first names (research R4). */
+/** Several NPCs with different first names and quirks (research R4). */
 export const generateNpcs = (count: number, template: NpcTemplate = {}) => {
   const npcs: Npc[] = [];
   // A locked first name cannot be shared by five people: names are drawn for each.
@@ -112,9 +112,16 @@ export const generateNpcs = (count: number, template: NpcTemplate = {}) => {
     attempt++
   ) {
     const npc = generateNpc(rest);
-    if (!npcs.some((other) => other.firstName === npc.firstName)) {
-      npcs.push(npc);
+    if (npcs.some((other) => other.firstName === npc.firstName)) continue;
+    // The cards show the quirk: five different ones.
+    const usedQuirks = npcs.map((other) => other.content.quirk);
+    const quirks = npcFragmentIds('quirk', npc.occupation).filter(
+      (id) => !usedQuirks.includes(id),
+    );
+    if (usedQuirks.includes(npc.content.quirk) && quirks.length) {
+      npc.content.quirk = pick(quirks);
     }
+    npcs.push(npc);
   }
   while (npcs.length < count) npcs.push(generateNpc(rest));
   return npcs;
