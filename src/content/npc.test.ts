@@ -11,7 +11,7 @@ import {
   minAgeOf,
   npcFragmentIds,
   npcTemplateOf,
-  renderNpc,
+  renderNpc as npcSheet,
   rerollNpc,
 } from './npc';
 import { firstNamesFor, MAX_AGE } from './template';
@@ -92,7 +92,7 @@ describe('generateNpc', () => {
       for (const gender of Object.values(Genders)) {
         const npc = generateNpc({ occupation, gender });
         for (const locale of ['en', 'fr'] as const) {
-          const sheet = renderNpc(npc, locale);
+          const sheet = npcSheet(npc, locale);
           for (const section of NPC_SECTIONS) {
             expect(sheet[section], `${occupation} ${section}`).not.toMatch(
               /[{}]|undefined/,
@@ -119,13 +119,13 @@ describe('generateNpc', () => {
         opinion: 'o',
       },
     };
-    expect(renderNpc(npc, 'fr')).toMatchObject({
+    expect(npcSheet(npc, 'fr')).toMatchObject({
       look: 'l',
       opinion: 'o',
       writtenByAi: true,
       writtenIn: 'en',
     });
-    expect(renderNpc(npc, 'en').writtenIn).toBeUndefined();
+    expect(npcSheet(npc, 'en').writtenIn).toBeUndefined();
   });
 });
 
@@ -148,7 +148,7 @@ describe('rerollNpc', () => {
       const next = rerollNpc(
         {
           ...npc,
-          text: { ...renderNpc(npc, 'en'), language: 'en', source: 'ai' },
+          text: { ...npcSheet(npc, 'en'), language: 'en', source: 'ai' },
         },
         section,
       );

@@ -4,7 +4,8 @@ import type { Locale } from '../i18n';
 import type { Gender } from '../types/character';
 import { type GenderedText, selectGender } from './renderText';
 
-export type LabelKind = 'race' | 'class' | 'alignment' | 'gender' | 'occupation';
+export type LabelKind =
+  'race' | 'class' | 'alignment' | 'gender' | 'occupation';
 
 const LABELS: Record<Locale, Record<string, GenderedText>> = {
   en: enLabels,
