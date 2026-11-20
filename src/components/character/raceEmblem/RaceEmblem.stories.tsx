@@ -56,3 +56,8 @@ export const AllRaces: Story = {
     </Box>
   ),
 };
+
+/** A side character: neutral frame and occupation symbol (spec 010). */
+export const SideCharacter: Story = {
+  args: { race: 'Halfling', characterClass: undefined, occupation: 'Baker' },
+};

@@ -15,6 +15,9 @@ import AdventureHook from '../../components/party/adventureHook/AdventureHook';
 import PartyBalance from '../../components/party/partyBalance/PartyBalance';
 import PartyTies from '../../components/party/partyTies/PartyTies';
 import RoleMenu from '../../components/party/roleMenu/RoleMenu';
+import NpcSheet from '../../components/npc/npcSheet/NpcSheet';
+import useNpcs from '../../hooks/useNpcs';
+import type { Npc } from '../../types/npc';
 
 import { parseShareHash, sameCharacter } from '../../content/share';
 import { CharacterContext } from '../../contexts/CharacterContext';
@@ -179,7 +182,68 @@ const SharedParty: FC<{ party: Party }> = ({ party }) => {
   );
 };
 
-/** `/share#…`: a shared character or party, read-only until the visitor acts (spec 007). */
+/** Same side character, whatever its id. */
+const sameNpc = (a: Npc, b: Npc) => {
+  const strip = (npc: Npc) => {
+    const copy = { ...npc };
+    delete copy.id;
+    return JSON.stringify(copy);
+  };
+  return strip(a) === strip(b);
+};
+
+const SharedNpc: FC<{ npc: Npc }> = ({ npc }) => {
+  const t = useT();
+  const navigate = useNavigate();
+  const { savedNpcs, saveSharedNpc, setNpc } = useNpcs();
+  const { addSuccess } = useAlert();
+  const saved = savedNpcs.some((s) => sameNpc(s, npc));
+
+  return (
+    <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
+      <Typography
+        sx={{
+          fontSize: '0.8rem',
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'text.secondary',
+          mb: 1,
+        }}
+      >
+        {t('share.sharedNpc')}
+      </Typography>
+      <NpcSheet
+        npc={npc}
+        headingLevel="h1"
+        footer={
+          <>
+            <Button
+              variant="contained"
+              disabled={saved}
+              onClick={() => {
+                saveSharedNpc(npc);
+                addSuccess(t('npc.savedAlert'));
+              }}
+            >
+              {saved ? t('npc.saved') : t('npc.save')}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setNpc(npc);
+                navigate('/npcs');
+              }}
+            >
+              {t('share.openNpc')}
+            </Button>
+          </>
+        }
+      />
+    </Box>
+  );
+};
+
+/** `/share#…`: a shared character, party or side character, read-only until the visitor acts (spec 007). */
 const Share: FC = () => {
   const { hash } = useLocation();
   // Decoded once per link: references to removed fragments are resolved at random.
@@ -191,8 +255,10 @@ const Share: FC = () => {
         <Invalid />
       ) : shared.kind === 'character' ? (
         <SharedCharacter character={shared.character} />
-      ) : (
+      ) : shared.kind === 'party' ? (
         <SharedParty party={shared.party} />
+      ) : (
+        <SharedNpc npc={shared.npc} />
       )}
     </Box>
   );

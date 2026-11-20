@@ -14,6 +14,7 @@ import {
   Genders,
 } from '../types/character';
 import { slug } from '../content/slug';
+import { Occupations } from '../types/npc';
 
 type LocaleFiles = Record<string, Record<string, unknown>>;
 
@@ -322,6 +323,54 @@ describe('party depth content (spec 008)', () => {
       expect(text).not.toMatch(
         /\b(de|que|le|la|ne|se|jusque|lorsque|puisque) \{(a|b)\}/i,
       );
+    }
+  });
+});
+
+describe('side character fragments (spec 010)', () => {
+  type NpcData = {
+    occupations: { id: string; minAge: number }[];
+    fragments: { id: string; section: string; occupation?: string }[];
+  };
+  const data = import.meta.glob<{ default: NpcData }>('./content/npc.json', {
+    eager: true,
+  })['./content/npc.json'].default;
+  const count = (section: string, occupation?: string) =>
+    data.fragments.filter(
+      (f) => f.section === section && f.occupation === occupation,
+    ).length;
+
+  it('has unique ids, each with text and the same placeholders in both languages', () => {
+    const ids = data.fragments.map((f) => f.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(Object.keys(en.npc).sort()).toEqual([...ids].sort());
+    for (const id of ids) {
+      expect(params(fr.npc[id] as string), id).toEqual(
+        params(en.npc[id] as string),
+      );
+    }
+  });
+
+  it('describes every occupation, with labels and at least 3 daily lives (FR-003)', () => {
+    expect(data.occupations.map((o) => o.id)).toEqual(
+      Object.values(Occupations),
+    );
+    for (const occupation of Object.values(Occupations)) {
+      expect(count('daily', occupation), occupation).toBeGreaterThanOrEqual(3);
+      expect(en.labels[`occupation.${occupation}`], occupation).toBeDefined();
+      expect(fr.labels[`occupation.${occupation}`], occupation).toBeDefined();
+    }
+  });
+
+  it('has at least 20 shared texts per section', () => {
+    for (const section of ['look', 'quirk', 'rumour', 'secret', 'opinion']) {
+      expect(count(section), section).toBeGreaterThanOrEqual(20);
+    }
+  });
+
+  it('follows French typography', () => {
+    for (const text of texts(fr.npc)) {
+      expect(text).not.toMatch(/ [:;!?»]|« /);
     }
   });
 });

@@ -77,7 +77,7 @@ export const describeFailure = (
   });
 };
 
-export type OutcomeKind = 'generate' | 'reroll' | 'translate' | 'party';
+export type OutcomeKind = 'generate' | 'reroll' | 'translate' | 'party' | 'npc';
 
 /** Chooses the alert shown after a generation, a reroll or a translation (FR-016). */
 export const outcomeToAlert = (

@@ -99,6 +99,16 @@ Each party also gets:
 - A **balance** panel showing fighting, magic, healing, stealth and talking, with hints for what is missing.
 - An **adventure starting point**: a place, someone asking for help and a threat, rerollable on its own.
 
+# Side characters
+
+The **Side characters** page (`/npcs`) makes ready-to-play NPCs for the game master: an innkeeper, a gravedigger, a
+noble… Each has a name, race, gender, age and one of 20 occupations, plus a short sheet: look, daily life, a quirk or
+way of speaking, a rumour, a secret and an opinion of adventurers, in both languages. Choose the occupation, race or
+gender (or leave them to chance), reroll any property or section with its die, and lock properties to keep them.
+**Generate 5** shows five quick cards to populate a place; open one to see its full sheet. Saved side characters are
+in the **Side characters** tab of **My characters**, each with its own page, and can be shared by link. With an AI
+provider, the AI writes the name and the sheet.
+
 # Sharing
 
 **Share** (home card, a saved character's page, party members) and **Share the party** create a link that recreates
@@ -144,6 +154,10 @@ that every locale has every text, with the same placeholders, and that each one 
   points and role weights for a class. Files and fragment ids use the slug (`Dark elf` → `dark-elf`).
 - **Add portraits**: `npm run portraits` lists the missing images in `docs/portraits.md`, with their paths and the
   style to follow. Until an image exists, the app shows the race emblem.
+- **Add an occupation or side-character text**: occupations are appended to `Occupations` in `src/types/npc.ts`
+  (share links store positions), with a minimum age and fragments in `src/data/content/npc.json`, texts in
+  `src/data/locales/<locale>/npc.json` and a label `occupation.<Value>` in `labels.json`; daily-life fragments belong
+  to an occupation, the other sections are shared.
 - **Add a language**: add a folder under `src/data/locales/` with every file, register it in `src/i18n/` and
   `src/content/data.ts`; the tests list what is missing.
 

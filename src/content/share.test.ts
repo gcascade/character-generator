@@ -6,11 +6,14 @@ import {
 } from '../types/character';
 import type { Party } from '../types/party';
 import { generateRandomCharacter } from './generate';
+import { generateNpc } from './npc';
 import { generateParty } from './party';
 import {
   decodeCharacter,
+  decodeNpc,
   decodeParty,
   encodeCharacter,
+  encodeNpc,
   encodeParty,
   parseShareHash,
   sameCharacter,
@@ -299,5 +302,61 @@ describe('party links with ties, roles and hook (spec 008)', () => {
     expect(decoded.members.every((m) => m.role)).toBe(true);
     expect(decoded.ties).toEqual([]);
     expect(decoded.hook).toBeDefined();
+  });
+});
+
+describe('side character links (spec 010)', () => {
+  it('recreate 1,000 side characters identically (SC-004)', () => {
+    for (let i = 0; i < 1000; i++) {
+      const npc = generateNpc();
+      expect(decodeNpc(encodeNpc(npc))).toEqual(npc);
+    }
+  });
+
+  it('recreate AI-written sheets, and never share the saved id', () => {
+    const npc = {
+      ...generateNpc(),
+      id: 'mine',
+      text: {
+        language: 'fr' as const,
+        source: 'ai' as const,
+        look: 'Un tablier « bleu ».',
+        daily: 'd',
+        quirk: 'q',
+        rumour: 'r',
+        secret: 's',
+        opinion: 'o',
+      },
+    };
+    const expected: Partial<typeof npc> = { ...npc };
+    delete expected.id;
+    expect(decodeNpc(encodeNpc(npc))).toEqual(expected);
+  });
+
+  it('are read from the hash with their own prefix', () => {
+    const npc = generateNpc();
+    const url = shareUrl({ kind: 'npc', npc }, BASE);
+    expect(url).toMatch(/\/share#n1\./);
+    expect(parseShareHash(new URL(url).hash)).toEqual({ kind: 'npc', npc });
+  });
+
+  it.each(['#n1.', '#n1.!!!', '#n1.e30', '#n2.abc'])(
+    'refuse an unreadable link %s',
+    (hash) => {
+      expect(parseShareHash(hash)).toBeUndefined();
+    },
+  );
+
+  it('replace a fragment that no longer exists by one of the same section', () => {
+    const npc = generateNpc({ occupation: 'Baker' });
+    const payload = JSON.parse(
+      atob(encodeNpc(npc).replace(/-/g, '+').replace(/_/g, '/')),
+    );
+    payload[6][1] = 'vanished';
+    const data = btoa(JSON.stringify(payload))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+    expect(decodeNpc(data)?.content.daily).toMatch(/^daily-baker-/);
   });
 });
