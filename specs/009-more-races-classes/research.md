@@ -13,7 +13,7 @@
 
 ## R3. Lifespans and balance
 
-- **Decision**: lifespans halfling 150, gnome 400, half-elf 180, dark elf 500, Ashborn 120. Balance points: Ranger
+- **Decision**: lifespans halfling 150, gnome 400, half-elf 180, dark elf 450, Ashborn 120. Balance points: Ranger
   stealth 1 + fighting 1; Paladin fighting 1 + healing 1; Bard talking 2; Druid healing 1 + magic 1; Barbarian
   fighting 2. Role weights follow (bard → face/chronicler, ranger → scout, paladin → guardian/leader, druid →
   healer/scholar, barbarian → muscle).

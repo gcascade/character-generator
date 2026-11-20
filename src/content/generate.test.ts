@@ -6,6 +6,8 @@ import {
   Genders,
 } from '../types/character';
 import { NAMES } from './data';
+import { slug } from './slug';
+import { renderCharacter } from './character';
 import {
   firstNamesFor,
   generateRandomCharacter,
@@ -74,7 +76,7 @@ describe('rerollWithApp', () => {
     expect(next.race).not.toBe(base.race);
     expect(next.firstName).toBe(base.firstName);
     expect(next.content?.originId).toMatch(
-      new RegExp(`^origin-${next.race.toLowerCase()}-`),
+      new RegExp(`^origin-${slug(next.race)}-`),
     );
     expect({ ...next.content, originId: '' }).toEqual({
       ...base.content,
@@ -148,7 +150,7 @@ describe('generateRandomCharacter with locks (spec 003)', () => {
         expect(templateOf(character, locked)).toEqual(template);
         expect(character.age).toBeLessThanOrEqual(MAX_AGE[character.race]);
         expect(character.content?.originId).toMatch(
-          new RegExp(`^origin-${character.race.toLowerCase()}-`),
+          new RegExp(`^origin-${slug(character.race)}-`),
         );
         if (!locked.includes('firstName')) {
           expect(firstNamesFor(character.race, character.gender)).toContain(
@@ -211,13 +213,13 @@ describe('rerollWithApp with locks (spec 003 US2)', () => {
     const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 300 };
     for (let i = 0; i < 50; i++) {
       const next = rerollWithApp(elder, 'race', ['age']);
-      expect(next.race).toBe('Dwarf');
+      expect(['Dwarf', 'Gnome', 'Dark elf']).toContain(next.race);
       expect(next.age).toBe(300);
     }
   });
 
   it('returns the same character when no other race fits', () => {
-    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 450 };
+    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 480 };
     expect(rerollWithApp(elder, 'race', ['age'])).toBe(elder);
   });
 
@@ -245,8 +247,48 @@ describe('rerollWithApp with locks (spec 003 US2)', () => {
   });
 
   it('still clamps the age after a race change when the age is not locked', () => {
-    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 450 };
+    const elder = { ...generateRandomCharacter({ race: 'Elf' }), age: 480 };
     const next = rerollWithApp(elder, 'race');
     expect(next.age).toBeLessThanOrEqual(MAX_AGE[next.race]);
+  });
+});
+
+describe('new races and classes (spec 009)', () => {
+  it('draws every race and class at least 5% of the time (SC-001)', () => {
+    const characters = draw(2000);
+    for (const race of Object.values(CharacterRaces)) {
+      const share = characters.filter((c) => c.race === race).length / 2000;
+      expect(share, race).toBeGreaterThanOrEqual(0.05);
+    }
+    for (const characterClass of Object.values(CharacterClasses)) {
+      const share =
+        characters.filter((c) => c.characterClass === characterClass).length /
+        2000;
+      expect(share, characterClass).toBeGreaterThanOrEqual(0.05);
+    }
+  });
+
+  it('renders four paragraphs for every race, class and gender, in both languages (SC-002)', () => {
+    for (const race of Object.values(CharacterRaces)) {
+      for (const characterClass of Object.values(CharacterClasses)) {
+        for (const gender of Object.values(Genders)) {
+          const character = generateRandomCharacter({
+            race,
+            characterClass,
+            gender,
+          });
+          for (const locale of ['en', 'fr'] as const) {
+            const { background } = renderCharacter(character, locale);
+            expect(
+              background.content,
+              `${race} ${characterClass}`,
+            ).toHaveLength(4);
+            for (const paragraph of background.content) {
+              expect(paragraph).not.toMatch(/[{}]|undefined/);
+            }
+          }
+        }
+      }
+    }
   });
 });

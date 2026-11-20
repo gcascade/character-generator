@@ -1,4 +1,4 @@
-import type { Character } from '../types/character';
+import { type Character, CharacterRaces } from '../types/character';
 import { generateRandomCharacter } from './generate';
 import {
   compatibleRaceGenders,
@@ -45,14 +45,16 @@ describe('templateOf', () => {
 
 describe('compatibleRaceGenders', () => {
   it('allows every pair without locks', () => {
-    expect(compatibleRaceGenders({})).toHaveLength(12);
+    expect(compatibleRaceGenders({})).toHaveLength(
+      Object.keys(CharacterRaces).length * 3,
+    );
   });
 
   it('only allows races that live long enough for a locked age', () => {
     const races = new Set(
       compatibleRaceGenders({ age: 300 }).map((p) => p.race),
     );
-    expect(races).toEqual(new Set(['Elf', 'Dwarf']));
+    expect(races).toEqual(new Set(['Elf', 'Dwarf', 'Gnome', 'Dark elf']));
   });
 
   it('only allows pairs whose list has a locked first name', () => {
@@ -65,10 +67,12 @@ describe('compatibleRaceGenders', () => {
   });
 
   it('ignores a name no list has', () => {
-    expect(compatibleRaceGenders({ firstName: 'Zzyzx' })).toHaveLength(12);
+    expect(compatibleRaceGenders({ firstName: 'Zzyzx' })).toHaveLength(
+      Object.keys(CharacterRaces).length * 3,
+    );
     expect(
       compatibleRaceGenders({ lastName: 'Zzyzx', gender: 'Male' }),
-    ).toHaveLength(4);
+    ).toHaveLength(Object.keys(CharacterRaces).length);
   });
 
   it('ignores an age no locked race allows', () => {

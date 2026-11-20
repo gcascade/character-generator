@@ -238,6 +238,11 @@ const CLASS_POINTS: Record<
   Mage: { magic: 2 },
   Rogue: { stealth: 2, talking: 1 },
   Cleric: { healing: 2, magic: 1 },
+  Ranger: { fighting: 1, stealth: 1 },
+  Paladin: { fighting: 1, healing: 1 },
+  Bard: { talking: 2 },
+  Druid: { healing: 1, magic: 1 },
+  Barbarian: { fighting: 2 },
 };
 
 export type BalanceLevel = 0 | 1 | 2 | 3;

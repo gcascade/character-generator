@@ -112,6 +112,6 @@ combination and it is used instead.
 
 - Names (confirmed by the maintainer): Halfling / Halfelin, Gnome / Gnome, Half-elf / Demi-elfe, Dark elf / Elfe noir (gendered
   label: Elfe noir / Elfe noire), demon-blooded race "Ashborn" / "Cendré" ({{Cendré|Cendrée|Cendré}}).
-- Lifespans: halfling 150, gnome 400, half-elf 180, dark elf 500, Ashborn 120.
+- Lifespans: halfling 150, gnome 400, half-elf 180, dark elf 450, Ashborn 120.
 - Neutral illustrations are vector emblems drawn for this project (no external assets).
 - An AI portrait feature is a later, separate item.

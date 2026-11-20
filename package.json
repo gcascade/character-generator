@@ -8,6 +8,7 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
+    "portraits": "node scripts/missing-portraits.mjs",
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",

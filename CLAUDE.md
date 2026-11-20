@@ -71,6 +71,9 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   `useState` initializer and saved in an effect; hooks like `useSettings` only read the context.
 - Domain enums: add the value at the end of the `as const` object in `src/types/character.ts` (share links use their
   indexes); the union type follows.
+- Races and classes (spec 009): 9 + 9. Files, fragment ids and portrait folders use `slug()` (`src/content/slug.ts`,
+  `Dark elf` → `dark-elf`); theme colours use `raceToken()` / `classToken()` (`race.Darkelf`, no spaces in CSS
+  variables). A missing portrait shows `RaceEmblem`; `npm run portraits` regenerates `docs/portraits.md`.
 
 ## Saved characters (spec 006)
 

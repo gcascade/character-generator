@@ -357,5 +357,205 @@
   {
     "id": "goal-legend",
     "category": "goal"
+  },
+  {
+    "id": "origin-halfling-burrow",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-halfling-river",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-halfling-inn",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-halfling-orphan",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-gnome-workshop",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-gnome-forest",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-gnome-library",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-gnome-circus",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-half-elf-two-worlds",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-half-elf-court",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-half-elf-caravan",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-half-elf-forest-edge",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-dark-elf-underdark",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-dark-elf-exile",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-dark-elf-house",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-dark-elf-moonlit",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-ashborn-pact",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "origin-ashborn-slums",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "origin-ashborn-monastery",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "origin-ashborn-ashlands",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "training-ranger-border",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-ranger-hunter",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-ranger-wolf",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-ranger-guide",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-paladin-order",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-paladin-vision",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-paladin-squire",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-paladin-redemption",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-bard-college",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-bard-tavern",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-bard-troupe",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-bard-lorekeeper",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-druid-circle",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-druid-hermit",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-druid-blight",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-druid-shapes",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-barbarian-tribe",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "training-barbarian-pit",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "training-barbarian-spirit",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "training-barbarian-raider",
+    "category": "training",
+    "characterClass": "Barbarian"
   }
 ]

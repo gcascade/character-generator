@@ -16,6 +16,11 @@ export const MAX_AGE: Record<CharacterRace, number> = {
   Elf: 500,
   Dwarf: 400,
   Orc: 60,
+  Halfling: 150,
+  Gnome: 400,
+  'Half-elf': 180,
+  'Dark elf': 450,
+  Ashborn: 120,
 };
 
 export const LOCKABLE_PROPERTIES = [

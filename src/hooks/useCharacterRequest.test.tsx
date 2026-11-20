@@ -82,7 +82,7 @@ describe('useCharacterRequest with locks (spec 003)', () => {
 
   it('tells when no other value fits the locked properties', async () => {
     withSettings({ activeType: 'none' });
-    const elder = { ...korvusBlackiron, race: 'Elf' as const, age: 450 };
+    const elder = { ...korvusBlackiron, race: 'Elf' as const, age: 480 };
     const { result } = renderHook(useEverything, {
       wrapper: lockedWrapper(elder, ['age']),
     });

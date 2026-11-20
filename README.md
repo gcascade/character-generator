@@ -1,6 +1,8 @@
 # Character Generator
 
 This app generates detailed fantasy characters, including attributes like race, class, and background.
+Races: human, elf, dwarf, orc, halfling, gnome, half-elf, dark elf and Ashborn (an original demon-blooded people).
+Classes: warrior, mage, rogue, cleric, ranger, paladin, bard, druid and barbarian.
 It is available in English and French: the language follows your browser, and can be changed at the bottom of the
 menu or in **Settings**.
 
@@ -136,8 +138,12 @@ phrasing (the name, epicene words), never neopronouns or inclusive punctuation. 
 that every locale has every text, with the same placeholders, and that each one renders for every gender.
 
 - **Add a fragment**: add its id to `fragments.json`, then its text in every locale.
-- **Add a race**: add it to `CharacterRaces` in `src/types/character.ts`, its labels, a name list, origin
-  fragments in every locale, and portraits under `public/images/<race>/`.
+- **Add a race or class**: append it at the end of `CharacterRaces` / `CharacterClasses` in
+  `src/types/character.ts` (share links store positions), then follow the type errors and failing tests: lifespan,
+  colours and icon, labels, a name list (`names/<slug>.json`), origin or training fragments in every locale, balance
+  points and role weights for a class. Files and fragment ids use the slug (`Dark elf` → `dark-elf`).
+- **Add portraits**: `npm run portraits` lists the missing images in `docs/portraits.md`, with their paths and the
+  style to follow. Until an image exists, the app shows the race emblem.
 - **Add a language**: add a folder under `src/data/locales/` with every file, register it in `src/i18n/` and
   `src/content/data.ts`; the tests list what is missing.
 

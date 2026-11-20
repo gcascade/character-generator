@@ -3,20 +3,25 @@ import {
   responsiveFontSizes,
   type Theme,
 } from '@mui/material/styles';
-import type { CharacterClass, CharacterRace } from '../types/character';
-import { BADGE_TEXT, CLASS, type Mode, RACE, TOKENS } from './palette';
+import {
+  BADGE_TEXT,
+  classTokens,
+  type Mode,
+  raceTokens,
+  TOKENS,
+} from './palette';
 
 declare module '@mui/material/styles' {
   interface Palette {
     menu: { main: string; contrastText: string };
-    race: Record<CharacterRace, string>;
-    characterClass: Record<CharacterClass, string>;
+    race: Record<string, string>;
+    characterClass: Record<string, string>;
     badgeText: { main: string };
   }
   interface PaletteOptions {
     menu?: { main: string; contrastText: string };
-    race?: Record<CharacterRace, string>;
-    characterClass?: Record<CharacterClass, string>;
+    race?: Record<string, string>;
+    characterClass?: Record<string, string>;
     badgeText?: { main: string };
   }
   interface TypographyVariants {
@@ -46,9 +51,9 @@ const palette = (mode: Mode) => {
     text: { primary: t.text, secondary: t.textSecondary },
     divider: t.divider,
     menu: { main: t.menu, contrastText: t.onMenu },
-    // Race and class colours, read as `race.Elf` / `characterClass.Mage` in sx (research R7).
-    race: RACE[mode],
-    characterClass: CLASS[mode],
+    // Race and class colours, read as `race.Elf` (see raceToken) / `characterClass.Mage` in sx (research R7).
+    race: raceTokens(mode),
+    characterClass: classTokens(mode),
     badgeText: { main: BADGE_TEXT[mode] },
   };
 };

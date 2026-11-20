@@ -43,6 +43,12 @@ export const CharacterClasses = {
   Mage: 'Mage',
   Rogue: 'Rogue',
   Cleric: 'Cleric',
+  // Append only: share links store the position (spec 007).
+  Ranger: 'Ranger',
+  Paladin: 'Paladin',
+  Bard: 'Bard',
+  Druid: 'Druid',
+  Barbarian: 'Barbarian',
 } as const;
 
 export type CharacterClass =
@@ -73,6 +79,12 @@ export const CharacterRaces = {
   Elf: 'Elf',
   Dwarf: 'Dwarf',
   Orc: 'Orc',
+  // Append only: share links store the position (spec 007).
+  Halfling: 'Halfling',
+  Gnome: 'Gnome',
+  HalfElf: 'Half-elf',
+  DarkElf: 'Dark elf',
+  Ashborn: 'Ashborn',
 } as const;
 
 export type CharacterRace =
