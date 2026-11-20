@@ -110,6 +110,14 @@ describe('Share page', () => {
       screen.getByRole('heading', { name: renderParty(party, 'en').name }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(5);
+    for (const name of ['Ties', 'Balance', 'Where it begins']) {
+      expect(screen.getByRole('region', { name })).toBeInTheDocument();
+    }
+    // Read-only: no tie, role or hook editing on a shared party.
+    expect(
+      screen.queryByRole('button', { name: 'Draw another starting point' }),
+    ).toBeNull();
+    expect(screen.queryByRole('button', { name: /^Role of / })).toBeNull();
     await userEvent.click(
       screen.getByRole('button', { name: 'Save the party' }),
     );

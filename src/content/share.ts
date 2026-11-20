@@ -10,9 +10,13 @@ import {
 import type { Party, PartyContentRefs, PartyMember } from '../types/party';
 import {
   EPITHET_IDS,
+  HOOK_IDS,
   PARTY_FRAGMENTS,
   type PartyFragmentCategory,
+  ROLES,
+  TIE_TYPES,
 } from './data';
+import { completeParty } from './partyDepth';
 import { fragmentIds } from './generate';
 import { MAX_PARTY_SIZE, MIN_PARTY_SIZE } from './party';
 import { storedCharacterSchema } from './storedCharacter';
@@ -248,7 +252,7 @@ const optionalIndex = (items: readonly unknown[]) =>
     .min(-1)
     .max(items.length - 1);
 
-const partyPayload = z.tuple([
+const partyHead = [
   slug,
   slug,
   slug,
@@ -260,17 +264,56 @@ const partyPayload = z.tuple([
     optionalIndex(ALIGNMENTS),
   ]),
   z.array(z.unknown()).min(MIN_PARTY_SIZE).max(MAX_PARTY_SIZE),
-  z
-    .tuple([
-      z.enum(['en', 'fr']),
-      z.string().trim().min(1).max(200),
-      z.array(z.string().trim().min(1).max(4000)).min(1).max(10),
-    ])
-    .optional(),
+] as const;
+
+const partyTextV1 = z.tuple([
+  z.enum(['en', 'fr']),
+  z.string().trim().min(1).max(200),
+  z.array(z.string().trim().min(1).max(4000)).min(1).max(10),
 ]);
+
+/** p1 (spec 007): no ties, roles or hook. */
+const partyPayloadV1 = z.tuple([...partyHead, partyTextV1.optional()]);
+
+/** p2 (spec 008): AI text may carry the hook; then ties, roles and hook. */
+const partyPayloadV2 = z.tuple([
+  ...partyHead,
+  z
+    .union([
+      partyTextV1,
+      z.tuple([...partyTextV1.def.items, z.string().trim().min(1).max(4000)]),
+    ])
+    .nullable(),
+  z.tuple([
+    z
+      .array(
+        z.tuple([
+          slug,
+          z
+            .number()
+            .int()
+            .min(0)
+            .max(MAX_PARTY_SIZE - 1),
+          z
+            .number()
+            .int()
+            .min(0)
+            .max(MAX_PARTY_SIZE - 1),
+        ]),
+      )
+      .max(12),
+    z.array(slug.nullable()).max(MAX_PARTY_SIZE),
+    z.tuple([slug, slug, slug]).nullable(),
+  ]),
+]);
+
+const ROLE_IDS = ROLES.map((r) => r.id);
+const TIE_IDS = TIE_TYPES.map((t) => t.id);
+const HOOK_KINDS = ['place', 'patron', 'threat'] as const;
 
 export const encodeParty = (party: Party) => {
   const { race, characterClass, gender, alignment } = party.constraints;
+  const index = (id: string) => party.members.findIndex((m) => m.id === id);
   const payload = [
     ...PARTY_REFS.map(([key, category]) =>
       shorten(party.content[key], partyCandidates(category)),
@@ -283,25 +326,46 @@ export const encodeParty = (party: Party) => {
       alignment ? ALIGNMENTS.indexOf(alignment) : -1,
     ],
     party.members.map((m) => toPayload(m.character)),
-    ...(party.text
-      ? [[party.text.language, party.text.name, party.text.story]]
-      : []),
+    party.text
+      ? [
+          party.text.language,
+          party.text.name,
+          party.text.story,
+          ...(party.text.hook ? [party.text.hook] : []),
+        ]
+      : null,
+    [
+      (party.ties ?? []).map((t) => [
+        shorten(t.type, TIE_IDS),
+        index(t.from),
+        index(t.to),
+      ]),
+      party.members.map((m) => (m.role ? shorten(m.role, ROLE_IDS) : null)),
+      party.hook
+        ? [
+            shorten(party.hook.placeId, HOOK_IDS.place),
+            shorten(party.hook.patronId, HOOK_IDS.patron),
+            shorten(party.hook.threatId, HOOK_IDS.threat),
+          ]
+        : null,
+    ],
   ];
   return toBase64Url(payload);
 };
 
-export const decodeParty = (data: string): Party | undefined => {
-  const parsed = partyPayload.safeParse(fromBase64Url(data));
-  if (!parsed.success) return undefined;
-  const [
-    nameSlug,
-    meetingSlug,
-    goalSlug,
-    mode,
-    [r, c, g, a],
-    rawMembers,
-    text,
-  ] = parsed.data;
+/** Shared parts of p1 and p2: members, content, constraints, mode. */
+const decodeHead = (
+  head: [
+    string,
+    string,
+    string,
+    0 | 1,
+    [number, number, number, number],
+    unknown[],
+  ],
+): Party | undefined => {
+  const [nameSlug, meetingSlug, goalSlug, mode, [r, c, g, a], rawMembers] =
+    head;
   const members: PartyMember[] = [];
   for (const raw of rawMembers) {
     const character = fromPayload(raw);
@@ -327,15 +391,77 @@ export const decodeParty = (data: string): Party | undefined => {
     constraints,
     alignmentMode: mode === 1 ? 'anything' : 'harmonious',
     content,
-    ...(text && {
-      text: { language: text[0], name: text[1], story: text[2], source: 'ai' },
-    }),
   };
+};
+
+/** Reads a party link of the given format version (p1 links get roles and a hook). */
+export const decodeParty = (
+  data: string,
+  version: 1 | 2 = 2,
+): Party | undefined => {
+  const json = fromBase64Url(data);
+  if (version === 1) {
+    const parsed = partyPayloadV1.safeParse(json);
+    if (!parsed.success) return undefined;
+    const party = decodeHead(parsed.data.slice(0, 6) as never);
+    const text = parsed.data[6];
+    return (
+      party &&
+      completeParty({
+        ...party,
+        ...(text && {
+          text: {
+            language: text[0],
+            name: text[1],
+            story: text[2],
+            source: 'ai',
+          },
+        }),
+      })
+    );
+  }
+  const parsed = partyPayloadV2.safeParse(json);
+  if (!parsed.success) return undefined;
+  const party = decodeHead(parsed.data.slice(0, 6) as never);
+  if (!party) return undefined;
+  const text = parsed.data[6];
+  const [ties, roles, hook] = parsed.data[7];
+  const ids = party.members.map((m) => m.id);
+  return completeParty({
+    ...party,
+    members: party.members.map((m, i) =>
+      roles[i] ? { ...m, role: resolve(roles[i], ROLE_IDS) } : m,
+    ),
+    ties: ties
+      .filter(([, from, to]) => from !== to && ids[from] && ids[to])
+      .map(([type, from, to]) => ({
+        id: crypto.randomUUID(),
+        type: resolve(type, TIE_IDS),
+        from: ids[from],
+        to: ids[to],
+      })),
+    ...(hook && {
+      hook: {
+        placeId: resolve(hook[0], HOOK_IDS[HOOK_KINDS[0]]),
+        patronId: resolve(hook[1], HOOK_IDS[HOOK_KINDS[1]]),
+        threatId: resolve(hook[2], HOOK_IDS[HOOK_KINDS[2]]),
+      },
+    }),
+    ...(text && {
+      text: {
+        language: text[0],
+        name: text[1],
+        story: text[2],
+        ...(text[3] && { hook: text[3] }),
+        source: 'ai',
+      },
+    }),
+  });
 };
 
 // --- links --------------------------------------------------------------------
 
-const PREFIX = { character: 'c1.', party: 'p1.' } as const;
+const PREFIX = { character: 'c1.', party: 'p2.', partyV1: 'p1.' } as const;
 
 export const shareUrl = (
   shared:
@@ -360,7 +486,12 @@ export const parseShareHash = (hash: string): SharedContent | undefined => {
     return character && { kind: 'character', character };
   }
   if (value.startsWith(PREFIX.party)) {
-    const party = decodeParty(value.slice(PREFIX.party.length));
+    const party = decodeParty(value.slice(PREFIX.party.length), 2);
+    return party && { kind: 'party', party };
+  }
+  // Links shared before spec 008 keep opening.
+  if (value.startsWith(PREFIX.partyV1)) {
+    const party = decodeParty(value.slice(PREFIX.partyV1.length), 1);
     return party && { kind: 'party', party };
   }
   return undefined;

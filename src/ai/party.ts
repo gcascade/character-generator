@@ -12,6 +12,8 @@ import type { OutcomeSource } from './types';
 export const partyStorySchema = z.object({
   name: z.string().trim().min(1).max(120),
   story: z.array(z.string().trim().min(1).max(2000)).min(2).max(4),
+  /** Where the adventure begins (spec 008); optional, the app's stays otherwise. */
+  hook: z.string().trim().min(1).max(1000).optional(),
 });
 
 const schemaText = JSON.stringify(z.toJSONSchema(partyStorySchema));
@@ -26,6 +28,7 @@ export const partyStoryPrompt = (party: Party, locale: Locale): Prompt => ({
       return `- ${character.firstName} ${character.lastName}, ${epithet}: ${character.age}-year-old ${character.gender.toLowerCase()} ${character.race} ${character.characterClass}, ${character.alignment}`;
     }),
     'Give the company a name, and write 2 to 4 short paragraphs telling how they met and what they are after together, naming every member.',
+    'Also write "hook": one short paragraph giving where their next adventure begins — a place, someone who asks for help, and a threat.',
     `Write every text value in ${LANGUAGE_NAME[locale]}.`,
     locale === 'fr'
       ? 'In French, make "la compagnie" or "le groupe" the subject when speaking of several members, so that no word has to agree with their genders; never use "iel" or inclusive punctuation.'
@@ -74,7 +77,13 @@ export const generatePartyStory = async (
   return {
     party: {
       ...party,
-      text: { ...parsed.data, language: locale, source: 'ai' },
+      text: {
+        name: parsed.data.name,
+        story: parsed.data.story,
+        ...(parsed.data.hook && { hook: parsed.data.hook }),
+        language: locale,
+        source: 'ai',
+      },
     },
     source: 'ai',
     completedFields: [],

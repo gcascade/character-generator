@@ -89,6 +89,14 @@ name. Shared settings (race, class, gender, alignment) apply to every member; ke
 replace just one. The company gets a name and a story in both languages (written by the AI when a provider is set).
 Save a member or the whole party: saved parties are in the **Parties** tab of **My characters**.
 
+Each party also gets:
+
+- **Ties** between some members (rivals, a life debt, an old mentor…) — not always, and never more than two per
+  member; reroll or remove each tie.
+- **Roles** (leader, scout, healer, face…) drawn from class and alignment affinities, changeable from a menu.
+- A **balance** panel showing fighting, magic, healing, stealth and talking, with hints for what is missing.
+- An **adventure starting point**: a place, someone asking for help and a threat, rerollable on its own.
+
 # Sharing
 
 **Share** (home card, a saved character's page, party members) and **Share the party** create a link that recreates

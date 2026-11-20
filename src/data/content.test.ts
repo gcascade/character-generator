@@ -56,8 +56,8 @@ describe('locale files', () => {
       );
     });
 
-    // Party texts use their own placeholders, checked below.
-    if (file === 'party') return;
+    // Party, tie and hook texts use their own placeholders, checked below.
+    if (['party', 'ties', 'hooks'].includes(file)) return;
 
     if (file === 'ui') {
       it('uses the same {params} in both languages', () => {
@@ -257,6 +257,70 @@ describe('party fragments (spec 004)', () => {
   it('uses narrow no-break spaces before French high punctuation', () => {
     for (const text of texts(fr.party)) {
       expect(text).not.toMatch(/ [:;!?»]|« /);
+    }
+  });
+});
+
+describe('party depth content (spec 008)', () => {
+  type Depth = {
+    ties: { id: string }[];
+    roles: { id: string; classes: Record<string, number> }[];
+    hooks: Record<string, string[]>;
+  };
+  const depth = import.meta.glob<{ default: Depth }>(
+    './content/partyDepth.json',
+    { eager: true },
+  )['./content/partyDepth.json'].default;
+
+  it('has the minimum counts and text for every id', () => {
+    expect(depth.ties.length).toBeGreaterThanOrEqual(12);
+    expect(depth.roles.length).toBeGreaterThanOrEqual(10);
+    for (const kind of ['place', 'patron', 'threat']) {
+      expect(depth.hooks[kind].length).toBeGreaterThanOrEqual(12);
+    }
+    const ids = {
+      ties: depth.ties.map((t) => t.id),
+      roles: depth.roles.map((r) => r.id),
+      hooks: Object.values(depth.hooks).flat(),
+    };
+    for (const [file, list] of Object.entries(ids)) {
+      expect(Object.keys(en[file]).sort(), file).toEqual([...list].sort());
+    }
+  });
+
+  it.each(['en', 'fr'] as const)(
+    'writes ties with {a} and {b} only and no gender selection, in %s',
+    (locale) => {
+      for (const [id, text] of Object.entries(
+        (locale === 'en' ? en : fr).ties,
+      )) {
+        const value = text as string;
+        expect(value, id).not.toContain('{{');
+        expect(new Set(params(value)), id).toEqual(new Set(['a', 'b']));
+      }
+    },
+  );
+
+  it('has hooks without placeholders and roles that render for every gender', () => {
+    for (const locale of [en, fr]) {
+      for (const text of texts(locale.hooks)) expect(text).not.toMatch(/[{}]/);
+      for (const [id, text] of Object.entries(locale.roles)) {
+        for (const gender of Object.values(Genders)) {
+          expect(
+            fillText(text as GenderedText, gender, names),
+            `${id} (${gender})`,
+          ).not.toMatch(/[{}]/);
+        }
+      }
+    }
+  });
+
+  it('follows French typography and never elides before a name', () => {
+    for (const text of [...texts(fr.ties), ...texts(fr.hooks)]) {
+      expect(text).not.toMatch(/ [:;!?»]|« /);
+      expect(text).not.toMatch(
+        /\b(de|que|le|la|ne|se|jusque|lorsque|puisque) \{(a|b)\}/i,
+      );
     }
   });
 });

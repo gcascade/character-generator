@@ -1,0 +1,12 @@
+{
+  "role-leader": "{{Chef|Cheffe|Chef}}",
+  "role-scout": "{{Éclaireur|Éclaireuse|Éclaireur}}",
+  "role-healer": "{{Soigneur|Soigneuse|Soigneur}}",
+  "role-face": "Porte-parole",
+  "role-strategist": "Stratège",
+  "role-muscle": "Gros bras",
+  "role-guardian": "{{Gardien|Gardienne|Gardien}}",
+  "role-scholar": "{{Érudit|Érudite|Érudit}}",
+  "role-trickster": "{{Filou|Filoute|Filou}}",
+  "role-chronicler": "{{Chroniqueur|Chroniqueuse|Chroniqueur}}"
+}

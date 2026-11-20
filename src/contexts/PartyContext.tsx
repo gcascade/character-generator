@@ -12,6 +12,13 @@ import {
   rerollMember as rerollPartyMember,
 } from '../content/party';
 import {
+  completeParty,
+  removeTie as removePartyTie,
+  rerollHook as rerollPartyHook,
+  rerollTie as rerollPartyTie,
+  setRole as setPartyRole,
+} from '../content/partyDepth';
+import {
   PARTIES_KEY,
   PARTY_KEY,
   type PartySettings,
@@ -37,6 +44,10 @@ export type PartyContextType = PartySettings & {
   setParty: React.Dispatch<React.SetStateAction<Party | undefined>>;
   rerollMember: (memberId: string) => void;
   toggleLock: (memberId: string) => void;
+  rerollTie: (tieId: string) => void;
+  removeTie: (tieId: string) => void;
+  setRole: (memberId: string, role: string) => void;
+  rerollHook: VoidFunction;
   saveParty: VoidFunction;
   /** Saves a party received through a share link (spec 007). */
   saveSharedParty: (party: Party) => void;
@@ -54,17 +65,24 @@ export const PartyProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [initial] = useState(() =>
     parseStoredParty(localStorage.getItem(PARTY_KEY)),
   );
-  const [party, setParty] = useState<Party | undefined>(initial.party);
+  // Parties from before spec 008 get roles and a starting point once.
+  const [party, setParty] = useState<Party | undefined>(
+    initial.party && completeParty(initial.party),
+  );
   const [settings, setSettings] = useState<PartySettings>(initial.settings);
   const [savedParties, setSavedParties] = useState<Party[]>(() =>
-    parseStoredParties(localStorage.getItem(PARTIES_KEY)),
+    parseStoredParties(localStorage.getItem(PARTIES_KEY)).map(completeParty),
   );
 
   useEffect(() => saveCurrentParty(party, settings), [party, settings]);
   useEffect(() => saveParties(savedParties), [savedParties]);
 
   const generate = useCallback(() => {
-    const next = generateParty({ ...settings, keep: party?.members });
+    const next = generateParty({
+      ...settings,
+      keep: party?.members,
+      keepTies: party?.ties,
+    });
     setParty(next);
     return next;
   }, [settings, party]);
@@ -102,6 +120,12 @@ export const PartyProvider: FC<{ children: ReactNode }> = ({ children }) => {
               ),
             },
         ),
+      // Ties, roles and hook edits keep the party's identity (it stays "saved").
+      rerollTie: (tieId) => setParty((p) => p && rerollPartyTie(p, tieId)),
+      removeTie: (tieId) => setParty((p) => p && removePartyTie(p, tieId)),
+      setRole: (memberId, role) =>
+        setParty((p) => p && setPartyRole(p, memberId, role)),
+      rerollHook: () => setParty((p) => p && rerollPartyHook(p)),
       saveParty: () => {
         if (party && !savedParties.some((p) => p.id === party.id)) {
           setSavedParties((list) => [...list, party]);
@@ -110,7 +134,8 @@ export const PartyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       saveSharedParty: (shared) => setSavedParties((list) => [...list, shared]),
       isSaved: !!party && savedParties.some((p) => p.id === party.id),
       openParty: (id) => {
-        const saved = savedParties.find((p) => p.id === id);
+        const found = savedParties.find((p) => p.id === id);
+        const saved = found && completeParty(found);
         if (saved) {
           setParty(saved);
           setSettings({

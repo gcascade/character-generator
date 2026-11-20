@@ -1,0 +1,15 @@
+{
+  "tie-rivals": "{a} et {b} se disputent la première place depuis un concours que personne n'avoue avoir perdu.",
+  "tie-life-debt": "{a} a une dette de vie envers {b}, et n'a pas encore trouvé comment la rembourser.",
+  "tie-mentor": "Il y a longtemps, {b} a appris les bases du métier à {a}.",
+  "tie-secret": "{a} et {b} partagent un secret qui suffirait à causer leur perte commune.",
+  "tie-childhood": "{a} et {b} ont grandi dans la même rue et se comprennent encore sans un mot.",
+  "tie-betrayal": "Un jour, {a} a trahi {b}, et {b} n'a jamais dit si l'affaire était pardonnée.",
+  "tie-gold-debt": "{a} doit une forte somme d'or à {b}, et les intérêts ne cessent de grimper.",
+  "tie-blood-oath": "{a} et {b} ont prêté un serment de sang : se soutenir, quoi qu'il arrive.",
+  "tie-suspicion": "{a} soupçonne {b} de cacher quelque chose et surveille chacun de ses gestes.",
+  "tie-jailbreak": "Un jour, {b} a fait sortir {a} d'une cellule, sans poser de questions.",
+  "tie-dragon-bet": "{a} et {b} ont un pari en cours : le premier dragon terrassé désignera le gagnant.",
+  "tie-family-feud": "{a} et {b} descendent de deux familles brouillées depuis trois générations, et font de leur mieux pour l'oublier.",
+  "tie-admiration": "{a} admire {b} en secret, sans jamais l'avouer."
+}
