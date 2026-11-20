@@ -89,6 +89,13 @@ name. Shared settings (race, class, gender, alignment) apply to every member; ke
 replace just one. The company gets a name and a story in both languages (written by the AI when a provider is set).
 Save a member or the whole party: saved parties are in the **Parties** tab of **My characters**.
 
+# Sharing
+
+**Share** (home card, a saved character's page, party members) and **Share the party** create a link that recreates
+the character or party anywhere: everything is in the link, after the `#`, so it is never sent to a server. Links are
+not private: anyone with the link can see the character. App-made stories open in the visitor's language; AI-written
+text is shown as written. The visitor can save the character or party, or open it in the generator.
+
 # My characters
 
 Saved characters are listed in **My characters**. Click one to open its page (`/characters/<id>`): portrait, every

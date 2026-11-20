@@ -66,8 +66,8 @@ description: 'Task list for share links'
 
 ## Phase 6: Polish
 
-- [ ] T013 [P] Update README.md (sharing section, links are not private) and CLAUDE.md (share module, link format, append-only enums)
-- [ ] T014 Run lint, typecheck, test:run, build and build-storybook; browser validation of quickstart.md with screenshots (axe, 360 px, both modes and languages)
+- [x] T013 [P] Update README.md (sharing section, links are not private) and CLAUDE.md (share module, link format, append-only enums)
+- [x] T014 Run lint, typecheck, test:run, build and build-storybook; browser validation of quickstart.md with screenshots (axe, 360 px, both modes and languages)
 
 ---
 
