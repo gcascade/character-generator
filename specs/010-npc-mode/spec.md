@@ -13,6 +13,11 @@
 ### Session 2026-11-20
 
 - Q: NPCs as a class or a separate mode? → A: A separate mode with its own page (decided during spec 009).
+- Q: Which occupations? → A: The 20 proposed occupations (see Assumptions).
+- Q: One NPC at a time or a batch? → A: One NPC by default, plus a "Generate 5" action showing compact cards that open
+  the full sheet.
+- Q: Name in the interface? → A: "Side characters" / "Personnages secondaires" (menu and title), with "NPC" / "PNJ"
+  recalled in the page subtitle; code keeps `npc`.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -38,6 +43,23 @@ from the race lists and an age fitting the occupation and race.
    (same people, same facts).
 4. **Given** a non-binary NPC, **When** the sheet is read in French, **Then** it uses neutral phrasing, as character
    stories do.
+
+---
+
+### User Story 1b - Populate a place (Priority: P2)
+
+The players enter a tavern: the game master clicks "Generate 5" and gets five compact cards (name, race,
+occupation, quirk), opens the one the players talk to, and keeps or saves it.
+
+**Why this priority**: Populating a place quickly is a frequent need at the table.
+
+**Independent Test**: Click "Generate 5": 5 cards with different first names appear; open one: its full sheet shows.
+
+**Acceptance Scenarios**:
+
+1. **Given** the page, **When** "Generate 5" is clicked, **Then** 5 cards appear with different first names,
+   respecting the chosen constraints.
+2. **Given** the cards, **When** one is opened, **Then** its full sheet is shown, with keep and save actions.
 
 ---
 
@@ -115,12 +137,11 @@ fragment sheet is shown with the usual message.
 
 ### Functional Requirements
 
-- **FR-001**: The app MUST offer an NPC page, reachable from the menu, separate from the character generator and the
-  party page.
+- **FR-001**: The app MUST offer a side-character page ("Side characters" / "Personnages secondaires", subtitle
+  recalling "NPC" / "PNJ"), reachable from the menu, separate from the character generator and the party page.
 - **FR-002**: An NPC MUST have a first and last name, race, gender, age, occupation and six sheet sections: look,
   daily life, quirk, rumour, secret, opinion of adventurers.
-- **FR-003**: The app MUST offer at least [NEEDS CLARIFICATION: which occupations? proposed list of 20 below]
-  occupations, each with at least 3 daily-life texts per language; look, quirk, rumour, secret and opinion texts are
+- **FR-003**: The app MUST offer the 20 occupations listed in Assumptions, each with at least 3 daily-life texts per language; look, quirk, rumour, secret and opinion texts are
   shared by all occupations (at least 20 each per language).
 - **FR-004**: Occupation, race and gender MUST be selectable as constraints (or left to chance).
 - **FR-005**: Every property and every sheet section MUST be rerollable on its own; properties MUST be lockable.
@@ -131,7 +152,8 @@ fragment sheet is shown with the usual message.
 - **FR-008**: NPCs MUST be shareable by link, shown in the visitor's language, and savable from the link.
 - **FR-009**: With AI configured, the AI MAY write the name and sheet; the app decides occupation, race, gender and
   age; any AI failure falls back to fragments.
-- **FR-010**: The page MUST generate [NEEDS CLARIFICATION: one NPC at a time, or a small batch at once?].
+- **FR-010**: The page MUST generate one NPC by default and offer "Generate 5", showing 5 compact cards (name,
+  race, occupation, quirk) that each open the full sheet and can be kept as the current NPC or saved.
 - **FR-011**: Existing characters, parties, saved data and links MUST keep working unchanged.
 
 ### Key Entities
@@ -156,7 +178,7 @@ fragment sheet is shown with the usual message.
 
 ## Assumptions
 
-- Proposed occupations (20): blacksmith, innkeeper, farmer, beggar, priest, merchant, guard, fisher, healer,
+- Occupations (20, confirmed): blacksmith, innkeeper, farmer, beggar, priest, merchant, guard, fisher, healer,
   scribe, hunter, miller, baker, tailor, stablehand, minstrel, sailor, noble, alchemist, gravedigger.
 - NPCs have no class, alignment, party role or background story; the sheet replaces them.
 - NPCs are not party members (parties stay made of adventurers).
