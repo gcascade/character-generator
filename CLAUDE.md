@@ -44,7 +44,7 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 ```
 src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
-  pages/                           Home (generator), Party, Characters (saved + parties tab), CharacterDetails, Settings
+  pages/                           Home (generator), Party, Characters (saved + parties tab), CharacterDetails, Share, Settings
   contexts/                        One React context per concern (character, history, settings, ...)
   ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
@@ -52,7 +52,7 @@ src/
   content/                         renderText (gendered text), generate (random characters, rerolls),
                                    character (renderCharacter per locale), labels, storedCharacter (zod),
                                    template (CharacterTemplate, locks, compatible race/gender), storedLocks,
-                                   party (party rules, renderParty), storedParty
+                                   party (party rules, renderParty), storedParty, share (share links)
   data/content/                    Fragment and epithet ids, name lists per race (language-independent)
   data/locales/<locale>/           ui.json, labels.json, and one text file per fragment category
   themes/                          MUI theme (light/dark colour schemes), palette + race/class colours, fonts, contrast
@@ -69,7 +69,8 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 - Every component gets a test (Testing Library) and a story. Tests use the decorators in `test/decorators/`.
 - Persistence is `localStorage` only (no backend), loaded once in the provider with a lazy
   `useState` initializer and saved in an effect; hooks like `useSettings` only read the context.
-- Domain enums: add the value to the `as const` object in `src/types/character.ts`; the union type follows.
+- Domain enums: add the value at the end of the `as const` object in `src/types/character.ts` (share links use their
+  indexes); the union type follows.
 
 ## Saved characters (spec 006)
 
@@ -88,6 +89,14 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
 - `PartyProvider` stores the current party in `localStorage["party"]` and saved parties in `localStorage["parties"]`
   (`{ version: 1, ... }`, parsed by `storedParty.ts`). A rerolled party gets a new id, so it is no longer "saved".
 - With AI, `generatePartyStory` writes the name and story only (`usePartyGenerator`).
+
+## Share links (spec 007)
+
+- `<app>/share#c1.<data>` (character) or `#p1.<data>` (party); `data` is base64url JSON of a positional array
+  (`specs/007-share-link/data-model.md`), decoded and validated by `src/content/share.ts` before display.
+- Enum values are shared as indexes: keep the `as const` objects of `src/types/character.ts` append-only.
+- Fragment references are shared as short slugs; a slug that no longer exists is replaced by a fragment of the same
+  kind. A new link format gets a new version prefix (`c2.`), and old prefixes keep being read.
 
 ## Content and languages
 

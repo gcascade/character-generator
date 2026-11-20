@@ -2,6 +2,7 @@ import {
   ArrowBack as BackIcon,
   Delete as DeleteIcon,
   DoubleArrow as OpenIcon,
+  Save as SaveIcon,
 } from '@mui/icons-material';
 import {
   Box,
@@ -30,6 +31,14 @@ type CharacterDetailProps = {
   backLabel?: string;
   onOpenInGenerator?: VoidFunction;
   onDelete?: VoidFunction;
+  /** Saves a character that is not saved yet (e.g. a shared one). */
+  onSave?: VoidFunction;
+  /** Shows the save action as done. */
+  saved?: boolean;
+  /** A share action (spec 007), rendered next to the other actions. */
+  shareAction?: React.ReactNode;
+  /** Small line above the card, e.g. "Shared character". */
+  eyebrow?: string;
   /** Offered for AI text written in another language. */
   onTranslate?: VoidFunction;
   translating?: boolean;
@@ -45,6 +54,10 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
   backLabel,
   onOpenInGenerator,
   onDelete,
+  onSave,
+  saved = false,
+  shareAction,
+  eyebrow,
   onTranslate,
   translating,
 }) => {
@@ -62,6 +75,19 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
         <Button startIcon={<BackIcon />} onClick={onBack} sx={{ mb: 1.5 }}>
           {backLabel ?? t('details.back')}
         </Button>
+      )}
+      {eyebrow && (
+        <Typography
+          sx={{
+            fontSize: '0.8rem',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'text.secondary',
+            mb: 1,
+          }}
+        >
+          {eyebrow}
+        </Typography>
       )}
       <Card>
         <CardContent sx={{ px: { xs: 1.5, sm: 3 }, pt: { xs: 1.5, sm: 3 } }}>
@@ -130,7 +156,7 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
             </Box>
           )}
         </CardContent>
-        {(onOpenInGenerator || onDelete) && (
+        {(onOpenInGenerator || onDelete || onSave || shareAction) && (
           <CardActions
             sx={{
               px: { xs: 1.5, sm: 3 },
@@ -139,9 +165,19 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
               flexWrap: 'wrap',
             }}
           >
-            {onOpenInGenerator && (
+            {onSave && (
               <Button
                 variant="contained"
+                startIcon={<SaveIcon />}
+                onClick={onSave}
+                disabled={saved}
+              >
+                {saved ? t('share.alreadySaved') : t('share.save')}
+              </Button>
+            )}
+            {onOpenInGenerator && (
+              <Button
+                variant={onSave ? 'outlined' : 'contained'}
                 startIcon={<OpenIcon />}
                 onClick={onOpenInGenerator}
               >
@@ -163,6 +199,7 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
                   : t('details.delete')}
               </Button>
             )}
+            {shareAction}
           </CardActions>
         )}
       </Card>

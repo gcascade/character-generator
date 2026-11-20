@@ -33,7 +33,7 @@ const pickOther = <T>(items: readonly T[], current: T | undefined): T => {
 const randomAge = (race: CharacterRace) =>
   MIN_AGE + Math.floor(Math.random() * (MAX_AGE[race] - MIN_AGE));
 
-const fragmentIds = (
+export const fragmentIds = (
   category: FragmentCategory,
   character: Pick<Character, 'race' | 'characterClass' | 'alignment'>,
 ) =>

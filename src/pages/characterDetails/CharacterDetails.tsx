@@ -8,6 +8,8 @@ import useAlert from '../../hooks/useAlert';
 import useCharacterHistory from '../../hooks/useCharacterHistory';
 import useCharacterRequest from '../../hooks/useCharacterRequest';
 import { useT } from '../../i18n';
+import ShareButton from '../../components/common/share/ShareButton';
+import { shareUrl } from '../../content/share';
 
 /** A saved character on its own page, `/characters/:id` (spec 006). */
 const CharacterDetails: FC = () => {
@@ -75,6 +77,16 @@ const CharacterDetails: FC = () => {
             : undefined
         }
         translating={requestStatus === 'loading'}
+        shareAction={
+          <ShareButton
+            label={t('share.character')}
+            target={() => ({
+              title: `${character.firstName} ${character.lastName}`,
+              url: shareUrl({ kind: 'character', character }),
+              copied: 'share.copied',
+            })}
+          />
+        }
       />
     </Box>
   );

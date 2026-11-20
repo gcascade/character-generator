@@ -29,12 +29,16 @@ import type { PartyMember } from '../../../types/party';
 import CharacterDetail from '../../character/characterDetail/CharacterDetail';
 import CharacterHeader from '../../character/characterHeader/CharacterHeader';
 import CharacterImage from '../../character/characterImage/CharacterImage';
+import ShareButton from '../../common/share/ShareButton';
+import { shareUrl } from '../../../content/share';
 
 type PartyMemberCardProps = {
   member: PartyMember;
   onToggleLock?: VoidFunction;
   onReroll?: VoidFunction;
   onSave?: VoidFunction;
+  /** Shows a share action for this member (spec 007). */
+  shareable?: boolean;
   /** The member no longer matches the party's shared settings. */
   notMatching?: boolean;
   disabled?: boolean;
@@ -46,6 +50,7 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
   onToggleLock,
   onReroll,
   onSave,
+  shareable = false,
   notMatching = false,
   disabled = false,
 }) => {
@@ -168,6 +173,17 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
             t('party.member.save', { name: character.firstName }),
             <SaveIcon />,
             onSave,
+          )}
+          {shareable && (
+            <ShareButton
+              variant="icon"
+              label={t('party.member.share', { name: character.firstName })}
+              target={() => ({
+                title: name,
+                url: shareUrl({ kind: 'character', character }),
+                copied: 'share.copied',
+              })}
+            />
           )}
         </Box>
       </CardActions>

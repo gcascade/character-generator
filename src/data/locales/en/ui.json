@@ -176,5 +176,21 @@
   "parties.empty": "No saved party yet",
   "parties.deleted": "Party deleted",
   "ai.done.party": "New party generated",
-  "ai.fallback.party": "The company's story comes from the generator."
+  "ai.fallback.party": "The company's story comes from the generator.",
+  "share.character": "Share",
+  "share.party": "Share the party",
+  "share.copied": "Link copied — anyone with it can see this character",
+  "share.partyCopied": "Link copied — anyone with it can see this party",
+  "share.dialogTitle": "Copy this link",
+  "share.copy": "Copy",
+  "share.invalid": "This link cannot be read",
+  "share.invalidHint": "It may be incomplete or damaged. Ask for a new link.",
+  "share.toGenerator": "Go to the generator",
+  "share.sharedCharacter": "Shared character",
+  "share.sharedParty": "Shared party",
+  "share.save": "Save to my characters",
+  "share.alreadySaved": "Already in my characters",
+  "share.openParty": "Open on the Party page",
+  "share.savedAlert": "Saved in My characters",
+  "party.member.share": "Share {name}"
 }

@@ -176,5 +176,21 @@
   "parties.empty": "Aucun groupe sauvegardé",
   "parties.deleted": "Groupe supprimé",
   "ai.done.party": "Nouveau groupe généré",
-  "ai.fallback.party": "L'histoire de la compagnie vient du générateur."
+  "ai.fallback.party": "L'histoire de la compagnie vient du générateur.",
+  "share.character": "Partager",
+  "share.party": "Partager le groupe",
+  "share.copied": "Lien copié — toute personne qui l'a peut voir ce personnage",
+  "share.partyCopied": "Lien copié — toute personne qui l'a peut voir ce groupe",
+  "share.dialogTitle": "Copiez ce lien",
+  "share.copy": "Copier",
+  "share.invalid": "Ce lien est illisible",
+  "share.invalidHint": "Il est peut-être incomplet ou abîmé. Demandez un nouveau lien.",
+  "share.toGenerator": "Aller au générateur",
+  "share.sharedCharacter": "Personnage partagé",
+  "share.sharedParty": "Groupe partagé",
+  "share.save": "Sauvegarder dans mes personnages",
+  "share.alreadySaved": "Déjà dans mes personnages",
+  "share.openParty": "Ouvrir sur la page Groupe",
+  "share.savedAlert": "Sauvegardé dans Mes personnages",
+  "party.member.share": "Partager {name}"
 }

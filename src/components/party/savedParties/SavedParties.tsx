@@ -18,6 +18,8 @@ import useAlert from '../../../hooks/useAlert';
 import useParty from '../../../hooks/useParty';
 import { useLocale, useT } from '../../../i18n';
 import type { Party } from '../../../types/party';
+import ShareButton from '../../common/share/ShareButton';
+import { shareUrl } from '../../../content/share';
 
 const SavedPartyCard: FC<{ party: Party }> = ({ party }) => {
   const t = useT();
@@ -98,6 +100,15 @@ const SavedPartyCard: FC<{ party: Party }> = ({ party }) => {
         >
           {confirm ? t('parties.confirmDelete') : t('parties.delete')}
         </Button>
+        <ShareButton
+          variant="icon"
+          label={t('share.party')}
+          target={() => ({
+            title: name,
+            url: shareUrl({ kind: 'party', party }),
+            copied: 'share.partyCopied',
+          })}
+        />
       </CardActions>
     </Card>
   );
