@@ -52,8 +52,8 @@ across parties, and a party never has two leaders.
    preference for roles that suit the member's class and alignment, never fixed.
 2. **Given** a party, **When** it is generated, **Then** unique roles (leader) appear at most once, and the same role
    appears at most twice.
-3. **Given** a member's role, **When** the user changes it, **Then** [NEEDS CLARIFICATION: can the user pick the role
-   from a list, only reroll it at random, or both?]
+3. **Given** a member's role, **When** the user changes it, **Then** a menu on the role offers the full list of roles
+   and "Random"; the chosen role is kept when the party is regenerated if the member is kept
 4. **Given** roles, **When** the party is saved, shared or reloaded, **Then** the roles are kept.
 
 ---
@@ -112,6 +112,12 @@ AI, the hook comes from the AI and falls back to the app's on failure.
   for party texts); role names agree with the member's gender (category name for non-binary members).
 - Saved parties from before this feature: loaded with roles and hook drawn once, then kept.
 
+## Clarifications
+
+### Session 2026-11-20
+
+- Q: How does the user change a member's role? → A: A menu on the role with every role and "Random".
+
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
@@ -122,7 +128,7 @@ AI, the hook comes from the AI and falls back to the app's on failure.
   new ones.
 - **FR-003**: Each member MUST have exactly one role, drawn with weights from class and alignment affinities; the
   leader role MUST be unique; any role MUST appear at most twice.
-- **FR-004**: Users MUST be able to change a member's role (see US2 clarification).
+- **FR-004**: Users MUST be able to change a member's role (a menu with every role and "Random").
 - **FR-005**: The party page MUST show a balance panel with a level per area (fighting, magic, healing, stealth,
   talking) and hints for gaps, readable without colour.
 - **FR-006**: Each party MUST have an adventure hook (place, patron, threat) from bilingual app content, rerollable on
