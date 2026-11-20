@@ -31,4 +31,4 @@
 
 ## Notes
 
-- Race names for the demon-blooded race are proposals to confirm with the maintainer.
+- Names confirmed by the maintainer on 2026-11-20.
