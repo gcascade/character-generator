@@ -22,6 +22,8 @@ import CharacterImage from '../characterImage/CharacterImage';
 import CharacterInformation from '../characterInformation/CharacterInformation';
 import { useT } from '../../../i18n';
 import CharacterHeader from '../characterHeader/CharacterHeader';
+import ShareButton from '../../common/share/ShareButton';
+import { shareUrl } from '../../../content/share';
 
 type CharacterProps = {
   onGenerateCallback: VoidFunction;
@@ -148,6 +150,15 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
           >
             {isSaved ? t('character.saved') : t('character.save')}
           </Button>
+          <ShareButton
+            variant="icon"
+            label={t('share.character')}
+            target={() => ({
+              title: `${character.firstName} ${character.lastName}`,
+              url: shareUrl({ kind: 'character', character }),
+              copied: 'share.copied',
+            })}
+          />
         </Stack>
       </CardActions>
     </Card>

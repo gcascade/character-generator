@@ -4,16 +4,19 @@ import PageTitle from '../../components/common/pageTitle/PageTitle';
 import PartyControls from '../../components/party/partyControls/PartyControls';
 import PartyMemberCard from '../../components/party/partyMemberCard/PartyMemberCard';
 import PartyStory from '../../components/party/partyStory/PartyStory';
-import { matchesConstraints } from '../../content/party';
+import { matchesConstraints, renderParty } from '../../content/party';
+import { shareUrl } from '../../content/share';
+import ShareButton from '../../components/common/share/ShareButton';
 import { DataContext } from '../../contexts/DataContext';
 import useAlert from '../../hooks/useAlert';
 import useParty from '../../hooks/useParty';
 import usePartyGenerator from '../../hooks/usePartyGenerator';
-import { useT } from '../../i18n';
+import { useLocale, useT } from '../../i18n';
 
 /** The party generator page (spec 004). */
 const Party: FC = () => {
   const t = useT();
+  const { locale } = useLocale();
   const data = useContext(DataContext);
   const { addSuccess } = useAlert();
   const { party, constraints, saveParty, rerollMember, toggleLock } =
@@ -42,6 +45,16 @@ const Party: FC = () => {
       {party ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
           <PartyStory party={party} />
+          <Box sx={{ mt: -1.5 }}>
+            <ShareButton
+              label={t('share.party')}
+              target={() => ({
+                title: renderParty(party, locale).name,
+                url: shareUrl({ kind: 'party', party }),
+                copied: 'share.partyCopied',
+              })}
+            />
+          </Box>
           <Box
             sx={{
               display: 'grid',
@@ -59,6 +72,7 @@ const Party: FC = () => {
                 member={member}
                 onToggleLock={() => toggleLock(member.id)}
                 onReroll={() => rerollMember(member.id)}
+                shareable
                 onSave={() => {
                   data.saveCharacter(member.character);
                   addSuccess(

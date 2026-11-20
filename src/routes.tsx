@@ -5,6 +5,7 @@ import Characters from './pages/characters/Characters';
 import Home from './pages/home/Home';
 import Party from './pages/party/Party';
 import Settings from './pages/settings/Settings';
+import Share from './pages/share/Share';
 
 const routes: RouteObject[] = [
   { path: '/', element: <Home /> },
@@ -12,6 +13,7 @@ const routes: RouteObject[] = [
   { path: '/characters/:id', element: <CharacterDetails /> },
   { path: '/party', element: <Party /> },
   { path: '/settings', element: <Settings /> },
+  { path: '/share', element: <Share /> },
   { path: '*', element: <Navigate to="/" replace /> },
 ];
 

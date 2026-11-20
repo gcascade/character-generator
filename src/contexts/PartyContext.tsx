@@ -38,6 +38,8 @@ export type PartyContextType = PartySettings & {
   rerollMember: (memberId: string) => void;
   toggleLock: (memberId: string) => void;
   saveParty: VoidFunction;
+  /** Saves a party received through a share link (spec 007). */
+  saveSharedParty: (party: Party) => void;
   isSaved: boolean;
   openParty: (id: string) => void;
   deleteParty: (id: string) => void;
@@ -105,6 +107,7 @@ export const PartyProvider: FC<{ children: ReactNode }> = ({ children }) => {
           setSavedParties((list) => [...list, party]);
         }
       },
+      saveSharedParty: (shared) => setSavedParties((list) => [...list, shared]),
       isSaved: !!party && savedParties.some((p) => p.id === party.id),
       openParty: (id) => {
         const saved = savedParties.find((p) => p.id === id);
