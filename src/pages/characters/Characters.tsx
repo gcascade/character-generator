@@ -12,6 +12,7 @@ import CharacterSummary from '../../components/character/characterSummary/Charac
 import Carousel from '../../components/common/carousel/Carousel';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import SavedParties from '../../components/party/savedParties/SavedParties';
+import SavedNpcs from '../../components/npc/savedNpcs/SavedNpcs';
 
 import { DataContext } from '../../contexts/DataContext';
 import { useT } from '../../i18n';
@@ -36,13 +37,13 @@ const Characters = () => {
   const navigate = useNavigate();
   const state = (location.state ?? {}) as {
     page?: number;
-    tab?: 'characters' | 'parties';
+    tab?: 'characters' | 'parties' | 'npcs';
   };
   const page = state.page ?? 0;
   const tab = state.tab ?? 'characters';
   const setPage = (next: number) =>
     navigate('.', { replace: true, state: { ...state, page: next } });
-  const setTab = (next: 'characters' | 'parties') =>
+  const setTab = (next: 'characters' | 'parties' | 'npcs') =>
     navigate('.', { replace: true, state: { ...state, tab: next } });
 
   const children = characters.map((character, index) => (
@@ -66,8 +67,10 @@ const Characters = () => {
         >
           <Tab value="characters" label={t('characters.tab.characters')} />
           <Tab value="parties" label={t('characters.tab.parties')} />
+          <Tab value="npcs" label={t('characters.tab.npcs')} />
         </Tabs>
         {tab === 'parties' && <SavedParties />}
+        {tab === 'npcs' && <SavedNpcs />}
         {tab === 'characters' && characters.length > 0 && (
           <Carousel
             cardsPerPage={cardsPerPage}

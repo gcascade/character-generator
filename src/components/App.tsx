@@ -26,6 +26,7 @@ import { loadLocks } from '../content/storedLocks';
 import { LOCKABLE_PROPERTIES } from '../content/template';
 import { LockProvider } from '../contexts/LockContext';
 import { PartyProvider } from '../contexts/PartyContext';
+import { NpcProvider } from '../contexts/NpcContext';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
 import DrawerMenu from './navigation/drawerMenu/DrawerMenu';
@@ -112,9 +113,11 @@ const App: React.FC = () => {
                     <AlertManagerProvider>
                       <DataProvider>
                         <PartyProvider>
-                          <BrowserRouter basename={import.meta.env.BASE_URL}>
-                            <AppLayout />
-                          </BrowserRouter>
+                          <NpcProvider>
+                            <BrowserRouter basename={import.meta.env.BASE_URL}>
+                              <AppLayout />
+                            </BrowserRouter>
+                          </NpcProvider>
                         </PartyProvider>
                       </DataProvider>
                     </AlertManagerProvider>

@@ -27,7 +27,7 @@ export const LANGUAGE_NAME: Record<Locale, string> = {
 };
 
 /** Writing instructions per language (spec 002 FR-014 and the French clarification). */
-const languageRules = (locale: Locale, gender: Character['gender']) =>
+export const languageRules = (locale: Locale, gender: Character['gender']) =>
   [
     `Write every text value in ${LANGUAGE_NAME[locale]}.`,
     locale === 'fr' && gender === 'Non-binary'
@@ -52,7 +52,7 @@ const RACE_NOTES: Partial<Record<Character['race'], string>> = {
   'Dark elf': 'Dark elf (elves from cities deep underground)',
 };
 
-const raceText = (race: Character['race']) => RACE_NOTES[race] ?? race;
+export const raceText = (race: Character['race']) => RACE_NOTES[race] ?? race;
 
 const describe = (
   character: Pick<

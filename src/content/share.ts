@@ -8,6 +8,9 @@ import {
   Genders,
 } from '../types/character';
 import type { Party, PartyContentRefs, PartyMember } from '../types/party';
+import { NPC_SECTIONS, type Npc, Occupations } from '../types/npc';
+import { npcFragmentIds } from './npc';
+import { parseNpc } from './storedNpc';
 import {
   EPITHET_IDS,
   HOOK_IDS,
@@ -22,7 +25,7 @@ import { MAX_PARTY_SIZE, MIN_PARTY_SIZE } from './party';
 import { storedCharacterSchema } from './storedCharacter';
 
 /*
- * Share links (spec 007): `<app>/share#c1.<data>` or `#p1.<data>`. The data is
+ * Share links (spec 007): `<app>/share#c1.<data>`, `#p2.<data>` or (spec 010) `#n1.<data>`. The data is
  * a positional array (data-model.md) as base64url JSON, kept in the URL
  * fragment so it never reaches the server. Enum values are indexes in the
  * `as const` objects of src/types/character.ts, which must stay append-only.
@@ -32,6 +35,7 @@ const RACES = Object.values(CharacterRaces);
 const CLASSES = Object.values(CharacterClasses);
 const GENDERS = Object.values(Genders);
 const ALIGNMENTS = Object.values(CharacterAlignments);
+const OCCUPATIONS = Object.values(Occupations);
 
 const pick = <T>(items: readonly T[]): T =>
   items[Math.floor(Math.random() * items.length)];
@@ -461,22 +465,125 @@ export const decodeParty = (
 
 // --- links --------------------------------------------------------------------
 
-const PREFIX = { character: 'c1.', party: 'p2.', partyV1: 'p1.' } as const;
+// --- side characters (spec 010, research R7) ---------------------------------
+
+const npcText = z.string().max(600);
+
+const npcPayload = z.union([
+  z.tuple([
+    name.min(1),
+    name,
+    index(RACES),
+    index(GENDERS),
+    z.number().int().min(0).max(100000),
+    index(OCCUPATIONS),
+    z.array(slug).length(NPC_SECTIONS.length),
+  ]),
+  z.tuple([
+    name.min(1),
+    name,
+    index(RACES),
+    index(GENDERS),
+    z.number().int().min(0).max(100000),
+    index(OCCUPATIONS),
+    z.array(slug).length(NPC_SECTIONS.length),
+    // [language, look, daily, quirk, rumour, secret, opinion]
+    z.tuple([
+      z.enum(['en', 'fr']),
+      npcText,
+      npcText,
+      npcText,
+      npcText,
+      npcText,
+      npcText,
+    ]),
+  ]),
+]);
+
+export const encodeNpc = (npc: Npc) => {
+  const refs = NPC_SECTIONS.map((section) =>
+    shorten(npc.content[section], npcFragmentIds(section, npc.occupation)),
+  );
+  const base = [
+    npc.firstName,
+    npc.lastName,
+    RACES.indexOf(npc.race),
+    GENDERS.indexOf(npc.gender),
+    npc.age,
+    OCCUPATIONS.indexOf(npc.occupation),
+    refs,
+  ];
+  return toBase64Url(
+    npc.text
+      ? [
+          ...base,
+          [
+            npc.text.language,
+            ...NPC_SECTIONS.map((section) => npc.text![section]),
+          ],
+        ]
+      : base,
+  );
+};
+
+export const decodeNpc = (data: string): Npc | undefined => {
+  const parsed = npcPayload.safeParse(fromBase64Url(data));
+  if (!parsed.success) return undefined;
+  const [firstName, lastName, r, g, age, o, refs, text] = parsed.data;
+  const occupation = OCCUPATIONS[o];
+  const npc = {
+    firstName,
+    lastName,
+    race: RACES[r],
+    gender: GENDERS[g],
+    age,
+    occupation,
+    content: Object.fromEntries(
+      NPC_SECTIONS.map((section, i) => [
+        section,
+        resolve(refs[i], npcFragmentIds(section, occupation)),
+      ]),
+    ),
+    ...(text && {
+      text: {
+        language: text[0],
+        source: 'ai',
+        ...Object.fromEntries(
+          NPC_SECTIONS.map((section, i) => [section, text[i + 1]]),
+        ),
+      },
+    }),
+  };
+  // The same rules as for side characters stored on the device (constitution IV).
+  return parseNpc(npc);
+};
+
+const PREFIX = {
+  character: 'c1.',
+  party: 'p2.',
+  partyV1: 'p1.',
+  npc: 'n1.',
+} as const;
 
 export const shareUrl = (
   shared:
     | { kind: 'character'; character: Character }
-    | { kind: 'party'; party: Party },
+    | { kind: 'party'; party: Party }
+    | { kind: 'npc'; npc: Npc },
   base = `${location.origin}${import.meta.env.BASE_URL}`,
 ) =>
   `${base}share#${
     shared.kind === 'character'
       ? PREFIX.character + encodeCharacter(shared.character)
-      : PREFIX.party + encodeParty(shared.party)
+      : shared.kind === 'party'
+        ? PREFIX.party + encodeParty(shared.party)
+        : PREFIX.npc + encodeNpc(shared.npc)
   }`;
 
 export type SharedContent =
-  { kind: 'character'; character: Character } | { kind: 'party'; party: Party };
+  | { kind: 'character'; character: Character }
+  | { kind: 'party'; party: Party }
+  | { kind: 'npc'; npc: Npc };
 
 /** Reads the `#…` part of a share link; `undefined` when it cannot be read (FR-007). */
 export const parseShareHash = (hash: string): SharedContent | undefined => {
@@ -484,6 +591,10 @@ export const parseShareHash = (hash: string): SharedContent | undefined => {
   if (value.startsWith(PREFIX.character)) {
     const character = decodeCharacter(value.slice(PREFIX.character.length));
     return character && { kind: 'character', character };
+  }
+  if (value.startsWith(PREFIX.npc)) {
+    const npc = decodeNpc(value.slice(PREFIX.npc.length));
+    return npc && { kind: 'npc', npc };
   }
   if (value.startsWith(PREFIX.party)) {
     const party = decodeParty(value.slice(PREFIX.party.length), 2);
