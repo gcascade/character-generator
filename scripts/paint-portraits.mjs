@@ -224,7 +224,7 @@ const paintWithCloudflare = async (prompt, { fetch }) => {
         },
         // FLUX schnell has no negative prompt: the essentials go into the prompt.
         body: JSON.stringify({
-          prompt: `${prompt.positive}. No text, no watermark, fully clothed.`,
+          prompt: `${prompt.positive}. Unsigned painting: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`,
         }),
       },
     );
