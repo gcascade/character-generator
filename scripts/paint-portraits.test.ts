@@ -49,8 +49,8 @@ describe('paint-portraits script (spec 011 US3)', () => {
   });
 
   it('plans only missing portraits, or the one asked for', () => {
+    // Only portraits without a file (there may be none).
     const missing = plan({ limit: Infinity });
-    expect(missing.length).toBeGreaterThan(0);
     expect(missing.some((p) => p.stem === 'elf/mage/female1')).toBe(false);
     expect(plan({ only: 'elf/mage/female1', limit: Infinity })).toHaveLength(1);
     expect(() =>
@@ -59,9 +59,14 @@ describe('paint-portraits script (spec 011 US3)', () => {
   });
 
   it('lists paths and prompts in a dry run, without network', async () => {
-    const { code, output, fetch } = await run(['--dry-run', '--limit', '2']);
+    const { code, output, fetch } = await run([
+      '--dry-run',
+      '--only',
+      'dwarf/bard/female1',
+    ]);
     expect(code).toBe(0);
-    expect(output).toMatch(/2 portrait\(s\) to paint/);
+    expect(output).toMatch(/1 portrait\(s\) to paint/);
+    expect(output).toMatch(/dwarf woman.*no beard/);
     expect(output).toMatch(/prompt: semi-realistic digital fantasy painting/);
     expect(fetch).not.toHaveBeenCalled();
   });
@@ -69,7 +74,12 @@ describe('paint-portraits script (spec 011 US3)', () => {
   it('asks for the Cloudflare keys, and never prints them', async () => {
     vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', '');
     vi.stubEnv('CLOUDFLARE_API_TOKEN', '');
-    const missing = await run(['--service', 'cloudflare', '--limit', '1']);
+    const missing = await run([
+      '--service',
+      'cloudflare',
+      '--only',
+      'gnome/bard/female1',
+    ]);
     expect(missing.code).toBe(2);
     expect(missing.output).toMatch(
       /Set CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN/,
@@ -78,7 +88,7 @@ describe('paint-portraits script (spec 011 US3)', () => {
     vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'acc-123');
     vi.stubEnv('CLOUDFLARE_API_TOKEN', 'secret-token-xyz');
     const quota = await run(
-      ['--service', 'cloudflare', '--limit', '1'],
+      ['--service', 'cloudflare', '--only', 'gnome/bard/female1'],
       vi.fn(
         async () =>
           new Response(
@@ -99,7 +109,7 @@ describe('paint-portraits script (spec 011 US3)', () => {
 
   it('stops when AI Horde cannot be reached', async () => {
     const { code, output } = await run(
-      ['--limit', '1'],
+      ['--only', 'gnome/bard/female1'],
       vi.fn(async () => {
         throw new TypeError('fetch failed');
       }),

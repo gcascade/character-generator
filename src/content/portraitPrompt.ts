@@ -88,7 +88,10 @@ export const buildPortraitPrompt = (subject: PortraitSubject) => {
     : subject.occupation
       ? recipe.occupations[subject.occupation]
       : '';
-  const who = `${recipe.ageBands[subject.ageBand]} ${recipe.gender[subject.gender]}, ${recipe.races[subject.race]}`;
+  // A race may be described per gender (e.g. dwarf women have no beard).
+  const race: string | Record<string, string> = recipe.races[subject.race];
+  const looks = typeof race === 'string' ? race : race[subject.gender];
+  const who = `${recipe.ageBands[subject.ageBand]} ${recipe.gender[subject.gender]}, ${looks}`;
   const positive = [recipe.style, who, gear, subject.look]
     .filter(Boolean)
     .join(', ');
