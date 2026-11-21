@@ -50,16 +50,22 @@ export const subjectOfCharacter = (character: Character): PortraitSubject => ({
   characterClass: character.characterClass,
 });
 
+/** A look sentence as a phrase of the prompt: lower-case start, no final full stop. */
+const lookPhrase = (sentence: string) =>
+  sentence.charAt(0).toLowerCase() + sentence.slice(1).replace(/\.$/, '');
+
 export const subjectOfNpc = (npc: Npc): PortraitSubject => ({
   race: npc.race,
   gender: npc.gender,
   ageBand: ageBand(npc.race, npc.age),
   occupation: npc.occupation,
   // Look texts have no name placeholder (checked by a test); empty names keep it that way.
-  look: renderText(NPC_TEXTS.en[npc.content.look], npc.gender, {
-    firstName: '',
-    lastName: '',
-  }),
+  look: lookPhrase(
+    renderText(NPC_TEXTS.en[npc.content.look], npc.gender, {
+      firstName: '',
+      lastName: '',
+    }),
+  ),
 });
 
 export const traitsOf = (subject: PortraitSubject): PortraitTraits => ({

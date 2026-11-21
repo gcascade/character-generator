@@ -289,7 +289,10 @@ describe('party links with ties, roles and hook (spec 008)', () => {
         ),
       ).slice(0, 6),
     ];
-    const data = btoa(JSON.stringify(v1))
+    // UTF-8 like the app: names can have accents (e.g. the elf name "Naïlo").
+    const data = btoa(
+      String.fromCharCode(...new TextEncoder().encode(JSON.stringify(v1))),
+    )
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=+$/, '');

@@ -47,7 +47,9 @@ describe('portrait prompts (spec 011)', () => {
         const npc = generateNpc({ occupation, gender });
         const { positive } = buildPortraitPrompt(subjectOfNpc(npc));
         const sheet = npcSheet(npc, 'en');
-        expect(positive).toContain(sheet.look);
+        const look =
+          sheet.look.charAt(0).toLowerCase() + sheet.look.slice(1, -1);
+        expect(positive).toContain(look);
         expect(positive).not.toContain(npc.firstName);
         expect(positive).not.toContain(npc.lastName);
         for (const section of NPC_SECTIONS.filter((s) => s !== 'look')) {
