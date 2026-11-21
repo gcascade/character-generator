@@ -557,5 +557,315 @@
     "id": "training-barbarian-raider",
     "category": "training",
     "characterClass": "Barbarian"
+  },
+  {
+    "id": "origin-human-mountain",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-human-camp",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-elf-moon",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-elf-orchard",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-dwarf-brewery",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-dwarf-ruin",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-orc-river",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-orc-adopted",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-halfling-orchard",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-halfling-lighthouse",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-gnome-mine",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-gnome-observatory",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-half-elf-port",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-half-elf-temple",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-dark-elf-weavers",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-dark-elf-arena",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-ashborn-circus",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "origin-ashborn-noble",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "training-warrior-company",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-warrior-veteran",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-mage-apprentice",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-mage-library",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-rogue-smuggler",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-rogue-cardsharp",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-cleric-battlefield",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "training-cleric-orphanage",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "training-ranger-messenger",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-ranger-monsters",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-paladin-tournament",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-paladin-temple-guard",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-bard-herald",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-bard-busker",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-druid-storm",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-druid-garden",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-barbarian-desert",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "training-barbarian-avalanche",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "turning-lg-witness",
+    "category": "turningPoint",
+    "alignment": "Lawful Good"
+  },
+  {
+    "id": "turning-lg-plague-ward",
+    "category": "turningPoint",
+    "alignment": "Lawful Good"
+  },
+  {
+    "id": "turning-ng-flood",
+    "category": "turningPoint",
+    "alignment": "Neutral Good"
+  },
+  {
+    "id": "turning-ng-thief",
+    "category": "turningPoint",
+    "alignment": "Neutral Good"
+  },
+  {
+    "id": "turning-cg-mine",
+    "category": "turningPoint",
+    "alignment": "Chaotic Good"
+  },
+  {
+    "id": "turning-cg-wedding",
+    "category": "turningPoint",
+    "alignment": "Chaotic Good"
+  },
+  {
+    "id": "turning-ln-ledger",
+    "category": "turningPoint",
+    "alignment": "Lawful Neutral"
+  },
+  {
+    "id": "turning-ln-oath",
+    "category": "turningPoint",
+    "alignment": "Lawful Neutral"
+  },
+  {
+    "id": "turning-tn-river",
+    "category": "turningPoint",
+    "alignment": "True Neutral"
+  },
+  {
+    "id": "turning-tn-trade",
+    "category": "turningPoint",
+    "alignment": "True Neutral"
+  },
+  {
+    "id": "turning-cn-heist",
+    "category": "turningPoint",
+    "alignment": "Chaotic Neutral"
+  },
+  {
+    "id": "turning-cn-prophecy",
+    "category": "turningPoint",
+    "alignment": "Chaotic Neutral"
+  },
+  {
+    "id": "turning-le-guild",
+    "category": "turningPoint",
+    "alignment": "Lawful Evil"
+  },
+  {
+    "id": "turning-le-inquisitor",
+    "category": "turningPoint",
+    "alignment": "Lawful Evil"
+  },
+  {
+    "id": "turning-ne-poison",
+    "category": "turningPoint",
+    "alignment": "Neutral Evil"
+  },
+  {
+    "id": "turning-ne-informer",
+    "category": "turningPoint",
+    "alignment": "Neutral Evil"
+  },
+  {
+    "id": "turning-ce-riot",
+    "category": "turningPoint",
+    "alignment": "Chaotic Evil"
+  },
+  {
+    "id": "turning-ce-pact",
+    "category": "turningPoint",
+    "alignment": "Chaotic Evil"
+  },
+  {
+    "id": "goal-sibling",
+    "category": "goal"
+  },
+  {
+    "id": "goal-book",
+    "category": "goal"
+  },
+  {
+    "id": "goal-school",
+    "category": "goal"
+  },
+  {
+    "id": "goal-cure",
+    "category": "goal"
+  },
+  {
+    "id": "goal-debt",
+    "category": "goal"
+  },
+  {
+    "id": "goal-heir",
+    "category": "goal"
+  },
+  {
+    "id": "title-saga",
+    "category": "title"
+  },
+  {
+    "id": "title-tales",
+    "category": "title"
+  },
+  {
+    "id": "title-portrait",
+    "category": "title"
+  },
+  {
+    "id": "title-who",
+    "category": "title"
   }
 ]

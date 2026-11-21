@@ -8,5 +8,11 @@
   "goal-company": "{firstName} rassemble une compagnie d'aventuriers, avec la certitude que la tempête qui vient ne pourra pas être affrontée sans aide.",
   "goal-dragon": "Les rumeurs d'un dragon qui s'éveille dans le Nord sont parvenues jusqu'à {firstName}, qui affûte déjà ses lames et ses plans.",
   "goal-redemption": "Une vieille erreur hante encore {firstName}, qui erre de ville en ville en espérant que chaque bonne action pèse un peu face au passé.",
-  "goal-legend": "{fullName} ne veut qu'une chose : que les bardes chantent encore ses exploits bien après l'extinction de la dernière bougie."
+  "goal-legend": "{fullName} ne veut qu'une chose : que les bardes chantent encore ses exploits bien après l'extinction de la dernière bougie.",
+  "goal-sibling": "Aujourd'hui, {firstName} fouille chaque ville et chaque taverne à la recherche d'un frère ou d'une sœur disparus il y a des années, en suivant la moindre rumeur.",
+  "goal-book": "{fullName}, {epithet}, est sur la piste du dernier exemplaire d'un livre interdit, avant que ceux qui veulent le brûler ne le trouvent.",
+  "goal-school": "{firstName} rêve de fonder une école où chacun, riche ou pauvre, pourrait apprendre ce qui lui a un jour sauvé la vie.",
+  "goal-cure": "Une malédiction change peu à peu les habitants du village natal en pierre, et le seul remède se trouverait au-delà des bords de toutes les cartes : {firstName} est en route.",
+  "goal-debt": "{firstName} doit une dangereuse somme d'or à un créancier patient et très bien renseigné, et chaque aventure est un remboursement.",
+  "goal-heir": "{fullName}, {epithet}, a juré de protéger un jeune héritier caché parmi le peuple jusqu'au jour où le trône volé pourra être repris."
 }

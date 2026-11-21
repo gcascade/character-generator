@@ -8,5 +8,11 @@
   "goal-company": "{firstName} is gathering a company of adventurers, convinced that the coming storm cannot be faced alone.",
   "goal-dragon": "Rumours of a dragon waking in the north have reached {firstName}, who is already sharpening blades and plans.",
   "goal-redemption": "Haunted by an old mistake, {firstName} wanders from town to town, hoping each good deed weighs a little against the past.",
-  "goal-legend": "{fullName} wants only one thing: that bards will still sing of {{his|her|their}} deeds long after the last candle has gone out."
+  "goal-legend": "{fullName} wants only one thing: that bards will still sing of {{his|her|their}} deeds long after the last candle has gone out.",
+  "goal-sibling": "Today, {firstName} searches every town and tavern for a sibling who vanished years ago, following the faintest rumour.",
+  "goal-book": "{fullName}, {epithet}, is hunting for the last copy of a forbidden book, before those who want it burned find it first.",
+  "goal-school": "{firstName} dreams of founding a school where anyone, rich or poor, could learn the skills that saved {{his|her|their}} life.",
+  "goal-cure": "A curse is slowly turning the people of {firstName}'s village to stone, and the only cure is said to lie beyond the edge of every map.",
+  "goal-debt": "{firstName} owes a dangerous amount of gold to a patient and very well-informed creditor, and every adventure is a payment.",
+  "goal-heir": "{fullName}, {epithet}, has sworn to protect a young heir hidden among commoners until the day the stolen throne can be reclaimed."
 }

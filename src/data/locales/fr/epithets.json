@@ -136,5 +136,34 @@
     "f": "la Rêveuse",
     "n": "aux Yeux rêveurs"
   },
-  "epithet-stoneskin": "Peau-de-Pierre"
+  "epithet-stoneskin": "Peau-de-Pierre",
+  "epithet-ironwill": "Volonté-de-Fer",
+  "epithet-quiet": {
+    "m": "le Discret",
+    "f": "la Discrète",
+    "n": "aux Pas discrets"
+  },
+  "epithet-redeemed": {
+    "m": "le Racheté",
+    "f": "la Rachetée",
+    "n": "au Passé racheté"
+  },
+  "epithet-palemoon": "de la Lune pâle",
+  "epithet-sevenscars": "Sept-Cicatrices",
+  "epithet-honest": "l'Honnête",
+  "epithet-oakheart": "Cœur-de-Chêne",
+  "epithet-silvertongue": "Langue-d'Argent",
+  "epithet-lastblood": "du Dernier Sang",
+  "epithet-patient": {
+    "m": "le Patient",
+    "f": "la Patiente",
+    "n": "à la Patience infinie"
+  },
+  "epithet-hunter": {
+    "m": "le Chasseur",
+    "f": "la Chasseresse",
+    "n": "à l'Œil de chasse"
+  },
+  "epithet-embereyes": "aux Yeux de braise",
+  "epithet-river": "de la Rivière"
 }
