@@ -114,17 +114,20 @@ the list), and commit \`public/images\`, \`src/data/content/portraitFiles.json\`
 - **AI Horde, no account** (default): free community queue run by volunteers; anonymous requests come last, so expect
   one to several minutes per portrait. Nothing to set up.
 - **AI Horde with a free account** (higher priority): register at <https://aihorde.net/register> (a user name is
-  enough), copy the API key it shows (keep it: it is shown once), then run
-  \`AI_HORDE_API_KEY=your-key npm run portraits:paint\`.
+  enough), copy the API key it shows (keep it: it is shown once) into \`AI_HORDE_API_KEY\` in your \`.env\` file (see
+  below), then run \`npm run portraits:paint\`.
 - **Cloudflare Workers AI** (fast, FLUX model, free daily quota): create a free account at
   <https://dash.cloudflare.com/sign-up>; your **Account ID** is on the dashboard home page (right column, "Account
   details") or in the URL after \`dash.cloudflare.com/\`. Create a token in **My Profile → API Tokens → Create Token**
-  with the **Workers AI** template. Then run
-  \`CLOUDFLARE_ACCOUNT_ID=your-id CLOUDFLARE_API_TOKEN=your-token npm run portraits:paint -- --service cloudflare\`.
+  with the **Workers AI** template. Put both in your \`.env\` file, then run
+  \`npm run portraits:paint -- --service cloudflare\`.
   When the daily quota is used up, the script stops; run it again the next day.
 
-Keys are read from your terminal's environment only: the script never writes them to a file or prints them. On
-Windows PowerShell, set them first with \`$env:CLOUDFLARE_API_TOKEN="…"\`.
+### Keys
+
+Copy \`.env.example\` to \`.env\` at the root of the project and fill in the keys you use: the script reads it on
+every run. \`.env\` is ignored by git, so the keys stay on your computer; the script never writes or prints them.
+Variables set in your terminal work too (they win over \`.env\`).
 
 ## Adding a portrait by hand
 

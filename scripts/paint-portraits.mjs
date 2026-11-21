@@ -2,10 +2,10 @@
 //
 //   npm run portraits:paint -- --dry-run            list what would be painted, no network
 //   npm run portraits:paint -- --limit 2            AI Horde, no account
-//   AI_HORDE_API_KEY=… npm run portraits:paint      AI Horde with your key (higher priority)
-//   CLOUDFLARE_ACCOUNT_ID=… CLOUDFLARE_API_TOKEN=… npm run portraits:paint -- --service cloudflare
+//   npm run portraits:paint -- --service cloudflare
 //
-// Keys are read from the environment only, never written or printed. Existing portraits are never overwritten; a
+// Keys come from the .env file (copy .env.example; read by `node --env-file-if-exists`) or the environment
+// (AI_HORDE_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN); they are never written or printed. Existing portraits are never overwritten; a
 // new run continues with what is left. See docs/portraits.md.
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -261,6 +261,15 @@ export const main = async (
   log(
     `${todo.length} portrait(s) to paint with ${options.service}${options.dryRun ? ' (dry run)' : ''}.`,
   );
+  if (!options.dryRun) {
+    log(
+      options.service === 'cloudflare'
+        ? 'Using your Cloudflare account.'
+        : process.env.AI_HORDE_API_KEY
+          ? 'Using your AI Horde key (from .env or the environment).'
+          : 'Using AI Horde without an account (add AI_HORDE_API_KEY to .env for a higher priority).',
+    );
+  }
 
   const controller = new AbortController();
   const onInterrupt = () => controller.abort();
