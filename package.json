@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "portraits": "node scripts/missing-portraits.mjs",
-    "portraits:paint": "node scripts/paint-portraits.mjs",
+    "portraits:paint": "node --env-file-if-exists=.env scripts/paint-portraits.mjs",
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
