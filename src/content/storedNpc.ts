@@ -19,6 +19,7 @@ const text = z.string().trim().min(1).max(600);
 const npcSchema = z
   .object({
     id: z.string().min(1).max(100).optional(),
+    portraitId: z.string().min(1).max(100).optional(),
     firstName: z.string().trim().min(1).max(60),
     lastName: z.string().trim().min(1).max(60),
     race: z.enum(Object.values(CharacterRaces)),
@@ -52,6 +53,7 @@ const npcSchema = z
     const result: Npc = { ...npc, content };
     if (!npc.text) delete result.text;
     if (!npc.id) delete result.id;
+    if (!npc.portraitId) delete result.portraitId;
     return result;
   });
 

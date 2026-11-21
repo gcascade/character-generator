@@ -10,6 +10,8 @@ import PartyMemberCard from '../../components/party/partyMemberCard/PartyMemberC
 import PartyStory from '../../components/party/partyStory/PartyStory';
 import { matchesConstraints, renderParty } from '../../content/party';
 import { shareUrl } from '../../content/share';
+import { subjectOfCharacter } from '../../content/portraitPrompt';
+import PaintPortrait from '../../components/portrait/paintPortrait/PaintPortrait';
 import ShareButton from '../../components/common/share/ShareButton';
 import { DataContext } from '../../contexts/DataContext';
 import useAlert from '../../hooks/useAlert';
@@ -33,6 +35,7 @@ const Party: FC = () => {
     removeTie,
     setRole,
     rerollHook,
+    setMemberPortrait,
   } = useParty();
   const { generateParty, writing } = usePartyGenerator();
 
@@ -110,6 +113,14 @@ const Party: FC = () => {
                 key={member.id}
                 member={member}
                 onToggleLock={() => toggleLock(member.id)}
+                portraitAction={
+                  <PaintPortrait
+                    subject={subjectOfCharacter(member.character)}
+                    portraitId={member.character.portraitId}
+                    onPainted={(id) => setMemberPortrait(member.id, id)}
+                    onRemoved={() => setMemberPortrait(member.id, undefined)}
+                  />
+                }
                 onReroll={() => rerollMember(member.id)}
                 shareable
                 roleControl={

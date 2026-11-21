@@ -22,6 +22,8 @@ const backgroundSchema = z.object({
 export const storedCharacterSchema = z
   .object({
     id: z.string().trim().min(1).max(100).optional(),
+    /** Painted portrait (spec 011), stored apart. */
+    portraitId: z.string().trim().min(1).max(100).optional(),
     firstName: text,
     lastName: z.string().trim().max(4000),
     race: z.enum(Object.values(CharacterRaces)),

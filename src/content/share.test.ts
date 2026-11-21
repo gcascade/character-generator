@@ -289,7 +289,10 @@ describe('party links with ties, roles and hook (spec 008)', () => {
         ),
       ).slice(0, 6),
     ];
-    const data = btoa(JSON.stringify(v1))
+    // UTF-8 like the app: names can have accents (e.g. the elf name "Naïlo").
+    const data = btoa(
+      String.fromCharCode(...new TextEncoder().encode(JSON.stringify(v1))),
+    )
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=+$/, '');
@@ -358,5 +361,23 @@ describe('side character links (spec 010)', () => {
       .replace(/\//g, '_')
       .replace(/=+$/, '');
     expect(decodeNpc(data)?.content.daily).toMatch(/^daily-baker-/);
+  });
+});
+
+describe('painted portraits are never shared (spec 011 FR-006)', () => {
+  it('drops the portrait id of characters and side characters', () => {
+    const character = { ...generateRandomCharacter(), portraitId: 'p1' };
+    expect(
+      decodeCharacter(encodeCharacter(character))?.portraitId,
+    ).toBeUndefined();
+    const npc = { ...generateNpc(), portraitId: 'p2' };
+    expect(decodeNpc(encodeNpc(npc))?.portraitId).toBeUndefined();
+  });
+
+  it('still sees a saved character with a portrait as the shared one', () => {
+    const character = generateRandomCharacter();
+    expect(sameCharacter({ ...character, portraitId: 'p1' }, character)).toBe(
+      true,
+    );
   });
 });

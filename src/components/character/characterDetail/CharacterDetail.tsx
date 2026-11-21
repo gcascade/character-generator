@@ -42,6 +42,8 @@ type CharacterDetailProps = {
   /** Offered for AI text written in another language. */
   onTranslate?: VoidFunction;
   translating?: boolean;
+  /** Shown under the portrait, e.g. "Paint a portrait" (spec 011). */
+  portraitAction?: React.ReactNode;
 };
 
 /**
@@ -60,6 +62,7 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
   eyebrow,
   onTranslate,
   translating,
+  portraitAction,
 }) => {
   const t = useT();
   const { locale } = useLocale();
@@ -102,16 +105,21 @@ const CharacterDetail: FC<CharacterDetailProps> = ({
               alignItems: 'start',
             }}
           >
-            <CharacterImage
-              gender={character.gender}
-              race={character.race}
-              characterClass={character.characterClass}
-              firstName={character.firstName}
-              lastName={character.lastName}
-              height={isPhone ? 220 : 340}
-              width="100%"
-              crop
-            />
+            <Box>
+              <CharacterImage
+                gender={character.gender}
+                race={character.race}
+                characterClass={character.characterClass}
+                firstName={character.firstName}
+                lastName={character.lastName}
+                height={isPhone ? 220 : 340}
+                width="100%"
+                crop
+                portraitId={character.portraitId}
+                age={character.age}
+              />
+              {portraitAction && <Box sx={{ mt: 1 }}>{portraitAction}</Box>}
+            </Box>
             <Box sx={{ minWidth: 0 }}>
               <Box sx={{ mb: 2 }}>
                 <CharacterHeader character={character} headingLevel="h1" />

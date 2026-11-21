@@ -44,6 +44,8 @@ type PartyMemberCardProps = {
   /** The member no longer matches the party's shared settings. */
   notMatching?: boolean;
   disabled?: boolean;
+  /** Shown under the portrait in the member's full view, e.g. "Paint a portrait" (spec 011). */
+  portraitAction?: React.ReactNode;
 };
 
 /** One adventurer of the party, with its own actions (spec 004 US1, US2). */
@@ -56,6 +58,7 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
   roleControl,
   notMatching = false,
   disabled = false,
+  portraitAction,
 }) => {
   const t = useT();
   const { locale } = useLocale();
@@ -111,6 +114,8 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
         width="100%"
         crop
         zoomable={false}
+        portraitId={character.portraitId}
+        age={character.age}
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <CharacterHeader character={character} compact headingLevel="h3" />
@@ -208,6 +213,7 @@ const PartyMemberCard: FC<PartyMemberCardProps> = ({
             character={character}
             onBack={() => setReading(false)}
             backLabel={t('story.close')}
+            portraitAction={portraitAction}
           />
         </DialogContent>
       </Dialog>

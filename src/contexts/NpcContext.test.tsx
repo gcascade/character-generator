@@ -105,4 +105,15 @@ describe('NpcProvider', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => renderHook(useNpcs)).toThrow(/NpcProvider/);
   });
+
+  it('attaches a painted portrait to the current and the saved copy (spec 011)', () => {
+    const { result } = setup();
+    act(() => result.current.saveNpc());
+    const saved = result.current.npc;
+    act(() => result.current.attachPortrait(saved, 'p1'));
+    expect(result.current.npc.portraitId).toBe('p1');
+    expect(result.current.savedNpcs[0].portraitId).toBe('p1');
+    act(() => result.current.attachPortrait(result.current.npc, undefined));
+    expect(result.current.savedNpcs[0].portraitId).toBeUndefined();
+  });
 });

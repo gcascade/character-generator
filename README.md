@@ -109,6 +109,18 @@ gender (or leave them to chance), reroll any property or section with its die, a
 in the **Side characters** tab of **My characters**, each with its own page, and can be shared by link. With an AI
 provider, the AI writes the name and the sheet.
 
+# AI portraits
+
+**Paint a portrait** (under the portrait of the generated character, a saved character, a party member's full view
+or a side character) asks [AI Horde](https://aihorde.net), a free painting service run by volunteers, for a portrait
+matching the character's race, class or occupation, gender and age. Only how the character looks is sent — never a
+name or a story — and a notice shows the exact description the first time. It can take from a few seconds to several
+minutes; you can cancel. Painted portraits are kept on your device with the character (they are not part of share
+links), can be painted again or removed, and are marked "May be outdated" when the character changes.
+
+The missing default portraits can be painted by the maintainer with `npm run portraits:paint`, on their own computer
+(no account needed; see [docs/portraits.md](docs/portraits.md)).
+
 # Sharing
 
 **Share** (home card, a saved character's page, party members) and **Share the party** create a link that recreates
@@ -152,8 +164,9 @@ that every locale has every text, with the same placeholders, and that each one 
   `src/types/character.ts` (share links store positions), then follow the type errors and failing tests: lifespan,
   colours and icon, labels, a name list (`names/<slug>.json`), origin or training fragments in every locale, balance
   points and role weights for a class. Files and fragment ids use the slug (`Dark elf` → `dark-elf`).
-- **Add portraits**: `npm run portraits` lists the missing images in `docs/portraits.md`, with their paths and the
-  style to follow. Until an image exists, the app shows the race emblem.
+- **Add portraits**: `npm run portraits` lists the missing images in `docs/portraits.md` and updates
+  `src/data/content/portraitFiles.json` (the list the app reads); `npm run portraits:paint` paints the missing ones
+  with AI. Until an image exists, the app shows the race emblem.
 - **Add an occupation or side-character text**: occupations are appended to `Occupations` in `src/types/npc.ts`
   (share links store positions), with a minimum age and fragments in `src/data/content/npc.json`, texts in
   `src/data/locales/<locale>/npc.json` and a label `occupation.<Value>` in `labels.json`; daily-life fragments belong

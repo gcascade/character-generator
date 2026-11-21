@@ -1,0 +1,59 @@
+{
+  "style": "semi-realistic digital fantasy painting, waist-up portrait of a single character facing the viewer, detailed expressive face, soft warm light, painterly fantasy background, rich colours, high detail",
+  "negative": "text, letters, watermark, signature, frame, border, nudity, nsfw, gore, blurry, deformed hands, extra fingers, extra limbs, multiple people, cropped head",
+  "gender": {
+    "Male": "man",
+    "Female": "woman",
+    "Non-binary": "androgynous person"
+  },
+  "ageBands": {
+    "young": "young adult",
+    "adult": "adult",
+    "middle-aged": "middle-aged",
+    "elderly": "elderly, grey-haired, wrinkled"
+  },
+  "races": {
+    "Human": "human",
+    "Elf": "elf with long pointed ears, fine features, ageless look, forest background",
+    "Dwarf": "dwarf, short and stocky, braided beard or braided hair, forge or mountain hall background",
+    "Orc": "orc with green-grey skin, small tusks, strong jaw, rugged camp background",
+    "Halfling": "halfling, small cheerful person about half human height, curly hair, cosy village background",
+    "Gnome": "gnome, very small, big curious eyes, large nose, workshop full of gadgets in the background",
+    "Half-elf": "half-elf with slightly pointed ears, mixed human and elven features",
+    "Dark elf": "dark elf with ash-grey skin, white hair, red or violet eyes, pointed ears, underground city of black stone in the background",
+    "Ashborn": "person of infernal ancestry with small curved horns, ember-glowing eyes, reddish skin, ashen landscape background"
+  },
+  "classes": {
+    "Warrior": "warrior in battle-worn armour holding a sword",
+    "Mage": "mage in robes holding a glowing staff, arcane light",
+    "Rogue": "rogue in a dark hooded leather outfit, daggers at the belt",
+    "Cleric": "cleric in vestments with a holy symbol, gentle divine light",
+    "Ranger": "ranger in a green hooded cloak with a longbow and quiver",
+    "Paladin": "paladin in shining plate armour with a shield bearing a sun emblem",
+    "Bard": "bard in colourful clothes holding a lute",
+    "Druid": "druid in robes of leaves and fur with a wooden staff, small animals nearby",
+    "Barbarian": "barbarian with furs, war paint and a great axe"
+  },
+  "occupations": {
+    "Blacksmith": "blacksmith in a leather apron with a hammer, glowing forge behind",
+    "Innkeeper": "innkeeper behind a tavern counter holding a tankard",
+    "Farmer": "farmer in simple work clothes with a pitchfork, fields behind",
+    "Beggar": "beggar in ragged patched clothes on stone steps",
+    "Priest": "priest in simple temple robes with a holy symbol",
+    "Merchant": "merchant in fine clothes at a market stall of spices and cloth",
+    "Guard": "town guard in a tabard and helmet holding a spear",
+    "Fisher": "fisher in an oilskin coat holding a net, harbour behind",
+    "Healer": "healer with a satchel of herbs and bandages",
+    "Scribe": "scribe with ink-stained fingers holding a quill and parchment",
+    "Hunter": "hunter in furs with a bow, forest behind",
+    "Miller": "miller dusted with flour, sacks of grain and a mill behind",
+    "Baker": "baker in an apron holding fresh loaves, bakery oven behind",
+    "Tailor": "tailor with a measuring tape around the neck and bolts of cloth",
+    "Stablehand": "stablehand in work clothes holding a horse's bridle, stable behind",
+    "Minstrel": "minstrel with a lute and a feathered cap",
+    "Sailor": "sailor with a striped shirt and a coil of rope, ship behind",
+    "Noble": "noble in rich velvet clothes and jewellery, manor hall behind",
+    "Alchemist": "alchemist among glass flasks and bubbling potions",
+    "Gravedigger": "gravedigger with a shovel in a misty cemetery"
+  }
+}

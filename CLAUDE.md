@@ -107,6 +107,18 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   parsed by `storedNpc.ts`); locks live in the NPC context, not `LockProvider`.
 - UI name "Side characters" / "Personnages secondaires"; routes `/npcs`, `/npcs/:id`; share prefix `#n1.`.
 
+## AI portraits (spec 011)
+
+- In-app painting goes to AI Horde from the browser (`src/ai/horde.ts`, anonymous key, submit → check → status,
+  DELETE on cancel); the prompt is built from visible traits only (`src/content/portraitPrompt.ts`, data in
+  `src/data/content/portraitPrompt.json`) — never names or story text.
+- Painted images are shrunk to 384 px WebP and stored in `localStorage["portraits"]` (`storedPortraits.ts`,
+  `PortraitProvider`); characters and NPCs keep a `portraitId`, never shared. Unreferenced portraits are dropped on
+  load (an id is "referenced" when another localStorage value contains it).
+- Default portraits: `portraitFor` reads `src/data/content/portraitFiles.json` (no network check). `npm run portraits`
+  rewrites it and `docs/portraits.md`; `npm run portraits:paint` (scripts/, plain Node) paints missing ones with AI
+  Horde or Cloudflare using keys from the environment. `scripts/portrait-prompt.mjs` must match the app's recipe (test).
+
 ## Share links (spec 007)
 
 - `<app>/share#c1.<data>` (character) or `#p2.<data>` (party with ties, roles and hook; `#p1.` still read); `data` is base64url JSON of a positional array

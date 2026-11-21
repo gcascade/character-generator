@@ -27,6 +27,7 @@ import { LOCKABLE_PROPERTIES } from '../content/template';
 import { LockProvider } from '../contexts/LockContext';
 import { PartyProvider } from '../contexts/PartyContext';
 import { NpcProvider } from '../contexts/NpcContext';
+import { PortraitProvider } from '../contexts/PortraitContext';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
 import DrawerMenu from './navigation/drawerMenu/DrawerMenu';
@@ -114,9 +115,13 @@ const App: React.FC = () => {
                       <DataProvider>
                         <PartyProvider>
                           <NpcProvider>
-                            <BrowserRouter basename={import.meta.env.BASE_URL}>
-                              <AppLayout />
-                            </BrowserRouter>
+                            <PortraitProvider>
+                              <BrowserRouter
+                                basename={import.meta.env.BASE_URL}
+                              >
+                                <AppLayout />
+                              </BrowserRouter>
+                            </PortraitProvider>
                           </NpcProvider>
                         </PartyProvider>
                       </DataProvider>

@@ -233,6 +233,7 @@ export const sameCharacter = (a: Character, b: Character) => {
   const strip = (character: Character) => {
     const copy = { ...character };
     delete copy.id;
+    delete copy.portraitId;
     return JSON.stringify(copy);
   };
   return strip(a) === strip(b);

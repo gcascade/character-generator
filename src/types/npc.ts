@@ -51,6 +51,8 @@ export type NpcText = Record<NpcSection, string> & {
 export type Npc = {
   /** Set on saved NPCs only. */
   id?: string;
+  /** Painted portrait in the portrait store (spec 011); never shared. */
+  portraitId?: string;
   firstName: string;
   lastName: string;
   race: CharacterRace;

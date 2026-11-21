@@ -12,7 +12,7 @@ import {
 } from '../../../types/npc';
 import RerollButton from '../../common/buttons/RerollButton';
 import CharacterProperty from '../../character/characterProperty/CharacterProperty';
-import RaceEmblem from '../../character/raceEmblem/RaceEmblem';
+import NpcPortrait from '../npcPortrait/NpcPortrait';
 import WrittenInNotice from '../../character/writtenInNotice/WrittenInNotice';
 
 const FIELDS: { property: LockableNpcProperty; label: MessageKey }[] = [
@@ -37,6 +37,8 @@ type NpcSheetProps = {
   actions?: NpcSheetActions;
   /** Buttons under the sheet (save, share, delete…). */
   footer?: React.ReactNode;
+  /** Shown under the portrait, e.g. "Paint a portrait" (spec 011). */
+  portraitAction?: React.ReactNode;
   headingLevel?: 'h1' | 'h2';
 };
 
@@ -45,6 +47,7 @@ const NpcSheet: FC<NpcSheetProps> = ({
   npc,
   actions,
   footer,
+  portraitAction,
   headingLevel = 'h2',
 }) => {
   const t = useT();
@@ -82,13 +85,8 @@ const NpcSheet: FC<NpcSheetProps> = ({
             width: '100%',
           }}
         >
-          <RaceEmblem
-            race={race}
-            occupation={occupation}
-            gender={gender}
-            height={260}
-            width="100%"
-          />
+          <NpcPortrait npc={npc} height={260} width="100%" crop />
+          {portraitAction && <Box sx={{ mt: 1 }}>{portraitAction}</Box>}
         </Box>
         <Box sx={{ minWidth: 0 }}>
           <Typography

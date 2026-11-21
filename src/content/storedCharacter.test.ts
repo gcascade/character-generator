@@ -75,3 +75,12 @@ describe('withIds', () => {
     expect(parseStoredCharacters(raw)[0].id).toBe('abc');
   });
 });
+
+describe('painted portraits (spec 011)', () => {
+  it('keeps the portrait id of a saved character', () => {
+    const character = { ...generateRandomCharacter(), portraitId: 'p1' };
+    expect(
+      parseStoredCharacters(JSON.stringify([character]))[0].portraitId,
+    ).toBe('p1');
+  });
+});

@@ -57,6 +57,8 @@ export type NpcContextType = {
   /** Saves an NPC received through a share link. */
   saveSharedNpc: (npc: Npc) => void;
   deleteNpc: (id: string) => void;
+  /** Sets or clears the painted portrait of an NPC (current, batch or saved; spec 011). */
+  attachPortrait: (npc: Npc, portraitId: string | undefined) => void;
   isSaved: (npc: Npc) => boolean;
 };
 
@@ -149,6 +151,20 @@ export const NpcProvider: FC<{ children: ReactNode }> = ({ children }) => {
       deleteNpc: (id) =>
         setSavedNpcs((list) => list.filter((npc) => npc.id !== id)),
       isSaved,
+      attachPortrait: (target, portraitId) => {
+        const next = { ...target, portraitId };
+        if (!portraitId) delete next.portraitId;
+        const same = (npc: Npc) =>
+          npc === target || (!!target.id && npc.id === target.id);
+        setState((s) => ({
+          ...s,
+          current: same(s.current) ? next : s.current,
+          batch: s.batch.map((b) => (same(b) ? next : b)),
+        }));
+        if (target.id) {
+          setSavedNpcs((list) => list.map((n) => (same(n) ? next : n)));
+        }
+      },
     };
   }, [state, savedNpcs]);
 
