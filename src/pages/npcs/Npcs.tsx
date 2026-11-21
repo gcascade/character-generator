@@ -3,13 +3,15 @@ import {
   Save as SaveIcon,
 } from '@mui/icons-material';
 import { Box, Button, Typography } from '@mui/material';
-import React, { FC, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import ShareButton from '../../components/common/share/ShareButton';
 import NpcCard from '../../components/npc/npcCard/NpcCard';
 import NpcControls from '../../components/npc/npcControls/NpcControls';
 import NpcSheet from '../../components/npc/npcSheet/NpcSheet';
 import { shareUrl } from '../../content/share';
+import { subjectOfNpc } from '../../content/portraitPrompt';
+import PaintPortrait from '../../components/portrait/paintPortrait/PaintPortrait';
 import useAlert from '../../hooks/useAlert';
 import useNpcGenerator from '../../hooks/useNpcGenerator';
 import useNpcs from '../../hooks/useNpcs';
@@ -29,9 +31,15 @@ const Npcs: FC = () => {
     toggleLock,
     saveNpc,
     isSaved,
+    attachPortrait,
   } = useNpcs();
   const { generateNpc, writing } = useNpcGenerator();
   const sheet = useRef<HTMLDivElement>(null);
+  // A painting ends after rerolls of the same NPC: attach it to the latest version.
+  const latest = useRef(npc);
+  useEffect(() => {
+    latest.current = npc;
+  }, [npc]);
 
   const save = (target = npc) => {
     saveNpc(target);
@@ -55,6 +63,16 @@ const Npcs: FC = () => {
       <Box ref={sheet} sx={{ mt: 3, scrollMarginTop: 80 }}>
         <NpcSheet
           npc={npc}
+          portraitAction={
+            <PaintPortrait
+              // A new side character gets a new painter (and cancels the old painting).
+              key={`${npc.firstName}-${npc.lastName}-${npc.id ?? ''}`}
+              subject={subjectOfNpc(npc)}
+              portraitId={npc.portraitId}
+              onPainted={(id) => attachPortrait(latest.current, id)}
+              onRemoved={() => attachPortrait(npc, undefined)}
+            />
+          }
           actions={{
             onReroll: (target) => {
               if (!reroll(target)) addInfo(t('reroll.nothingElseFits'));

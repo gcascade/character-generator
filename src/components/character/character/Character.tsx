@@ -10,7 +10,10 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useRef } from 'react';
+import { subjectOfCharacter } from '../../../content/portraitPrompt';
+import type { Character as CharacterType } from '../../../types/character';
+import PaintPortrait from '../../portrait/paintPortrait/PaintPortrait';
 import { CharacterContext } from '../../../contexts/CharacterContext';
 import { DataContext } from '../../../contexts/DataContext';
 import useAlert from '../../../hooks/useAlert';
@@ -41,7 +44,7 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
   if (!characterContext) {
     throw new Error('Character must be used within a CharacterProvider');
   }
-  const { saveCharacter, characters } = dataContext;
+  const { saveCharacter, characters, updateCharacter } = dataContext;
 
   const theme = useTheme();
   const t = useT();
@@ -59,6 +62,20 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
     character.id !== undefined && characters.some((c) => c.id === character.id);
 
   const isActionButtonDisabled = requestStatus === 'loading';
+
+  // A painting ends after rerolls of the same character: attach it to the latest version (spec 011).
+  const latest = useRef(character);
+  useEffect(() => {
+    latest.current = character;
+  }, [character]);
+  const attachPortrait = (portraitId: string | undefined) => {
+    const next: CharacterType = { ...latest.current, portraitId };
+    if (!portraitId) delete next.portraitId;
+    setCharacter(next);
+    if (next.id && characters.some((c) => c.id === next.id)) {
+      updateCharacter(next);
+    }
+  };
 
   const onGenerateButtonClick = useCallback(() => {
     generateNewCharacter({ doneCallback: onGenerateCallback });
@@ -93,16 +110,30 @@ const Character: FC<CharacterProps> = ({ onGenerateCallback }) => {
             alignItems: 'start',
           }}
         >
-          <CharacterImage
-            gender={gender}
-            race={race}
-            characterClass={characterClass}
-            firstName={character.firstName}
-            lastName={character.lastName}
-            height={isMobile ? 180 : 290}
-            width="100%"
-            crop
-          />
+          <Box>
+            <CharacterImage
+              gender={gender}
+              race={race}
+              characterClass={characterClass}
+              firstName={character.firstName}
+              lastName={character.lastName}
+              height={isMobile ? 180 : 290}
+              width="100%"
+              crop
+              portraitId={character.portraitId}
+              age={character.age}
+            />
+            <Box sx={{ mt: 1 }}>
+              <PaintPortrait
+                // A new character (new name) cancels the painting of the previous one.
+                key={`${character.firstName} ${character.lastName}`}
+                subject={subjectOfCharacter(character)}
+                portraitId={character.portraitId}
+                onPainted={attachPortrait}
+                onRemoved={() => attachPortrait(undefined)}
+              />
+            </Box>
+          </Box>
           <Box sx={{ minWidth: 0 }}>
             <Box data-testid="character-name" sx={{ mb: 1 }}>
               <CharacterHeader character={character} />

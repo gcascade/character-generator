@@ -11,6 +11,8 @@ export type ContentRefs = {
 export type Character = {
   /** Set on saved characters only (spec 006). */
   id?: string;
+  /** Painted portrait in the portrait store (spec 011); never shared. */
+  portraitId?: string;
   firstName: string;
   lastName: string;
   characterClass: CharacterClass;

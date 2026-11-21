@@ -187,6 +187,7 @@ const sameNpc = (a: Npc, b: Npc) => {
   const strip = (npc: Npc) => {
     const copy = { ...npc };
     delete copy.id;
+    delete copy.portraitId;
     return JSON.stringify(copy);
   };
   return strip(a) === strip(b);

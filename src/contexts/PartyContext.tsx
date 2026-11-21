@@ -48,6 +48,8 @@ export type PartyContextType = PartySettings & {
   removeTie: (tieId: string) => void;
   setRole: (memberId: string, role: string) => void;
   rerollHook: VoidFunction;
+  /** Sets or clears a member's painted portrait, in the saved copy too (spec 011). */
+  setMemberPortrait: (memberId: string, portraitId: string | undefined) => void;
   saveParty: VoidFunction;
   /** Saves a party received through a share link (spec 007). */
   saveSharedParty: (party: Party) => void;
@@ -126,6 +128,23 @@ export const PartyProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setRole: (memberId, role) =>
         setParty((p) => p && setPartyRole(p, memberId, role)),
       rerollHook: () => setParty((p) => p && rerollPartyHook(p)),
+      setMemberPortrait: (memberId, portraitId) => {
+        const update = (p: Party): Party => ({
+          ...p,
+          members: p.members.map((m) => {
+            if (m.id !== memberId) return m;
+            const character = { ...m.character, portraitId };
+            if (!portraitId) delete character.portraitId;
+            return { ...m, character };
+          }),
+        });
+        setParty((p) => p && update(p));
+        if (party) {
+          setSavedParties((list) =>
+            list.map((p) => (p.id === party.id ? update(p) : p)),
+          );
+        }
+      },
       saveParty: () => {
         if (party && !savedParties.some((p) => p.id === party.id)) {
           setSavedParties((list) => [...list, party]);

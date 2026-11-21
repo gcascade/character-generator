@@ -10,7 +10,7 @@ import { label } from '../../../content/labels';
 import { renderNpc } from '../../../content/npc';
 import { useLocale, useT } from '../../../i18n';
 import type { Npc } from '../../../types/npc';
-import RaceEmblem from '../../character/raceEmblem/RaceEmblem';
+import NpcPortrait from '../npcPortrait/NpcPortrait';
 
 type NpcCardProps = {
   npc: Npc;
@@ -35,13 +35,7 @@ const NpcCard: FC<NpcCardProps> = ({ npc, onOpen, onSave, saved, to }) => {
       aria-label={name}
       sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
-      <RaceEmblem
-        race={npc.race}
-        occupation={npc.occupation}
-        gender={npc.gender}
-        height={140}
-        width="100%"
-      />
+      <NpcPortrait npc={npc} height={140} width="100%" crop />
       <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
         <Typography
           variant="h5"

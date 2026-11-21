@@ -10,6 +10,8 @@ import useCharacterRequest from '../../hooks/useCharacterRequest';
 import { useT } from '../../i18n';
 import ShareButton from '../../components/common/share/ShareButton';
 import { shareUrl } from '../../content/share';
+import { subjectOfCharacter } from '../../content/portraitPrompt';
+import PaintPortrait from '../../components/portrait/paintPortrait/PaintPortrait';
 
 /** A saved character on its own page, `/characters/:id` (spec 006). */
 const CharacterDetails: FC = () => {
@@ -77,6 +79,23 @@ const CharacterDetails: FC = () => {
             : undefined
         }
         translating={requestStatus === 'loading'}
+        portraitAction={
+          <PaintPortrait
+            subject={subjectOfCharacter(character)}
+            portraitId={character.portraitId}
+            onPainted={(portraitId) =>
+              data.updateCharacter({
+                ...(data.findCharacter(id) ?? character),
+                portraitId,
+              })
+            }
+            onRemoved={() => {
+              const next = { ...character };
+              delete next.portraitId;
+              data.updateCharacter(next);
+            }}
+          />
+        }
         shareAction={
           <ShareButton
             label={t('share.character')}

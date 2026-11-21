@@ -71,4 +71,19 @@ describe('PartyProvider', () => {
       'useParty must be used within a PartyProvider',
     );
   });
+
+  it("sets a member's painted portrait, in the saved party too (spec 011)", () => {
+    const { result } = renderHook(useParty, { wrapper });
+    act(() => {
+      result.current.generate();
+    });
+    act(() => result.current.saveParty());
+    const member = result.current.party!.members[1];
+    act(() => result.current.setMemberPortrait(member.id, 'p1'));
+    expect(result.current.party!.members[1].character.portraitId).toBe('p1');
+    expect(result.current.savedParties[0].members[1].character.portraitId).toBe(
+      'p1',
+    );
+    expect(result.current.isSaved).toBe(true);
+  });
 });

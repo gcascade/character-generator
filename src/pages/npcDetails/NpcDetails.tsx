@@ -14,6 +14,8 @@ import { Link, useNavigate, useParams } from 'react-router';
 import ShareButton from '../../components/common/share/ShareButton';
 import NpcSheet from '../../components/npc/npcSheet/NpcSheet';
 import { shareUrl } from '../../content/share';
+import { subjectOfNpc } from '../../content/portraitPrompt';
+import PaintPortrait from '../../components/portrait/paintPortrait/PaintPortrait';
 import useAlert from '../../hooks/useAlert';
 import useNpcs from '../../hooks/useNpcs';
 import { useT } from '../../i18n';
@@ -26,7 +28,7 @@ const NpcDetails: FC = () => {
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const t = useT();
-  const { savedNpcs, deleteNpc, setNpc } = useNpcs();
+  const { savedNpcs, deleteNpc, setNpc, attachPortrait } = useNpcs();
   const { addSuccess } = useAlert();
   const [confirming, setConfirming] = useState(false);
   const npc = savedNpcs.find((saved) => saved.id === id);
@@ -67,6 +69,14 @@ const NpcDetails: FC = () => {
       </Button>
       <NpcSheet
         npc={npc}
+        portraitAction={
+          <PaintPortrait
+            subject={subjectOfNpc(npc)}
+            portraitId={npc.portraitId}
+            onPainted={(id) => attachPortrait(npc, id)}
+            onRemoved={() => attachPortrait(npc, undefined)}
+          />
+        }
         headingLevel="h1"
         footer={
           <>

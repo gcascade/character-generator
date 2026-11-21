@@ -1,6 +1,9 @@
 import { CharacterClass, CharacterRace, Gender } from '@Types/character';
 import { CardMedia } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
+import { PortraitContext } from '../../../contexts/PortraitContext';
+import { ageBand, sameTraits } from '../../../content/portraitPrompt';
+import PaintedImage from '../../portrait/paintedImage/PaintedImage';
 import portraitFiles from '../../../data/content/portraitFiles.json';
 import './CharacterImage.css';
 import { useLocale, useT } from '../../../i18n';
@@ -48,6 +51,10 @@ type CharacterImageProps = {
   crop?: boolean;
   /** Opens the full image on click (off when the image is inside a link). */
   zoomable?: boolean;
+  /** A portrait painted by AI (spec 011): shown instead of the default one. */
+  portraitId?: string;
+  /** Tells whether a painted portrait is outdated (age band). */
+  age?: number;
 };
 
 const CharacterImage: FC<CharacterImageProps> = ({
@@ -60,13 +67,46 @@ const CharacterImage: FC<CharacterImageProps> = ({
   width,
   crop = false,
   zoomable = true,
+  portraitId,
+  age,
 }) => {
+  const painted = useContext(PortraitContext)?.get(portraitId);
   const t = useT();
   const { locale } = useLocale();
   const portraitPath =
     race && characterClass && gender
       ? portraitFor(race, characterClass, gender, `${firstName} ${lastName}`)
       : DEFAULT_IMAGE_PATH;
+
+  const alt =
+    race && characterClass
+      ? `${label('race', race, gender ?? 'Male', locale)} ${label('class', characterClass, gender ?? 'Male', locale)}`
+      : t('character.portrait');
+
+  if (painted) {
+    const outdated =
+      !!race &&
+      !!characterClass &&
+      !!gender &&
+      !sameTraits(painted.traits, {
+        race,
+        gender,
+        role: characterClass,
+        ageBand:
+          age === undefined ? painted.traits.ageBand : ageBand(race, age),
+      });
+    return (
+      <PaintedImage
+        image={painted.image}
+        alt={alt}
+        height={height}
+        width={width}
+        crop={crop}
+        zoomable={zoomable}
+        outdated={outdated}
+      />
+    );
+  }
 
   if (!portraitPath && race && characterClass) {
     // No portrait yet for this race and class: show its emblem (spec 009).
@@ -85,11 +125,7 @@ const CharacterImage: FC<CharacterImageProps> = ({
     <CardMedia
       component="img"
       className="character-portrait"
-      alt={
-        race && characterClass
-          ? `${label('race', race, gender ?? 'Male', locale)} ${label('class', characterClass, gender ?? 'Male', locale)}`
-          : t('character.portrait')
-      }
+      alt={alt}
       onClick={zoomable ? () => window.open(portraitPath, '_blank') : undefined}
       image={portraitPath}
       height={height}
