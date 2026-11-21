@@ -11,9 +11,13 @@ export const ANONYMOUS_KEY = '0000000000';
 const CLIENT_AGENT =
   'character-generator:1.0:https://github.com/gcascade/character-generator';
 
-/** Painterly models usually served by the Horde; any of them may answer. */
-export const HORDE_MODELS = ['AlbedoBase XL (SDXL)'];
-export const HORDE_SIZE = 768;
+/*
+ * Any available model at 512 px: a single model queues for 20 minutes or more
+ * for accounts without kudos, any model usually answers within a few minutes.
+ * The style comes from the prompt; the negative prompt keeps anime and cartoon
+ * styles away.
+ */
+export const HORDE_SIZE = 512;
 const POLL_MS = 4000;
 export const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000;
 
@@ -144,7 +148,6 @@ export const paintWithHorde = async (
           sampler_name: 'k_euler_a',
           n: 1,
         },
-        models: HORDE_MODELS,
         nsfw: false,
         censor_nsfw: true,
         r2: false,

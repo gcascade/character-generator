@@ -25,14 +25,14 @@ import {
 const HORDE_URL = 'https://aihorde.net/api/v2';
 const CLIENT_AGENT =
   'character-generator-portraits:1.0:https://github.com/gcascade/character-generator';
-const HORDE_MODELS = ['AlbedoBase XL (SDXL)'];
+/** Default model: good painterly results, but few workers serve it; `--model any` takes whatever is free. */
+const DEFAULT_MODEL = 'AlbedoBase XL (SDXL)';
 const POLL_MS = 5000;
-const TIMEOUT_MS = 20 * 60 * 1000;
 
 /** Stops the whole run (quota, network, bad key); what is done is kept. */
 export class StopRun extends Error {}
 
-const USAGE = `Usage: npm run portraits:paint -- [--service horde|cloudflare] [--dry-run] [--limit <n>] [--only <race/class/male1|female1>] [--size <px>]`;
+const USAGE = `Usage: npm run portraits:paint -- [--service horde|cloudflare] [--dry-run] [--limit <n>] [--only <race/class/male1|female1>] [--size <px>] [--model <name|any>] [--timeout <minutes>]`;
 
 export const parseArgs = (argv) => {
   const options = {
@@ -40,7 +40,9 @@ export const parseArgs = (argv) => {
     dryRun: false,
     limit: Infinity,
     only: undefined,
-    size: 1024,
+    size: 768,
+    model: DEFAULT_MODEL,
+    timeoutMinutes: 60,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -56,6 +58,8 @@ export const parseArgs = (argv) => {
     else if (arg === '--only')
       options.only = value().replace(/\.(png|webp|jpg)$/, '');
     else if (arg === '--size') options.size = Number(value());
+    else if (arg === '--model') options.model = value();
+    else if (arg === '--timeout') options.timeoutMinutes = Number(value());
     else if (arg === '--help' || arg === '-h') throw new Error(USAGE);
     else throw new Error(`Unknown option ${arg}.\n${USAGE}`);
   }
@@ -64,6 +68,9 @@ export const parseArgs = (argv) => {
   }
   if (!(options.limit > 0))
     throw new Error(`--limit must be a positive number.\n${USAGE}`);
+  if (!(options.timeoutMinutes > 0)) {
+    throw new Error(`--timeout must be a number of minutes.\n${USAGE}`);
+  }
   if (!(options.size >= 256 && options.size <= 2048)) {
     throw new Error(`--size must be between 256 and 2048.\n${USAGE}`);
   }
@@ -99,7 +106,10 @@ export const extensionOf = (bytes) => {
   throw new Error('The service did not return a known image format.');
 };
 
-const paintWithHorde = async (prompt, { size, fetch, log, signal }) => {
+const paintWithHorde = async (
+  prompt,
+  { size, model, timeoutMinutes, fetch, log, signal },
+) => {
   const headers = {
     apikey: process.env.AI_HORDE_API_KEY || '0000000000',
     'Client-Agent': CLIENT_AGENT,
@@ -147,7 +157,7 @@ const paintWithHorde = async (prompt, { size, fetch, log, signal }) => {
         sampler_name: 'k_euler_a',
         n: 1,
       },
-      models: HORDE_MODELS,
+      ...(model !== 'any' && { models: [model] }),
       nsfw: false,
       censor_nsfw: true,
       r2: false,
@@ -162,20 +172,24 @@ const paintWithHorde = async (prompt, { size, fetch, log, signal }) => {
     }).catch(() => {});
 
   try {
-    const deadline = Date.now() + TIMEOUT_MS;
+    const deadline = Date.now() + timeoutMinutes * 60 * 1000;
     for (;;) {
       const check = await call(`/generate/check/${id}`);
       if (check.faulted) throw new Error('the painter failed');
       if (check.is_possible === false) {
         throw new StopRun(
-          'No AI Horde painter can take this request now (model or size): try again later or with --size 768.',
+          'No AI Horde painter can take this request now (model or size): try again later, with --size 512 or with --model any.',
         );
       }
       if (check.done) break;
       log(
         `  queue position ${check.queue_position ?? '?'}, about ${check.wait_time ?? '?'} s`,
       );
-      if (Date.now() > deadline) throw new Error('waited more than 20 minutes');
+      if (Date.now() > deadline) {
+        throw new Error(
+          `waited more than ${timeoutMinutes} minutes (try --timeout 120 or --model any)`,
+        );
+      }
       await sleep(POLL_MS);
     }
     const status = await call(`/generate/status/${id}`);
@@ -296,6 +310,8 @@ export const main = async (
             ? await paintWithCloudflare(prompt, { fetch })
             : await paintWithHorde(prompt, {
                 size: options.size,
+                model: options.model,
+                timeoutMinutes: options.timeoutMinutes,
                 fetch,
                 log,
                 signal: controller.signal,

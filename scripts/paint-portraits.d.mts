@@ -6,6 +6,8 @@ export type PaintOptions = {
   limit: number;
   only?: string;
   size: number;
+  model: string;
+  timeoutMinutes: number;
 };
 
 export function parseArgs(argv: string[]): PaintOptions;

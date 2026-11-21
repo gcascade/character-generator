@@ -1,6 +1,6 @@
 {
   "style": "semi-realistic digital fantasy painting, waist-up portrait of a single character facing the viewer, detailed expressive face, soft warm light, painterly fantasy background, rich colours, high detail",
-  "negative": "text, letters, watermark, signature, frame, border, nudity, nsfw, gore, blurry, deformed hands, extra fingers, extra limbs, multiple people, cropped head",
+  "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, frame, border, nudity, nsfw, gore, blurry, deformed hands, extra fingers, extra limbs, multiple people, cropped head",
   "gender": {
     "Male": "man",
     "Female": "woman",
