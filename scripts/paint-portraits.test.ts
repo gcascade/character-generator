@@ -26,7 +26,9 @@ describe('paint-portraits script (spec 011 US3)', () => {
     expect(parseArgs([])).toMatchObject({
       service: 'horde',
       dryRun: false,
-      size: 1024,
+      size: 768,
+      timeoutMinutes: 60,
+      model: 'AlbedoBase XL (SDXL)',
     });
     expect(
       parseArgs(['--service', 'cloudflare', '--limit', '3', '--dry-run']),
@@ -40,6 +42,10 @@ describe('paint-portraits script (spec 011 US3)', () => {
     );
     expect(() => parseArgs(['--limit', '0'])).toThrow(/positive/);
     expect(() => parseArgs(['--nope'])).toThrow(/Unknown option/);
+    expect(
+      parseArgs(['--model', 'any', '--timeout', '120', '--size', '512']),
+    ).toMatchObject({ model: 'any', timeoutMinutes: 120, size: 512 });
+    expect(() => parseArgs(['--timeout', 'soon'])).toThrow(/minutes/);
   });
 
   it('plans only missing portraits, or the one asked for', () => {

@@ -16,7 +16,13 @@ npm run portraits:paint -- --dry-run          # lists what would be painted, wit
 npm run portraits:paint -- --limit 2          # paints 2 portraits with AI Horde, without any account
 npm run portraits:paint                       # paints everything missing (can take hours without an account)
 npm run portraits:paint -- --only gnome/bard/female1
+npm run portraits:paint -- --model any        # AI Horde: any free model, much shorter queue, style varies more
+npm run portraits:paint -- --timeout 120      # wait up to 2 hours per portrait in the queue (default 60 min)
 ```
+
+AI Horde paints at 768 × 768 with one painterly model by default (`--size` and `--model` change it). Few volunteers
+serve that model, so a new account can wait around 20 minutes per portrait: `--model any` is much faster but the
+style varies more, and Cloudflare (below) takes a few seconds per portrait.
 
 Then look at the new images in `public/images`, delete the ones you don't like (run `npm run portraits` to update
 the list), and commit `public/images`, `src/data/content/portraitFiles.json` and this file.

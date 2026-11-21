@@ -11,6 +11,9 @@
 - **Rationale**: free, no account, works from browsers (used by browser clients), documented three-step flow.
 - **Alternatives**: user's own image key (deferred, spec Q2); Pollinations (terms and availability change often).
 - **Limits**: anonymous requests have the lowest priority (wait from ~30 s to several minutes); time limit 10 min.
+- **Update after the first real runs**: with a single SDXL model at 1024 px, a new account waited ~20 min per image.
+  The app now asks any available model at 512 px (negative prompt against anime/cartoon styles); the script keeps a
+  default model at 768 px, with `--model any` and `--timeout <minutes>` (default 60).
 
 ## R2. Prompt recipe
 
