@@ -48,13 +48,7 @@ const Npcs: FC = () => {
 
   return (
     <Box sx={{ padding: { xs: 0.5, sm: 2 }, maxWidth: 1400, mx: 'auto' }}>
-      <PageTitle gutterBottom={false}>{t('page.npcs')}</PageTitle>
-      <Typography
-        align="center"
-        sx={{ color: 'text.secondary', fontStyle: 'italic', mt: 0.5, mb: 3 }}
-      >
-        {t('npcs.subtitle')}
-      </Typography>
+      <PageTitle>{t('page.npcs')}</PageTitle>
       <NpcControls
         onGenerate={() => void generateNpc()}
         onGenerateBatch={generateBatch}

@@ -44,9 +44,6 @@ describe('Side characters page', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Side characters' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText('Ready-to-play NPCs for the game master'),
-    ).toBeInTheDocument();
     for (const title of ['Look', 'Daily life', 'Rumour', 'Secret']) {
       expect(within(sheet()).getByText(title)).toBeInTheDocument();
     }

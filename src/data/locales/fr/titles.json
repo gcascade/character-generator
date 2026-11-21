@@ -4,5 +4,9 @@
   "title-ballad": "Ballade pour {fullName}",
   "title-road": "Sur la route avec {firstName}",
   "title-chronicle": "Chronique : {fullName}",
-  "title-legend": "Une légende en marche : {firstName}"
+  "title-legend": "Une légende en marche : {firstName}",
+  "title-saga": "Saga : {fullName}",
+  "title-tales": "Récits de route : {firstName} {epithet}",
+  "title-portrait": "Portrait d'aventure : {fullName}",
+  "title-who": "Qui est {fullName} ?"
 }
