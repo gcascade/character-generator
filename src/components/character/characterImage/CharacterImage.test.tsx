@@ -1,10 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { korvusBlackiron } from '../../../../test/stubs/Character.stubs';
-import portraitFiles from '../../../data/content/portraitFiles.json';
 import CharacterImage, { portraitFor } from './CharacterImage';
+
+// A fixed list, so the tests do not depend on which portraits exist (spec 011 R5).
+vi.mock('../../../data/content/portraitFiles.json', () => ({
+  default: [
+    'dwarf/cleric/female1.png',
+    'elf/mage/female1.png',
+    'elf/mage/male1.png',
+    'human/rogue/female1.png',
+    'human/rogue/male1.png',
+    'orc/warrior/male1.png',
+  ],
+}));
 
 describe('CharacterImage', () => {
   test('shows the generic portrait without a character', () => {
@@ -41,6 +52,12 @@ describe('CharacterImage', () => {
 describe('portraitFor', () => {
   it('lists exactly the portrait files in public/images (spec 011 R5)', () => {
     const images = join(__dirname, '../../../../public/images');
+    const portraitFiles = JSON.parse(
+      readFileSync(
+        join(__dirname, '../../../data/content/portraitFiles.json'),
+        'utf8',
+      ),
+    );
     const files = readdirSync(images, { recursive: true, encoding: 'utf8' })
       .map((file) => file.replaceAll('\\', '/'))
       .filter((file) =>

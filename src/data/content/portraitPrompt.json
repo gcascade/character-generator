@@ -1,6 +1,6 @@
 {
   "style": "semi-realistic digital fantasy painting, waist-up portrait of a single character facing the viewer, detailed expressive face, soft warm light, painterly fantasy background, rich colours, high detail",
-  "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, frame, border, nudity, nsfw, gore, blurry, deformed hands, extra fingers, extra limbs, multiple people, cropped head",
+  "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, artist name, logo, website address, frame, border, nudity, nsfw, gore, blurry, deformed hands, extra fingers, extra limbs, multiple people, cropped head",
   "gender": {
     "Male": "man",
     "Female": "woman",
@@ -15,16 +15,20 @@
   "races": {
     "Human": "human",
     "Elf": "elf with long pointed ears, fine features, ageless look, forest background",
-    "Dwarf": "dwarf, short and stocky, braided beard or braided hair, forge or mountain hall background",
+    "Dwarf": {
+      "Male": "dwarf man, short and very stocky with broad shoulders, long braided beard, forge or mountain hall background",
+      "Female": "dwarf woman, short and very stocky with broad shoulders and strong arms, braided hair, no beard, forge or mountain hall background",
+      "Non-binary": "dwarf, short and very stocky with broad shoulders, braided hair, forge or mountain hall background"
+    },
     "Orc": "orc with green-grey skin, small tusks, strong jaw, rugged camp background",
-    "Halfling": "halfling, small cheerful person about half human height, curly hair, cosy village background",
-    "Gnome": "gnome, very small, big curious eyes, large nose, workshop full of gadgets in the background",
+    "Halfling": "halfling, a small adult person about half human height with an adult face, curly hair, rounded ears, cosy village background",
+    "Gnome": "gnome, a very small adult person with an adult face, big curious eyes, large nose, a single pair of small pointed ears, workshop full of gadgets in the background",
     "Half-elf": "half-elf with slightly pointed ears, mixed human and elven features",
     "Dark elf": "dark elf with ash-grey skin, white hair, red or violet eyes, pointed ears, underground city of black stone in the background",
     "Ashborn": "person of infernal ancestry with small curved horns, ember-glowing eyes, reddish skin, ashen landscape background"
   },
   "classes": {
-    "Warrior": "warrior in battle-worn armour holding a sword",
+    "Warrior": "warrior in battle-worn armour, a sword sheathed at the hip",
     "Mage": "mage in robes holding a glowing staff, arcane light",
     "Rogue": "rogue in a dark hooded leather outfit, daggers at the belt",
     "Cleric": "cleric in vestments with a holy symbol, gentle divine light",
