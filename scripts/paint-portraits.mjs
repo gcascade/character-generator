@@ -226,7 +226,7 @@ const paintWithCloudflare = async (prompt, { fetch }) => {
         },
         // FLUX schnell has no negative prompt: the essentials go into the prompt.
         body: JSON.stringify({
-          prompt: `${prompt.positive}. Natural hands with five fingers. Unsigned image filling the whole frame, no border: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`,
+          prompt: `${prompt.positive}. The character faces the viewer, never seen from behind. Natural hands with five fingers. Unsigned image filling the whole frame, no border: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`,
         }),
       },
     );

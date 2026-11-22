@@ -68,7 +68,7 @@ describe('paint-portraits script (spec 011 US3)', () => {
     expect(output).toMatch(/1 portrait\(s\) to paint/);
     expect(output).toMatch(/dwarf woman.*no beard/);
     expect(output).toMatch(
-      /prompt: highly detailed cinematic fantasy concept art/,
+      /prompt: front-facing portrait of a single character/,
     );
     expect(fetch).not.toHaveBeenCalled();
   });
