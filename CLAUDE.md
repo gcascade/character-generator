@@ -117,7 +117,8 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   load (an id is "referenced" when another localStorage value contains it).
 - Default portraits: `portraitFor` reads `src/data/content/portraitFiles.json` (no network check). `npm run portraits`
   rewrites it and `docs/portraits.md`; `npm run portraits:paint` (scripts/, plain Node) paints missing ones with AI
-  Horde or Cloudflare using keys from the environment. `scripts/portrait-prompt.mjs` must match the app's recipe (test).
+  Horde or Cloudflare using keys from `.env`; `npm run portraits:remove` rejects some; `scripts/trim-portraits.py`
+  (Pillow) crops fake signatures off new Cloudflare JPEGs and saves 768 px WebP. `scripts/portrait-prompt.mjs` must match the app's recipe (test).
 
 ## Share links (spec 007)
 

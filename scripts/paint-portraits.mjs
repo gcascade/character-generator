@@ -56,7 +56,9 @@ export const parseArgs = (argv) => {
     else if (arg === '--service') options.service = value();
     else if (arg === '--limit') options.limit = Number(value());
     else if (arg === '--only')
-      options.only = value().replace(/\.(png|webp|jpg)$/, '');
+      options.only = value()
+        .replace(/\.(png|webp|jpg)$/, '')
+        .replace(/(male|female)$/, '$11');
     else if (arg === '--size') options.size = Number(value());
     else if (arg === '--model') options.model = value();
     else if (arg === '--timeout') options.timeoutMinutes = Number(value());
@@ -224,7 +226,7 @@ const paintWithCloudflare = async (prompt, { fetch }) => {
         },
         // FLUX schnell has no negative prompt: the essentials go into the prompt.
         body: JSON.stringify({
-          prompt: `${prompt.positive}. Unsigned painting: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`,
+          prompt: `${prompt.positive}. Natural hands with five fingers. Unsigned image filling the whole frame, no border: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`,
         }),
       },
     );

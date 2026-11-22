@@ -112,7 +112,12 @@ AI Horde paints at 768 × 768 with one painterly model by default (\`--size\` an
 serve that model, so a new account can wait around 20 minutes per portrait: \`--model any\` is much faster but the
 style varies more, and Cloudflare (below) takes a few seconds per portrait.
 
-Then look at the new images in \`public/images\`, delete the ones you don't like (run \`npm run portraits\` to update
+**Rejecting portraits**: \`npm run portraits:remove -- orc/bard/female dark-elf/mage/male\` deletes them and updates
+the list; the next \`npm run portraits:paint\` paints them again (add \`--dry-run\` to check first).
+
+Cloudflare's FLUX model often paints fake artist signatures in the corners: trim them away and shrink the new
+images (768 × 768 WebP, ~50 KB instead of ~650 KB) with \`python scripts/trim-portraits.py\` (needs Python 3 and
+\`pip install pillow\`). Then look at the new images in \`public/images\`, delete the ones you don't like (run \`npm run portraits\` to update
 the list), and commit \`public/images\`, \`src/data/content/portraitFiles.json\` and this file.
 
 ### Services
