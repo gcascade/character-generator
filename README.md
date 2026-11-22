@@ -166,7 +166,9 @@ that every locale has every text, with the same placeholders, and that each one 
   points and role weights for a class. Files and fragment ids use the slug (`Dark elf` → `dark-elf`).
 - **Add portraits**: `npm run portraits` lists the missing images in `docs/portraits.md` and updates
   `src/data/content/portraitFiles.json` (the list the app reads); `npm run portraits:paint` paints the missing ones
-  with AI. Until an image exists, the app shows the race emblem.
+  with AI, `npm run portraits:remove -- <race/class/gender>` rejects some so they are painted again, and
+  `python scripts/trim-portraits.py` trims fake signatures off new ones. Until an image exists, the app shows the race
+  emblem.
 - **Add an occupation or side-character text**: occupations are appended to `Occupations` in `src/types/npc.ts`
   (share links store positions), with a minimum age and fragments in `src/data/content/npc.json`, texts in
   `src/data/locales/<locale>/npc.json` and a label `occupation.<Value>` in `labels.json`; daily-life fragments belong
