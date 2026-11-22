@@ -26,7 +26,7 @@ describe('portrait prompts (spec 011)', () => {
           const { positive, negative } = buildPortraitPrompt(
             subjectOfCharacter(character),
           );
-          expect(positive).toMatch(/from the waist up/);
+          expect(positive).toMatch(/^front-facing portrait/);
           expect(positive).not.toMatch(/undefined|\{|\}/);
           expect(positive).not.toContain(character.firstName);
           expect(positive).not.toContain(character.lastName);

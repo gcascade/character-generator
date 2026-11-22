@@ -1,6 +1,6 @@
 {
-  "style": "highly detailed cinematic fantasy concept art, semi-realistic digital illustration, a single character seen from the waist up in three-quarter view, facing the viewer, detailed expressive face, intricate ornate costume with engraved metal, embroidery and leather straps, dramatic cinematic lighting with glowing magical accents, cool blue shadows and warm candlelight, shallow depth of field, detailed atmospheric background",
-  "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, artist name, logo, website address, frame, border, white margin, paper edge, nudity, nsfw, gore, blurry, deformed hands, extra fingers, six fingers, fused fingers, broken weapon, animal growing out of clothes, extra limbs, multiple people, cropped head",
+  "style": "front-facing portrait of a single character looking straight at the viewer, face and eyes fully visible, head and shoulders down to the waist, highly detailed semi-realistic fantasy illustration, intricate ornate costume with engraved metal, embroidery and leather straps, dramatic lighting with glowing magical accents, cool blue shadows and warm candlelight, softly blurred atmospheric background",
+  "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, artist name, logo, website address, frame, border, white margin, paper edge, nudity, nsfw, gore, blurry, deformed hands, extra fingers, six fingers, fused fingers, broken weapon, animal growing out of clothes, extra limbs, multiple people, cropped head, back view, seen from behind, turned away, face hidden, profile view",
   "gender": {
     "Male": "man",
     "Female": "woman",
