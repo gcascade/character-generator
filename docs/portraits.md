@@ -44,7 +44,9 @@ the list), and commit `public/images`, `src/data/content/portraitFiles.json` and
   details") or in the URL after `dash.cloudflare.com/`. Create a token in **My Profile → API Tokens → Create Token**
   with the **Workers AI** template. Put both in your `.env` file, then run
   `npm run portraits:paint -- --service cloudflare`.
-  When the daily quota is used up, the script stops; run it again the next day.
+  When the daily quota is used up, the script stops; run it again the next day. Cloudflare uses FLUX.2 [dev] by
+  default (detailed, follows the description well); `--model flux-2-klein` is faster and `--model schnell` (FLUX.1)
+  uses the least quota but follows details poorly.
 
 ### Keys
 
