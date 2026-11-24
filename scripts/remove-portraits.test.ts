@@ -35,4 +35,19 @@ describe('remove-portraits script (spec 011)', () => {
     expect(run(['dragon/bard/female']).output).toMatch(/Unknown portrait/);
     expect(run([]).code).toBe(1);
   });
+
+  it('selects every AI-painted portrait but the kept ones, never the originals', () => {
+    const { code, output } = run([
+      '--dry-run',
+      '--all-ai',
+      '--keep',
+      'human/ranger/female',
+    ]);
+    expect(code).toBe(0);
+    expect(output).not.toMatch(/\.png/);
+    expect(output).not.toMatch(/human\/ranger\/female1/);
+    expect(output).toMatch(
+      /would remove public\/images\/human\/ranger\/male1\.webp/,
+    );
+  });
 });

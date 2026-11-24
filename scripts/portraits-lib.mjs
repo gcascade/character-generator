@@ -113,7 +113,9 @@ serve that model, so a new account can wait around 20 minutes per portrait: \`--
 style varies more, and Cloudflare (below) takes a few seconds per portrait.
 
 **Rejecting portraits**: \`npm run portraits:remove -- orc/bard/female dark-elf/mage/male\` deletes them and updates
-the list; the next \`npm run portraits:paint\` paints them again (add \`--dry-run\` to check first).
+the list; the next \`npm run portraits:paint\` paints them again (add \`--dry-run\` to check first). To repaint the whole set in a
+new style: \`npm run portraits:remove -- --all-ai --keep <name> --keep <name>\` removes every AI-painted portrait
+except the kept ones (the original \`.png\` portraits are never removed). Each painting gets a random pose.
 
 Cloudflare's FLUX model often paints fake artist signatures in the corners: trim them away and shrink the new
 images (768 × 768 WebP, ~50 KB instead of ~650 KB) with \`python scripts/trim-portraits.py\` (needs Python 3 and

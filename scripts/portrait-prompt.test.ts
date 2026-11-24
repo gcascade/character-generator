@@ -18,7 +18,7 @@ describe('script portrait prompts (spec 011 T014)', () => {
           'elderly',
         ] as const) {
           for (const characterClass of Object.values(CharacterClasses)) {
-            const subject = { race, gender, ageBand, characterClass };
+            const subject = { race, gender, ageBand, characterClass, pose: 3 };
             expect(scriptPrompt(subject)).toEqual(buildPortraitPrompt(subject));
           }
           for (const occupation of Object.values(Occupations)) {

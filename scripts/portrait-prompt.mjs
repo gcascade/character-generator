@@ -19,7 +19,11 @@ export const buildPortraitPrompt = (subject) => {
   const race = recipe.races[subject.race];
   const looks = typeof race === 'string' ? race : race[subject.gender];
   const who = `${recipe.ageBands[subject.ageBand]} ${recipe.gender[subject.gender]}, ${looks}`;
-  const positive = [recipe.style, who, gear, subject.look]
+  const pose =
+    subject.pose === undefined
+      ? ''
+      : recipe.poses[subject.pose % recipe.poses.length];
+  const positive = [recipe.style, who, gear, pose, subject.look]
     .filter(Boolean)
     .join(', ');
   return { positive, negative: recipe.negative };
@@ -31,4 +35,6 @@ export const defaultPortraitSubject = (race, characterClass, variant) => ({
   gender: variant === 'male' ? 'Male' : 'Female',
   ageBand: 'adult',
   characterClass,
+  // A new pose on each run, so a rejected portrait comes back different.
+  pose: Math.floor(Math.random() * recipe.poses.length),
 });

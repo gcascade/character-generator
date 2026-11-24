@@ -21,7 +21,12 @@ export type PortraitSubject = {
   occupation?: Occupation;
   /** App-written English look of a side character. */
   look?: string;
+  /** Index of a pose in the recipe (adventurers only); none keeps a neutral pose. */
+  pose?: number;
 };
+
+/** A random pose index: each painting gets its own (spec 011, maintainer feedback). */
+export const randomPose = () => Math.floor(Math.random() * recipe.poses.length);
 
 /** Traits a portrait was painted from; a change makes it possibly outdated. */
 export type PortraitTraits = Pick<
@@ -92,7 +97,11 @@ export const buildPortraitPrompt = (subject: PortraitSubject) => {
   const race: string | Record<string, string> = recipe.races[subject.race];
   const looks = typeof race === 'string' ? race : race[subject.gender];
   const who = `${recipe.ageBands[subject.ageBand]} ${recipe.gender[subject.gender]}, ${looks}`;
-  const positive = [recipe.style, who, gear, subject.look]
+  const pose =
+    subject.pose === undefined
+      ? ''
+      : recipe.poses[subject.pose % recipe.poses.length];
+  const positive = [recipe.style, who, gear, pose, subject.look]
     .filter(Boolean)
     .join(', ');
   return { positive, negative: recipe.negative };

@@ -5,6 +5,7 @@ import { generateNpc } from './npc';
 import {
   ageBand,
   buildPortraitPrompt,
+  randomPose,
   sameTraits,
   subjectOfCharacter,
   subjectOfNpc,
@@ -27,7 +28,7 @@ describe('portrait prompts (spec 011)', () => {
             subjectOfCharacter(character),
           );
           expect(positive).toMatch(
-            /^photorealistic fantasy character portrait.*faces the camera/,
+            /^photorealistic fantasy character portrait.*turned toward the viewer/,
           );
           expect(positive).not.toMatch(/undefined|\{|\}/);
           expect(positive).not.toContain(character.firstName);
@@ -84,5 +85,18 @@ describe('portrait prompts (spec 011)', () => {
         traitsOf(subjectOfCharacter({ ...character, race: 'Elf' })),
       ),
     ).toBe(false);
+  });
+
+  it('adds a pose when one is given, and only then', () => {
+    const subject = subjectOfCharacter(generateRandomCharacter());
+    expect(buildPortraitPrompt(subject).positive).not.toMatch(/heroic stance/);
+    expect(buildPortraitPrompt({ ...subject, pose: 0 }).positive).toMatch(
+      /heroic stance/,
+    );
+    for (let i = 0; i < 50; i++) {
+      expect(
+        buildPortraitPrompt({ ...subject, pose: randomPose() }).positive,
+      ).toMatch(/viewer|smile|wind|forward|relaxed/);
+    }
   });
 });

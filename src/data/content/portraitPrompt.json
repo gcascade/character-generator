@@ -1,5 +1,15 @@
 {
-  "style": "photorealistic fantasy character portrait, hyper-detailed like a still from a high-budget fantasy film, realistic skin texture and natural proportions, the character faces the camera and looks at the viewer, shown from the head down to mid-thigh in a natural confident pose, intricate costume and gear with finely engraved metal, stitched leather and embroidery, natural lighting that suits the setting, sharp focus on the character, detailed background setting",
+  "style": "photorealistic fantasy character portrait, hyper-detailed like a still from a high-budget fantasy film, realistic skin texture and natural proportions, face clearly visible and turned toward the viewer, shown from the head down to mid-thigh, intricate costume and gear with finely engraved metal, stitched leather and embroidery, natural lighting that suits the setting, sharp focus on the character, detailed background setting",
+  "poses": [
+    "in a heroic stance, chin raised, cloak and hair blowing in the wind",
+    "striding forward toward the viewer with determination",
+    "body angled to the side for action, head turned to face the viewer",
+    "arms crossed, with a confident half-smile",
+    "leaning on their weapon or staff, relaxed and watchful",
+    "one hand raised in a commanding gesture, as if leading others",
+    "kneeling on one knee on rocky ground, looking up at the viewer",
+    "ready for battle, slightly crouched, eyes fixed on the viewer"
+  ],
   "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, artist name, logo, website address, frame, border, white margin, paper edge, nudity, nsfw, gore, blurry, deformed hands, extra fingers, six fingers, fused fingers, broken weapon, animal growing out of clothes, extra limbs, multiple people, cropped head, back view, seen from behind, turned away, face hidden, profile view",
   "gender": {
     "Male": "man",
