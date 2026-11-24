@@ -2,15 +2,16 @@
 
 FLUX often paints fake artist signatures in the corners. This crops the edges (8% on the
 sides, 4% at the top, 12% at the bottom), resizes to 768 x 768 and saves as WebP (~50 KB
-instead of ~650 KB), then deletes the original. Only 1024 x 1024 .jpg files under
-public/images (what the Cloudflare service returns) are touched; the original hand-picked
-.png portraits and already trimmed .webp files are left alone.
+instead of ~650 KB), then deletes the original. Only 1024 x 1024 images under public/images
+are touched: .jpg files (what Cloudflare returns) and .png files not yet committed; the
+original hand-picked .png portraits (committed) and trimmed .webp files are left alone.
 
 Usage (needs Python 3 and Pillow: `pip install pillow`):
     python scripts/trim-portraits.py            # trim every new portrait
     python scripts/trim-portraits.py --dry-run  # list what would be trimmed
 Then run `npm run portraits` to update the list the app reads.
 """
+import subprocess
 import sys
 from pathlib import Path
 
@@ -26,7 +27,20 @@ SIZE = 768
 
 def main() -> None:
     dry_run = "--dry-run" in sys.argv
-    files = sorted(ROOT.glob("*/*/*1.jpg"))
+    committed = set(
+        subprocess.run(
+            ["git", "ls-files", "public/images"],
+            cwd=ROOT.parent.parent,
+            capture_output=True,
+            text=True,
+        ).stdout.split()
+    )
+    new_png = [
+        f
+        for f in ROOT.glob("*/*/*1.png")
+        if f.relative_to(ROOT.parent.parent).as_posix() not in committed
+    ]
+    files = sorted([*ROOT.glob("*/*/*1.jpg"), *new_png])
     done = 0
     for file in files:
         with Image.open(file) as image:

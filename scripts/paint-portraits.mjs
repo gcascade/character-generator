@@ -25,14 +25,33 @@ import {
 const HORDE_URL = 'https://aihorde.net/api/v2';
 const CLIENT_AGENT =
   'character-generator-portraits:1.0:https://github.com/gcascade/character-generator';
-/** Default model: good painterly results, but few workers serve it; `--model any` takes whatever is free. */
+/** Default AI Horde model: good painterly results, but few workers serve it; `--model any` takes whatever is free. */
 const DEFAULT_MODEL = 'AlbedoBase XL (SDXL)';
+
+/**
+ * Cloudflare models (`--model` with `--service cloudflare`). FLUX.2 [dev] follows the prompt much better than FLUX.1
+ * [schnell] but uses more of the free daily quota; FLUX.2 models take multipart form data, not JSON.
+ */
+const CLOUDFLARE_MODELS = {
+  'flux-2-dev': {
+    id: '@cf/black-forest-labs/flux-2-dev',
+    multipart: true,
+    steps: 25,
+  },
+  'flux-2-klein': {
+    id: '@cf/black-forest-labs/flux-2-klein-9b',
+    multipart: true,
+    steps: 4,
+  },
+  schnell: { id: '@cf/black-forest-labs/flux-1-schnell', multipart: false },
+};
+const DEFAULT_CLOUDFLARE_MODEL = 'flux-2-dev';
 const POLL_MS = 5000;
 
 /** Stops the whole run (quota, network, bad key); what is done is kept. */
 export class StopRun extends Error {}
 
-const USAGE = `Usage: npm run portraits:paint -- [--service horde|cloudflare] [--dry-run] [--limit <n>] [--only <race/class/male1|female1>] [--size <px>] [--model <name|any>] [--timeout <minutes>]`;
+const USAGE = `Usage: npm run portraits:paint -- [--service horde|cloudflare] [--dry-run] [--limit <n>] [--only <race/class/male1|female1>] [--size <px>] [--model <name|any|flux-2-dev|flux-2-klein|schnell>] [--timeout <minutes>]`;
 
 export const parseArgs = (argv) => {
   const options = {
@@ -41,7 +60,7 @@ export const parseArgs = (argv) => {
     limit: Infinity,
     only: undefined,
     size: 768,
-    model: DEFAULT_MODEL,
+    model: undefined,
     timeoutMinutes: 60,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -67,6 +86,13 @@ export const parseArgs = (argv) => {
   }
   if (!['horde', 'cloudflare'].includes(options.service)) {
     throw new Error(`--service must be horde or cloudflare.\n${USAGE}`);
+  }
+  options.model ??=
+    options.service === 'cloudflare' ? DEFAULT_CLOUDFLARE_MODEL : DEFAULT_MODEL;
+  if (options.service === 'cloudflare' && !CLOUDFLARE_MODELS[options.model]) {
+    throw new Error(
+      `With Cloudflare, --model must be one of ${Object.keys(CLOUDFLARE_MODELS).join(', ')}.\n${USAGE}`,
+    );
   }
   if (!(options.limit > 0))
     throw new Error(`--limit must be a positive number.\n${USAGE}`);
@@ -206,7 +232,7 @@ const paintWithHorde = async (
   }
 };
 
-const paintWithCloudflare = async (prompt, { fetch }) => {
+const paintWithCloudflare = async (prompt, { fetch, model }) => {
   const account = process.env.CLOUDFLARE_ACCOUNT_ID;
   const token = process.env.CLOUDFLARE_API_TOKEN;
   if (!account || !token) {
@@ -214,20 +240,31 @@ const paintWithCloudflare = async (prompt, { fetch }) => {
       'Set CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN in your terminal (see docs/portraits.md).',
     );
   }
+  const { id, multipart, steps } = CLOUDFLARE_MODELS[model];
+  // FLUX has no negative prompt: the essentials go into the prompt.
+  const text = `${prompt.positive}. The character faces the viewer, never seen from behind. Natural hands with five fingers. Unsigned image filling the whole frame, no border: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`;
+  let request;
+  if (multipart) {
+    request = new FormData();
+    request.append('prompt', text);
+    request.append('steps', String(steps));
+    request.append('width', '1024');
+    request.append('height', '1024');
+  } else {
+    request = JSON.stringify({ prompt: text });
+  }
   let response;
   try {
     response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${account}/ai/run/@cf/black-forest-labs/flux-1-schnell`,
+      `https://api.cloudflare.com/client/v4/accounts/${account}/ai/run/${id}`,
       {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          // FormData sets its own multipart content type.
+          ...(!multipart && { 'Content-Type': 'application/json' }),
         },
-        // FLUX schnell has no negative prompt: the essentials go into the prompt.
-        body: JSON.stringify({
-          prompt: `${prompt.positive}. The character faces the viewer, never seen from behind. Natural hands with five fingers. Unsigned image filling the whole frame, no border: no text, no letters, no signature, no logo, no website address, no watermark. Fully clothed.`,
-        }),
+        body: request,
       },
     );
   } catch (error) {
@@ -309,7 +346,7 @@ export const main = async (
       try {
         const bytes =
           options.service === 'cloudflare'
-            ? await paintWithCloudflare(prompt, { fetch })
+            ? await paintWithCloudflare(prompt, { fetch, model: options.model })
             : await paintWithHorde(prompt, {
                 size: options.size,
                 model: options.model,

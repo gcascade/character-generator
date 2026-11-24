@@ -46,6 +46,12 @@ describe('paint-portraits script (spec 011 US3)', () => {
       parseArgs(['--model', 'any', '--timeout', '120', '--size', '512']),
     ).toMatchObject({ model: 'any', timeoutMinutes: 120, size: 512 });
     expect(() => parseArgs(['--timeout', 'soon'])).toThrow(/minutes/);
+    expect(parseArgs(['--service', 'cloudflare'])).toMatchObject({
+      model: 'flux-2-dev',
+    });
+    expect(() =>
+      parseArgs(['--service', 'cloudflare', '--model', 'dalle']),
+    ).toThrow(/flux-2-dev/);
   });
 
   it('plans only missing portraits, or the one asked for', () => {
@@ -67,9 +73,7 @@ describe('paint-portraits script (spec 011 US3)', () => {
     expect(code).toBe(0);
     expect(output).toMatch(/1 portrait\(s\) to paint/);
     expect(output).toMatch(/dwarf woman.*no beard/);
-    expect(output).toMatch(
-      /prompt: front-facing portrait of a single character/,
-    );
+    expect(output).toMatch(/prompt: photorealistic fantasy character portrait/);
     expect(fetch).not.toHaveBeenCalled();
   });
 
@@ -107,6 +111,10 @@ describe('paint-portraits script (spec 011 US3)', () => {
     expect(quota.output).not.toContain('secret-token-xyz');
     const [, init] = quota.fetch.mock.calls[0];
     expect(init.headers.Authorization).toBe('Bearer secret-token-xyz');
+    // FLUX.2 [dev] by default, sent as multipart form data.
+    expect(quota.fetch.mock.calls[0][0]).toMatch(/flux-2-dev$/);
+    expect(init.body).toBeInstanceOf(FormData);
+    expect(init.body.get('prompt')).toMatch(/faces the viewer/);
   });
 
   it('stops when AI Horde cannot be reached', async () => {

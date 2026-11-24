@@ -1,5 +1,5 @@
 {
-  "style": "front-facing portrait of a single character looking straight at the viewer, face and eyes fully visible, head and shoulders down to the waist, highly detailed semi-realistic fantasy illustration, intricate ornate costume with engraved metal, embroidery and leather straps, dramatic lighting with glowing magical accents, cool blue shadows and warm candlelight, softly blurred atmospheric background",
+  "style": "photorealistic fantasy character portrait, hyper-detailed like a still from a high-budget fantasy film, realistic skin texture and natural proportions, the character faces the camera and looks at the viewer, shown from the head down to mid-thigh in a natural confident pose, intricate costume and gear with finely engraved metal, stitched leather and embroidery, natural lighting that suits the setting, sharp focus on the character, detailed background setting",
   "negative": "anime, manga, cartoon, chibi, 3d render, text, letters, watermark, signature, artist name, logo, website address, frame, border, white margin, paper edge, nudity, nsfw, gore, blurry, deformed hands, extra fingers, six fingers, fused fingers, broken weapon, animal growing out of clothes, extra limbs, multiple people, cropped head, back view, seen from behind, turned away, face hidden, profile view",
   "gender": {
     "Male": "man",
@@ -13,14 +13,14 @@
     "elderly": "elderly, grey-haired, wrinkled"
   },
   "races": {
-    "Human": "human with ordinary rounded human ears",
+    "Human": "human with normal rounded human ears, like a real person",
     "Elf": "elf with long pointed ears, fine features, ageless look, forest background",
     "Dwarf": {
       "Male": "dwarf man, short and very stocky with broad shoulders, long braided beard, forge or mountain hall background",
       "Female": "dwarf woman with a broad weathered face, strong jaw and ruddy cheeks, short and very stocky with broad shoulders and strong arms, braided hair, rounded ears, no beard, forge or mountain hall background",
       "Non-binary": "dwarf, short and very stocky with broad shoulders, braided hair, forge or mountain hall background"
     },
-    "Orc": "orc with green-grey skin, small tusks, strong jaw, no horns, rugged camp background",
+    "Orc": "orc with green skin, a heavy brow ridge and a wide jaw, two short tusks jutting upward from the lower jaw past the upper lip like a boar's, no horns on the head, rugged camp background",
     "Halfling": "halfling, a small adult person about half human height with an adult face, curly hair, rounded ears, cosy village background",
     "Gnome": "gnome, a very small adult person with an adult face, big curious eyes, large nose, a single pair of small pointed ears, workshop full of gadgets in the background",
     "Half-elf": "half-elf with slightly pointed ears, mixed human and elven features",
