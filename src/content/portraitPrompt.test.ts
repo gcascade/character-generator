@@ -5,7 +5,7 @@ import { generateNpc } from './npc';
 import {
   ageBand,
   buildPortraitPrompt,
-  randomPose,
+  randomVariety,
   sameTraits,
   subjectOfCharacter,
   subjectOfNpc,
@@ -93,10 +93,23 @@ describe('portrait prompts (spec 011)', () => {
     expect(buildPortraitPrompt({ ...subject, pose: 0 }).positive).toMatch(
       /heroic stance/,
     );
+  });
+
+  it('draws a light and an expression for everyone, a pose for adventurers only', () => {
     for (let i = 0; i < 50; i++) {
-      expect(
-        buildPortraitPrompt({ ...subject, pose: randomPose() }).positive,
-      ).toMatch(/viewer|smile|wind|forward|relaxed/);
+      const variety = randomVariety(true);
+      expect(variety.pose).toEqual(expect.any(Number));
+      expect(variety.light).toEqual(expect.any(Number));
+      expect(variety.expression).toEqual(expect.any(Number));
+      expect(randomVariety(false).pose).toBeUndefined();
     }
+    const subject = subjectOfCharacter(generateRandomCharacter());
+    const prompt = buildPortraitPrompt({
+      ...subject,
+      light: 0,
+      expression: 1,
+    }).positive;
+    expect(prompt).toMatch(/morning light/);
+    expect(prompt).toMatch(/determined, fierce gaze/);
   });
 });

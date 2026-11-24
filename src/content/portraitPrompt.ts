@@ -23,10 +23,27 @@ export type PortraitSubject = {
   look?: string;
   /** Index of a pose in the recipe (adventurers only); none keeps a neutral pose. */
   pose?: number;
+  /** Index of a light / weather in the recipe; none lets the service choose. */
+  light?: number;
+  /** Index of a facial expression in the recipe; none lets the service choose. */
+  expression?: number;
 };
 
-/** A random pose index: each painting gets its own (spec 011, maintainer feedback). */
-export const randomPose = () => Math.floor(Math.random() * recipe.poses.length);
+/** The randomly drawn parts of a portrait: a pose (adventurers only), a light and an expression. */
+export type PortraitVariety = Pick<
+  PortraitSubject,
+  'pose' | 'light' | 'expression'
+>;
+
+const randomIndex = (items: readonly unknown[]) =>
+  Math.floor(Math.random() * items.length);
+
+/** New random variety for each painting (spec 011, maintainer feedback). */
+export const randomVariety = (adventurer: boolean): PortraitVariety => ({
+  ...(adventurer && { pose: randomIndex(recipe.poses) }),
+  light: randomIndex(recipe.lights),
+  expression: randomIndex(recipe.expressions),
+});
 
 /** Traits a portrait was painted from; a change makes it possibly outdated. */
 export type PortraitTraits = Pick<
@@ -97,11 +114,17 @@ export const buildPortraitPrompt = (subject: PortraitSubject) => {
   const race: string | Record<string, string> = recipe.races[subject.race];
   const looks = typeof race === 'string' ? race : race[subject.gender];
   const who = `${recipe.ageBands[subject.ageBand]} ${recipe.gender[subject.gender]}, ${looks}`;
-  const pose =
-    subject.pose === undefined
-      ? ''
-      : recipe.poses[subject.pose % recipe.poses.length];
-  const positive = [recipe.style, who, gear, pose, subject.look]
+  const at = (items: readonly string[], index?: number) =>
+    index === undefined ? '' : items[index % items.length];
+  const positive = [
+    recipe.style,
+    who,
+    gear,
+    at(recipe.poses, subject.pose),
+    at(recipe.expressions, subject.expression),
+    at(recipe.lights, subject.light),
+    subject.look,
+  ]
     .filter(Boolean)
     .join(', ');
   return { positive, negative: recipe.negative };

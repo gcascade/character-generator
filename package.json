@@ -11,6 +11,7 @@
     "portraits": "node scripts/missing-portraits.mjs",
     "portraits:paint": "node --env-file-if-exists=.env scripts/paint-portraits.mjs",
     "portraits:remove": "node scripts/remove-portraits.mjs",
+    "portraits:review": "node scripts/review-portraits.mjs",
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",

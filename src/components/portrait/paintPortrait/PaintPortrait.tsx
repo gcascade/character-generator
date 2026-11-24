@@ -21,7 +21,7 @@ import { PortraitContext } from '../../../contexts/PortraitContext';
 import {
   buildPortraitPrompt,
   type PortraitSubject,
-  randomPose,
+  randomVariety,
 } from '../../../content/portraitPrompt';
 import useAlert from '../../../hooks/useAlert';
 import usePortraitPainter from '../../../hooks/usePortraitPainter';
@@ -67,12 +67,14 @@ const Painter: FC<PaintPortraitProps> = ({
       ? t('portrait.minutes', { count: Math.round(seconds / 60) })
       : t('portrait.seconds', { count: Math.max(5, Math.round(seconds)) });
 
-  // Adventurers get a pose, a new one for each painting; the notice shows the exact description sent.
-  const [pose, setPose] = useState(randomPose);
-  const posed = subject.characterClass ? { ...subject, pose } : subject;
+  // Each painting draws a new light and expression (and a pose for adventurers); the notice shows the exact
+  // description sent.
+  const adventurer = !!subject.characterClass;
+  const [variety, setVariety] = useState(() => randomVariety(adventurer));
+  const posed = { ...subject, ...variety };
   const start = () => {
     void paint(posed, onPainted);
-    setPose(randomPose());
+    setVariety(randomVariety(adventurer));
   };
   const onPaint = () => (noticeSeen() ? start() : setAsking(true));
 

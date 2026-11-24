@@ -8,7 +8,7 @@ const recipe = JSON.parse(
   readFileSync(join(root, 'src/data/content/portraitPrompt.json'), 'utf8'),
 );
 
-/** @param {{ race: string, gender: string, ageBand: string, characterClass?: string, occupation?: string, look?: string }} subject */
+/** @param {{ race: string, gender: string, ageBand: string, characterClass?: string, occupation?: string, look?: string, pose?: number, light?: number, expression?: number }} subject */
 export const buildPortraitPrompt = (subject) => {
   const gear = subject.characterClass
     ? recipe.classes[subject.characterClass]
@@ -19,11 +19,17 @@ export const buildPortraitPrompt = (subject) => {
   const race = recipe.races[subject.race];
   const looks = typeof race === 'string' ? race : race[subject.gender];
   const who = `${recipe.ageBands[subject.ageBand]} ${recipe.gender[subject.gender]}, ${looks}`;
-  const pose =
-    subject.pose === undefined
-      ? ''
-      : recipe.poses[subject.pose % recipe.poses.length];
-  const positive = [recipe.style, who, gear, pose, subject.look]
+  const at = (items, index) =>
+    index === undefined ? '' : items[index % items.length];
+  const positive = [
+    recipe.style,
+    who,
+    gear,
+    at(recipe.poses, subject.pose),
+    at(recipe.expressions, subject.expression),
+    at(recipe.lights, subject.light),
+    subject.look,
+  ]
     .filter(Boolean)
     .join(', ');
   return { positive, negative: recipe.negative };
@@ -35,6 +41,8 @@ export const defaultPortraitSubject = (race, characterClass, variant) => ({
   gender: variant === 'male' ? 'Male' : 'Female',
   ageBand: 'adult',
   characterClass,
-  // A new pose on each run, so a rejected portrait comes back different.
+  // A new pose, light and expression on each run, so a rejected portrait comes back different.
   pose: Math.floor(Math.random() * recipe.poses.length),
+  light: Math.floor(Math.random() * recipe.lights.length),
+  expression: Math.floor(Math.random() * recipe.expressions.length),
 });
