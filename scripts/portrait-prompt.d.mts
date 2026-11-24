@@ -5,6 +5,7 @@ export type ScriptPortraitSubject = {
   characterClass?: string;
   occupation?: string;
   look?: string;
+  pose?: number;
 };
 
 export function buildPortraitPrompt(subject: ScriptPortraitSubject): {

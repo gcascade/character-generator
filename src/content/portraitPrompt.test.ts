@@ -5,6 +5,7 @@ import { generateNpc } from './npc';
 import {
   ageBand,
   buildPortraitPrompt,
+  randomVariety,
   sameTraits,
   subjectOfCharacter,
   subjectOfNpc,
@@ -27,7 +28,7 @@ describe('portrait prompts (spec 011)', () => {
             subjectOfCharacter(character),
           );
           expect(positive).toMatch(
-            /^photorealistic fantasy character portrait.*faces the camera/,
+            /^photorealistic fantasy character portrait.*turned toward the viewer/,
           );
           expect(positive).not.toMatch(/undefined|\{|\}/);
           expect(positive).not.toContain(character.firstName);
@@ -84,5 +85,31 @@ describe('portrait prompts (spec 011)', () => {
         traitsOf(subjectOfCharacter({ ...character, race: 'Elf' })),
       ),
     ).toBe(false);
+  });
+
+  it('adds a pose when one is given, and only then', () => {
+    const subject = subjectOfCharacter(generateRandomCharacter());
+    expect(buildPortraitPrompt(subject).positive).not.toMatch(/heroic stance/);
+    expect(buildPortraitPrompt({ ...subject, pose: 0 }).positive).toMatch(
+      /heroic stance/,
+    );
+  });
+
+  it('draws a light and an expression for everyone, a pose for adventurers only', () => {
+    for (let i = 0; i < 50; i++) {
+      const variety = randomVariety(true);
+      expect(variety.pose).toEqual(expect.any(Number));
+      expect(variety.light).toEqual(expect.any(Number));
+      expect(variety.expression).toEqual(expect.any(Number));
+      expect(randomVariety(false).pose).toBeUndefined();
+    }
+    const subject = subjectOfCharacter(generateRandomCharacter());
+    const prompt = buildPortraitPrompt({
+      ...subject,
+      light: 0,
+      expression: 1,
+    }).positive;
+    expect(prompt).toMatch(/morning light/);
+    expect(prompt).toMatch(/determined, fierce gaze/);
   });
 });
