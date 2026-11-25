@@ -31,5 +31,4 @@
 
 ## Notes
 
-- Defaults chosen instead of clarification markers (see Assumptions): roster cap 48, no NPCs in the arena, fixed stats
-  without manual editing, no saved match list. To confirm with the maintainer during `/speckit-clarify`.
+- Clarified on 2026-11-25: roster cap 48, no NPCs, skills fixed and only in the arena (rolled per match).

@@ -8,6 +8,16 @@
 
 **Input**: User description: "Arena: a spectator battle-royale mini-game with the app's characters and parties, plus percentage stats for every character. Stats (shown on character sheets too): skills from 0 to 100, each the percent chance to succeed (d100 roll-under; events apply bonuses or penalties). About a dozen skills in four families — Combat: melee, ranged, magic; Physical: athletics, stealth, endurance; Mind: perception, survival, lore, healing; Social: persuasion, intimidation, deception — plus hit points. Values come from class, race, age and a little randomness, drawn once and kept with the character. Arena setup: enrol any number of characters (saved characters, saved parties as teams, the current character or party, generated ones); each contestant can get 2 perks (e.g. Survivalist, Lucky) and starting items (sword, bow, magic wand, potion, rope…). The match: the player only watches; day/night rounds of random events told in English and French without AI, using skill rolls; alignment, party ties, roles and balance drive behaviour; deaths without gore; tone mixing epic and humour; about 5 minutes of reading; last one standing or last team wins; summary with winner, kills, notable moments; seeded randomness makes a match replayable and shareable. A later expedition (roguelike) mode will reuse the stats and event engine (out of scope)."
 
+## Clarifications
+
+### Session 2026-11-25
+
+- Q: Roster size? → A: Up to 48 contestants (for example 12 parties of 4).
+- Q: Can side characters (NPCs) enter the arena? → A: No.
+- Q: Can the player edit or reroll skills? → A: No, skills are drawn and kept as drawn.
+- Q: Where do skills live? → A: Only in the arena: they are rolled when a match is set up, shown in the arena setup and
+  during the match, and never stored on characters or shown on character pages.
+
 ## Context
 
 The maintainer wants a game that gives the generated characters and parties something to do. Two formats were
@@ -18,31 +28,31 @@ arena is the app's own game: its own characters, stats, perks, items and texts.
 
 ## User Scenarios & Testing _(mandatory)_
 
-### User Story 1 - Every character has skills (Priority: P1)
+### User Story 1 - Contestants get skills (Priority: P1)
 
-A player opens a character (the generator, a saved character, a party member, a shared link) and sees its skills:
-twelve values from 0 to 100 grouped in four families, plus hit points. A value is the percent chance that the
-character succeeds at an action of that kind. A warrior is good at melee and endurance, a bard at persuasion, an elderly
-mage knows more lore but runs slower than a young one, an orc intimidates more easily, a halfling hides better.
+When characters enter the arena, each one gets skills rolled for the match: twelve values from 0 to 100 grouped in
+four families, plus hit points. A value is the percent chance that the contestant succeeds at an action of that kind.
+A warrior is good at melee and endurance, a bard at persuasion, an elderly mage knows more lore but runs slower than a
+young one, an orc intimidates more easily, a halfling hides better. The player sees them on each contestant's card in
+the arena; character pages do not show them.
 
-**Why this priority**: Stats are the foundation of the arena and of the later expedition, and they give every
-character more depth on its own, even for players who never open the arena.
+**Why this priority**: Skills are what the match rolls against; they are the foundation of the arena and of the
+later expedition.
 
-**Independent Test**: Generate characters of every race and class and check that each sheet shows twelve skills and hit
-points within bounds, that the strongest skills match the class, that a character keeps the same values after saving,
-reloading and sharing, and that older saved characters get values on load.
+**Independent Test**: Enrol characters of every race and class and check that each contestant card shows twelve skills
+and hit points within bounds, that the strongest skills match the class, that the same seed gives the same skills,
+and that character pages and stored characters are unchanged.
 
 **Acceptance Scenarios**:
 
-1. **Given** a newly generated character, **When** the sheet is shown, **Then** it lists twelve skills (Melee, Ranged,
-   Magic, Athletics, Stealth, Endurance, Perception, Survival, Lore, Healing, Persuasion, Intimidation, Deception) from
-   0 to 100 and hit points, grouped in Combat, Physical, Mind and Social.
-2. **Given** a character, **When** it is saved, reloaded, put in a party or shared by link, **Then** its skills are
-   the same everywhere.
-3. **Given** a character saved before this feature, **When** it is loaded, **Then** it gets skills computed from its
-   race, class and age, and keeps them from then on.
-4. **Given** the race, class or age of a character is rerolled, **When** the new sheet is shown, **Then** the skills
-   follow the new values.
+1. **Given** a roster in the arena, **When** the match is set up, **Then** each contestant card lists twelve skills
+   (Melee, Ranged, Magic, Athletics, Stealth, Endurance, Perception, Survival, Lore, Healing, Persuasion, Intimidation,
+   Deception) from 0 to 100 and hit points, grouped in Combat, Physical, Mind and Social.
+2. **Given** a match set up with a seed, **When** it is replayed or opened from its share link, **Then** every
+   contestant has the same skills.
+3. **Given** the player chooses "Play again", **When** the new match is set up, **Then** skills are rolled anew.
+4. **Given** a character page, a party page or a character share link, **When** it is shown, **Then** no skills appear
+   and nothing about the character is changed by the arena.
 5. **Given** the interface is in French, **When** the skills are shown, **Then** their names are in French.
 
 ---
@@ -174,7 +184,6 @@ event are identical.
 - Characters with AI-written text or in another language: only their names, race, class, gender, alignment, age, ties
   and stats are used; events are always told from the app's own texts.
 - Non-binary characters and French texts: events follow the app's text rules (agreement-free French phrasing).
-- Characters from share links that do not include stats (older links): stats are computed as for older characters.
 
 ## Requirements _(mandatory)_
 
@@ -182,18 +191,17 @@ event are identical.
 
 **Stats**
 
-- **FR-001**: Every character MUST have twelve skills, each an integer from 0 to 100 — Combat: Melee, Ranged, Magic;
+- **FR-001**: Every contestant MUST have twelve skills, each an integer from 0 to 100 — Combat: Melee, Ranged, Magic;
   Physical: Athletics, Stealth, Endurance; Mind: Perception, Survival, Lore, Healing; Social: Persuasion, Intimidation,
   Deception — and hit points.
 - **FR-002**: Skill values MUST come from the class (base profile), the race (small modifiers), the age band
   (experience against physical form) and a bounded random part, and MUST stay within 5 and 95 at creation so that
   nothing is ever certain.
-- **FR-003**: Skills MUST be drawn when a character is created and kept with it: saving, loading, party membership and
-  share links MUST preserve them; a reroll of race, class or age MUST recompute them; a reroll of other properties
-  MUST keep them.
-- **FR-004**: Characters without skills (saved before this feature, older share links) MUST get skills on load,
-  computed the same way, and keep them.
-- **FR-005**: Character sheets and party member views MUST show the skills, grouped by family, with names in the
+- **FR-003**: Skills MUST be rolled from the match seed when a match is set up, and kept for that match; the player
+  cannot edit or reroll them.
+- **FR-004**: Skills MUST NOT be stored on characters or parties, nor shown on character, party or share pages;
+  enrolling a character in the arena MUST NOT change it.
+- **FR-005**: The arena setup and the match MUST show each contestant's skills, grouped by family, with names in the
   interface language.
 - **FR-006**: A skill check MUST succeed when a roll from 1 to 100 is less than or equal to the skill plus bonuses and
   minus penalties, the effective value being kept between 5 and 95.
@@ -235,13 +243,13 @@ event are identical.
 **Persistence and sharing**
 
 - **FR-019**: The arena roster and setup MUST be kept between visits; the last match MUST be kept until a new one starts.
-- **FR-020**: A match MUST be shareable by link holding the roster (characters with stats), teams, perks, items and
+- **FR-020**: A match MUST be shareable by link holding the roster (characters), teams, perks, items and
   seed, validated before display; old link formats MUST keep being read once a new one exists.
 - **FR-021**: The arena MUST work entirely without AI and without any server.
 
 ### Key Entities
 
-- **Skills**: twelve values from 0 to 100 and hit points, attached to a character.
+- **Skills**: twelve values from 0 to 100 and hit points, rolled for a contestant in a match.
 - **Perk**: a named trait with a description and effects (skill bonuses, extra events, one-off abilities).
 - **Item**: a named object with a description, a kind (weapon, tool, consumable, protection) and effects.
 - **Contestant**: a character in a match, with its side, perks, inventory, wounds and state (standing or defeated).
@@ -253,8 +261,8 @@ event are identical.
 
 ### Measurable Outcomes
 
-- **SC-001**: 100% of generated characters of every race and class have twelve skills between 5 and 95 and hit points,
-  and the class's signature skills are among its three highest in at least 90% of characters.
+- **SC-001**: 100% of contestants of every race and class have twelve skills between 5 and 95 and hit points, and the
+  class's signature skills are among its three highest in at least 90% of contestants.
 - **SC-002**: A player goes from an empty arena to a running match with a generated roster in under 30 seconds.
 - **SC-003**: In 1,000 simulated matches of 2 to 48 contestants, every match ends with exactly one surviving side within
   the round limit, and no contestant is defeated by a teammate while their team holds, nor betrayed by a good ally.
@@ -268,12 +276,11 @@ event are identical.
 ## Assumptions
 
 - The skill list is the twelve skills above; hit points come from Endurance and the class.
-- Stats are fixed once drawn; the player does not edit them by hand in this feature (rerolling race, class or age
-  recomputes them).
+- Skills are rolled per match (same seed, same skills) and only exist in the arena; the player does not edit them.
 - Side characters (NPCs) do not get skills and cannot enter the arena in this feature.
 - Matches are not saved in a list; the last match, the roster and the setup are kept, and sharing covers the rest.
 - The player is only a spectator during the match: no sponsoring, betting or intervention once it has started.
-- The roster cap is 48 contestants, enough for a big match while keeping it readable.
+- The roster cap is 48 contestants (for example 12 parties of 4), enough for a big match while keeping it readable.
 - AI narration of matches is out of scope; it may come later as an option like for characters.
 - Portraits (default or painted) are shown next to contestants when available.
 - The expedition (roguelike) mode is a later feature reusing skills, perks, items and the event engine.
