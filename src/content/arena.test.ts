@@ -17,6 +17,13 @@ import {
 import { renderEvent } from './arenaText';
 import { generateRandomCharacter } from './generate';
 import { generateParty } from './party';
+import { assignRoles } from './partyDepth';
+import {
+  CharacterClasses,
+  type CharacterAlignment,
+  type CharacterClass,
+} from '../types/character';
+import type { Party } from '../types/party';
 import { createRandom } from './random';
 
 describe('arena roster (spec 012 US1)', () => {
@@ -242,4 +249,69 @@ describe('match summary (spec 012 FR-017)', () => {
       expect(summary.rows.slice(0, survivors.length)).toEqual(survivors);
     }
   });
+});
+
+describe('teams, alignment and ties (spec 012 US3)', () => {
+  const teamOf = (
+    classes: CharacterClass[],
+    alignment: CharacterAlignment,
+  ): Party => {
+    const base = generateParty({ size: classes.length });
+    const members = assignRoles(
+      classes.map((characterClass, i) => ({
+        id: `m${i}`,
+        locked: false,
+        character: {
+          ...generateRandomCharacter({ characterClass, alignment }),
+          race: 'Human' as const,
+          age: 30,
+        },
+      })),
+    );
+    return { ...base, id: crypto.randomUUID(), members };
+  };
+
+  it('never lets teammates defeat each other while the team holds, nor good allies betray (SC-003)', () => {
+    for (let i = 0; i < 1000; i++) {
+      let setup = emptySetup();
+      for (let t = 0; t < 2 + (i % 4); t++) {
+        setup = addParty(setup, generateParty({ size: 2 + (t % 4) }), 'en');
+      }
+      setup = { ...addRandom(setup, i % 5), seed: `team${i}` };
+      const match = simulate(setup);
+      const characters = new Map(
+        setup.contestants.map((c) => [c.id, c.character]),
+      );
+      for (const fighter of Object.values(match.fighters)) {
+        if (!fighter.defeatedBy) continue;
+        const killer = match.fighters[fighter.defeatedBy];
+        expect(killer.sideId, `seed ${setup.seed}`).not.toBe(fighter.sideId);
+      }
+      for (const event of match.rounds.flatMap((r) => r.events)) {
+        if (event.eventId.startsWith('event-betray')) {
+          expect(characters.get(event.actors[0])!.alignment).not.toMatch(
+            /Good$/,
+          );
+        }
+      }
+    }
+  }, 60_000);
+
+  it('makes balanced teams win more often than unbalanced teams of the same size (SC-005)', () => {
+    const classes = Object.values(CharacterClasses);
+    let wins = 0;
+    const matches = 300;
+    for (let i = 0; i < matches; i++) {
+      const balanced = teamOf(
+        ['Warrior', 'Cleric', 'Mage', 'Rogue'],
+        'True Neutral',
+      );
+      const one = classes[i % classes.length];
+      const unbalanced = teamOf([one, one, one, one], 'True Neutral');
+      let setup = addParty(emptySetup(), balanced, 'en');
+      setup = { ...addParty(setup, unbalanced, 'en'), seed: `bal${i}` };
+      if (simulate(setup).winnerSideId === setup.sides[0].id) wins++;
+    }
+    expect(wins / matches).toBeGreaterThan(0.6);
+  }, 60_000);
 });

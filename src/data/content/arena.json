@@ -1135,6 +1135,98 @@
         "tie": "friendly",
         "minRound": 3
       }
+    },
+    {
+      "id": "event-team-camp",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-team-scout",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-team-oath",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "when": {
+        "tie": "friendly"
+      }
+    },
+    {
+      "id": "event-team-heal-herbs",
+      "type": "team-heal",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "phase": "day",
+      "when": {
+        "targetWounded": true
+      }
+    },
+    {
+      "id": "event-share-water",
+      "type": "share",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-alliance-enemy",
+      "type": "alliance",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 1.5,
+      "notable": true,
+      "when": {
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-betray-draught",
+      "type": "betray",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "night",
+      "notable": true,
+      "when": {
+        "alignment": "not-good",
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-split-chaotic",
+      "type": "split",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 0.6,
+      "notable": true,
+      "when": {
+        "alignment": "chaotic",
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-prank",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "deception",
+      "weight": 1.5,
+      "when": {
+        "alignment": "chaotic"
+      }
     }
   ]
 }

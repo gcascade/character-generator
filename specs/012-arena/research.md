@@ -62,9 +62,10 @@ shuffle(list), roll() }`). Each use gets its own stream: `createRandom(`${seed}:
   - Friendly ties (`tie-life-debt`, `tie-childhood`, `tie-blood-oath`, `tie-mentor`, `tie-admiration`) unlock
     protection and sacrifice events; the leader (`role-leader`) gets protection events for any teammate; the healer
     role and the Healing skill unlock team heals.
-  - Balance: each team's `balanceOf` (spec 008) gives +3 per area at level ≥ 2 to the matching team checks (fighting →
-    combat, healing → heals, stealth → hiding, talking → social, magic → magic), so balanced teams survive better
-    (SC-005).
+  - Balance: each team's `balanceOf` (spec 008) counts the areas covered at level ≥ 2 (fighting, magic, healing,
+    stealth, talking); the team gets +4 on every check per covered area beyond the first. A first try (+3 per area on
+    the matching skills only) favoured all-fighter teams, which won 78 % of matches against a balanced team; with the
+    coverage bonus, a balanced team wins about half of those and over 90 % against other single-class teams (SC-005).
 - **Rationale**: reuses spec 008 data as it is; the rules are testable as invariants over many matches (SC-003).
 
 ## R6. Pace and ending

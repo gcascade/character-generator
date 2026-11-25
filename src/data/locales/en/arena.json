@@ -511,6 +511,37 @@
     },
     "event-sacrifice": {
       "only": "When {c} closes in on the wounded {b}, {a} takes the blow instead and falls. The arena wardens carry {a} out, while {b} gets away."
+    },
+    "event-team-camp": {
+      "only": "{a} and {b} build a hidden camp under the roots of a fallen tree, and take turns sleeping."
+    },
+    "event-team-scout": {
+      "only": "{a} scouts ahead while {b} watches their backs. They move through the arena like a single shadow."
+    },
+    "event-team-oath": {
+      "only": "By the fire, {a} and {b} renew an old promise: whatever happens, they leave this arena together."
+    },
+    "event-team-heal-herbs": {
+      "success": "{a} gathers silverleaf and makes a poultice for {b}. It stings, it smells, and it works.",
+      "failure": "{a} gathers herbs for {b}, but picks the wrong ones. At least they smell nice."
+    },
+    "event-share-water": {
+      "only": "{a} finds a spring and fills both flasks, the one for {b} first."
+    },
+    "event-alliance-enemy": {
+      "success": "{a} and {b} have been chased by the same rival all day. By evening, they agree to face the threat together.",
+      "failure": "{a} suggests to {b} that they team up against a common rival. {b} suspects a trap, and walks away."
+    },
+    "event-betray-draught": {
+      "success": "{a} offers {b} a cup of herbal tea laced with a sleeping draught, then slips away with a quiet \"sorry\".",
+      "defeat": "{a} slips a sleeping draught into the cup of {b}; the arena wardens carry {b} away, snoring."
+    },
+    "event-split-chaotic": {
+      "only": "{a} announces to {b} that teamwork is overrated and wanders off whistling."
+    },
+    "event-prank": {
+      "success": "{a} fills the boots of {b} with pinecones during the night. {b} spends the morning limping and swearing.",
+      "failure": "{a} tries to fill the boots of {b} with pinecones and is caught red-handed."
     }
   },
   "rounds": {

@@ -511,6 +511,37 @@
     },
     "event-sacrifice": {
       "only": "{c} fond sur {b}, à bout de forces, mais {a} prend le coup à sa place et tombe. Les gardiens emportent {a} hors de l'arène, et {b} s'échappe."
+    },
+    "event-team-camp": {
+      "only": "{a} et {b} installent un campement caché sous les racines d'un arbre tombé, et dorment à tour de rôle."
+    },
+    "event-team-scout": {
+      "only": "{a} part en éclaireur, et {b} surveille leurs arrières. Ils traversent l'arène comme une seule ombre."
+    },
+    "event-team-oath": {
+      "only": "Près du feu, {a} et {b} renouvellent une vieille promesse : quoi qu'il arrive, ils quitteront cette arène ensemble."
+    },
+    "event-team-heal-herbs": {
+      "success": "{a} cueille de la feuille-d'argent et prépare un cataplasme pour {b}. Ça pique, ça sent fort, et ça marche.",
+      "failure": "{a} cueille des herbes pour {b}, mais pas les bonnes. Au moins, elles sentent bon."
+    },
+    "event-share-water": {
+      "only": "{a} trouve une source et remplit les deux gourdes, en commençant par celle prévue pour {b}."
+    },
+    "event-alliance-enemy": {
+      "success": "{a} et {b} ont été pourchassés par le même rival toute la journée. Le soir venu, ils conviennent d'affronter la menace ensemble.",
+      "failure": "{a} propose à {b} de s'unir contre un rival commun. {b} flaire un piège et s'éloigne."
+    },
+    "event-betray-draught": {
+      "success": "{a} offre à {b} une tisane mêlée de somnifère, puis s'éclipse avec un « désolé » à peine audible.",
+      "defeat": "{a} verse un somnifère dans la tasse destinée à {b} ; les gardiens de l'arène emportent {b} hors de l'arène, en plein ronflement."
+    },
+    "event-split-chaotic": {
+      "only": "{a} annonce à {b} que le travail d'équipe est surfait et s'éloigne en sifflotant."
+    },
+    "event-prank": {
+      "success": "Pendant la nuit, {a} remplit de pommes de pin les bottes laissées par {b}, qui passe la matinée à boiter en jurant.",
+      "failure": "{a} tente de remplir de pommes de pin les bottes laissées par {b} et se fait prendre la main dans le sac."
     }
   },
   "rounds": {

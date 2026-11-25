@@ -1,5 +1,4 @@
 import type { ArenaSetup, EventResult, Fighter, Skill } from '../types/arena';
-import type { BalanceArea } from '../types/party';
 import type { Character } from '../types/character';
 import { ARENA, type ArenaEventKind } from './data';
 import type { Random } from './random';
@@ -10,8 +9,8 @@ export type MatchState = {
   setup: ArenaSetup;
   fighters: Record<string, Fighter>;
   characters: Record<string, Character>;
-  /** Balance level per area of each team side (spec 008), by contestant id. */
-  balance: Record<string, Partial<Record<BalanceArea, number>>>;
+  /** Bonus to every check from the team's balance (spec 008), by contestant id. */
+  balance: Record<string, number>;
   round: number;
   /** Round after which the arena forces the finale. */
   limit: number;
@@ -31,17 +30,6 @@ const HOSTILE_TIES = [
   'tie-suspicion',
   'tie-family-feud',
 ];
-
-const AREA_OF: Partial<Record<Skill, BalanceArea>> = {
-  melee: 'fighting',
-  ranged: 'fighting',
-  magic: 'magic',
-  healing: 'healing',
-  stealth: 'stealth',
-  deception: 'stealth',
-  persuasion: 'talking',
-  intimidation: 'talking',
-};
 
 const PHYSICAL: Skill[] = ['melee', 'athletics', 'stealth', 'endurance'];
 
@@ -63,9 +51,7 @@ export const skillValue = (state: MatchState, f: Fighter, skill: Skill) => {
   let value = f.skills.values[skill];
   for (const p of f.perks) value += perk(p)?.bonuses?.[skill] ?? 0;
   for (const i of f.items) value += item(i)?.bonuses?.[skill] ?? 0;
-  const area = AREA_OF[skill];
-  const level = area ? (state.balance[f.id]?.[area] ?? 0) : 0;
-  value += level >= 3 ? 8 : level >= 2 ? 5 : 0;
+  value += state.balance[f.id] ?? 0;
   if (isWounded(f) && PHYSICAL.includes(skill)) value -= 10;
   return value;
 };

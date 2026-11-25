@@ -227,6 +227,9 @@ export const randomLoadouts = (
 
 // --- The match (spec 012 US2) -------------------------------------------------
 
+/** Bonus per well-covered area beyond the first (research R5). */
+export const BALANCE_BONUS = 4;
+
 /** Round after which the arena forces a finale (research R6). */
 export const roundLimit = (sideCount: number) =>
   Math.min(16, 3 + Math.ceil(sideCount * 0.5));
@@ -271,7 +274,10 @@ const teamBalance = (setup: ArenaSetup) => {
         role: m.role,
       })),
     });
-    for (const m of members) balance[m.id] = levels;
+    // A team that covers many areas well gets a bonus on every check (research R5).
+    const covered = Object.values(levels).filter((level) => level >= 2).length;
+    const bonus = BALANCE_BONUS * Math.max(0, covered - 1);
+    for (const m of members) balance[m.id] = bonus;
   }
   return balance;
 };

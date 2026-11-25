@@ -135,11 +135,11 @@ switch rewords the same events.
 
 **Independent test**: invariants and statistics over 1,000 seeded matches.
 
-- [ ] T022 [US3] Team and alliance event kinds in src/data/content/arena.json (≥ 25): team entrance, shared food, team
+- [x] T022 [US3] Team and alliance event kinds in src/data/content/arena.json (≥ 25): team entrance, shared food, team
       heal, leader protects, friend protects, sacrifice (friendly ties), split (hostile ties: `tie-rivals`,
       `tie-betrayal`, `tie-suspicion`, `tie-family-feud`), alliance offer, alliance betrayal (not good), sparing the
       defeated (good), finishing the wounded (evil), chaotic surprises; texts in src/data/locales/{en,fr}/arena.json
-- [ ] T023 [US3] Side rules in src/content/arenaEvents.ts: teammates never target each other while the team holds,
+- [x] T023 [US3] Side rules in src/content/arenaEvents.ts: teammates never target each other while the team holds,
       splits turn both into solos, alliances as temporary sides, good characters never betray, balance bonus +3 per area at
       level ≥ 2 (`balanceOf` of src/content/partyDepth.ts) on the matching checks; tests over 1,000 matches (SC-003 second
       half: no teammate defeat, no betrayal by a good ally; SC-005 second half: balanced teams win more often than
