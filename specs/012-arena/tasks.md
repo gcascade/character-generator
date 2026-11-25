@@ -68,24 +68,24 @@ matches are success criteria SC-003 and SC-005).
 **Independent test**: add characters of several races and classes; each card shows thirteen skills and hit points;
 reloading the page shows the same values; character pages show no skills.
 
-- [ ] T008 [US1] Roster functions in src/content/arena.ts: `MAX_CONTESTANTS = 48`, `emptySetup()` (new seed),
+- [x] T008 [US1] Roster functions in src/content/arena.ts: `MAX_CONTESTANTS = 48`, `emptySetup()` (new seed),
       `addCharacter(setup, character, sourceId?)` (ignored when `sourceId` already enrolled or roster full),
       `addParty(setup, party, locale)` (one team, members' roles and ties kept, ties remapped to contestant ids),
       `addRandom(setup, count)`, `removeContestant` (a team left with one member becomes solo), `canStart` (≥ 2 sides,
       ≤ 48), `contestantSkills(setup, id)` (stream `${seed}:skills:${id}`); tests in src/content/arena.test.ts
-- [ ] T009 [US1] src/content/storedArena.ts: zod schema for `localStorage["arena"]` = `{ version: 1, contestants,
+- [x] T009 [US1] src/content/storedArena.ts: zod schema for `localStorage["arena"]` = `{ version: 1, contestants,
 sides, seed, shownRounds }` (characters validated like stored characters, unknown perk/item ids dropped, at most 48
       contestants, orphan sides removed); tests in src/content/storedArena.test.ts
-- [ ] T010 [US1] src/contexts/ArenaContext.tsx (`ArenaProvider`: setup and actions; lazy load, save in an effect) +
+- [x] T010 [US1] src/contexts/ArenaContext.tsx (`ArenaProvider`: setup and actions; lazy load, save in an effect) +
       src/hooks/useArena.ts (throws without provider); add the provider in src/components/App.tsx; tests
-- [ ] T011 [P] [US1] src/components/arena/skillGrid/SkillGrid.tsx: thirteen skills grouped by family with labels in
+- [x] T011 [P] [US1] src/components/arena/skillGrid/SkillGrid.tsx: thirteen skills grouped by family with labels in
       the interface language, values as numbers and bars, hit points; test and story
-- [ ] T012 [P] [US1] src/components/arena/contestantCard/ContestantCard.tsx: portrait (`CharacterImage`), name, race,
+- [x] T012 [P] [US1] src/components/arena/contestantCard/ContestantCard.tsx: portrait (`CharacterImage`), name, race,
       class, side, `SkillGrid`, remove action; test and story
-- [ ] T013 [US1] src/components/arena/rosterBuilder/RosterBuilder.tsx: add current character, saved character (picker),
+- [x] T013 [US1] src/components/arena/rosterBuilder/RosterBuilder.tsx: add current character, saved character (picker),
       current party, saved party (picker), random N; roster grouped by side; full-roster and too-few-sides messages; test
       and story
-- [ ] T014 [US1] src/pages/arena/Arena.tsx setup view (route `/arena` in src/routes.tsx, menu entry in
+- [x] T014 [US1] src/pages/arena/Arena.tsx setup view (route `/arena` in src/routes.tsx, menu entry in
       src/components/navigation/drawerMenu/DrawerMenu.tsx); page test: add contestants, skills shown, reload keeps them,
       character page shows no skills
 

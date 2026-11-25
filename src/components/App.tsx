@@ -28,6 +28,7 @@ import { LockProvider } from '../contexts/LockContext';
 import { PartyProvider } from '../contexts/PartyContext';
 import { NpcProvider } from '../contexts/NpcContext';
 import { PortraitProvider } from '../contexts/PortraitContext';
+import { ArenaProvider } from '../contexts/ArenaContext';
 import AlertManager from './common/alert/AlertManager';
 import ErrorBoundary from './common/error/ErrorBoundary';
 import DrawerMenu from './navigation/drawerMenu/DrawerMenu';
@@ -116,11 +117,13 @@ const App: React.FC = () => {
                         <PartyProvider>
                           <NpcProvider>
                             <PortraitProvider>
-                              <BrowserRouter
-                                basename={import.meta.env.BASE_URL}
-                              >
-                                <AppLayout />
-                              </BrowserRouter>
+                              <ArenaProvider>
+                                <BrowserRouter
+                                  basename={import.meta.env.BASE_URL}
+                                >
+                                  <AppLayout />
+                                </BrowserRouter>
+                              </ArenaProvider>
                             </PortraitProvider>
                           </NpcProvider>
                         </PartyProvider>
