@@ -1,6 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { extensionOf, main, parseArgs, plan } from './paint-portraits.mjs';
+import {
+  FLAGGED_RETRIES,
+  extensionOf,
+  main,
+  parseArgs,
+  plan,
+} from './paint-portraits.mjs';
 
 const root = join(__dirname, '..');
 const read = (path: string) => readFileSync(join(root, path), 'utf8');
@@ -115,6 +121,33 @@ describe('paint-portraits script (spec 011 US3)', () => {
     expect(quota.fetch.mock.calls[0][0]).toMatch(/flux-2-dev$/);
     expect(init.body).toBeInstanceOf(FormData);
     expect(init.body.get('prompt')).toMatch(/faces the viewer/);
+  });
+
+  it('tries again with a new draw when Cloudflare flags an image, then skips it', async () => {
+    vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'acc-123');
+    vi.stubEnv('CLOUDFLARE_API_TOKEN', 'token');
+    const flagged = await run(
+      ['--service', 'cloudflare', '--only', 'gnome/bard/female1'],
+      vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({
+              success: false,
+              errors: [
+                {
+                  message:
+                    'AiError: Your output has been flagged. Please choose another prompt',
+                },
+              ],
+            }),
+            { status: 400 },
+          ),
+      ),
+    );
+    expect(flagged.fetch).toHaveBeenCalledTimes(1 + FLAGGED_RETRIES);
+    expect(flagged.output).toMatch(/trying again with a new pose \(1\/2\)/);
+    expect(flagged.output).toMatch(/skipped: Cloudflare: .*flagged/);
+    expect(flagged.output).toMatch(/0 painted, 1 skipped/);
   });
 
   it('stops when AI Horde cannot be reached', async () => {
