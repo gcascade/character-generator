@@ -155,14 +155,14 @@ switch rewords the same events.
 
 **Independent test**: same seed, different loadouts → different events and outcomes; limits enforced.
 
-- [ ] T024 [P] [US4] Perks (≥ 12) and items (≥ 15) in src/data/content/arena.json (research R10: bonuses, hp, tags,
+- [x] T024 [P] [US4] Perks (≥ 12) and items (≥ 15) in src/data/content/arena.json (research R10: bonuses, hp, tags,
       kind, damage) and names / descriptions in src/data/locales/{en,fr}/arena.json (`perks.<id>`, `items.<id>` with
       `name`, `the`, `description`); content test
-- [ ] T025 [US4] `setPerks` (max 2, distinct, known), `setItems` (max 3, known), `randomLoadouts(setup, random)` in
+- [x] T025 [US4] `setPerks` (max 2, distinct, known), `setItems` (max 3, known), `randomLoadouts(setup, random)` in
       src/content/arena.ts; perk and item effects in the engine (bonuses, Lucky reroll once per match, consumables used
       up, items found, traded, stolen, lost) with item event kinds (≥ 15) and texts; tests (limits, same seed with and
       without a sword → different fights, Lucky rerolls once)
-- [ ] T026 [US4] src/components/arena/loadoutPicker/LoadoutPicker.tsx (two perk selects, three item selects, one-line
+- [x] T026 [US4] src/components/arena/loadoutPicker/LoadoutPicker.tsx (two perk selects, three item selects, one-line
       descriptions) in ContestantCard, "Random loadouts" in RosterBuilder; test and story
 
 **Checkpoint**: the player's setup matters.

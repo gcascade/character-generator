@@ -34,6 +34,9 @@ const HOSTILE_TIES = [
 const PHYSICAL: Skill[] = ['melee', 'athletics', 'stealth', 'endurance'];
 
 const perk = (id: string) => ARENA.perks.find((p) => p.id === id);
+/** A perk or an item with this tag. */
+const hasTag = (f: Fighter, tag: string) =>
+  hasPerkTag(f, tag) || hasItemTag(f, tag);
 const item = (id: string) => ARENA.items.find((i) => i.id === id);
 
 export const hasPerkTag = (f: Fighter, tag: string) =>
@@ -245,7 +248,9 @@ const strike = (
 ) => {
   const attack = fighterCheck(state, attacker, style, modifier);
   if (!attack.success) return 0;
-  const block = hasItemTag(defender, 'block') ? 10 : 0;
+  const block =
+    (hasItemTag(defender, 'block') ? 10 : 0) +
+    (hasTag(defender, 'escape') ? 10 : 0);
   if (fighterCheck(state, defender, 'athletics', block - 30).success) return 0;
   const critical =
     attack.roll <= skillValue(state, attacker, style) / 5 ? 4 : 0;
@@ -322,7 +327,8 @@ export const resolveEvent = (
 
   switch (kind.type) {
     case 'find': {
-      if (fighterCheck(state, a, skill, modifier).success) {
+      const tools = hasTag(a, 'lockpick') ? 10 : 0;
+      if (fighterCheck(state, a, skill, modifier + tools).success) {
         const found = findItem(state, a);
         return found ? result('success', { itemId: found }) : result('failure');
       }
@@ -332,7 +338,8 @@ export const resolveEvent = (
       return result('only', { itemId: findItem(state, a) });
     }
     case 'forage': {
-      const food = hasItemTag(a, 'food') ? 15 : 0;
+      const food =
+        (hasItemTag(a, 'food') ? 15 : 0) + (hasTag(a, 'forager') ? 10 : 0);
       if (fighterCheck(state, a, skill, modifier + food).success) {
         heal(a, 4);
         return result('success');
@@ -342,7 +349,11 @@ export const resolveEvent = (
     }
     case 'hazard':
     case 'arena': {
-      const help = hasItemTag(a, 'climb') && skill === 'athletics' ? 15 : 0;
+      const help =
+        (hasItemTag(a, 'climb') && skill === 'athletics' ? 15 : 0) +
+        (hasTag(a, 'trap-sense') && (skill === 'perception' || skill === 'lore')
+          ? 15
+          : 0);
       if (fighterCheck(state, a, skill, modifier + help).success)
         return result('success');
       const deadly = kind.type === 'arena' && state.round >= state.limit - 1;
@@ -386,7 +397,8 @@ export const resolveEvent = (
       return result(outcome, { defeated });
     }
     case 'ambush': {
-      const spotted = fighterCheck(state, b, 'perception', -10).success;
+      const spotted =
+        hasTag(b, 'alert') || fighterCheck(state, b, 'perception', -10).success;
       const hidden = fighterCheck(state, a, 'stealth', modifier).success;
       if (hidden && !spotted) {
         const damage =

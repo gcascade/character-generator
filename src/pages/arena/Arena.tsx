@@ -9,6 +9,7 @@ import {
 import { Alert, Box, Button, Typography } from '@mui/material';
 import React, { FC, useContext, useMemo } from 'react';
 import ContestantCard from '../../components/arena/contestantCard/ContestantCard';
+import LoadoutPicker from '../../components/arena/loadoutPicker/LoadoutPicker';
 import RosterBuilder from '../../components/arena/rosterBuilder/RosterBuilder';
 import MatchSummary from '../../components/arena/matchSummary/MatchSummary';
 import RoundView from '../../components/arena/roundView/RoundView';
@@ -25,11 +26,9 @@ import useParty from '../../hooks/useParty';
 import { useLocale, useT } from '../../i18n';
 import type { ArenaSetup } from '../../types/arena';
 
-const Roster: FC<{ setup: ArenaSetup; onRemove: (id: string) => void }> = ({
-  setup,
-  onRemove,
-}) => {
+const Roster: FC<{ setup: ArenaSetup }> = ({ setup }) => {
   const t = useT();
+  const arena = useArena();
   if (!setup.contestants.length) {
     return (
       <Typography sx={{ color: 'text.secondary' }}>
@@ -65,8 +64,17 @@ const Roster: FC<{ setup: ArenaSetup; onRemove: (id: string) => void }> = ({
                   key={contestant.id}
                   contestant={contestant}
                   skills={contestantSkills(setup, contestant.id)}
-                  onRemove={() => onRemove(contestant.id)}
-                />
+                  onRemove={() => arena.remove(contestant.id)}
+                >
+                  <LoadoutPicker
+                    id={contestant.id}
+                    name={contestant.character.firstName}
+                    perks={contestant.perks}
+                    items={contestant.items}
+                    onPerks={(perks) => arena.setPerks(contestant.id, perks)}
+                    onItems={(items) => arena.setItems(contestant.id, items)}
+                  />
+                </ContestantCard>
               ))}
           </Box>
         </Box>
@@ -234,7 +242,7 @@ const Arena: FC = () => {
       <Typography variant="h4" component="h2">
         {t('arena.roster')}
       </Typography>
-      <Roster setup={setup} onRemove={arena.remove} />
+      <Roster setup={setup} />
     </Box>
   );
 };

@@ -89,6 +89,27 @@ describe('Arena page — roster (spec 012 US1)', () => {
   });
 });
 
+describe('Arena page — perks and items (spec 012 US4)', () => {
+  afterEach(() => localStorage.clear());
+
+  it('gives everyone random perks and items', async () => {
+    renderArena();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Add the current character' }),
+    );
+    const loadout = screen.getByRole('group', {
+      name: 'Perks and items of Korvus',
+    });
+    expect(within(loadout).getAllByRole('combobox')).toHaveLength(2);
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Random perks and items' }),
+    );
+    expect(
+      within(loadout).getAllByRole('combobox').length,
+    ).toBeGreaterThanOrEqual(4);
+  });
+});
+
 describe('Arena page — match (spec 012 US2)', () => {
   afterEach(() => localStorage.clear());
 
