@@ -24,6 +24,9 @@ AI Horde paints at 768 × 768 with one painterly model by default (`--size` and 
 serve that model, so a new account can wait around 20 minutes per portrait: `--model any` is much faster but the
 style varies more, and Cloudflare (below) takes a few seconds per portrait.
 
+Cloudflare's safety filter sometimes flags a harmless portrait at random: the script tries twice more with a new pose,
+light and expression, then skips it; the next run tries it again.
+
 **Reviewing portraits**: `npm run portraits:review` opens a page (http://localhost:5180) showing every portrait
 one by one: **Keep** (K) moves on, **Repaint** (R) moves the image to `.portrait-trash/` (git-ignored) and updates the
 list, **Restore** (U) brings it back. The next `npm run portraits:paint` paints the rejected ones again.

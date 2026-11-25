@@ -293,6 +293,24 @@ const paintWithCloudflare = async (prompt, { fetch, model }) => {
   return Buffer.from(body.result.image, 'base64');
 };
 
+/** Extra tries when Cloudflare's safety filter flags an image (false positives happen at random). */
+export const FLAGGED_RETRIES = 2;
+
+/** Paints again with a new draw while the output is flagged; other errors go through. */
+const paintFlaggedAgain = async (paint, log) => {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await paint(attempt);
+    } catch (error) {
+      if (!/flagged/i.test(error.message) || attempt >= FLAGGED_RETRIES)
+        throw error;
+      log(
+        `  flagged by Cloudflare's safety filter, trying again with a new pose (${attempt + 1}/${FLAGGED_RETRIES})`,
+      );
+    }
+  }
+};
+
 /** Runs the script; returns the exit code (0 done, 1 bad usage, 2 stopped early). */
 export const main = async (
   argv,
@@ -331,13 +349,16 @@ export const main = async (
   let failed = 0;
   try {
     for (const [index, portrait] of todo.entries()) {
-      const prompt = buildPortraitPrompt(
-        defaultPortraitSubject(
-          portrait.race,
-          portrait.characterClass,
-          portrait.variant,
-        ),
-      );
+      // A new pose, light and expression on each call.
+      const newPrompt = () =>
+        buildPortraitPrompt(
+          defaultPortraitSubject(
+            portrait.race,
+            portrait.characterClass,
+            portrait.variant,
+          ),
+        );
+      const prompt = newPrompt();
       log(`[${index + 1}/${todo.length}] ${portrait.stem}`);
       if (options.dryRun) {
         log(`  prompt: ${prompt.positive}`);
@@ -346,7 +367,14 @@ export const main = async (
       try {
         const bytes =
           options.service === 'cloudflare'
-            ? await paintWithCloudflare(prompt, { fetch, model: options.model })
+            ? await paintFlaggedAgain(
+                (attempt) =>
+                  paintWithCloudflare(attempt ? newPrompt() : prompt, {
+                    fetch,
+                    model: options.model,
+                  }),
+                log,
+              )
             : await paintWithHorde(prompt, {
                 size: options.size,
                 model: options.model,

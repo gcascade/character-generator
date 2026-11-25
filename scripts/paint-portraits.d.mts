@@ -1,5 +1,7 @@
 export class StopRun extends Error {}
 
+export const FLAGGED_RETRIES: number;
+
 export type PaintOptions = {
   service: 'horde' | 'cloudflare';
   dryRun: boolean;
