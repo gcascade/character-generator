@@ -24,8 +24,8 @@ describe('ArenaContext (spec 012)', () => {
     expect(result.current.setup.contestants).toHaveLength(3);
     unmount();
     expect(localStorage.getItem(ARENA_KEY)).toContain('"version":1');
-    const again = renderHook(() => useArena(), { wrapper });
-    expect(again.result.current.setup).toEqual(result.current.setup);
+    const { result: reloaded } = renderHook(() => useArena(), { wrapper });
+    expect(reloaded.current.setup).toEqual(result.current.setup);
   });
 
   it('draws again with a new seed and shows the first round', () => {
