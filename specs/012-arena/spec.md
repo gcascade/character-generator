@@ -30,7 +30,7 @@ arena is the app's own game: its own characters, stats, perks, items and texts.
 
 ### User Story 1 - Contestants get skills (Priority: P1)
 
-When characters enter the arena, each one gets skills rolled for the match: twelve values from 0 to 100 grouped in
+When characters enter the arena, each one gets skills rolled for the match: thirteen values from 0 to 100 grouped in
 four families, plus hit points. A value is the percent chance that the contestant succeeds at an action of that kind.
 A warrior is good at melee and endurance, a bard at persuasion, an elderly mage knows more lore but runs slower than a
 young one, an orc intimidates more easily, a halfling hides better. The player sees them on each contestant's card in
@@ -39,13 +39,13 @@ the arena; character pages do not show them.
 **Why this priority**: Skills are what the match rolls against; they are the foundation of the arena and of the
 later expedition.
 
-**Independent Test**: Enrol characters of every race and class and check that each contestant card shows twelve skills
+**Independent Test**: Enrol characters of every race and class and check that each contestant card shows thirteen skills
 and hit points within bounds, that the strongest skills match the class, that the same seed gives the same skills,
 and that character pages and stored characters are unchanged.
 
 **Acceptance Scenarios**:
 
-1. **Given** a roster in the arena, **When** the match is set up, **Then** each contestant card lists twelve skills
+1. **Given** a roster in the arena, **When** the match is set up, **Then** each contestant card lists thirteen skills
    (Melee, Ranged, Magic, Athletics, Stealth, Endurance, Perception, Survival, Lore, Healing, Persuasion, Intimidation,
    Deception) from 0 to 100 and hit points, grouped in Combat, Physical, Mind and Social.
 2. **Given** a match set up with a seed, **When** it is replayed or opened from its share link, **Then** every
@@ -191,7 +191,7 @@ event are identical.
 
 **Stats**
 
-- **FR-001**: Every contestant MUST have twelve skills, each an integer from 0 to 100 — Combat: Melee, Ranged, Magic;
+- **FR-001**: Every contestant MUST have thirteen skills, each an integer from 0 to 100 — Combat: Melee, Ranged, Magic;
   Physical: Athletics, Stealth, Endurance; Mind: Perception, Survival, Lore, Healing; Social: Persuasion, Intimidation,
   Deception — and hit points.
 - **FR-002**: Skill values MUST come from the class (base profile), the race (small modifiers), the age band
@@ -249,7 +249,7 @@ event are identical.
 
 ### Key Entities
 
-- **Skills**: twelve values from 0 to 100 and hit points, rolled for a contestant in a match.
+- **Skills**: thirteen values from 0 to 100 and hit points, rolled for a contestant in a match.
 - **Perk**: a named trait with a description and effects (skill bonuses, extra events, one-off abilities).
 - **Item**: a named object with a description, a kind (weapon, tool, consumable, protection) and effects.
 - **Contestant**: a character in a match, with its side, perks, inventory, wounds and state (standing or defeated).
@@ -261,7 +261,7 @@ event are identical.
 
 ### Measurable Outcomes
 
-- **SC-001**: 100% of contestants of every race and class have twelve skills between 5 and 95 and hit points, and the
+- **SC-001**: 100% of contestants of every race and class have thirteen skills between 5 and 95 and hit points, and the
   class's signature skills are among its three highest in at least 90% of contestants.
 - **SC-002**: A player goes from an empty arena to a running match with a generated roster in under 30 seconds.
 - **SC-003**: In 1,000 simulated matches of 2 to 48 contestants, every match ends with exactly one surviving side within
@@ -275,7 +275,7 @@ event are identical.
 
 ## Assumptions
 
-- The skill list is the twelve skills above; hit points come from Endurance and the class.
+- The skill list is the thirteen skills above; hit points come from Endurance and the class.
 - Skills are rolled per match (same seed, same skills) and only exist in the arena; the player does not edit them.
 - Side characters (NPCs) do not get skills and cannot enter the arena in this feature.
 - Matches are not saved in a list; the last match, the roster and the setup are kept, and sharing covers the rest.
