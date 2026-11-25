@@ -492,5 +492,649 @@
       "tags": ["heal"]
     }
   ],
-  "events": []
+  "events": [
+    {
+      "id": "event-find-chapel",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "weight": 3,
+      "phase": "day"
+    },
+    {
+      "id": "event-find-chest",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -10,
+      "weight": 2
+    },
+    {
+      "id": "event-find-camp",
+      "type": "find",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-find-tree",
+      "type": "find",
+      "actors": 1,
+      "skill": "athletics",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-find-river",
+      "type": "find",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2
+    },
+    {
+      "id": "event-find-armoury",
+      "type": "find",
+      "actors": 1,
+      "skill": "stealth",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-find-lantern-night",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -15,
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-gift-sky",
+      "type": "gift",
+      "actors": 1,
+      "weight": 1.5
+    },
+    {
+      "id": "event-forage-berries",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "damage": 3,
+      "weight": 3,
+      "phase": "day"
+    },
+    {
+      "id": "event-forage-hunt",
+      "type": "forage",
+      "actors": 1,
+      "skill": "ranged",
+      "damage": 2,
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-forage-fish",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "damage": 2,
+      "weight": 2
+    },
+    {
+      "id": "event-forage-mushrooms",
+      "type": "forage",
+      "actors": 1,
+      "skill": "lore",
+      "damage": 3,
+      "weight": 2
+    },
+    {
+      "id": "event-forage-spring",
+      "type": "forage",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 3,
+      "weight": 2
+    },
+    {
+      "id": "event-hazard-pit",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 6,
+      "weight": 3
+    },
+    {
+      "id": "event-hazard-quicksand",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 5,
+      "weight": 2,
+      "phase": "day",
+      "loseItem": true
+    },
+    {
+      "id": "event-hazard-rockslide",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 7,
+      "weight": 2
+    },
+    {
+      "id": "event-hazard-bees",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 3,
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-hazard-cold",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 4,
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-hazard-runes",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "lore",
+      "damage": 6,
+      "weight": 2
+    },
+    {
+      "id": "event-hazard-snake",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 5,
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-hazard-river",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 2,
+      "loseItem": true
+    },
+    {
+      "id": "event-rest-cave",
+      "type": "rest",
+      "actors": 1,
+      "damage": 5,
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-rest-tree",
+      "type": "rest",
+      "actors": 1,
+      "damage": 4,
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-quiet-song",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5
+    },
+    {
+      "id": "event-quiet-sharpen",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-quiet-stars",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "night"
+    },
+    {
+      "id": "event-quiet-squirrel",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1
+    },
+    {
+      "id": "event-quiet-practice",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-quiet-watch",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "night"
+    },
+    {
+      "id": "event-potion",
+      "type": "potion",
+      "actors": 1,
+      "weight": 6,
+      "when": {
+        "wounded": true,
+        "itemTag": "heal"
+      }
+    },
+    {
+      "id": "event-treat",
+      "type": "treat",
+      "actors": 1,
+      "weight": 3,
+      "when": {
+        "wounded": true
+      }
+    },
+    {
+      "id": "event-arena-mist",
+      "type": "arena",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 5,
+      "weight": 0.6,
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-arena-fire",
+      "type": "arena",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 6,
+      "weight": 0.6,
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-arena-storm",
+      "type": "arena",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 5,
+      "weight": 0.6,
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-arena-beast",
+      "type": "arena",
+      "actors": 1,
+      "skill": "melee",
+      "damage": 7,
+      "weight": 0.6,
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-arena-walls",
+      "type": "arena",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 5,
+      "weight": 0.6,
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-fight-clearing",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 3
+    },
+    {
+      "id": "event-fight-bridge",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-fight-night",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-fight-brawl",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "melee",
+      "weight": 2
+    },
+    {
+      "id": "event-fight-arrows",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "ranged",
+      "weight": 3
+    },
+    {
+      "id": "event-fight-spells",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "magic",
+      "weight": 3
+    },
+    {
+      "id": "event-fight-ruins",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2
+    },
+    {
+      "id": "event-fight-mud",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "melee",
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-ambush-bushes",
+      "type": "ambush",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-ambush-night",
+      "type": "ambush",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2.5,
+      "phase": "night"
+    },
+    {
+      "id": "event-social-intimidate",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "intimidation",
+      "effect": "take",
+      "weight": 2
+    },
+    {
+      "id": "event-social-spare",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "persuasion",
+      "weight": 2
+    },
+    {
+      "id": "event-social-trap",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "deception",
+      "effect": "hurt",
+      "damage": 6,
+      "weight": 2
+    },
+    {
+      "id": "event-social-bluff",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "deception",
+      "effect": "take",
+      "weight": 2
+    },
+    {
+      "id": "event-social-riddle",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "lore",
+      "effect": "take",
+      "weight": 1.5
+    },
+    {
+      "id": "event-social-taunt",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "intimidation",
+      "weight": 1.5
+    },
+    {
+      "id": "event-steal-camp",
+      "type": "steal",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "stealth",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-steal-pickpocket",
+      "type": "steal",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "deception",
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-finish",
+      "type": "finish",
+      "actors": 2,
+      "relation": "foe",
+      "modifier": 15,
+      "weight": 4,
+      "when": {
+        "alignment": "evil",
+        "targetWounded": true
+      }
+    },
+    {
+      "id": "event-spare",
+      "type": "spare",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 3,
+      "when": {
+        "alignment": "good",
+        "targetWounded": true
+      }
+    },
+    {
+      "id": "event-finale-duel",
+      "type": "finale",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 1
+    },
+    {
+      "id": "event-finale-honour",
+      "type": "finale",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 1,
+      "when": {
+        "alignment": "good"
+      }
+    },
+    {
+      "id": "event-team-heal",
+      "type": "team-heal",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 5,
+      "when": {
+        "targetWounded": true
+      }
+    },
+    {
+      "id": "event-team-heal-song",
+      "type": "team-heal",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "phase": "night",
+      "when": {
+        "targetWounded": true
+      }
+    },
+    {
+      "id": "event-share-food",
+      "type": "share",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3
+    },
+    {
+      "id": "event-banter-plan",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-banter-joke",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2
+    },
+    {
+      "id": "event-banter-watch",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-trade",
+      "type": "trade",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2
+    },
+    {
+      "id": "event-alliance-offer",
+      "type": "alliance",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 1.5,
+      "notable": true
+    },
+    {
+      "id": "event-alliance-fire",
+      "type": "alliance",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 1.5,
+      "phase": "night",
+      "notable": true
+    },
+    {
+      "id": "event-split-argument",
+      "type": "split",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "notable": true,
+      "when": {
+        "tie": "hostile"
+      }
+    },
+    {
+      "id": "event-split-share",
+      "type": "split",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "notable": true,
+      "when": {
+        "tie": "hostile",
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-betray-sleep",
+      "type": "betray",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "phase": "night",
+      "notable": true,
+      "when": {
+        "alignment": "not-good"
+      }
+    },
+    {
+      "id": "event-betray-back",
+      "type": "betray",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "day",
+      "notable": true,
+      "when": {
+        "alignment": "not-good",
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-protect",
+      "type": "protect",
+      "actors": 3,
+      "weight": 4
+    },
+    {
+      "id": "event-protect-leader",
+      "type": "protect",
+      "actors": 3,
+      "weight": 4,
+      "when": {
+        "role": "role-leader"
+      }
+    },
+    {
+      "id": "event-sacrifice",
+      "type": "sacrifice",
+      "actors": 3,
+      "weight": 1.5,
+      "notable": true,
+      "when": {
+        "tie": "friendly",
+        "minRound": 3
+      }
+    }
+  ]
 }

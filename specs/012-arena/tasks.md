@@ -52,7 +52,7 @@ matches are success criteria SC-003 and SC-005).
       src/content/skills.test.ts (every race × class × age band within bounds; class signature skills among the three
       highest in ≥ 90 % of 1,000 rolls — SC-001; orc intimidation and halfling stealth above average; check rates match
       the value over 10,000 rolls)
-- [x] T007 Per-actor text rendering in src/content/arenaText.ts: `renderActorText(text, actors, extras)` with `{a}`,
+- [x] T007 Per-actor text rendering in src/content/arenaText.ts: `fillActorText(text, actors, extras)` with `{a}`,
       `{b}`, `{c}` (first names), `{item}`, `{theItem}`, `{team}` and selections `{{a:m|f|n}}` per actor (research R7),
       capitalised first letter; tests (each actor's gender picks its own form, missing actor throws, French narrow
       no-break spaces untouched)
@@ -100,28 +100,28 @@ sides, seed, shownRounds }` (characters validated like stored characters, unknow
 **Independent test**: matches of 2, 8 and 24 contestants end with one winner; same seed → same story; language
 switch rewords the same events.
 
-- [ ] T015 [US2] src/data/content/arena.json, part 2: core event kinds (≥ 50) for solos: finding things, food and
+- [x] T015 [US2] src/data/content/arena.json, part 2: core event kinds (≥ 50) for solos: finding things, food and
       shelter, traps and hazards, hunting, hiding, ambushes, melee / ranged / magic fights, fleeing, persuasion,
       intimidation, deception, healing oneself, arena tightening events, final duel, humour; fields per data-model.md
       (`phase`, `actors` 1–3, `relation`, `when`, `check`, `outcomes` with effects, `weight`, `notable`)
-- [ ] T016 [US2] Event texts in src/data/locales/{en,fr}/arena.json (`events.<id>.<outcome>`, `rounds.day`,
+- [x] T016 [US2] Event texts in src/data/locales/{en,fr}/arena.json (`events.<id>.<outcome>`, `rounds.day`,
       `rounds.night`, summary lines): epic and light humour, no gore, French rules; content test: every event outcome
       has a text in both locales with the same placeholders, every text renders for every gender combination
-- [ ] T017 [US2] Engine in src/content/arenaEvents.ts (`eligibleEvents`, `resolveEvent`: checks, fights per research
+- [x] T017 [US2] Engine in src/content/arenaEvents.ts (`eligibleEvents`, `resolveEvent`: checks, fights per research
       R3, effects, wounds) and `simulate(setup)` in src/content/arena.ts (rounds alternating day / night, every living
       fighter once per round, round limit 4 + ceil(sides × 0.75) capped at 24, tightening from round 3, deadly in the
       last two, forced finale, summary data: winner, defeats per contestant, round of defeat, ≤ 5 notable moments);
       tests in src/content/arena.test.ts over 1,000 seeded matches of 2 to 48 contestants (SC-003: exactly one winning
       side within the limit, every living fighter once per round; SC-005 first half: +30 skill → clearly more successes;
       48 contestants simulated in < 100 ms)
-- [ ] T018 [US2] `renderEvent`, `renderRoundTitle`, `renderSummary` in src/content/arenaText.ts; tests (same match
+- [x] T018 [US2] `renderEvent`, `renderRoundTitle`, `renderSummary` in src/content/arenaText.ts; tests (same match
       rendered in en and fr has the same number of lines; no event text repeats more than twice in a typical match —
       SC-007)
-- [ ] T019 [P] [US2] src/components/arena/roundView/RoundView.tsx (day/night title, event lines with defeated names
+- [x] T019 [P] [US2] src/components/arena/roundView/RoundView.tsx (day/night title, event lines with defeated names
       highlighted); test and story
-- [ ] T020 [P] [US2] src/components/arena/matchSummary/MatchSummary.tsx (winner with portrait, defeats table, notable
+- [x] T020 [P] [US2] src/components/arena/matchSummary/MatchSummary.tsx (winner with portrait, defeats table, notable
       moments); test and story
-- [ ] T021 [US2] Match view in src/pages/arena/Arena.tsx: Start (disabled with reason when `canStart` fails), rounds
+- [x] T021 [US2] Match view in src/pages/arena/Arena.tsx: Start (disabled with reason when `canStart` fails), rounds
       up to `shownRounds`, Next round, Skip to the end, summary, back to setup; page test (2-side match to the end,
       language switch keeps events)
 

@@ -180,5 +180,342 @@
       "description": "Une eau bénie qui soigne, une fois."
     }
   },
-  "events": {}
+  "events": {
+    "event-find-chapel": {
+      "success": "En fouillant une chapelle en ruine, {a} trouve {item} sous la statue renversée d'un saint oublié.",
+      "failure": "{a} fouille une chapelle en ruine pendant une heure et n'y trouve que des pigeons, très mécontents."
+    },
+    "event-find-chest": {
+      "success": "{a} repère un coffre à moitié enfoui dans la mousse et en tire {item}.",
+      "failure": "{a} déterre un coffre prometteur. Il est plein de très vieilles chaussettes."
+    },
+    "event-find-camp": {
+      "success": "{a} tombe sur un campement abandonné, encore tiède, et repart avec {item}.",
+      "failure": "{a} trouve un campement abandonné, mais quelqu'un est passé avant : il ne reste que des cendres."
+    },
+    "event-find-tree": {
+      "success": "{a} grimpe dans un vieux chêne pour atteindre un paquet coincé dans ses branches : {item}.",
+      "failure": "{a} tente de grimper dans un vieux chêne, glisse deux fois et décide que ce qui est là-haut peut bien y rester."
+    },
+    "event-find-river": {
+      "success": "{a} repêche une besace détrempée dans la rivière. À l'intérieur : {item}.",
+      "failure": "{a} entre dans la rivière pour attraper une besace qui flotte et ne ramène que des bottes trempées."
+    },
+    "event-find-armoury": {
+      "success": "À la faveur de la nuit, {a} se glisse dans la vieille armurerie de l'arène et prend {item}.",
+      "failure": "{a} tente d'entrer en douce dans la vieille armurerie, renverse un râtelier de boucliers et s'enfuit dans un vacarme épouvantable."
+    },
+    "event-find-lantern-night": {
+      "success": "Malgré l'obscurité, {a} remarque un reflet entre deux rochers : {item}.",
+      "failure": "{a} tâtonne dans le noir à la recherche d'un reflet aperçu au crépuscule et ne trouve qu'un crapaud très surpris."
+    },
+    "event-gift-sky": {
+      "only": "Un petit parachute descend du ciel et se pose juste devant {a} : {item}, avec un mot qui dit « Bonne chance ! »"
+    },
+    "event-forage-berries": {
+      "success": "{a} trouve un buisson de mûres et mange jusqu'à en avoir les doigts violets.",
+      "failure": "{a} mange une poignée de baies rouge vif. Le reste de l'après-midi est consacré à le regretter."
+    },
+    "event-forage-hunt": {
+      "success": "{a} abat un lièvre d'un seul tir et le fait rôtir sur un petit feu.",
+      "failure": "{a} passe la matinée à poursuivre un lièvre. Le lièvre gagne."
+    },
+    "event-forage-fish": {
+      "success": "{a} attrape trois belles truites à mains nues, avec beaucoup de patience.",
+      "failure": "{a} tente d'attraper des poissons à mains nues et tombe dans le ruisseau. Les poissons ont l'air de bien s'amuser."
+    },
+    "event-forage-mushrooms": {
+      "success": "{a} reconnaît un cercle de champignons comestibles et prépare une soupe étonnamment bonne.",
+      "failure": "{a} mange un joli champignon bleu et passe une heure à discuter philosophie avec un arbre."
+    },
+    "event-forage-spring": {
+      "success": "{a} suit le bruit de l'eau jusqu'à une source claire et boit longuement.",
+      "failure": "{a} boit dans une flaque boueuse, par pure soif. Ce n'était pas une bonne idée."
+    },
+    "event-hazard-pit": {
+      "success": "{a} remarque à temps des branchages suspects sur le chemin et contourne une profonde fosse piégée.",
+      "failure": "{a} tombe dans une fosse piégée et met un long et douloureux moment à en ressortir.",
+      "defeated": "{a} tombe dans une fosse piégée et ne parvient pas à en sortir. À la nuit tombée, les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-hazard-quicksand": {
+      "success": "{a} s'enfonce dans des sables mouvants jusqu'aux genoux, mais s'en arrache dans un effort formidable.",
+      "failure": "{a} sort des sables mouvants, à bout de forces, de la boue jusqu'aux oreilles.",
+      "lost": "{a} s'échappe des sables mouvants, mais la boue engloutit {theItem}.",
+      "defeated": "Les sables mouvants engloutissent {a} jusqu'à la poitrine, et les gardiens emportent {a}, sans connaissance, hors de l'arène."
+    },
+    "event-hazard-rockslide": {
+      "success": "Un éboulement dévale la pente ; {a} se jette sur le côté juste à temps.",
+      "failure": "Un éboulement surprend {a}, qui s'en sort en boitant, avec des bleus partout et de la poussière jusque dans les cheveux.",
+      "defeated": "Un éboulement ensevelit {a} jusqu'aux épaules, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-hazard-bees": {
+      "success": "{a} dérange une ruche sauvage et distance tout l'essaim en agitant les bras.",
+      "failure": "{a} dérange une ruche sauvage. Les abeilles ont un avis sur la question, et le partagent longuement.",
+      "defeated": "Un essaim furieux pourchasse {a} jusque dans la rivière, et les gardiens de l'arène emportent {a} hors de l'arène, le visage couvert de piqûres."
+    },
+    "event-hazard-cold": {
+      "success": "La nuit est glaciale, mais {a} se blottit sous un rocher et tient bon jusqu'à l'aube.",
+      "failure": "La nuit est glaciale et {a} grelotte jusqu'à l'aube sans fermer l'œil.",
+      "defeated": "{a} ne résiste pas au froid. À l'aube, les gardiens de l'arène emportent {a} hors de l'arène, sous une couverture."
+    },
+    "event-hazard-runes": {
+      "success": "{a} reconnaît des runes de garde gravées sur une arche et la contourne. Sage décision.",
+      "failure": "{a} passe sous une arche couverte de runes, qui s'activent dans un éclair de feu bleu.",
+      "defeated": "{a} déclenche un piège runique ; l'explosion secoue toute la clairière, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-hazard-snake": {
+      "success": "{a} repère une vipère enroulée dans l'herbe et la contourne avec beaucoup de respect.",
+      "failure": "Une vipère mord {a}, qui passe une heure fiévreuse à aspirer le venin.",
+      "defeated": "Une vipère mord {a}. La fièvre monte vite, et les gardiens confient {a} aux guérisseurs, hors de l'arène."
+    },
+    "event-hazard-river": {
+      "success": "{a} traverse une rivière rapide de pierre en pierre sans même se mouiller les bottes.",
+      "failure": "{a} glisse en traversant la rivière et se fait emporter par le courant avant d'atteindre la rive.",
+      "lost": "{a} glisse en traversant la rivière ; le courant emporte {theItem}.",
+      "defeated": "La rivière emporte {a} ; les gardiens attendent loin en aval pour sortir {a} de l'eau et de l'arène."
+    },
+    "event-rest-cave": {
+      "only": "{a} trouve une grotte sèche et dort profondément pour la première fois depuis le début."
+    },
+    "event-rest-tree": {
+      "only": "{a} s'attache à une haute branche et dort au-dessus de l'arène, hors de portée."
+    },
+    "event-quiet-song": {
+      "only": "{a} chante une vieille chanson pour se donner du courage. Quelque part dans l'ombre, quelqu'un fredonne avec."
+    },
+    "event-quiet-sharpen": {
+      "only": "{a} passe une heure tranquille à affûter, polir et admirer son équipement."
+    },
+    "event-quiet-stars": {
+      "only": "{a} s'allonge sur le dos et compte les étoiles en se demandant comment tout cela a commencé."
+    },
+    "event-quiet-squirrel": {
+      "only": "{a} a une longue conversation avec un écureuil. L'écureuil soulève des points tout à fait pertinents."
+    },
+    "event-quiet-practice": {
+      "only": "{a} s'entraîne à l'écart dans une clairière, frappant des ombres jusqu'à retrouver les bons gestes."
+    },
+    "event-quiet-watch": {
+      "only": "{a} veille toute la nuit, le dos contre un rocher. Rien ne vient. C'est presque pire."
+    },
+    "event-potion": {
+      "only": "{a} utilise {theItem} ; les blessures se referment et les couleurs reviennent."
+    },
+    "event-treat": {
+      "success": "{a} nettoie et bande ses blessures d'une main sûre.",
+      "failure": "{a} tente de bander une blessure et ne fait qu'empirer les choses. C'est plus difficile qu'il n'y paraît."
+    },
+    "event-arena-mist": {
+      "success": "Une brume grise et suffocante recouvre l'arène ; {a} retient son souffle et la traverse.",
+      "failure": "Une brume suffocante recouvre l'arène, et {a} en ressort en toussant, les yeux en larmes.",
+      "defeated": "La brume suffocante engloutit {a}. Quand elle se lève, les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-arena-fire": {
+      "success": "Un mur de feu magique balaie l'arène ; {a} court plus vite que lui et s'en sort.",
+      "failure": "Un mur de feu magique balaie l'arène et roussit {a}, qui sent le rôti pour le reste de la journée.",
+      "defeated": "Le mur de feu coupe tous les chemins à {a}, et les gardiens font sortir {a} par une porte dérobée."
+    },
+    "event-arena-storm": {
+      "success": "Un orage invoqué par les maîtres de l'arène éclate ; {a} l'affronte à l'abri d'une corniche.",
+      "failure": "Les maîtres de l'arène invoquent un orage ; un éclair tombe à deux pas, et {a} en garde les cheveux dressés sur la tête.",
+      "defeated": "La foudre frappe tout près, et les gardiens évacuent {a}, les oreilles encore bourdonnantes."
+    },
+    "event-arena-beast": {
+      "success": "Les maîtres lâchent une manticore dans l'arène. {a} la repousse et elle s'éloigne en boudant.",
+      "failure": "Une manticore lâchée par les maîtres surprend {a}, qui s'en tire avec quelques griffures et une solide rancune envers les manticores.",
+      "defeated": "Une manticore accule {a} ; les gardiens la repoussent avec des torches et emportent {a} hors de l'arène."
+    },
+    "event-arena-walls": {
+      "success": "Dans un grondement de pierre, les murs de l'arène se resserrent ; {a} franchit les gravats à temps.",
+      "failure": "Les murs de l'arène se resserrent et {a} reçoit des pierres en courant.",
+      "defeated": "Les murs mouvants piègent {a} dans un cul-de-sac, et les gardiens font sortir {a} par la grille."
+    },
+    "event-fight-clearing": {
+      "win": "{a} et {b} se croisent dans une clairière et dégainent. {a} porte les meilleurs coups et {b} bat en retraite sous les arbres.",
+      "lose": "{a} et {b} se croisent dans une clairière et dégainent. {b} est plus rapide, et {a} doit fuir, mal en point.",
+      "draw": "{a} et {b} se croisent dans une clairière et dégainent. Aucun ne cède un pouce ; ils se séparent, haletants, en se promettant de remettre ça.",
+      "defeat": "{a} et {b} se croisent dans une clairière et dégainent. {a} remporte le duel, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} et {b} se croisent dans une clairière et dégainent. {b} remporte le duel, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-bridge": {
+      "win": "{a} et {b} se retrouvent au milieu d'un pont de cordes. Un seul traversera. {a} repousse {b} jusqu'à l'autre rive.",
+      "lose": "{a} et {b} se retrouvent au milieu d'un pont de cordes. Un seul traversera. {b} oblige {a} à rebrousser chemin.",
+      "draw": "{a} et {b} se retrouvent au milieu d'un pont de cordes. Un seul traversera. Le pont tangue tellement qu'ils décident tous les deux de faire le tour.",
+      "defeat": "{a} et {b} se retrouvent au milieu d'un pont de cordes. Un seul traversera. {b} perd le combat et l'équilibre, et tombe dans la rivière ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} et {b} se retrouvent au milieu d'un pont de cordes. Un seul traversera. {a} perd le combat et l'équilibre, et tombe dans la rivière ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-night": {
+      "win": "Dans le noir, {a} tombe nez à nez avec {b}. L'acier résonne. {a} frappe juste, et {b} disparaît dans la nuit, une estafilade au flanc.",
+      "lose": "Dans le noir, {a} tombe nez à nez avec {b}. L'acier résonne. {b} frappe juste, et {a} disparaît dans la nuit, une estafilade au flanc.",
+      "draw": "Dans le noir, {a} tombe nez à nez avec {b}. L'acier résonne. Ils se battent à l'aveugle un moment, puis se perdent dans l'obscurité.",
+      "defeat": "Dans le noir, {a} tombe nez à nez avec {b}. L'acier résonne. Quand la lune se montre, {b} est à terre, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Dans le noir, {a} tombe nez à nez avec {b}. L'acier résonne. Quand la lune se montre, {a} est à terre, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-brawl": {
+      "win": "{a} et {b} tendent la main vers la même miche de pain. Ça tourne à la bagarre. {a} garde le pain et la plupart de ses dents.",
+      "lose": "{a} et {b} tendent la main vers la même miche de pain. Ça tourne à la bagarre. {b} garde le pain ; {a} garde un œil au beurre noir.",
+      "draw": "{a} et {b} tendent la main vers la même miche de pain. Ça tourne à la bagarre. Le pain finit piétiné dans la bagarre. Personne ne gagne.",
+      "defeat": "{a} et {b} tendent la main vers la même miche de pain. Ça tourne à la bagarre. {a} gagne la bagarre et le pain, et les gardiens de l'arène emportent {b} hors de l'arène, le ventre vide.",
+      "defeated": "{a} et {b} tendent la main vers la même miche de pain. Ça tourne à la bagarre. {b} gagne la bagarre et le pain, et les gardiens de l'arène emportent {a} hors de l'arène, le ventre vide."
+    },
+    "event-fight-arrows": {
+      "win": "{a} aperçoit {b} de l'autre côté d'un ravin et encoche une flèche. Le tir fait mouche ; {b} plonge derrière les rochers, blessure à l'épaule.",
+      "lose": "{a} aperçoit {b} de l'autre côté d'un ravin et encoche une flèche. {b} réplique plus vite, et {a} doit se mettre à couvert, une flèche dans la cuisse.",
+      "draw": "{a} aperçoit {b} de l'autre côté d'un ravin et encoche une flèche. Ils échangent des tirs jusqu'à ce que leur patience soit à bout.",
+      "defeat": "{a} aperçoit {b} de l'autre côté d'un ravin et encoche une flèche. La flèche atteint sa cible, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} aperçoit {b} de l'autre côté d'un ravin et encoche une flèche. {b} tire le premier coup, et le meilleur ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-spells": {
+      "win": "{a} fait jaillir un sort crépitant au moment où {b} franchit la colline. Le sort touche {b} de plein fouet, et {b} s'enfuit, les vêtements fumants.",
+      "lose": "{a} fait jaillir un sort crépitant au moment où {b} franchit la colline. Le sort se retourne contre {a}, qui y laisse ses sourcils, et {b} en profite pour frapper.",
+      "draw": "{a} fait jaillir un sort crépitant au moment où {b} franchit la colline. Les étincelles volent, l'herbe prend feu, et tout le monde doit courir.",
+      "defeat": "{a} fait jaillir un sort crépitant au moment où {b} franchit la colline. Un éclair aveuglant, et {b} est à terre ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} fait jaillir un sort crépitant au moment où {b} franchit la colline. {b} brise le sort et riposte, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-ruins": {
+      "win": "{a} et {b} se tournent autour parmi les ruines d'une vieille tour. {a} chasse {b} hors des ruines.",
+      "lose": "{a} et {b} se tournent autour parmi les ruines d'une vieille tour. {b} chasse {a} hors des ruines.",
+      "draw": "{a} et {b} se tournent autour parmi les ruines d'une vieille tour. Un pan de mur s'effondre entre eux, et le combat s'arrête là.",
+      "defeat": "{a} et {b} se tournent autour parmi les ruines d'une vieille tour. {a} a le dernier mot, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} et {b} se tournent autour parmi les ruines d'une vieille tour. {b} a le dernier mot, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-mud": {
+      "win": "{a} charge {b} en poussant un cri de guerre, glisse dans la boue, et le combat commence à quatre pattes. {a} prend le dessus, de la boue jusqu'aux sourcils et la fierté intacte.",
+      "lose": "{a} charge {b} en poussant un cri de guerre, glisse dans la boue, et le combat commence à quatre pattes. {b} prend le dessus ; {a} s'éloigne à quatre pattes, avec de la boue partout et beaucoup d'humilité.",
+      "draw": "{a} charge {b} en poussant un cri de guerre, glisse dans la boue, et le combat commence à quatre pattes. Sous la boue, impossible de savoir qui est qui. Ils abandonnent.",
+      "defeat": "{a} charge {b} en poussant un cri de guerre, glisse dans la boue, et le combat commence à quatre pattes. {a} cloue {b} dans la boue, et les gardiens de l'arène emportent {b} hors de l'arène, la boue dégoulinant de partout.",
+      "defeated": "{a} charge {b} en poussant un cri de guerre, glisse dans la boue, et le combat commence à quatre pattes. {b} cloue {a} dans la boue, et les gardiens de l'arène emportent {a} hors de l'arène, la boue dégoulinant de partout."
+    },
+    "event-ambush-bushes": {
+      "success": "{a} attend dans les buissons et bondit sur {b}, qui n'a rien vu venir.",
+      "defeat": "{a} tend une embuscade à {b} depuis les buissons ; tout est fini en un instant, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "failure": "{a} tente une embuscade contre {b}, mais éternue au mauvais moment.",
+      "defeated": "{a} tente une embuscade contre {b}, qui s'y attendait ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-ambush-night": {
+      "success": "{a} s'approche du campement où dort {b} et frappe avant de disparaître dans la nuit.",
+      "defeat": "{a} surprend {b} dans son sommeil. À l'aube, les gardiens de l'arène emportent {b} hors de l'arène.",
+      "failure": "{a} se glisse vers {b} dans le noir et marche sur une brindille très bruyante.",
+      "defeated": "{a} se glisse vers {b}, qui faisait semblant de dormir ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-social-intimidate": {
+      "success": "{a} fixe {b} en grognant ; au bout d'un moment, {b} décide d'aller voir ailleurs.",
+      "took": "{a} lance un regard féroce à {b}, qui lâche {item} et s'enfuit.",
+      "failure": "{a} tente d'effrayer {b}, qui éclate de rire et lui lance une pierre."
+    },
+    "event-social-spare": {
+      "success": "Face à {b}, {a} parle si bien d'honneur et du long chemin à parcourir qu'à la fin, {b} renonce au combat.",
+      "failure": "Face à {b}, {a} tente de négocier. {b} n'est pas d'humeur à discuter."
+    },
+    "event-social-trap": {
+      "success": "{a} prétend avoir trouvé un trésor au bord d'une falaise. {b} va voir et dégringole la pente.",
+      "defeat": "{a} attire {b} sur une corniche fragile avec une histoire à dormir debout, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "failure": "{a} raconte à {b} une histoire de trésor caché. {b} la connaît déjà."
+    },
+    "event-social-bluff": {
+      "success": "{a} convainc {b} qu'une armée entière se cache derrière la colline. {b} prend la fuite.",
+      "took": "{a} convainc {b} que l'objet est maudit : {b} abandonne {item}, et {a} n'a plus qu'à se baisser.",
+      "failure": "{a} prétend avoir une armée derrière la colline. {b} regarde. Il n'y a pas d'armée."
+    },
+    "event-social-riddle": {
+      "success": "{a} défie {b} dans un concours d'énigmes et l'emporte avec une question sur le vent.",
+      "took": "{a} remporte un concours d'énigmes contre {b}, et le prix avec : {item}.",
+      "failure": "{a} défie {b} dans un concours d'énigmes et perd sur une question à propos de fromage."
+    },
+    "event-social-taunt": {
+      "success": "Du haut d'une colline, {a} lance à {b} des insultes si inventives que la cible part y réfléchir.",
+      "failure": "{a} crie des insultes à {b}, qui en trouve de meilleures. {a} en ressort la fierté blessée."
+    },
+    "event-steal-camp": {
+      "success": "{b} dort ; {a} en profite pour se faufiler dans le campement et repartir avec {item}.",
+      "failure": "{a} tente de voler {b} pendant la nuit et reçoit une botte en pleine tête."
+    },
+    "event-steal-pickpocket": {
+      "success": "{a} bouscule {b}, s'excuse chaleureusement, et repart avec {item}.",
+      "failure": "{a} bouscule {b} pour lui faire les poches ; {b} vérifie chaque poche et lance un regard noir."
+    },
+    "event-finish": {
+      "win": "{a} traque sans pitié {b}, {{b:blessé|blessée|mal en point}}. {b} reçoit un nouveau coup, mais s'éloigne en boitant.",
+      "lose": "{a} traque sans pitié {b}, {{b:blessé|blessée|mal en point}}. {b} trouve la force de riposter et chasse {a}.",
+      "draw": "{a} traque sans pitié {b}, {{b:blessé|blessée|mal en point}}. {b} s'éclipse avant le coup suivant.",
+      "defeat": "{a} traque sans pitié {b}, {{b:blessé|blessée|mal en point}}. {a} achève ce qui était commencé, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} traque sans pitié {b}, {{b:blessé|blessée|mal en point}}. Dos au mur, {b} se défend comme un lion, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-spare": {
+      "only": "{a} trouve {b} {{b:blessé|blessée|mal en point}} et sans défense, et s'éloigne. « Pas comme ça. »"
+    },
+    "event-finale-duel": {
+      "defeat": "L'arène fait silence pour le dernier duel. {a} et {b} se battent jusqu'à ce que l'un des deux ne puisse plus se relever : c'est {b}, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "L'arène fait silence pour le dernier duel. {a} et {b} se battent jusqu'à ce que l'un des deux ne puisse plus se relever : c'est {a}, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-finale-honour": {
+      "defeat": "{a} et {b} se saluent avant un duel d'honneur. Quand {b} pose un genou à terre, {a} lui tend la main ; {b} la saisit, sourit et quitte l'arène.",
+      "defeated": "{a} et {b} se saluent avant un duel d'honneur. Quand {a} pose un genou à terre, {b} lui tend la main ; {a} la saisit, sourit et quitte l'arène."
+    },
+    "event-team-heal": {
+      "success": "{a} soigne {b} près du feu. Au matin, {b} est sur pied.",
+      "failure": "{a} tente de soigner {b}, mais sans les bonnes herbes, il n'y a pas grand-chose à faire."
+    },
+    "event-team-heal-song": {
+      "success": "{a} fredonne un vieux chant de guérison pour {b} ; la douleur s'apaise à chaque couplet.",
+      "failure": "{a} chante un chant de guérison pour {b}. Ça ne guérit rien, mais c'est une belle chanson."
+    },
+    "event-share-food": {
+      "only": "{a} partage ses dernières provisions avec {b}. Aucun des deux n'avoue à quel point la faim le tenaille."
+    },
+    "event-banter-plan": {
+      "only": "{a} et {b} passent la soirée à dessiner des plans dans la terre. Plus les heures passent, plus les plans sont ambitieux."
+    },
+    "event-banter-joke": {
+      "only": "{a} raconte à {b} une blague si mauvaise qu'elle provoque dix minutes de fou rire. Quelque part, un rival entend et s'interroge."
+    },
+    "event-banter-watch": {
+      "only": "{a} monte la garde pour laisser dormir {b}, puis ils échangent. Personne ne les surprend cette nuit."
+    },
+    "event-trade": {
+      "only": "{a} donne {item} à {b} : « Tu en auras plus besoin que moi. »"
+    },
+    "event-alliance-offer": {
+      "success": "{a} baisse son arme et propose une alliance à {b}. Après un long silence, {b} accepte d'une poignée de main.",
+      "failure": "{a} propose une alliance à {b}, qui répond en reculant lentement, sans jamais se retourner."
+    },
+    "event-alliance-fire": {
+      "success": "Transi de froid, {b} s'approche du feu où se réchauffe {a}, qui fait de la place. Au matin, ils sont alliés.",
+      "failure": "{b} s'approche du feu où se réchauffe {a}, qui lance une pomme de pin en guise d'avertissement. Le message est clair."
+    },
+    "event-split-argument": {
+      "only": "Les vieilles rancunes rattrapent {a} et {b}. Après une dispute amère, {a} quitte l'équipe pour de bon."
+    },
+    "event-split-share": {
+      "only": "{a} surprend {b} en train de cacher de la nourriture à l'équipe. C'est la goutte d'eau : désormais, {a} fait cavalier seul."
+    },
+    "event-betray-sleep": {
+      "success": "{b} dort ; {a} en profite pour briser leur alliance d'un coup traître et disparaît avant l'aube.",
+      "defeat": "{a} attend la nuit noire pour trahir {b} de la pire des façons ; les gardiens de l'arène emportent {b} hors de l'arène."
+    },
+    "event-betray-back": {
+      "success": "{a} sourit à {b}, puis frappe. « Rien de personnel. C'est l'arène. »",
+      "defeat": "{a} se retourne contre {b} sans prévenir. « Rien de personnel. » Les gardiens de l'arène emportent {b} hors de l'arène."
+    },
+    "event-protect": {
+      "success": "{c} s'en prend à {b}, à bout de forces, mais {a} s'interpose et repousse {c}.",
+      "failure": "{a} se jette entre {b} et {c}, et encaisse les coups destinés à {b}.",
+      "defeat": "{a} se précipite pour protéger {b} contre {c}, et l'emporte ; les gardiens de l'arène emportent {c} hors de l'arène.",
+      "defeated": "{a} tient bon entre {b} et {c} jusqu'au bout ; les gardiens de l'arène emportent {a} hors de l'arène, mais {b} est en sécurité."
+    },
+    "event-protect-leader": {
+      "success": "« Derrière moi ! » {a} couvre {b} et fait face à {c}, qui préfère renoncer.",
+      "failure": "« Derrière moi ! » {a} protège {b} contre {c} et le paie de quelques blessures.",
+      "defeat": "« Derrière moi ! » {a} défend {b} contre {c} et gagne ; les gardiens de l'arène emportent {c} hors de l'arène.",
+      "defeated": "« Derrière moi ! » {a} retient {c} assez longtemps pour permettre à {b} de s'échapper ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-sacrifice": {
+      "only": "{c} fond sur {b}, à bout de forces, mais {a} prend le coup à sa place et tombe. Les gardiens emportent {a} hors de l'arène, et {b} s'échappe."
+    }
+  },
+  "rounds": {
+    "day": "Jour {number}",
+    "night": "Nuit {number}",
+    "finale": "La finale"
+  }
 }

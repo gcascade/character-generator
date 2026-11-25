@@ -8,9 +8,13 @@ import {
   MAX_CONTESTANTS,
   randomLoadouts,
   removeContestant,
+  roundLimit,
   setItems,
   setPerks,
+  simulate,
+  summarize,
 } from './arena';
+import { renderEvent } from './arenaText';
 import { generateRandomCharacter } from './generate';
 import { generateParty } from './party';
 import { createRandom } from './random';
@@ -119,6 +123,123 @@ describe('arena roster (spec 012 US1)', () => {
       expect(c.perks).toHaveLength(2);
       expect(c.items.length).toBeGreaterThanOrEqual(1);
       expect(c.items.length).toBeLessThanOrEqual(3);
+    }
+  });
+});
+
+describe('arena match (spec 012 US2)', () => {
+  const rosterOf = (n: number, seed: string) => ({
+    ...randomLoadouts(addRandom(emptySetup(), n), createRandom(seed)),
+    seed,
+  });
+
+  it('ends with exactly one side standing, within the round limit, in 1,000 matches (SC-003)', () => {
+    for (let i = 0; i < 1000; i++) {
+      const n = 2 + (i % 47);
+      const setup = rosterOf(n, `m${i}`);
+      const match = simulate(setup);
+      const standing = Object.values(match.fighters).filter((f) => f.standing);
+      expect(new Set(standing.map((f) => f.sideId)).size).toBe(1);
+      expect(standing[0].sideId).toBe(match.winnerSideId);
+      expect(match.rounds.length).toBeLessThanOrEqual(roundLimit(n) + 1);
+      const alive = new Set(setup.contestants.map((c) => c.id));
+      match.rounds.forEach((round, index) => {
+        const actors = round.events.flatMap((e) => e.actors);
+        // In the finale, a winner may fight several duels in a row.
+        const finale = round.events.every((e) =>
+          e.eventId.startsWith('event-finale'),
+        );
+        if (!finale) {
+          expect(new Set(actors).size, `round ${round.number}`).toBe(
+            actors.length,
+          );
+        }
+        const last = index === match.rounds.length - 1;
+        if (!last) {
+          for (const id of alive) expect(actors).toContain(id);
+        }
+        for (const e of round.events)
+          for (const id of e.defeated) alive.delete(id);
+      });
+    }
+  }, 60_000);
+
+  it('tells the same match for the same seed, and another for another seed (SC-006)', () => {
+    const setup = rosterOf(12, 'same');
+    expect(simulate(setup)).toEqual(simulate(setup));
+    expect(simulate({ ...setup, seed: 'other' })).not.toEqual(simulate(setup));
+  });
+
+  it('renders every event in both languages, line for line', () => {
+    for (let i = 0; i < 100; i++) {
+      const setup = rosterOf(12, `r${i}`);
+      const match = simulate(setup);
+      for (const round of match.rounds) {
+        for (const event of round.events) {
+          expect(renderEvent(event, setup, 'en')).not.toMatch(/[{}]/);
+          expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
+        }
+      }
+    }
+  });
+
+  it('reads in about five minutes for twelve contestants (SC-004)', () => {
+    let lines = 0;
+    for (let i = 0; i < 200; i++) {
+      lines += simulate(rosterOf(12, `l${i}`)).rounds.flatMap(
+        (r) => r.events,
+      ).length;
+    }
+    expect(lines / 200).toBeGreaterThan(35);
+    expect(lines / 200).toBeLessThan(75);
+  });
+
+  it('simulates 48 contestants quickly', () => {
+    const setup = rosterOf(48, 'big');
+    const start = performance.now();
+    simulate(setup);
+    expect(performance.now() - start).toBeLessThan(300);
+  });
+
+  it('rarely repeats the same text within a match (SC-007)', () => {
+    let repeats = 0;
+    for (let i = 0; i < 100; i++) {
+      const setup = rosterOf(12, `t${i}`);
+      const counts = new Map<string, number>();
+      for (const event of simulate(setup).rounds.flatMap((r) => r.events)) {
+        const key = `${event.eventId}.${event.outcome}`;
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+      if ([...counts.values()].some((n) => n > 3)) repeats++;
+    }
+    expect(repeats).toBeLessThan(50);
+  });
+});
+
+describe('match summary (spec 012 FR-017)', () => {
+  it('names the winners, every contestant and up to five moments, ending with the last event', () => {
+    for (let i = 0; i < 50; i++) {
+      const setup = {
+        ...addParty(
+          addRandom(emptySetup(), 6),
+          generateParty({ size: 3 }),
+          'en',
+        ),
+        seed: `sum${i}`,
+      };
+      const match = simulate(setup);
+      const summary = summarize(setup, match);
+      expect(summary.rows).toHaveLength(setup.contestants.length);
+      expect(match.fighters[summary.winners[0]].standing).toBe(true);
+      expect(summary.moments.length).toBeGreaterThanOrEqual(
+        Math.min(3, match.rounds.flatMap((r) => r.events).length),
+      );
+      expect(summary.moments.length).toBeLessThanOrEqual(5);
+      expect(summary.moments.at(-1)).toBe(match.rounds.at(-1)!.events.at(-1));
+      const survivors = summary.rows.filter(
+        (r) => r.defeatedRound === undefined,
+      );
+      expect(summary.rows.slice(0, survivors.length)).toEqual(survivors);
     }
   });
 });

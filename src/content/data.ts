@@ -188,6 +188,14 @@ export type ArenaEventKind = {
   damage?: number;
   weight: number;
   notable?: boolean;
+  /** Actors: 1 (solo), 2 (a and b) or 3 (a protects b from c). */
+  actors: 1 | 2 | 3;
+  /** Between a and b: same side or ally, other side, or b wounded on another side. */
+  relation?: 'friend' | 'foe';
+  /** Hazards: a failure loses an item. */
+  loseItem?: boolean;
+  /** Social events: what a success does to b. */
+  effect?: 'hurt' | 'take';
   when?: {
     alignment?: 'good' | 'evil' | 'chaotic' | 'not-good';
     perk?: string;
@@ -197,6 +205,8 @@ export type ArenaEventKind = {
     role?: string;
     minRound?: number;
     caster?: boolean;
+    /** b must be wounded (pair events). */
+    targetWounded?: boolean;
   };
 };
 

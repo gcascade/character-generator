@@ -7,8 +7,13 @@ import { ArenaProvider } from '../../contexts/ArenaContext';
 import { CharacterProvider } from '../../contexts/CharacterContext';
 import { DataProvider } from '../../contexts/DataContext';
 import { PartyProvider } from '../../contexts/PartyContext';
-import { LocaleProvider } from '../../i18n';
+import { LocaleProvider, useLocale } from '../../i18n';
 import Arena from './Arena';
+
+const SwitchToFrench = () => {
+  const { setLocale } = useLocale();
+  return <button onClick={() => setLocale('fr')}>fr</button>;
+};
 
 const renderArena = () =>
   render(
@@ -18,6 +23,7 @@ const renderArena = () =>
           <DataProvider>
             <PartyProvider>
               <ArenaProvider>
+                <SwitchToFrench />
                 <Arena />
               </ArenaProvider>
             </PartyProvider>
@@ -80,5 +86,69 @@ describe('Arena page — roster (spec 012 US1)', () => {
       screen.getByRole('button', { name: 'Remove Korvus Blackiron' }),
     );
     expect(cards()).toHaveLength(0);
+  });
+});
+
+describe('Arena page — match (spec 012 US2)', () => {
+  afterEach(() => localStorage.clear());
+
+  const start = async () => {
+    renderArena();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Add 4 random characters' }),
+    );
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Start the match' }),
+    );
+  };
+
+  it('tells the match round by round, then the summary', async () => {
+    await start();
+    expect(screen.getByRole('region', { name: 'Day 1' })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('region', { name: 'Night 1' }),
+    ).not.toBeInTheDocument();
+    const next = screen.queryByRole('button', { name: 'Next round' });
+    if (next) await userEvent.click(next);
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Skip to the end' }),
+    );
+    expect(
+      screen.getByRole('region', { name: 'The end of the match' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Next round' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps the same events when the language changes', async () => {
+    await start();
+    const lines = screen.getAllByRole('listitem').length;
+    await userEvent.click(screen.getByRole('button', { name: 'fr' }));
+    expect(screen.getByRole('region', { name: 'Jour 1' })).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(lines);
+  });
+
+  it('replays the same story, plays again with a new one, and goes back to the roster', async () => {
+    await start();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Skip to the end' }),
+    );
+    const story = screen.getAllByRole('listitem').map((li) => li.textContent);
+    await userEvent.click(screen.getByRole('button', { name: 'Replay' }));
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Skip to the end' }),
+    );
+    expect(screen.getAllByRole('listitem').map((li) => li.textContent)).toEqual(
+      story,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Play again' }));
+    expect(screen.getByRole('region', { name: 'Day 1' })).toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Back to the roster' }),
+    );
+    expect(
+      screen.getByRole('button', { name: 'Start the match' }),
+    ).toBeInTheDocument();
   });
 });
