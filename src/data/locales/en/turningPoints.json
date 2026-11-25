@@ -43,5 +43,14 @@
   "turning-ne-poison": "{firstName} inherited a fortune after a sudden illness struck an uncle. The healers never understood it; {firstName} never explained it.",
   "turning-ne-informer": "{firstName} discovered that secrets sell better than swords, and has kept a little book of other people's sins ever since.",
   "turning-ce-riot": "{firstName} started a riot in a city square just to cover a small theft, and found that watching the chaos was the better reward.",
-  "turning-ce-pact": "{firstName} made a pact with something that whispers in the dark, and has never once regretted the price, which others pay."
+  "turning-ce-pact": "{firstName} made a pact with something that whispers in the dark, and has never once regretted the price, which others pay.",
+  "turning-lg-sentence": "As a young judge's clerk, {firstName} found the proof that freed a condemned man the night before his execution, and has trusted the law ever since, but checked it twice.",
+  "turning-ng-orphans": "{firstName} once spent a whole fortune, won at cards, on a house for war orphans, and has never once regretted being poor again.",
+  "turning-cg-gate": "When a lord closed the city gates to refugees in winter, {firstName} opened them at night, and has been wanted in that city ever since.",
+  "turning-ln-tax": "{firstName} once collected taxes for a king {{he|she|they}} despised, because a realm without rules is worse than a realm with a bad king.",
+  "turning-tn-storm": "{firstName} lived through a storm that wiped out two warring villages alike, and stopped believing that either side of any war is ever the whole story.",
+  "turning-cn-ship": "{firstName} once stole a ship on a dare, sailed it for a year without a single plan, and gave it back with a new name and a better crew.",
+  "turning-le-tribunal": "{firstName} learned early that whoever writes the laws never has to break them, and has been climbing toward the pen ever since.",
+  "turning-ne-heir": "{firstName} quietly arranged for three relatives to die before {{him|her|them}} in the line of inheritance, and still sends flowers to every funeral.",
+  "turning-ce-flood": "{firstName} once broke a dam just to watch the valley drown, and laughed when the survivors blamed the gods."
 }

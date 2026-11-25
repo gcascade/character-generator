@@ -569,12 +569,32 @@
     "race": "Human"
   },
   {
+    "id": "origin-human-salt-mines",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
+    "id": "origin-human-caravan",
+    "category": "origin",
+    "race": "Human"
+  },
+  {
     "id": "origin-elf-moon",
     "category": "origin",
     "race": "Elf"
   },
   {
     "id": "origin-elf-orchard",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-elf-glacier",
+    "category": "origin",
+    "race": "Elf"
+  },
+  {
+    "id": "origin-elf-archive",
     "category": "origin",
     "race": "Elf"
   },
@@ -589,12 +609,32 @@
     "race": "Dwarf"
   },
   {
+    "id": "origin-dwarf-caravan",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
+    "id": "origin-dwarf-flooded",
+    "category": "origin",
+    "race": "Dwarf"
+  },
+  {
     "id": "origin-orc-river",
     "category": "origin",
     "race": "Orc"
   },
   {
     "id": "origin-orc-adopted",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-orc-cages",
+    "category": "origin",
+    "race": "Orc"
+  },
+  {
+    "id": "origin-orc-hold",
     "category": "origin",
     "race": "Orc"
   },
@@ -609,12 +649,32 @@
     "race": "Halfling"
   },
   {
+    "id": "origin-halfling-barge",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
+    "id": "origin-halfling-mill",
+    "category": "origin",
+    "race": "Halfling"
+  },
+  {
     "id": "origin-gnome-mine",
     "category": "origin",
     "race": "Gnome"
   },
   {
     "id": "origin-gnome-observatory",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-gnome-clocktower",
+    "category": "origin",
+    "race": "Gnome"
+  },
+  {
+    "id": "origin-gnome-mushroom",
     "category": "origin",
     "race": "Gnome"
   },
@@ -629,12 +689,32 @@
     "race": "Half-elf"
   },
   {
+    "id": "origin-half-elf-embassy",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
+    "id": "origin-half-elf-village",
+    "category": "origin",
+    "race": "Half-elf"
+  },
+  {
     "id": "origin-dark-elf-weavers",
     "category": "origin",
     "race": "Dark elf"
   },
   {
     "id": "origin-dark-elf-arena",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-dark-elf-surface",
+    "category": "origin",
+    "race": "Dark elf"
+  },
+  {
+    "id": "origin-dark-elf-fungus-farms",
     "category": "origin",
     "race": "Dark elf"
   },
@@ -649,12 +729,32 @@
     "race": "Ashborn"
   },
   {
+    "id": "origin-ashborn-caravanserai",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
+    "id": "origin-ashborn-lighthouse",
+    "category": "origin",
+    "race": "Ashborn"
+  },
+  {
     "id": "training-warrior-company",
     "category": "training",
     "characterClass": "Warrior"
   },
   {
     "id": "training-warrior-veteran",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-warrior-shipguard",
+    "category": "training",
+    "characterClass": "Warrior"
+  },
+  {
+    "id": "training-warrior-bodyguard",
     "category": "training",
     "characterClass": "Warrior"
   },
@@ -669,12 +769,32 @@
     "characterClass": "Mage"
   },
   {
+    "id": "training-mage-shipwreck",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
+    "id": "training-mage-observatory",
+    "category": "training",
+    "characterClass": "Mage"
+  },
+  {
     "id": "training-rogue-smuggler",
     "category": "training",
     "characterClass": "Rogue"
   },
   {
     "id": "training-rogue-cardsharp",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-rogue-forger",
+    "category": "training",
+    "characterClass": "Rogue"
+  },
+  {
+    "id": "training-rogue-burglar",
     "category": "training",
     "characterClass": "Rogue"
   },
@@ -689,12 +809,32 @@
     "characterClass": "Cleric"
   },
   {
+    "id": "training-cleric-plague",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
+    "id": "training-cleric-monastery",
+    "category": "training",
+    "characterClass": "Cleric"
+  },
+  {
     "id": "training-ranger-messenger",
     "category": "training",
     "characterClass": "Ranger"
   },
   {
     "id": "training-ranger-monsters",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-ranger-trapper",
+    "category": "training",
+    "characterClass": "Ranger"
+  },
+  {
+    "id": "training-ranger-warden",
     "category": "training",
     "characterClass": "Ranger"
   },
@@ -709,12 +849,32 @@
     "characterClass": "Paladin"
   },
   {
+    "id": "training-paladin-crusade",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
+    "id": "training-paladin-hospital",
+    "category": "training",
+    "characterClass": "Paladin"
+  },
+  {
     "id": "training-bard-herald",
     "category": "training",
     "characterClass": "Bard"
   },
   {
     "id": "training-bard-busker",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-bard-court",
+    "category": "training",
+    "characterClass": "Bard"
+  },
+  {
+    "id": "training-bard-sailor",
     "category": "training",
     "characterClass": "Bard"
   },
@@ -729,12 +889,32 @@
     "characterClass": "Druid"
   },
   {
+    "id": "training-druid-swamp",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
+    "id": "training-druid-tree",
+    "category": "training",
+    "characterClass": "Druid"
+  },
+  {
     "id": "training-barbarian-desert",
     "category": "training",
     "characterClass": "Barbarian"
   },
   {
     "id": "training-barbarian-avalanche",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "training-barbarian-whaler",
+    "category": "training",
+    "characterClass": "Barbarian"
+  },
+  {
+    "id": "training-barbarian-champion",
     "category": "training",
     "characterClass": "Barbarian"
   },
@@ -749,12 +929,22 @@
     "alignment": "Lawful Good"
   },
   {
+    "id": "turning-lg-sentence",
+    "category": "turningPoint",
+    "alignment": "Lawful Good"
+  },
+  {
     "id": "turning-ng-flood",
     "category": "turningPoint",
     "alignment": "Neutral Good"
   },
   {
     "id": "turning-ng-thief",
+    "category": "turningPoint",
+    "alignment": "Neutral Good"
+  },
+  {
+    "id": "turning-ng-orphans",
     "category": "turningPoint",
     "alignment": "Neutral Good"
   },
@@ -769,12 +959,22 @@
     "alignment": "Chaotic Good"
   },
   {
+    "id": "turning-cg-gate",
+    "category": "turningPoint",
+    "alignment": "Chaotic Good"
+  },
+  {
     "id": "turning-ln-ledger",
     "category": "turningPoint",
     "alignment": "Lawful Neutral"
   },
   {
     "id": "turning-ln-oath",
+    "category": "turningPoint",
+    "alignment": "Lawful Neutral"
+  },
+  {
+    "id": "turning-ln-tax",
     "category": "turningPoint",
     "alignment": "Lawful Neutral"
   },
@@ -789,12 +989,22 @@
     "alignment": "True Neutral"
   },
   {
+    "id": "turning-tn-storm",
+    "category": "turningPoint",
+    "alignment": "True Neutral"
+  },
+  {
     "id": "turning-cn-heist",
     "category": "turningPoint",
     "alignment": "Chaotic Neutral"
   },
   {
     "id": "turning-cn-prophecy",
+    "category": "turningPoint",
+    "alignment": "Chaotic Neutral"
+  },
+  {
+    "id": "turning-cn-ship",
     "category": "turningPoint",
     "alignment": "Chaotic Neutral"
   },
@@ -809,6 +1019,11 @@
     "alignment": "Lawful Evil"
   },
   {
+    "id": "turning-le-tribunal",
+    "category": "turningPoint",
+    "alignment": "Lawful Evil"
+  },
+  {
     "id": "turning-ne-poison",
     "category": "turningPoint",
     "alignment": "Neutral Evil"
@@ -819,12 +1034,22 @@
     "alignment": "Neutral Evil"
   },
   {
+    "id": "turning-ne-heir",
+    "category": "turningPoint",
+    "alignment": "Neutral Evil"
+  },
+  {
     "id": "turning-ce-riot",
     "category": "turningPoint",
     "alignment": "Chaotic Evil"
   },
   {
     "id": "turning-ce-pact",
+    "category": "turningPoint",
+    "alignment": "Chaotic Evil"
+  },
+  {
+    "id": "turning-ce-flood",
     "category": "turningPoint",
     "alignment": "Chaotic Evil"
   },
@@ -850,6 +1075,22 @@
   },
   {
     "id": "goal-heir",
+    "category": "goal"
+  },
+  {
+    "id": "goal-island",
+    "category": "goal"
+  },
+  {
+    "id": "goal-witness",
+    "category": "goal"
+  },
+  {
+    "id": "goal-tower",
+    "category": "goal"
+  },
+  {
+    "id": "goal-tavern",
     "category": "goal"
   },
   {

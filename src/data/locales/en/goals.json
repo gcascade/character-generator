@@ -14,5 +14,9 @@
   "goal-school": "{firstName} dreams of founding a school where anyone, rich or poor, could learn the skills that saved {{his|her|their}} life.",
   "goal-cure": "A curse is slowly turning the people of {firstName}'s village to stone, and the only cure is said to lie beyond the edge of every map.",
   "goal-debt": "{firstName} owes a dangerous amount of gold to a patient and very well-informed creditor, and every adventure is a payment.",
-  "goal-heir": "{fullName}, {epithet}, has sworn to protect a young heir hidden among commoners until the day the stolen throne can be reclaimed."
+  "goal-heir": "{fullName}, {epithet}, has sworn to protect a young heir hidden among commoners until the day the stolen throne can be reclaimed.",
+  "goal-island": "Today, {fullName}, {epithet}, is searching for an island that appears on no map but in a dozen sailors' songs.",
+  "goal-witness": "Today, {firstName} carries the testimony that could bring down a powerful family, if {{he|she|they}} can reach the capital alive.",
+  "goal-tower": "Today, {fullName}, {epithet}, wants to climb the ruined tower that killed {{his|her|their}} mentor, and finish what the old fool started.",
+  "goal-tavern": "Today, {firstName} dreams of earning enough gold to buy a quiet tavern by a lake, and keeps finding reasons not to stop."
 }

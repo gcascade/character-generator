@@ -165,5 +165,25 @@
     "n": "à l'Œil de chasse"
   },
   "epithet-embereyes": "aux Yeux de braise",
-  "epithet-river": "de la Rivière"
+  "epithet-river": "de la Rivière",
+  "epithet-saltblood": "Sang-de-Sel",
+  "epithet-fox": "le Renard",
+  "epithet-unbowed": {
+    "m": "l'Insoumis",
+    "f": "l'Insoumise",
+    "n": "au Front haut"
+  },
+  "epithet-frostborn": {
+    "m": "Né-du-Givre",
+    "f": "Née-du-Givre",
+    "n": "du Givre éternel"
+  },
+  "epithet-hollow": "des Collines creuses",
+  "epithet-brightblade": "Lame-Claire",
+  "epithet-kind": {
+    "m": "le Bon",
+    "f": "la Bonne",
+    "n": "au Cœur bon"
+  },
+  "epithet-wayfinder": "Trouve-Chemin"
 }

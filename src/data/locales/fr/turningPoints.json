@@ -43,5 +43,14 @@
   "turning-ne-poison": "{firstName} a hérité d'une fortune après la maladie soudaine d'un oncle. Les guérisseurs n'y ont jamais rien compris ; {firstName} ne l'a jamais expliquée.",
   "turning-ne-informer": "{firstName} a découvert que les secrets se vendent mieux que les épées, et tient depuis un petit carnet des péchés des autres.",
   "turning-ce-riot": "{firstName} a déclenché une émeute sur une place de la ville pour couvrir un petit vol, et a découvert que regarder le chaos était la meilleure récompense.",
-  "turning-ce-pact": "{firstName} a conclu un pacte avec quelque chose qui murmure dans l'ombre, et n'a jamais regretté le prix, que d'autres paient."
+  "turning-ce-pact": "{firstName} a conclu un pacte avec quelque chose qui murmure dans l'ombre, et n'a jamais regretté le prix, que d'autres paient.",
+  "turning-lg-sentence": "Au service d'un juge, {firstName} a trouvé la preuve qui a libéré un condamné la veille de son exécution, et depuis fait confiance à la loi, mais la vérifie toujours deux fois.",
+  "turning-ng-orphans": "{firstName} a un jour dépensé toute une fortune, gagnée aux cartes, pour offrir une maison aux orphelins de guerre, et n'a jamais regretté d'être de nouveau sans le sou.",
+  "turning-cg-gate": "Quand un seigneur a fermé les portes de la ville aux réfugiés en plein hiver, {firstName} les a ouvertes en pleine nuit, et sa tête est mise à prix dans cette ville depuis.",
+  "turning-ln-tax": "{firstName} a un jour collecté les impôts pour un roi méprisable, parce qu'un royaume sans règles est pire qu'un royaume avec un mauvais roi.",
+  "turning-tn-storm": "{firstName} a traversé une tempête qui a rasé deux villages ennemis sans distinction, et a cessé de croire qu'un camp détient jamais toute la vérité.",
+  "turning-cn-ship": "{firstName} a un jour volé un navire sur un pari, l'a mené un an sans le moindre plan, puis l'a rendu avec un nouveau nom et un meilleur équipage.",
+  "turning-le-tribunal": "{firstName} a compris très tôt que ceux qui écrivent les lois n'ont jamais besoin de les enfreindre, et grimpe depuis vers la plume.",
+  "turning-ne-heir": "{firstName} a discrètement fait en sorte que trois parents meurent avant l'heure dans l'ordre de succession, et envoie encore des fleurs à chaque enterrement.",
+  "turning-ce-flood": "{firstName} a un jour brisé un barrage rien que pour voir la vallée se noyer, et a ri quand les survivants ont accusé les dieux."
 }
