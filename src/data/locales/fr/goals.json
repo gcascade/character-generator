@@ -14,5 +14,9 @@
   "goal-school": "{firstName} rêve de fonder une école où chacun, riche ou pauvre, pourrait apprendre ce qui lui a un jour sauvé la vie.",
   "goal-cure": "Une malédiction change peu à peu les habitants du village natal en pierre, et le seul remède se trouverait au-delà des bords de toutes les cartes : {firstName} est en route.",
   "goal-debt": "{firstName} doit une dangereuse somme d'or à un créancier patient et très bien renseigné, et chaque aventure est un remboursement.",
-  "goal-heir": "{fullName}, {epithet}, a juré de protéger un jeune héritier caché parmi le peuple jusqu'au jour où le trône volé pourra être repris."
+  "goal-heir": "{fullName}, {epithet}, a juré de protéger un jeune héritier caché parmi le peuple jusqu'au jour où le trône volé pourra être repris.",
+  "goal-island": "Aujourd'hui, {fullName}, {epithet}, cherche une île qui ne figure sur aucune carte, mais dans une douzaine de chansons de marins.",
+  "goal-witness": "Aujourd'hui, {firstName} porte le témoignage qui pourrait faire tomber une puissante famille, à condition d'atteindre la capitale en vie.",
+  "goal-tower": "Aujourd'hui, {fullName}, {epithet}, veut gravir la tour en ruine qui a coûté la vie à son mentor, et terminer ce que le vieux fou avait commencé.",
+  "goal-tavern": "Aujourd'hui, {firstName} rêve de gagner assez d'or pour s'offrir une taverne tranquille au bord d'un lac, et trouve toujours une raison de ne pas s'arrêter."
 }
