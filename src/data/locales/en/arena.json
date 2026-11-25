@@ -1,0 +1,184 @@
+{
+  "skills": {
+    "melee": "Melee",
+    "ranged": "Ranged",
+    "magic": "Magic",
+    "athletics": "Athletics",
+    "stealth": "Stealth",
+    "endurance": "Endurance",
+    "perception": "Perception",
+    "survival": "Survival",
+    "lore": "Lore",
+    "healing": "Healing",
+    "persuasion": "Persuasion",
+    "intimidation": "Intimidation",
+    "deception": "Deception"
+  },
+  "families": {
+    "combat": "Combat",
+    "physical": "Physical",
+    "mind": "Mind",
+    "social": "Social"
+  },
+  "perks": {
+    "perk-survivalist": {
+      "name": "Survivalist",
+      "description": "Finds food and shelter easily (+15 Survival)."
+    },
+    "perk-lucky": {
+      "name": "Lucky",
+      "description": "Rerolls one failed check per match."
+    },
+    "perk-brute": {
+      "name": "Brute",
+      "description": "Hits harder and takes more blows (+10 Melee, +4 HP)."
+    },
+    "perk-sharpshooter": {
+      "name": "Sharpshooter",
+      "description": "Rarely misses (+15 Ranged)."
+    },
+    "perk-shadow": {
+      "name": "Shadow",
+      "description": "Vanishes in a heartbeat (+15 Stealth)."
+    },
+    "perk-silver-tongue": {
+      "name": "Silver tongue",
+      "description": "Talks their way out of anything (+10 Persuasion, +10 Deception)."
+    },
+    "perk-fearsome": {
+      "name": "Fearsome",
+      "description": "One look is enough (+15 Intimidation)."
+    },
+    "perk-healers-hands": {
+      "name": "Healer's hands",
+      "description": "Heals others better (+15 Healing)."
+    },
+    "perk-scholar": {
+      "name": "Scholar",
+      "description": "Knows the old traps (+15 Lore)."
+    },
+    "perk-tough": {
+      "name": "Tough",
+      "description": "Hard to bring down (+10 Endurance, +8 HP)."
+    },
+    "perk-quick": {
+      "name": "Quick",
+      "description": "Fast on their feet, escapes easily (+10 Athletics)."
+    },
+    "perk-arcane-spark": {
+      "name": "Arcane spark",
+      "description": "A touch of magic, even without training (+15 Magic)."
+    },
+    "perk-watchful": {
+      "name": "Watchful",
+      "description": "Never caught off guard (+15 Perception)."
+    },
+    "perk-charming": {
+      "name": "Charming",
+      "description": "Makes friends quickly (+5 Persuasion, alliances more likely)."
+    }
+  },
+  "items": {
+    "item-sword": {
+      "a": "a sword",
+      "the": "the sword",
+      "description": "A trusty blade (damage 6, +5 Melee)."
+    },
+    "item-axe": {
+      "a": "an axe",
+      "the": "the axe",
+      "description": "Heavy and brutal (damage 7)."
+    },
+    "item-spear": {
+      "a": "a spear",
+      "the": "the spear",
+      "description": "Keeps foes at a distance and catches fish (damage 6)."
+    },
+    "item-dagger": {
+      "a": "a dagger",
+      "the": "the dagger",
+      "description": "Small, quiet, sharp (damage 4, +5 Stealth)."
+    },
+    "item-bow": {
+      "a": "a bow",
+      "the": "the bow",
+      "description": "Strikes from afar (ranged, damage 6)."
+    },
+    "item-crossbow": {
+      "a": "a crossbow",
+      "the": "the crossbow",
+      "description": "Slow to load, hard to stop (ranged, damage 7)."
+    },
+    "item-throwing-knives": {
+      "a": "throwing knives",
+      "the": "the throwing knives",
+      "description": "A handful of quick blades (ranged, damage 4)."
+    },
+    "item-wand": {
+      "a": "a magic wand",
+      "the": "the magic wand",
+      "description": "Casts bolts of light (magic, damage 6)."
+    },
+    "item-staff": {
+      "a": "a wizard's staff",
+      "the": "the wizard's staff",
+      "description": "Focuses spells (magic, damage 5, +5 Magic)."
+    },
+    "item-shield": {
+      "a": "a shield",
+      "the": "the shield",
+      "description": "Blocks blows (+5 Athletics)."
+    },
+    "item-chain-shirt": {
+      "a": "a chain shirt",
+      "the": "the chain shirt",
+      "description": "Light armour (+5 HP)."
+    },
+    "item-cloak": {
+      "a": "a dark cloak",
+      "the": "the dark cloak",
+      "description": "Blends into the shadows (+10 Stealth)."
+    },
+    "item-rope": {
+      "a": "a rope",
+      "the": "the rope",
+      "description": "Gets you out of pits and up walls (+5 Athletics)."
+    },
+    "item-lantern": {
+      "a": "a lantern",
+      "the": "the lantern",
+      "description": "Light in the dark (+5 Perception)."
+    },
+    "item-map": {
+      "a": "a map of the arena",
+      "the": "the map",
+      "description": "Shows the safe paths (+10 Survival)."
+    },
+    "item-lockpick": {
+      "a": "a set of lockpicks",
+      "the": "the lockpicks",
+      "description": "Opens chests and cages."
+    },
+    "item-healing-potion": {
+      "a": "a healing potion",
+      "the": "the healing potion",
+      "description": "Heals wounds once."
+    },
+    "item-rations": {
+      "a": "a bag of rations",
+      "the": "the rations",
+      "description": "Keeps hunger away."
+    },
+    "item-smoke-bomb": {
+      "a": "a smoke bomb",
+      "the": "the smoke bomb",
+      "description": "A sure escape, once."
+    },
+    "item-holy-water": {
+      "a": "a flask of holy water",
+      "the": "the holy water",
+      "description": "Blessed water that heals, once."
+    }
+  },
+  "events": {}
+}

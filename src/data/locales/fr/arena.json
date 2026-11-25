@@ -1,0 +1,184 @@
+{
+  "skills": {
+    "melee": "Corps à corps",
+    "ranged": "Tir",
+    "magic": "Magie",
+    "athletics": "Athlétisme",
+    "stealth": "Discrétion",
+    "endurance": "Endurance",
+    "perception": "Perception",
+    "survival": "Survie",
+    "lore": "Savoir",
+    "healing": "Soins",
+    "persuasion": "Persuasion",
+    "intimidation": "Intimidation",
+    "deception": "Tromperie"
+  },
+  "families": {
+    "combat": "Combat",
+    "physical": "Physique",
+    "mind": "Esprit",
+    "social": "Social"
+  },
+  "perks": {
+    "perk-survivalist": {
+      "name": "Survivaliste",
+      "description": "Trouve facilement de quoi manger et s'abriter (+15 Survie)."
+    },
+    "perk-lucky": {
+      "name": "Chanceux",
+      "description": "Relance un jet raté par match."
+    },
+    "perk-brute": {
+      "name": "Brute",
+      "description": "Frappe plus fort et encaisse mieux (+10 Corps à corps, +4 PV)."
+    },
+    "perk-sharpshooter": {
+      "name": "Tireur d'élite",
+      "description": "Rate rarement sa cible (+15 Tir)."
+    },
+    "perk-shadow": {
+      "name": "Ombre",
+      "description": "Disparaît en un clin d'œil (+15 Discrétion)."
+    },
+    "perk-silver-tongue": {
+      "name": "Langue d'argent",
+      "description": "Se sort de tout avec des mots (+10 Persuasion, +10 Tromperie)."
+    },
+    "perk-fearsome": {
+      "name": "Terrifiant",
+      "description": "Un regard suffit (+15 Intimidation)."
+    },
+    "perk-healers-hands": {
+      "name": "Mains guérisseuses",
+      "description": "Soigne mieux les autres (+15 Soins)."
+    },
+    "perk-scholar": {
+      "name": "Érudit",
+      "description": "Connaît les vieux pièges (+15 Savoir)."
+    },
+    "perk-tough": {
+      "name": "Coriace",
+      "description": "Difficile à mettre à terre (+10 Endurance, +8 PV)."
+    },
+    "perk-quick": {
+      "name": "Vif",
+      "description": "Rapide et insaisissable (+10 Athlétisme)."
+    },
+    "perk-arcane-spark": {
+      "name": "Étincelle arcanique",
+      "description": "Un brin de magie, même sans formation (+15 Magie)."
+    },
+    "perk-watchful": {
+      "name": "Vigilant",
+      "description": "Jamais pris au dépourvu (+15 Perception)."
+    },
+    "perk-charming": {
+      "name": "Charmeur",
+      "description": "Se fait vite des amis (+5 Persuasion, alliances plus probables)."
+    }
+  },
+  "items": {
+    "item-sword": {
+      "a": "une épée",
+      "the": "l'épée",
+      "description": "Une lame fiable (dégâts 6, +5 Corps à corps)."
+    },
+    "item-axe": {
+      "a": "une hache",
+      "the": "la hache",
+      "description": "Lourde et brutale (dégâts 7)."
+    },
+    "item-spear": {
+      "a": "une lance",
+      "the": "la lance",
+      "description": "Tient l'ennemi à distance et attrape le poisson (dégâts 6)."
+    },
+    "item-dagger": {
+      "a": "une dague",
+      "the": "la dague",
+      "description": "Petite, discrète, tranchante (dégâts 4, +5 Discrétion)."
+    },
+    "item-bow": {
+      "a": "un arc",
+      "the": "l'arc",
+      "description": "Frappe de loin (à distance, dégâts 6)."
+    },
+    "item-crossbow": {
+      "a": "une arbalète",
+      "the": "l'arbalète",
+      "description": "Lente à charger, difficile à arrêter (à distance, dégâts 7)."
+    },
+    "item-throwing-knives": {
+      "a": "des couteaux de lancer",
+      "the": "les couteaux de lancer",
+      "description": "Une poignée de lames rapides (à distance, dégâts 4)."
+    },
+    "item-wand": {
+      "a": "une baguette magique",
+      "the": "la baguette magique",
+      "description": "Lance des traits de lumière (magie, dégâts 6)."
+    },
+    "item-staff": {
+      "a": "un bâton de mage",
+      "the": "le bâton de mage",
+      "description": "Concentre les sorts (magie, dégâts 5, +5 Magie)."
+    },
+    "item-shield": {
+      "a": "un bouclier",
+      "the": "le bouclier",
+      "description": "Pare les coups (+5 Athlétisme)."
+    },
+    "item-chain-shirt": {
+      "a": "une cotte de mailles",
+      "the": "la cotte de mailles",
+      "description": "Armure légère (+5 PV)."
+    },
+    "item-cloak": {
+      "a": "une cape sombre",
+      "the": "la cape sombre",
+      "description": "Se fond dans l'ombre (+10 Discrétion)."
+    },
+    "item-rope": {
+      "a": "une corde",
+      "the": "la corde",
+      "description": "Sort des fosses et aide à grimper (+5 Athlétisme)."
+    },
+    "item-lantern": {
+      "a": "une lanterne",
+      "the": "la lanterne",
+      "description": "De la lumière dans le noir (+5 Perception)."
+    },
+    "item-map": {
+      "a": "une carte de l'arène",
+      "the": "la carte",
+      "description": "Montre les chemins sûrs (+10 Survie)."
+    },
+    "item-lockpick": {
+      "a": "un jeu de crochets",
+      "the": "les crochets",
+      "description": "Ouvre les coffres et les cages."
+    },
+    "item-healing-potion": {
+      "a": "une potion de soin",
+      "the": "la potion de soin",
+      "description": "Soigne les blessures, une fois."
+    },
+    "item-rations": {
+      "a": "un sac de provisions",
+      "the": "les provisions",
+      "description": "Tient la faim à distance."
+    },
+    "item-smoke-bomb": {
+      "a": "une bombe fumigène",
+      "the": "la bombe fumigène",
+      "description": "Une fuite assurée, une fois."
+    },
+    "item-holy-water": {
+      "a": "une fiole d'eau bénite",
+      "the": "l'eau bénite",
+      "description": "Une eau bénie qui soigne, une fois."
+    }
+  },
+  "events": {}
+}

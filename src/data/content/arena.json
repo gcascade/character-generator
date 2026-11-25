@@ -1,0 +1,496 @@
+{
+  "skills": {
+    "classes": {
+      "Warrior": {
+        "signature": ["melee", "endurance", "athletics"],
+        "base": {
+          "melee": 70,
+          "endurance": 65,
+          "athletics": 62,
+          "ranged": 40,
+          "intimidation": 45,
+          "perception": 40,
+          "survival": 40,
+          "persuasion": 30,
+          "magic": 10,
+          "stealth": 25,
+          "lore": 25,
+          "healing": 25,
+          "deception": 20
+        }
+      },
+      "Barbarian": {
+        "signature": ["melee", "endurance", "intimidation"],
+        "base": {
+          "melee": 68,
+          "endurance": 70,
+          "intimidation": 62,
+          "athletics": 45,
+          "survival": 45,
+          "ranged": 30,
+          "perception": 40,
+          "magic": 5,
+          "stealth": 25,
+          "lore": 15,
+          "healing": 20,
+          "persuasion": 20,
+          "deception": 20
+        }
+      },
+      "Mage": {
+        "signature": ["magic", "lore", "perception"],
+        "base": {
+          "magic": 72,
+          "lore": 68,
+          "perception": 60,
+          "melee": 20,
+          "ranged": 30,
+          "athletics": 25,
+          "stealth": 35,
+          "endurance": 25,
+          "survival": 30,
+          "healing": 35,
+          "persuasion": 40,
+          "intimidation": 30,
+          "deception": 40
+        }
+      },
+      "Rogue": {
+        "signature": ["stealth", "deception", "ranged"],
+        "base": {
+          "stealth": 70,
+          "deception": 65,
+          "ranged": 62,
+          "melee": 45,
+          "athletics": 45,
+          "perception": 45,
+          "survival": 35,
+          "lore": 30,
+          "healing": 20,
+          "persuasion": 40,
+          "intimidation": 25,
+          "endurance": 35,
+          "magic": 10
+        }
+      },
+      "Cleric": {
+        "signature": ["healing", "magic", "persuasion"],
+        "base": {
+          "healing": 72,
+          "magic": 64,
+          "persuasion": 62,
+          "melee": 45,
+          "endurance": 45,
+          "lore": 45,
+          "perception": 40,
+          "intimidation": 35,
+          "ranged": 20,
+          "athletics": 30,
+          "stealth": 20,
+          "survival": 35,
+          "deception": 20
+        }
+      },
+      "Ranger": {
+        "signature": ["ranged", "survival", "perception"],
+        "base": {
+          "ranged": 70,
+          "survival": 68,
+          "perception": 64,
+          "melee": 45,
+          "stealth": 45,
+          "athletics": 45,
+          "endurance": 45,
+          "healing": 35,
+          "lore": 30,
+          "magic": 10,
+          "persuasion": 25,
+          "intimidation": 30,
+          "deception": 25
+        }
+      },
+      "Paladin": {
+        "signature": ["melee", "endurance", "healing"],
+        "base": {
+          "melee": 68,
+          "endurance": 64,
+          "healing": 62,
+          "persuasion": 45,
+          "magic": 35,
+          "intimidation": 45,
+          "athletics": 40,
+          "ranged": 25,
+          "stealth": 15,
+          "perception": 40,
+          "survival": 30,
+          "lore": 35,
+          "deception": 10
+        }
+      },
+      "Bard": {
+        "signature": ["persuasion", "deception", "lore"],
+        "base": {
+          "persuasion": 72,
+          "deception": 66,
+          "lore": 62,
+          "magic": 40,
+          "ranged": 40,
+          "melee": 35,
+          "stealth": 45,
+          "athletics": 40,
+          "perception": 45,
+          "healing": 35,
+          "intimidation": 30,
+          "endurance": 30,
+          "survival": 25
+        }
+      },
+      "Druid": {
+        "signature": ["survival", "magic", "healing"],
+        "base": {
+          "survival": 68,
+          "magic": 66,
+          "healing": 64,
+          "perception": 45,
+          "lore": 45,
+          "stealth": 40,
+          "melee": 35,
+          "ranged": 30,
+          "endurance": 40,
+          "athletics": 40,
+          "persuasion": 30,
+          "intimidation": 30,
+          "deception": 20
+        }
+      }
+    },
+    "races": {
+      "Human": {
+        "persuasion": 3,
+        "athletics": 3,
+        "survival": 3
+      },
+      "Elf": {
+        "perception": 5,
+        "magic": 5,
+        "ranged": 5,
+        "endurance": -5
+      },
+      "Dwarf": {
+        "endurance": 10,
+        "melee": 5,
+        "athletics": -5,
+        "stealth": -5
+      },
+      "Orc": {
+        "intimidation": 10,
+        "melee": 5,
+        "persuasion": -5,
+        "lore": -5
+      },
+      "Halfling": {
+        "stealth": 10,
+        "deception": 5,
+        "melee": -5,
+        "intimidation": -5
+      },
+      "Gnome": {
+        "lore": 10,
+        "magic": 5,
+        "melee": -5,
+        "athletics": -5
+      },
+      "Half-elf": {
+        "persuasion": 5,
+        "perception": 3,
+        "deception": 3
+      },
+      "Dark elf": {
+        "stealth": 5,
+        "deception": 5,
+        "magic": 5,
+        "persuasion": -5
+      },
+      "Ashborn": {
+        "intimidation": 5,
+        "magic": 5,
+        "deception": 3,
+        "persuasion": -3
+      }
+    },
+    "ageBands": {
+      "young": {
+        "athletics": 5,
+        "endurance": 5,
+        "lore": -5,
+        "healing": -5
+      },
+      "adult": {},
+      "middle-aged": {
+        "lore": 5,
+        "survival": 5,
+        "athletics": -5
+      },
+      "elderly": {
+        "lore": 10,
+        "healing": 10,
+        "persuasion": 5,
+        "athletics": -10,
+        "endurance": -10,
+        "melee": -5
+      }
+    },
+    "hp": {
+      "Barbarian": 6,
+      "Warrior": 5,
+      "Paladin": 4,
+      "Ranger": 3,
+      "Druid": 2,
+      "Cleric": 2,
+      "Rogue": 1,
+      "Bard": 1,
+      "Mage": 0
+    },
+    "attack": {
+      "Warrior": 5,
+      "Barbarian": 6,
+      "Paladin": 5,
+      "Ranger": 4,
+      "Rogue": 4,
+      "Cleric": 3,
+      "Druid": 3,
+      "Bard": 3,
+      "Mage": 3
+    },
+    "casters": ["Mage", "Cleric", "Druid", "Bard", "Paladin"]
+  },
+  "perks": [
+    {
+      "id": "perk-survivalist",
+      "bonuses": {
+        "survival": 15
+      },
+      "tags": ["forager"]
+    },
+    {
+      "id": "perk-lucky",
+      "tags": ["reroll"]
+    },
+    {
+      "id": "perk-brute",
+      "bonuses": {
+        "melee": 10
+      },
+      "hp": 4
+    },
+    {
+      "id": "perk-sharpshooter",
+      "bonuses": {
+        "ranged": 15
+      }
+    },
+    {
+      "id": "perk-shadow",
+      "bonuses": {
+        "stealth": 15
+      }
+    },
+    {
+      "id": "perk-silver-tongue",
+      "bonuses": {
+        "persuasion": 10,
+        "deception": 10
+      }
+    },
+    {
+      "id": "perk-fearsome",
+      "bonuses": {
+        "intimidation": 15
+      }
+    },
+    {
+      "id": "perk-healers-hands",
+      "bonuses": {
+        "healing": 15
+      },
+      "tags": ["healer"]
+    },
+    {
+      "id": "perk-scholar",
+      "bonuses": {
+        "lore": 15
+      },
+      "tags": ["trap-sense"]
+    },
+    {
+      "id": "perk-tough",
+      "bonuses": {
+        "endurance": 10
+      },
+      "hp": 8
+    },
+    {
+      "id": "perk-quick",
+      "bonuses": {
+        "athletics": 10
+      },
+      "tags": ["escape"]
+    },
+    {
+      "id": "perk-arcane-spark",
+      "bonuses": {
+        "magic": 15
+      },
+      "tags": ["caster"]
+    },
+    {
+      "id": "perk-watchful",
+      "bonuses": {
+        "perception": 15
+      },
+      "tags": ["alert"]
+    },
+    {
+      "id": "perk-charming",
+      "bonuses": {
+        "persuasion": 5
+      },
+      "tags": ["charming"]
+    }
+  ],
+  "items": [
+    {
+      "id": "item-sword",
+      "kind": "weapon",
+      "damage": 6,
+      "bonuses": {
+        "melee": 5
+      }
+    },
+    {
+      "id": "item-axe",
+      "kind": "weapon",
+      "damage": 7
+    },
+    {
+      "id": "item-spear",
+      "kind": "weapon",
+      "damage": 6,
+      "bonuses": {
+        "melee": 3,
+        "survival": 3
+      }
+    },
+    {
+      "id": "item-dagger",
+      "kind": "weapon",
+      "damage": 4,
+      "bonuses": {
+        "stealth": 5
+      }
+    },
+    {
+      "id": "item-bow",
+      "kind": "weapon",
+      "damage": 6,
+      "tags": ["ranged"]
+    },
+    {
+      "id": "item-crossbow",
+      "kind": "weapon",
+      "damage": 7,
+      "tags": ["ranged"]
+    },
+    {
+      "id": "item-throwing-knives",
+      "kind": "weapon",
+      "damage": 4,
+      "tags": ["ranged"]
+    },
+    {
+      "id": "item-wand",
+      "kind": "weapon",
+      "damage": 6,
+      "tags": ["magic"]
+    },
+    {
+      "id": "item-staff",
+      "kind": "weapon",
+      "damage": 5,
+      "bonuses": {
+        "magic": 5
+      },
+      "tags": ["magic"]
+    },
+    {
+      "id": "item-shield",
+      "kind": "protection",
+      "bonuses": {
+        "athletics": 5
+      },
+      "tags": ["block"]
+    },
+    {
+      "id": "item-chain-shirt",
+      "kind": "protection",
+      "hp": 5,
+      "tags": ["armour"]
+    },
+    {
+      "id": "item-cloak",
+      "kind": "protection",
+      "bonuses": {
+        "stealth": 10
+      }
+    },
+    {
+      "id": "item-rope",
+      "kind": "tool",
+      "bonuses": {
+        "athletics": 5
+      },
+      "tags": ["climb"]
+    },
+    {
+      "id": "item-lantern",
+      "kind": "tool",
+      "bonuses": {
+        "perception": 5
+      },
+      "tags": ["light"]
+    },
+    {
+      "id": "item-map",
+      "kind": "tool",
+      "bonuses": {
+        "survival": 10
+      }
+    },
+    {
+      "id": "item-lockpick",
+      "kind": "tool",
+      "tags": ["lockpick"]
+    },
+    {
+      "id": "item-healing-potion",
+      "kind": "consumable",
+      "tags": ["heal"]
+    },
+    {
+      "id": "item-rations",
+      "kind": "consumable",
+      "tags": ["food"]
+    },
+    {
+      "id": "item-smoke-bomb",
+      "kind": "consumable",
+      "tags": ["escape"]
+    },
+    {
+      "id": "item-holy-water",
+      "kind": "consumable",
+      "tags": ["heal"]
+    }
+  ],
+  "events": []
+}

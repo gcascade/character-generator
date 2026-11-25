@@ -18,7 +18,7 @@ matches are success criteria SC-003 and SC-005).
 
 ## Phase 1: Setup
 
-- [ ] T001 Create src/types/arena.ts: `SKILLS` (`melee`, `ranged`, `magic`, `athletics`, `stealth`, `endurance`,
+- [x] T001 Create src/types/arena.ts: `SKILLS` (`melee`, `ranged`, `magic`, `athletics`, `stealth`, `endurance`,
       `perception`, `survival`, `lore`, `healing`, `persuasion`, `intimidation`, `deception`), `Skill`, `SKILL_FAMILIES`
       (`combat`: melee, ranged, magic; `physical`: athletics, stealth, endurance; `mind`: perception, survival, lore,
       healing; `social`: persuasion, intimidation, deception), `Skills` (`values: Record<Skill, number>` "integers, 5–95
@@ -26,7 +26,7 @@ matches are success criteria SC-003 and SC-005).
       `damage` 2–8 for weapons), `Contestant` (`id`, `character`, `sideId`, `role?`, `perks` "0–2 distinct known perk
       ids", `items` "0–3 known item ids", `sourceId?`), `Side` (`id`, `kind: team | solo`, `name?`, `ties`),
       `ArenaSetup` (`contestants`, `sides`, `seed`, `shownRounds`), `Fighter`, `EventResult`, `Round`, `Match`
-- [ ] T002 [P] UI strings in src/data/locales/{en,fr}/ui.json: `nav.arena` ("Arena" / "Arène"), page title and intro,
+- [x] T002 [P] UI strings in src/data/locales/{en,fr}/ui.json: `nav.arena` ("Arena" / "Arène"), page title and intro,
       roster actions (add current character, add saved character, add current party, add saved party, add random N,
       remove, random loadouts), side labels (team, solo), start, next round, skip to the end, replay, play again, share,
       use this roster, summary titles, errors (too few sides, roster full, unreadable link)
@@ -37,22 +37,22 @@ matches are success criteria SC-003 and SC-005).
 
 **⚠️ Blocks every user story**
 
-- [ ] T003 src/content/random.ts: `createRandom(seed)` (cyrb128 hash → sfc32), `next`, `int(n)`, `pick`, `shuffle`,
+- [x] T003 src/content/random.ts: `createRandom(seed)` (cyrb128 hash → sfc32), `next`, `int(n)`, `pick`, `shuffle`,
       `roll()` 1–100, `newSeed()` (8 base36 characters from `crypto.getRandomValues`); tests in src/content/random.test.ts
       (same seed → same sequence, known first values pinned, different seeds differ, `roll` within 1–100, uniformity
       roughly ±3 % over 100,000 rolls)
-- [ ] T004 [P] src/data/content/arena.json, part 1: `skills.classes` (base profile per class: 3 signature skills
+- [x] T004 [P] src/data/content/arena.json, part 1: `skills.classes` (base profile per class: 3 signature skills
       60–70, average ~40, weak 20–25), `skills.races` (modifiers −10…+10, research R2), `skills.ageBands` (young, adult,
       middle-aged, elderly), `skills.hp` (class bonus); register in src/content/data.ts
-- [ ] T005 [P] Skill names and family names in src/data/locales/{en,fr}/arena.json (`skills.<skill>`,
+- [x] T005 [P] Skill names and family names in src/data/locales/{en,fr}/arena.json (`skills.<skill>`,
       `families.<family>`); content test in src/data/content.test.ts (same keys in both locales)
-- [ ] T006 src/content/skills.ts: `rollSkills(character, random)` (class + race + age band via `ageBand` of
+- [x] T006 src/content/skills.ts: `rollSkills(character, random)` (class + race + age band via `ageBand` of
       src/content/portraitPrompt.ts + random −8…+8, clamp 5–95; hp = 20 + endurance / 5 + class bonus, within 20–40),
       `check(value, modifier, random)` (success when roll ≤ clamp(value + modifier, 5, 95)); tests in
       src/content/skills.test.ts (every race × class × age band within bounds; class signature skills among the three
       highest in ≥ 90 % of 1,000 rolls — SC-001; orc intimidation and halfling stealth above average; check rates match
       the value over 10,000 rolls)
-- [ ] T007 Per-actor text rendering in src/content/arenaText.ts: `renderActorText(text, actors, extras)` with `{a}`,
+- [x] T007 Per-actor text rendering in src/content/arenaText.ts: `renderActorText(text, actors, extras)` with `{a}`,
       `{b}`, `{c}` (first names), `{item}`, `{theItem}`, `{team}` and selections `{{a:m|f|n}}` per actor (research R7),
       capitalised first letter; tests (each actor's gender picks its own form, missing actor throws, French narrow
       no-break spaces untouched)

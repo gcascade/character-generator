@@ -1,3 +1,6 @@
+import arena from '../data/content/arena.json';
+import enArena from '../data/locales/en/arena.json';
+import frArena from '../data/locales/fr/arena.json';
 import epithetIds from '../data/content/epithets.json';
 import fragments from '../data/content/fragments.json';
 import partyFragments from '../data/content/party.json';
@@ -43,6 +46,14 @@ import type {
 import type { BalanceArea } from '../types/party';
 import type { NpcSection, Occupation } from '../types/npc';
 import type { GenderedText } from './renderText';
+import type {
+  ItemDefinition,
+  PerkDefinition,
+  Skill,
+  SkillBonuses,
+  SkillFamily,
+} from '../types/arena';
+import type { AgeBand } from './portraitPrompt';
 
 export type FragmentCategory =
   'title' | 'origin' | 'training' | 'turningPoint' | 'goal';
@@ -165,3 +176,61 @@ export const NPC_TEXTS: Record<Locale, Record<string, GenderedText>> = {
   en: enNpc,
   fr: frNpc,
 };
+
+// --- Arena (spec 012) ---
+
+export type ArenaEventKind = {
+  id: string;
+  type: string;
+  phase?: 'day' | 'night';
+  skill?: Skill;
+  modifier?: number;
+  damage?: number;
+  weight: number;
+  notable?: boolean;
+  when?: {
+    alignment?: 'good' | 'evil' | 'chaotic' | 'not-good';
+    perk?: string;
+    itemTag?: string;
+    wounded?: boolean;
+    tie?: 'friendly' | 'hostile';
+    role?: string;
+    minRound?: number;
+    caster?: boolean;
+  };
+};
+
+type ArenaSkillData = {
+  classes: Record<
+    CharacterClass,
+    { signature: Skill[]; base: Record<Skill, number> }
+  >;
+  races: Record<CharacterRace, SkillBonuses>;
+  ageBands: Record<AgeBand, SkillBonuses>;
+  hp: Record<CharacterClass, number>;
+  attack: Record<CharacterClass, number>;
+  casters: CharacterClass[];
+};
+
+export const ARENA = arena as unknown as {
+  skills: ArenaSkillData;
+  perks: PerkDefinition[];
+  items: ItemDefinition[];
+  events: ArenaEventKind[];
+};
+
+type GenderedOutcomes = Record<string, string>;
+
+export type ArenaTexts = {
+  skills: Record<Skill, string>;
+  families: Record<SkillFamily, string>;
+  perks: Record<string, { name: string; description: string }>;
+  items: Record<string, { a: string; the: string; description: string }>;
+  events: Record<string, GenderedOutcomes>;
+  rounds: Record<string, string>;
+};
+
+export const ARENA_TEXTS = { en: enArena, fr: frArena } as unknown as Record<
+  Locale,
+  ArenaTexts
+>;
