@@ -486,7 +486,12 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
     );
   const events = match.rounds.flatMap((r) => r.events);
   const notable = events.filter((e) => e.notable);
-  const defeats = events.filter((e) => !e.notable && e.defeated.length);
+  // Defeats by another contestant make better moments than those by the arena.
+  const byHand = (e: EventResult) =>
+    e.defeated.some((id) => match.fighters[id].defeatedBy !== undefined);
+  const defeats = events
+    .filter((e) => !e.notable && e.defeated.length)
+    .sort((x, y) => Number(byHand(x)) - Number(byHand(y)));
   // Notable moments first, then the latest defeats, and always the last event.
   const chosen = new Set<EventResult>(notable.slice(-(MAX_MOMENTS - 1)));
   for (const e of defeats.reverse()) {

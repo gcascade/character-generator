@@ -44,8 +44,8 @@ Before considering a change done: tests pass, `npm run typecheck` is clean, lint
 ```
 src/
   components/<area>/<component>/   Component.tsx + .test.tsx + .stories.tsx (+ .css)
-  pages/                           Home (generator), Party, Npcs, Characters (saved, parties, side characters tabs),
-                                   CharacterDetails, NpcDetails, Share, Settings
+  pages/                           Home (generator), Party, Npcs, Arena, Characters (saved, parties, side characters
+                                   tabs), CharacterDetails, NpcDetails, Share, Settings
   contexts/                        One React context per concern (character, history, settings, ...)
   ai/                              AI provider layer: adapters, validation, prompts, outcome messages, storage
   hooks/                           Hooks wrapping contexts; __mocks__/useSettings ("No AI") used by vi.mock
@@ -119,6 +119,20 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   rewrites it and `docs/portraits.md`; `npm run portraits:paint` (scripts/, plain Node) paints missing ones with AI
   Horde or Cloudflare using keys from `.env`; `npm run portraits:review` (local page, 127.0.0.1) keeps or trashes each one to `.portrait-trash/`, `npm run portraits:remove` rejects some; `scripts/trim-portraits.py`
   (Pillow) crops fake signatures off new Cloudflare JPEGs and saves 768 px WebP. `scripts/portrait-prompt.mjs` must match the app's recipe (test).
+
+## Arena (spec 012)
+
+- `/arena`: spectator battle royale. Roster functions, `simulate(setup)` (pure, seeded) and `summarize` in
+  `src/content/arena.ts`; event resolution in `arenaEvents.ts`; texts in `arenaText.ts` (`fillActorText` with `{a}`,
+  `{b}`, `{c}`, `{item}`, `{theItem}`, `{team}` and per-actor `{{a:m|f|n}}`); seeded `createRandom` in `random.ts`.
+- Skills (13, 5–95, d100 roll-under) are rolled per match from `${seed}:skills:${contestantId}` (`skills.ts`): never
+  stored on characters, never shown outside the arena. Contestant ids are short and seed the skills: keep them in links.
+- Data: `src/data/content/arena.json` (skill profiles, perks, items, events by `type` + `when`) and
+  `src/data/locales/<locale>/arena.json`; `src/data/arena.test.ts` lists the outcomes per type and checks French rules.
+- `ArenaProvider` stores `{ version: 1, contestants, sides, seed, shownRounds }` in `localStorage["arena"]`
+  (`storedArena.ts`); the match is recomputed, never stored. Share links: `<app>/arena#a1.<deflate-raw base64url>`.
+- Invariants tested over 1,000 matches: one winning side within the round limit, teammates never defeat each other,
+  good characters never betray; balanced teams beat single-class teams (coverage bonus, `BALANCE_BONUS`).
 
 ## Share links (spec 007)
 

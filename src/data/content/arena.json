@@ -1227,6 +1227,106 @@
       "when": {
         "alignment": "chaotic"
       }
+    },
+    {
+      "id": "event-fight-stream",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-fight-cave",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-fight-honour",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "when": {
+        "alignment": "good"
+      }
+    },
+    {
+      "id": "event-fight-spells-night",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "magic",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-fight-sling",
+      "type": "fight",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "ranged",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-ambush-tree",
+      "type": "ambush",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-find-statue",
+      "type": "find",
+      "actors": 1,
+      "skill": "lore",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-hazard-wolves",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "melee",
+      "damage": 6,
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-hazard-thorns",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "survival",
+      "damage": 4,
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-quiet-letter",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "night"
+    },
+    {
+      "id": "event-quiet-crowd",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-rest-spring",
+      "type": "rest",
+      "actors": 1,
+      "damage": 6,
+      "weight": 1.5,
+      "phase": "day"
     }
   ]
 }

@@ -542,6 +542,70 @@
     "event-prank": {
       "success": "Pendant la nuit, {a} remplit de pommes de pin les bottes laissées par {b}, qui passe la matinée à boiter en jurant.",
       "failure": "{a} tente de remplir de pommes de pin les bottes laissées par {b} et se fait prendre la main dans le sac."
+    },
+    "event-fight-stream": {
+      "win": "{a} et {b} s'agenouillent pour boire au même ruisseau, lèvent les yeux, et se figent. {a} réagit plus vite et chasse {b} vers l'aval.",
+      "lose": "{a} et {b} s'agenouillent pour boire au même ruisseau, lèvent les yeux, et se figent. {b} réagit plus vite et chasse {a} vers l'aval.",
+      "draw": "{a} et {b} s'agenouillent pour boire au même ruisseau, lèvent les yeux, et se figent. Ils se battent un moment dans les éclaboussures, puis reculent tous les deux, trempés jusqu'aux os.",
+      "defeat": "{a} et {b} s'agenouillent pour boire au même ruisseau, lèvent les yeux, et se figent. Le combat est bref et mouillé ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} et {b} s'agenouillent pour boire au même ruisseau, lèvent les yeux, et se figent. Le combat est bref et mouillé ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-cave": {
+      "win": "{a} entre dans une grotte pour y dormir, et y trouve {b}, qui occupe déjà la place. {a} gagne la grotte ; {b} passe la nuit dehors, avec une belle ecchymose.",
+      "lose": "{a} entre dans une grotte pour y dormir, et y trouve {b}, qui occupe déjà la place. {b} garde la grotte ; {a} passe la nuit dehors, avec une belle ecchymose.",
+      "draw": "{a} entre dans une grotte pour y dormir, et y trouve {b}, qui occupe déjà la place. Après une longue empoignade dans le noir, ils finissent par dormir chacun à un bout, de mauvaise grâce.",
+      "defeat": "{a} entre dans une grotte pour y dormir, et y trouve {b}, qui occupe déjà la place. La grotte résonne du combat ; à l'aube, les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} entre dans une grotte pour y dormir, et y trouve {b}, qui occupe déjà la place. La grotte résonne du combat ; à l'aube, les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-honour": {
+      "win": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {a} prend l'avantage, et laisse {b} se retirer dignement.",
+      "lose": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {b} prend l'avantage, et {a} se retire avec un signe de tête respectueux.",
+      "draw": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » Le duel est parfaitement égal. Ils se séparent sur un salut.",
+      "defeat": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {a} remporte le duel d'honneur ; {b} s'incline, et les gardiens raccompagnent {b} avec respect hors de l'arène.",
+      "defeated": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {b} remporte le duel d'honneur ; {a} s'incline, et les gardiens raccompagnent {a} avec respect hors de l'arène."
+    },
+    "event-fight-spells-night": {
+      "win": "Dans le noir, {a} illumine la clairière d'un sort, en plein visage pour {b}. La lumière aveugle {b}, qui s'enfuit en titubant dans la nuit.",
+      "lose": "Dans le noir, {a} illumine la clairière d'un sort, en plein visage pour {b}. {b} se protège les yeux et charge ; {a} doit fuir, les sourcils roussis par le contrecoup.",
+      "draw": "Dans le noir, {a} illumine la clairière d'un sort, en plein visage pour {b}. Le sort illumine toute l'arène, et tous deux préfèrent se cacher avant que d'autres n'arrivent.",
+      "defeat": "Dans le noir, {a} illumine la clairière d'un sort, en plein visage pour {b}. Un second sort met fin au duel ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Dans le noir, {a} illumine la clairière d'un sort, en plein visage pour {b}. {b} frappe avant le second sort ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-fight-sling": {
+      "win": "Du haut d'un rocher, {a} vise {b}, en train de traverser un champ en contrebas. Le tir fait mouche, et {b} court en zigzag vers les arbres.",
+      "lose": "Du haut d'un rocher, {a} vise {b}, en train de traverser un champ en contrebas. {b} esquive et riposte ; {a} doit quitter son rocher en vitesse.",
+      "draw": "Du haut d'un rocher, {a} vise {b}, en train de traverser un champ en contrebas. Tous les tirs ratent. Les deux font semblant de l'avoir fait exprès.",
+      "defeat": "Du haut d'un rocher, {a} vise {b}, en train de traverser un champ en contrebas. Le tir est parfait ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Du haut d'un rocher, {a} vise {b}, en train de traverser un champ en contrebas. {b} riposte, et mieux ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-ambush-tree": {
+      "success": "{a} se laisse tomber d'un arbre sur {b}, frappe, et disparaît avant même la fin de la surprise.",
+      "defeat": "{a} se laisse tomber d'un arbre sur {b} ; tout est fini aussitôt, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "failure": "{a} se laisse tomber d'un arbre sur {b}, rate son coup et atterrit dans un buisson. {b} s'éloigne en riant.",
+      "defeated": "{a} se laisse tomber d'un arbre, droit sur l'arme levée par {b} ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-find-statue": {
+      "success": "{a} déchiffre la vieille inscription d'une statue, appuie sur la bonne pierre, et une niche s'ouvre : {item}.",
+      "failure": "{a} appuie sur toutes les pierres d'une vieille statue. L'une d'elles était un nid de guêpes."
+    },
+    "event-hazard-wolves": {
+      "success": "Une meute de loups encercle le campement où dort {a}, qui agite une branche enflammée jusqu'à leur départ.",
+      "failure": "Des loups attaquent {a} en pleine nuit ; il faut un long combat pour les repousser.",
+      "defeated": "Une meute de loups accule {a} ; les gardiens la chassent à grand bruit de cors et de torches, puis emportent {a} hors de l'arène."
+    },
+    "event-hazard-thorns": {
+      "success": "{a} trouve un passage à travers un champ de ronces sans la moindre égratignure.",
+      "failure": "{a} tente de traverser un champ de ronces et en ressort avec des épines partout, comme une pelote d'aiguilles.",
+      "defeated": "{a} s'empêtre sans espoir dans un champ de ronces enchantées, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-quiet-letter": {
+      "only": "À la lueur d'un petit feu, {a} écrit une lettre pour les siens, au cas où. Puis la déchire, par pure obstination."
+    },
+    "event-quiet-crowd": {
+      "only": "{a} grimpe sur un rocher et salue la foule invisible. Quelque part, les maîtres de l'arène applaudissent."
+    },
+    "event-rest-spring": {
+      "only": "{a} découvre une source chaude cachée entre les rochers, et s'y prélasse jusqu'à ce que toutes les douleurs s'effacent."
     }
   },
   "rounds": {

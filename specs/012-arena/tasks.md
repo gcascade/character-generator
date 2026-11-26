@@ -187,12 +187,12 @@ switch rewords the same events.
 
 ## Phase 8: Polish & cross-cutting
 
-- [ ] T029 [P] Content pass: ≥ 90 event kinds in total, tone check (epic + light humour, no gore), French rules
+- [x] T029 [P] Content pass: ≥ 90 event kinds in total, tone check (epic + light humour, no gore), French rules
       (neutral third form, U+202F, no elision before a placeholder), reading time of a 12-contestant match 3–7 minutes
       (SC-004, ~55 lines)
-- [ ] T030 [P] Docs: README (Arena section), CLAUDE.md (spec 012 section: files, storage key, `#a1.` prefix, per-actor
+- [x] T030 [P] Docs: README (Arena section), CLAUDE.md (spec 012 section: files, storage key, `#a1.` prefix, per-actor
       selections, skills only in the arena), src/data README if any
-- [ ] T031 Run quickstart.md scenarios, `npm run typecheck`, `npm run lint`, `npm run test:run`, Storybook build;
+- [x] T031 Run quickstart.md scenarios, `npm run typecheck`, `npm run lint`, `npm run test:run`, Storybook build;
       open the PR
 
 ---

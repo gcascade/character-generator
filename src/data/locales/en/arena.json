@@ -542,6 +542,70 @@
     "event-prank": {
       "success": "{a} fills the boots of {b} with pinecones during the night. {b} spends the morning limping and swearing.",
       "failure": "{a} tries to fill the boots of {b} with pinecones and is caught red-handed."
+    },
+    "event-fight-stream": {
+      "win": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. {a} reacts first and chases {b} downstream.",
+      "lose": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. {b} reacts first and chases {a} downstream.",
+      "draw": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. They splash at each other for a while, then both retreat, soaked.",
+      "defeat": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. The fight is short and splashy; the arena wardens carry {b} away.",
+      "defeated": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. The fight is short and splashy; the arena wardens carry {a} away."
+    },
+    "event-fight-cave": {
+      "win": "{a} ducks into a cave to sleep, and finds {b} already there. {a} wins the cave; {b} spends the night outside, nursing a bruise.",
+      "lose": "{a} ducks into a cave to sleep, and finds {b} already there. {b} keeps the cave; {a} spends the night outside, nursing a bruise.",
+      "draw": "{a} ducks into a cave to sleep, and finds {b} already there. After a long scuffle in the dark, they grudgingly sleep at opposite ends.",
+      "defeat": "{a} ducks into a cave to sleep, and finds {b} already there. The cave echoes with the fight; at dawn, the arena wardens carry {b} away.",
+      "defeated": "{a} ducks into a cave to sleep, and finds {b} already there. The cave echoes with the fight; at dawn, the arena wardens carry {a} away."
+    },
+    "event-fight-honour": {
+      "win": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} has the upper hand, and lets {b} withdraw with dignity.",
+      "lose": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {b} has the upper hand, and {a} withdraws with a nod of respect.",
+      "draw": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" The duel is perfectly even. They part with a salute.",
+      "defeat": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} wins the duel of honour; {b} yields, and the arena wardens carry {b} out with respect.",
+      "defeated": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {b} wins the duel of honour; {a} yields, and the arena wardens carry {a} out with respect."
+    },
+    "event-fight-spells-night": {
+      "win": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. Dazzled, {b} stumbles away into the night.",
+      "lose": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. {b} shields {{b:his|her|their}} eyes and charges; {a} has to flee, scorched by the backlash.",
+      "draw": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. The spell lights up the whole arena, and both decide to hide before anyone else comes.",
+      "defeat": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. A second spell finishes the duel; the arena wardens carry {b} away.",
+      "defeated": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. {b} strikes before the second spell; the arena wardens carry {a} away."
+    },
+    "event-fight-sling": {
+      "win": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. The shot hits home, and {b} runs zigzagging for the trees.",
+      "lose": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. {b} dodges and shoots back; {a} has to leave the rock in a hurry.",
+      "draw": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. Every shot misses. Both pretend they meant to.",
+      "defeat": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. The shot is perfect; the arena wardens carry {b} away.",
+      "defeated": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. {b} shoots back, and better; the arena wardens carry {a} away."
+    },
+    "event-ambush-tree": {
+      "success": "{a} drops from a tree onto {b}, strikes, and is gone before {b} understands what happened.",
+      "defeat": "{a} drops from a tree onto {b}; it is over at once, and the arena wardens carry {b} away.",
+      "failure": "{a} drops from a tree onto {b}, misses, and lands in a bush. {b} laughs on the way out.",
+      "defeated": "{a} drops from a tree, straight onto the raised weapon of {b}; the arena wardens carry {a} away."
+    },
+    "event-find-statue": {
+      "success": "{a} reads the old inscription on a statue, presses the right stone, and a hidden niche opens: {item}.",
+      "failure": "{a} presses every stone of an old statue. One of them was a wasp nest."
+    },
+    "event-hazard-wolves": {
+      "success": "A pack of wolves circles the camp of {a}, who waves a burning branch until they leave.",
+      "failure": "Wolves attack {a} in the night; it takes a long fight to drive them off.",
+      "defeated": "A pack of wolves corners {a}; the wardens drive them off with horns and torches, and carry {a} out of the arena."
+    },
+    "event-hazard-thorns": {
+      "success": "{a} finds a way through a field of thornbushes without a single scratch.",
+      "failure": "{a} tries to cut through a field of thornbushes and comes out looking like a pincushion.",
+      "defeated": "{a} gets hopelessly tangled in a field of enchanted thorns; the arena wardens carry {a} away."
+    },
+    "event-quiet-letter": {
+      "only": "By the light of a small fire, {a} writes a letter home, in case. Then tears it up, out of stubbornness."
+    },
+    "event-quiet-crowd": {
+      "only": "{a} climbs onto a rock and bows to the invisible crowd. Somewhere, the arena masters are applauding."
+    },
+    "event-rest-spring": {
+      "only": "{a} finds a hot spring hidden between the rocks, and soaks until every ache is gone."
     }
   },
   "rounds": {

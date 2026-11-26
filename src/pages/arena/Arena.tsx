@@ -48,49 +48,54 @@ const Roster: FC<{ setup: ArenaSetup }> = ({ setup }) => {
       </Typography>
     );
   }
+  const grid = {
+    display: 'grid',
+    gap: 2,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+  };
+  const card = (contestant: ArenaSetup['contestants'][number]) => (
+    <ContestantCard
+      key={contestant.id}
+      contestant={contestant}
+      skills={contestantSkills(setup, contestant.id)}
+      onRemove={() => arena.remove(contestant.id)}
+    >
+      <LoadoutPicker
+        id={contestant.id}
+        name={contestant.character.firstName}
+        perks={contestant.perks}
+        items={contestant.items}
+        onPerks={(perks) => arena.setPerks(contestant.id, perks)}
+        onItems={(items) => arena.setItems(contestant.id, items)}
+      />
+    </ContestantCard>
+  );
+  const teams = setup.sides.filter((side) => side.kind === 'team');
+  const solos = setup.contestants.filter(
+    (c) => setup.sides.find((side) => side.id === c.sideId)?.kind !== 'team',
+  );
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      {setup.sides.map((side) => (
-        <Box
-          component="section"
-          key={side.id}
-          aria-label={side.name ?? t('arena.solo')}
-        >
-          {side.kind === 'team' && (
-            <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-              {t('arena.team')} · {side.name}
-            </Typography>
-          )}
-          <Box
-            sx={{
-              display: 'grid',
-              gap: 2,
-              gridTemplateColumns:
-                'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-            }}
-          >
-            {setup.contestants
-              .filter((c) => c.sideId === side.id)
-              .map((contestant) => (
-                <ContestantCard
-                  key={contestant.id}
-                  contestant={contestant}
-                  skills={contestantSkills(setup, contestant.id)}
-                  onRemove={() => arena.remove(contestant.id)}
-                >
-                  <LoadoutPicker
-                    id={contestant.id}
-                    name={contestant.character.firstName}
-                    perks={contestant.perks}
-                    items={contestant.items}
-                    onPerks={(perks) => arena.setPerks(contestant.id, perks)}
-                    onItems={(items) => arena.setItems(contestant.id, items)}
-                  />
-                </ContestantCard>
-              ))}
+      {teams.map((side) => (
+        <Box component="section" key={side.id} aria-label={side.name}>
+          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+            {t('arena.team')} · {side.name}
+          </Typography>
+          <Box sx={grid}>
+            {setup.contestants.filter((c) => c.sideId === side.id).map(card)}
           </Box>
         </Box>
       ))}
+      {solos.length > 0 && (
+        <Box component="section" aria-label={t('arena.solo')}>
+          {teams.length > 0 && (
+            <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+              {t('arena.solo')}
+            </Typography>
+          )}
+          <Box sx={grid}>{solos.map(card)}</Box>
+        </Box>
+      )}
     </Box>
   );
 };
