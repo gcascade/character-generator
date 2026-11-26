@@ -25,6 +25,8 @@ export const fillActorText = (
   text: string,
   actors: readonly TextActor[],
   extras: TextExtras = {},
+  /** Wraps each name as \uE000<actor index>\uE001 so it can be shown apart. */
+  markNames = false,
 ): string => {
   const actor = (key: string) => {
     const found = actors[ACTORS.indexOf(key as (typeof ACTORS)[number])];
@@ -40,7 +42,10 @@ export const fillActorText = (
   });
   const filled = selected.replace(PLACEHOLDER, (whole, key: string) => {
     if ((ACTORS as readonly string[]).includes(key)) {
-      return actor(key).firstName;
+      const name = actor(key).firstName;
+      return markNames
+        ? `\uE000${ACTORS.indexOf(key as (typeof ACTORS)[number])}${name}\uE001`
+        : name;
     }
     const value = extras[key as keyof TextExtras];
     if (value === undefined) throw new Error(`Missing {${key}} in "${text}"`);
@@ -112,4 +117,41 @@ export const eventSides = (
   if (UNDERGONE.includes(type)) return { left: [], right: result.actors };
   if (SOLO.includes(type)) return { left: [first], right: [] };
   return { left: [first], right: others };
+};
+
+export type EventPart = string | { actor: string; name: string };
+
+/** An event as text with its names apart, so they can be highlighted (maintainer feedback). */
+export const eventParts = (
+  result: EventResult,
+  setup: ArenaSetup,
+  locale: Locale,
+): EventPart[] => {
+  const texts = ARENA_TEXTS[locale];
+  const text = texts.events[result.eventId]?.[result.outcome];
+  if (text === undefined) {
+    throw new Error(`No text for ${result.eventId}.${result.outcome}`);
+  }
+  const item = result.itemId ? texts.items[result.itemId] : undefined;
+  const side = setup.sides.find(
+    (s) =>
+      s.id === setup.contestants.find((c) => c.id === result.actors[0])?.sideId,
+  );
+  const marked = fillActorText(
+    text,
+    result.actors.map((id) => actorOf(setup, id)),
+    {
+      ...(item && { item: item.a, theItem: item.the }),
+      ...(side?.name && { team: side.name }),
+    },
+    true,
+  );
+  return marked
+    .split(/(\uE000\d[^\uE001]*\uE001)/)
+    .filter(Boolean)
+    .map((part) =>
+      part.startsWith('\uE000')
+        ? { actor: result.actors[Number(part[1])], name: part.slice(2, -1) }
+        : part,
+    );
 };

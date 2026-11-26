@@ -1,4 +1,9 @@
-import { eventSides, fillActorText } from './arenaText';
+import {
+  eventSides,
+  fillActorText,
+  renderEvent,
+  eventParts,
+} from './arenaText';
 
 const ana = { firstName: 'Ana', gender: 'Female' as const };
 const bo = { firstName: 'Bo', gender: 'Male' as const };
@@ -59,5 +64,28 @@ describe('event sides', () => {
       left: ['a'],
       right: [],
     });
+  });
+});
+
+describe('event parts', () => {
+  it('keeps the names apart, in order, and the same text otherwise', async () => {
+    const { arenaSetup } = await import('@Test/stubs/Arena.stubs');
+    const event = {
+      eventId: 'event-fight-clearing',
+      outcome: 'defeat',
+      actors: ['aela', 'korvus'],
+      defeated: ['korvus'],
+    };
+    const parts = eventParts(event, arenaSetup, 'en');
+    expect(parts.filter((p) => typeof p !== 'string')).toEqual([
+      { actor: 'aela', name: 'Aela' },
+      { actor: 'korvus', name: 'Korvus' },
+      { actor: 'aela', name: 'Aela' },
+      { actor: 'korvus', name: 'Korvus' },
+    ]);
+    const joined = parts
+      .map((p) => (typeof p === 'string' ? p : p.name))
+      .join('');
+    expect(joined).toBe(renderEvent(event, arenaSetup, 'en'));
   });
 });

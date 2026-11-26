@@ -28,6 +28,9 @@
   to hide them.
 - Q: State of the contestants? → A: A panel shows, after the last revealed period, hit points, items, teams, those
   who left them, alliances, defeats and who is out.
+- Q: Seeing a contestant's skills during the match? → A: Names in the story are highlighted; hovering, focusing or
+  tapping a name, a portrait or a contestant in the status panel opens a card with their skills, perks, and hit
+  points and items at that moment (just before the event).
 - Q: Filling the roster? → A: "Fill the arena" up to 8–48 contestants, as solos, teams of 2, 3 or 4, or a mix.
 
 ## Context

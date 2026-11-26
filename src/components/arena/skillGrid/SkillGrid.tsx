@@ -12,10 +12,12 @@ type SkillGridProps = {
   skills: Skills;
   /** Whose skills: names the group for screen readers. */
   name: string;
+  /** Hit points are shown elsewhere. */
+  hideHp?: boolean;
 };
 
 /** Thirteen skills in four families, and hit points (spec 012 FR-005). */
-const SkillGrid: FC<SkillGridProps> = ({ skills, name }) => {
+const SkillGrid: FC<SkillGridProps> = ({ skills, name, hideHp }) => {
   const t = useT();
   const { locale } = useLocale();
   const texts = ARENA_TEXTS[locale];
@@ -75,12 +77,14 @@ const SkillGrid: FC<SkillGridProps> = ({ skills, name }) => {
           ))}
         </Box>
       ))}
-      <Typography
-        variant="body2"
-        sx={{ gridColumn: '1 / -1', fontWeight: 600 }}
-      >
-        {t('arena.hp')} {skills.hp}
-      </Typography>
+      {!hideHp && (
+        <Typography
+          variant="body2"
+          sx={{ gridColumn: '1 / -1', fontWeight: 600 }}
+        >
+          {t('arena.hp')} {skills.hp}
+        </Typography>
+      )}
     </Box>
   );
 };

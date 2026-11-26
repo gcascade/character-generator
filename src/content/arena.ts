@@ -434,7 +434,9 @@ export const simulate = (setup: ArenaSetup): Match => {
       const candidates = candidatesFor(state, a, free, phase);
       const chosen = pickWeighted(state.random, candidates);
       state.rolls = [];
+      const before = stateOf(chosen.actors);
       const result = resolveEvent(state, chosen.kind, chosen.actors);
+      result.before = before;
       if (state.rolls.length) result.rolls = state.rolls;
       events.push(result);
       for (const f of chosen.actors) {
@@ -459,7 +461,9 @@ export const simulate = (setup: ArenaSetup): Match => {
         (e) => e.type === 'finale' && (e.when?.alignment === 'good') === honour,
       )!;
       state.rolls = [];
+      const before = stateOf([a, b]);
       const result = resolveEvent(state, kind, [a, b]);
+      result.before = before;
       if (!result.defeated.length) {
         // Nobody fell after a long duel: the more wounded yields.
         const loser = a.hp / a.maxHp < b.hp / b.maxHp ? a : b;

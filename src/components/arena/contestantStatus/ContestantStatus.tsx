@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { ARENA_TEXTS } from '../../../content/data';
 import { useLocale, useT } from '../../../i18n';
 import type { ArenaSetup, FighterState } from '../../../types/arena';
+import ContestantPeek, { PeekCard } from '../contestantPeek/ContestantPeek';
 import PortraitStack from '../portraitStack/PortraitStack';
 
 type ContestantStatusProps = {
@@ -100,6 +101,9 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
                         characters={[character]}
                         size={36}
                         faded={[!now.standing]}
+                        peek={() => (
+                          <PeekCard setup={setup} id={id} state={now} />
+                        )}
                       />
                       <Box sx={{ flexGrow: 1, minWidth: 0 }}>
                         <Box
@@ -109,13 +113,21 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
                             alignItems: 'baseline',
                           }}
                         >
-                          <Typography
-                            variant="body2"
-                            sx={{ fontWeight: 600 }}
-                            noWrap
-                          >
-                            {character.firstName} {character.lastName}
-                          </Typography>
+                          <ContestantPeek setup={setup} id={id} state={now}>
+                            <Typography
+                              variant="body2"
+                              tabIndex={0}
+                              sx={{
+                                fontWeight: 600,
+                                cursor: 'help',
+                                textDecoration: 'underline dotted',
+                                textUnderlineOffset: '3px',
+                              }}
+                              noWrap
+                            >
+                              {character.firstName} {character.lastName}
+                            </Typography>
+                          </ContestantPeek>
                           <Typography
                             variant="caption"
                             sx={{

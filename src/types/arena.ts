@@ -125,6 +125,8 @@ export type EventResult = {
   notable?: boolean;
   /** The rolls behind the outcome, in order. */
   rolls?: RollRecord[];
+  /** The actors' state just before the event (hit points, items…). */
+  before?: Record<string, FighterState>;
 };
 
 export type Phase = 'day' | 'night';

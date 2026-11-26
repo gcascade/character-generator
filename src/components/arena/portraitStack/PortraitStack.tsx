@@ -1,5 +1,6 @@
 import { Box, Tooltip } from '@mui/material';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
+import { PeekTooltip } from '../contestantPeek/ContestantPeek';
 import { useT } from '../../../i18n';
 import type { Character } from '../../../types/character';
 import CharacterImage from '../../character/characterImage/CharacterImage';
@@ -9,6 +10,8 @@ type PortraitStackProps = {
   size?: number;
   /** Greyed portraits (defeated in this event). */
   faded?: boolean[];
+  /** A card for the portrait in front, shown on hover, focus or tap. */
+  peek?: (index: number) => ReactNode;
 };
 
 const OFFSET = 10;
@@ -22,6 +25,7 @@ const PortraitStack: FC<PortraitStackProps> = ({
   characters,
   size = 44,
   faded = [],
+  peek,
 }) => {
   const t = useT();
   const [front, setFront] = useState(0);
@@ -41,59 +45,64 @@ const PortraitStack: FC<PortraitStackProps> = ({
   const names = characters.map((c) => c.firstName).join(', ');
   const order = characters.map((_, i) => (i + front) % characters.length);
 
-  return (
+  const stack = (
+    <Box
+      role="img"
+      aria-label={t('arena.portraits', { names })}
+      tabIndex={many || peek ? 0 : undefined}
+      onMouseEnter={() => setCycling(true)}
+      onMouseLeave={() => setCycling(false)}
+      onFocus={() => setCycling(true)}
+      onBlur={() => setCycling(false)}
+      sx={{
+        position: 'relative',
+        flexShrink: 0,
+        width: size + OFFSET * (characters.length - 1),
+        height: size,
+      }}
+    >
+      {order
+        .slice()
+        .reverse()
+        .map((index, layer) => {
+          const c = characters[index];
+          const depth = order.length - 1 - layer;
+          return (
+            <Box
+              key={index}
+              aria-hidden
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: depth * OFFSET,
+                zIndex: order.length - depth,
+                opacity: faded[index] ? 0.45 : 1,
+                filter: faded[index] ? 'grayscale(1)' : undefined,
+                transition: 'left 200ms',
+              }}
+            >
+              <CharacterImage
+                race={c.race}
+                characterClass={c.characterClass}
+                gender={c.gender}
+                firstName={c.firstName}
+                lastName={c.lastName}
+                portraitId={c.portraitId}
+                age={c.age}
+                height={size}
+                width={size}
+                crop
+              />
+            </Box>
+          );
+        })}
+    </Box>
+  );
+  return peek ? (
+    <PeekTooltip title={peek(front)}>{stack}</PeekTooltip>
+  ) : (
     <Tooltip title={characters[front]?.firstName ?? names} describeChild>
-      <Box
-        role="img"
-        aria-label={t('arena.portraits', { names })}
-        tabIndex={many ? 0 : undefined}
-        onMouseEnter={() => setCycling(true)}
-        onMouseLeave={() => setCycling(false)}
-        onFocus={() => setCycling(true)}
-        onBlur={() => setCycling(false)}
-        sx={{
-          position: 'relative',
-          flexShrink: 0,
-          width: size + OFFSET * (characters.length - 1),
-          height: size,
-        }}
-      >
-        {order
-          .slice()
-          .reverse()
-          .map((index, layer) => {
-            const c = characters[index];
-            const depth = order.length - 1 - layer;
-            return (
-              <Box
-                key={index}
-                aria-hidden
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: depth * OFFSET,
-                  zIndex: order.length - depth,
-                  opacity: faded[index] ? 0.45 : 1,
-                  filter: faded[index] ? 'grayscale(1)' : undefined,
-                  transition: 'left 200ms',
-                }}
-              >
-                <CharacterImage
-                  race={c.race}
-                  characterClass={c.characterClass}
-                  gender={c.gender}
-                  firstName={c.firstName}
-                  lastName={c.lastName}
-                  portraitId={c.portraitId}
-                  age={c.age}
-                  height={size}
-                  width={size}
-                  crop
-                />
-              </Box>
-            );
-          })}
-      </Box>
+      {stack}
     </Tooltip>
   );
 };
