@@ -1,8 +1,14 @@
-import type { ArenaSetup, EventResult, Fighter, Skill } from '../types/arena';
+import type {
+  ArenaSetup,
+  EventResult,
+  Fighter,
+  RollRecord,
+  Skill,
+} from '../types/arena';
 import type { Character } from '../types/character';
 import { ARENA, type ArenaEventKind } from './data';
 import type { Random } from './random';
-import { check } from './skills';
+import { check, clamp } from './skills';
 
 /** Everything an event needs to know about the match while it runs. */
 export type MatchState = {
@@ -15,6 +21,8 @@ export type MatchState = {
   /** Round after which the arena forces the finale. */
   limit: number;
   random: Random;
+  /** Rolls of the event being resolved. */
+  rolls: RollRecord[];
 };
 
 const FRIENDLY_TIES = [
@@ -67,10 +75,14 @@ export const fighterCheck = (
   modifier = 0,
 ) => {
   const value = skillValue(state, f, skill);
+  const chance = clamp(value + modifier);
   const first = check(value, modifier, state.random);
+  state.rolls.push({ actor: f.id, skill, chance, ...first });
   if (first.success || f.luckUsed || !hasPerkTag(f, 'reroll')) return first;
   f.luckUsed = true;
-  return check(value, modifier, state.random);
+  const second = check(value, modifier, state.random);
+  state.rolls.push({ actor: f.id, skill, chance, ...second, reroll: true });
+  return second;
 };
 
 // --- Relations -------------------------------------------------------------

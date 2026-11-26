@@ -11,6 +11,8 @@ import {
   addParty,
   addRandom,
   emptySetup,
+  type FillShape,
+  fillRoster,
   randomLoadouts,
   removeContestant,
   setItems,
@@ -28,6 +30,7 @@ export type ArenaContextType = {
   addCharacter: (character: Character, sourceId?: string) => void;
   addParty: (party: Party, locale: Locale) => void;
   addRandom: (count: number) => void;
+  fill: (target: number, shape: FillShape, locale: Locale) => void;
   remove: (id: string) => void;
   clear: VoidFunction;
   setPerks: (id: string, perks: string[]) => void;
@@ -59,6 +62,8 @@ export const ArenaProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setSetup((s) => addCharacter(s, character, sourceId)),
       addParty: (party, locale) => setSetup((s) => addParty(s, party, locale)),
       addRandom: (count) => setSetup((s) => addRandom(s, count)),
+      fill: (target, shape, locale) =>
+        setSetup((s) => fillRoster(s, target, shape, locale)),
       remove: (id) => setSetup((s) => removeContestant(s, id)),
       clear: () => setSetup(emptySetup()),
       setPerks: (id, perks) => setSetup((s) => setPerks(s, id, perks)),

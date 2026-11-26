@@ -18,6 +18,18 @@
 - Q: Where do skills live? → A: Only in the arena: they are rolled when a match is set up, shown in the arena setup and
   during the match, and never stored on characters or shown on character pages.
 
+### Session 2026-11-26 (after the first release)
+
+- Q: Portraits in the story? → A: Each event line shows the portrait of who acts on the left and of who undergoes it
+  on the right; several portraits are stacked and take turns in front on hover or focus.
+- Q: How many events per period? → A: 4 to 6, drawn at random; the round limit grows with the number of contestants
+  (4 + 0.9 × contestants, at most 60) instead of ending after a few rounds.
+- Q: Show the effect of skills? → A: Each event lists its dice rolls (who, skill, chance, roll, success), with a switch
+  to hide them.
+- Q: State of the contestants? → A: A panel shows, after the last revealed period, hit points, items, teams, those
+  who left them, alliances, defeats and who is out.
+- Q: Filling the roster? → A: "Fill the arena" up to 8–48 contestants, as solos, teams of 2, 3 or 4, or a mix.
+
 ## Context
 
 The maintainer wants a game that gives the generated characters and parties something to do. Two formats were

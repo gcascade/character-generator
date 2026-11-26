@@ -1,6 +1,7 @@
 import {
   ArrowBack as BackIcon,
   Casino as AgainIcon,
+  ExpandMore as ExpandIcon,
   FastForward as SkipIcon,
   PlayArrow as StartIcon,
   Replay as ReplayIcon,
@@ -9,11 +10,18 @@ import {
   SystemUpdateAlt as UseIcon,
 } from '@mui/icons-material';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Box,
   Button,
   CircularProgress,
+  FormControlLabel,
+  Switch,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -21,6 +29,7 @@ import ShareDialog from '../../components/common/share/ShareDialog';
 import ContestantCard from '../../components/arena/contestantCard/ContestantCard';
 import LoadoutPicker from '../../components/arena/loadoutPicker/LoadoutPicker';
 import RosterBuilder from '../../components/arena/rosterBuilder/RosterBuilder';
+import ContestantStatus from '../../components/arena/contestantStatus/ContestantStatus';
 import MatchSummary from '../../components/arena/matchSummary/MatchSummary';
 import RoundView from '../../components/arena/roundView/RoundView';
 import {
@@ -29,6 +38,7 @@ import {
   simulate,
   summarize,
 } from '../../content/arena';
+import { renderRoundTitle } from '../../content/arenaText';
 import { ARENA_PREFIX, arenaUrl, decodeArena } from '../../content/share';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { DataContext } from '../../contexts/DataContext';
@@ -126,6 +136,10 @@ const MatchView: FC<MatchViewProps> = ({
   onUseRoster,
 }) => {
   const t = useT();
+  const { locale } = useLocale();
+  const theme = useTheme();
+  const wide = useMediaQuery(theme.breakpoints.up('md'));
+  const [showRolls, setShowRolls] = useState(true);
   const { share, fallbackUrl, closeFallback } = useShare();
   const { contestants, sides, seed } = setup;
   const match = useMemo(
@@ -147,8 +161,28 @@ const MatchView: FC<MatchViewProps> = ({
       copied: 'arena.shared',
     });
 
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+  const lastShown = match.rounds[shown - 1];
+  const status = lastShown && (
+    <ContestantStatus
+      setup={setup}
+      state={lastShown.after}
+      moment={t('arena.statusAfter', {
+        round: renderRoundTitle(lastShown, locale, isFinale(lastShown.events)),
+      })}
+    />
+  );
+
+  const story = (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={showRolls}
+            onChange={(_, value) => setShowRolls(value)}
+          />
+        }
+        label={t('arena.showRolls')}
+      />
       {match.rounds.slice(0, shown).map((round, index) => (
         <RoundView
           key={round.number}
@@ -156,6 +190,7 @@ const MatchView: FC<MatchViewProps> = ({
           setup={setup}
           finale={isFinale(round.events)}
           standing={standingAfter[index]}
+          showRolls={showRolls}
         />
       ))}
       {finished && (
@@ -205,6 +240,45 @@ const MatchView: FC<MatchViewProps> = ({
         )}
       </Box>
       <ShareDialog url={fallbackUrl} onClose={closeFallback} />
+    </Box>
+  );
+
+  if (!wide) {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {status && (
+          <Accordion disableGutters>
+            <AccordionSummary expandIcon={<ExpandIcon />}>
+              {t('arena.status')}
+            </AccordionSummary>
+            <AccordionDetails>{status}</AccordionDetails>
+          </Accordion>
+        )}
+        {story}
+      </Box>
+    );
+  }
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1fr) 320px',
+        gap: 4,
+        alignItems: 'start',
+      }}
+    >
+      {story}
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 16,
+          maxHeight: 'calc(100vh - 32px)',
+          overflowY: 'auto',
+          pr: 1,
+        }}
+      >
+        {status}
+      </Box>
     </Box>
   );
 };
@@ -271,7 +345,7 @@ const Arena: FC = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 3,
-          maxWidth: 900,
+          maxWidth: 1240,
           mx: 'auto',
         }}
       >
@@ -296,7 +370,7 @@ const Arena: FC = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 3,
-          maxWidth: 900,
+          maxWidth: 1240,
           mx: 'auto',
         }}
       >
@@ -341,6 +415,7 @@ const Arena: FC = () => {
         onAddCharacter={arena.addCharacter}
         onAddParty={(p) => arena.addParty(p, locale)}
         onAddRandom={arena.addRandom}
+        onFill={(target, shape) => arena.fill(target, shape, locale)}
         onRandomLoadouts={arena.randomLoadouts}
         onClear={arena.clear}
       />

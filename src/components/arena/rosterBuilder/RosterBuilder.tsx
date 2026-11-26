@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { FC, useState } from 'react';
-import { MAX_CONTESTANTS } from '../../../content/arena';
+import { type FillShape, MAX_CONTESTANTS } from '../../../content/arena';
 import { renderParty } from '../../../content/party';
 import { useLocale, useT } from '../../../i18n';
 import type { Character } from '../../../types/character';
@@ -29,11 +29,15 @@ type RosterBuilderProps = {
   onAddCharacter: (character: Character, sourceId?: string) => void;
   onAddParty: (party: Party) => void;
   onAddRandom: (count: number) => void;
+  /** Fills the arena up to a number of contestants, as solos, teams of a size, or a mix. */
+  onFill: (target: number, shape: FillShape) => void;
   onRandomLoadouts: VoidFunction;
   onClear: VoidFunction;
 };
 
 const RANDOM_COUNTS = [1, 4, 8, 12];
+const FILL_TARGETS = [8, 12, 16, 24, 32, 48];
+const FILL_SHAPES: FillShape[] = [1, 2, 3, 4, 'mixed'];
 
 /** Ways to fill the arena: current, saved, parties as teams, random characters (spec 012 FR-007). */
 const RosterBuilder: FC<RosterBuilderProps> = ({
@@ -45,6 +49,7 @@ const RosterBuilder: FC<RosterBuilderProps> = ({
   onAddCharacter,
   onAddParty,
   onAddRandom,
+  onFill,
   onRandomLoadouts,
   onClear,
 }) => {
@@ -53,6 +58,14 @@ const RosterBuilder: FC<RosterBuilderProps> = ({
   const [characterId, setCharacterId] = useState('');
   const [partyId, setPartyId] = useState('');
   const [randomCount, setRandomCount] = useState(4);
+  const [fillTarget, setFillTarget] = useState(16);
+  const [fillShape, setFillShape] = useState<FillShape>(4);
+  const shapeLabel = (shape: FillShape) =>
+    shape === 'mixed'
+      ? t('arena.fillMixed')
+      : shape === 1
+        ? t('arena.fillSolo')
+        : t('arena.fillTeams', { size: shape });
   const full = count >= MAX_CONTESTANTS;
   const nameOf = (c: Character) => `${c.firstName} ${c.lastName}`.trim();
 
@@ -169,6 +182,52 @@ const RosterBuilder: FC<RosterBuilderProps> = ({
           onClick={() => onAddRandom(randomCount)}
         >
           {t('arena.addRandom', { count: randomCount })}
+        </Button>
+      </Box>
+      <Box sx={row}>
+        <FormControl size="small" sx={{ width: 110 }}>
+          <InputLabel id="arena-fill-target">{t('arena.fillUpTo')}</InputLabel>
+          <Select
+            labelId="arena-fill-target"
+            label={t('arena.fillUpTo')}
+            value={fillTarget}
+            onChange={(event) => setFillTarget(Number(event.target.value))}
+          >
+            {FILL_TARGETS.map((n) => (
+              <MenuItem key={n} value={n}>
+                {n}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl size="small" sx={{ minWidth: 200 }}>
+          <InputLabel id="arena-fill-shape">{t('arena.fillAs')}</InputLabel>
+          <Select
+            labelId="arena-fill-shape"
+            label={t('arena.fillAs')}
+            value={String(fillShape)}
+            onChange={(event) =>
+              setFillShape(
+                event.target.value === 'mixed'
+                  ? 'mixed'
+                  : Number(event.target.value),
+              )
+            }
+          >
+            {FILL_SHAPES.map((shape) => (
+              <MenuItem key={shape} value={String(shape)}>
+                {shapeLabel(shape)}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="outlined"
+          startIcon={<PartyIcon />}
+          disabled={count >= Math.min(fillTarget, MAX_CONTESTANTS)}
+          onClick={() => onFill(fillTarget, fillShape)}
+        >
+          {t('arena.fill')}
         </Button>
       </Box>
       <Box sx={{ ...row, justifyContent: 'space-between' }}>
