@@ -103,6 +103,18 @@ export type Fighter = {
 
 export type EventOutcome = string;
 
+/** A d100 roll made during an event, shown to the spectator. */
+export type RollRecord = {
+  actor: string;
+  skill: Skill;
+  /** Effective chance after bonuses and penalties, 5–95. */
+  chance: number;
+  roll: number;
+  success: boolean;
+  /** A Lucky fighter's second chance. */
+  reroll?: boolean;
+};
+
 export type EventResult = {
   eventId: string;
   outcome: EventOutcome;
@@ -111,11 +123,25 @@ export type EventResult = {
   itemId?: string;
   defeated: string[];
   notable?: boolean;
+  /** The rolls behind the outcome, in order. */
+  rolls?: RollRecord[];
 };
 
 export type Phase = 'day' | 'night';
 
-export type Round = { number: number; phase: Phase; events: EventResult[] };
+/** A contestant's state at the end of a round, for the status panel. */
+export type FighterState = Pick<
+  Fighter,
+  'hp' | 'maxHp' | 'items' | 'standing' | 'sideId' | 'allianceId' | 'defeats'
+>;
+
+export type Round = {
+  number: number;
+  phase: Phase;
+  events: EventResult[];
+  /** Everyone's state when the round ends. */
+  after: Record<string, FighterState>;
+};
 
 export type Match = {
   rounds: Round[];

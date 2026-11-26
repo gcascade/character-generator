@@ -7,7 +7,7 @@ import type { Random } from './random';
 export const MIN_CHANCE = 5;
 export const MAX_CHANCE = 95;
 
-const clamp = (value: number) =>
+export const clamp = (value: number) =>
   Math.min(MAX_CHANCE, Math.max(MIN_CHANCE, Math.round(value)));
 
 /** Random part of each skill, from −8 to +8 (research R2). */

@@ -1,7 +1,7 @@
 import type { Locale } from '../i18n';
 import type { ArenaSetup, EventResult, Round } from '../types/arena';
 import type { Gender } from '../types/character';
-import { ARENA_TEXTS } from './data';
+import { ARENA, ARENA_TEXTS } from './data';
 import { capitalize } from './renderText';
 
 export type TextActor = { firstName: string; gender: Gender };
@@ -93,4 +93,23 @@ export const renderRoundTitle = (
     '{number}',
     String(Math.ceil(round.number / 2)),
   );
+};
+
+/** Event types where the only actor undergoes the event (shown on the right). */
+const UNDERGONE = ['hazard', 'arena'];
+/** Event types with a single actor acting on their own (shown on the left). */
+const SOLO = ['find', 'gift', 'forage', 'rest', 'quiet', 'potion', 'treat'];
+
+/**
+ * Who starts an event and who undergoes it, for the portraits beside each line
+ * (maintainer feedback): the first actor acts, the others undergo it.
+ */
+export const eventSides = (
+  result: EventResult,
+): { left: string[]; right: string[] } => {
+  const type = ARENA.events.find((e) => e.id === result.eventId)?.type ?? '';
+  const [first, ...others] = result.actors;
+  if (UNDERGONE.includes(type)) return { left: [], right: result.actors };
+  if (SOLO.includes(type)) return { left: [first], right: [] };
+  return { left: [first], right: others };
 };

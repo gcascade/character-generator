@@ -131,6 +131,9 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   `src/data/locales/<locale>/arena.json`; `src/data/arena.test.ts` lists the outcomes per type and checks French rules.
 - `ArenaProvider` stores `{ version: 1, contestants, sides, seed, shownRounds }` in `localStorage["arena"]`
   (`storedArena.ts`); the match is recomputed, never stored. Share links: `<app>/arena#a1.<deflate-raw base64url>`.
+- 4–6 events per period (`MIN_EVENTS`/`MAX_EVENTS`), round limit `4 + 0.9 × contestants`; each event keeps its dice
+  (`rolls`) and each round the state of everyone after it (`after`), shown by `RoundView` (portraits via
+  `eventSides`, stacked by `PortraitStack`) and `ContestantStatus`; `fillRoster` fills with solos or teams.
 - Invariants tested over 1,000 matches: one winning side within the round limit, teammates never defeat each other,
   good characters never betray; balanced teams beat single-class teams (coverage bonus, `BALANCE_BONUS`).
 

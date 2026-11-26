@@ -29,7 +29,7 @@ import {
 import { ARENA, type ArenaEventKind } from './data';
 import { balanceOf } from './partyDepth';
 import { generateRandomCharacter } from './generate';
-import { renderParty } from './party';
+import { generateParty, renderParty } from './party';
 import { createRandom, newSeed, type Random } from './random';
 import { rollSkills } from './skills';
 
@@ -232,8 +232,12 @@ export const randomLoadouts = (
 export const BALANCE_BONUS = 4;
 
 /** Round after which the arena forces a finale (research R6). */
-export const roundLimit = (sideCount: number) =>
-  Math.min(16, 3 + Math.ceil(sideCount * 0.5));
+export const roundLimit = (contestantCount: number) =>
+  Math.min(60, 4 + Math.ceil(contestantCount * 0.9));
+
+/** Events told per day or night: 4 to 6 (maintainer feedback). */
+export const MIN_EVENTS = 4;
+export const MAX_EVENTS = 6;
 
 const FIGHTS = ['fight', 'ambush', 'finish', 'betray'];
 
@@ -302,7 +306,10 @@ const candidatesFor = (
     let weight = kind.weight;
     if (FIGHTS.includes(kind.type)) weight *= 1.5 + state.round * 0.5;
     if (kind.type === 'arena') {
-      weight *= state.round * (state.round >= state.limit - 1 ? 5 : 1);
+      // The arena tightens in the second half of the match, deadly at the very end.
+      if (state.round < Math.ceil(state.limit * 0.4)) continue;
+      weight *= (10 * state.round) / state.limit;
+      if (state.round >= state.limit - 1) weight *= 5;
     }
     if (kind.actors === 1) {
       if (kind.type === 'potion' && !(isWounded(a) && hasItemTag(a, 'heal')))
@@ -371,6 +378,22 @@ const candidatesFor = (
   return list;
 };
 
+const stateOf = (fighters: Fighter[]): Round['after'] =>
+  Object.fromEntries(
+    fighters.map((f) => [
+      f.id,
+      {
+        hp: Math.max(0, f.hp),
+        maxHp: f.maxHp,
+        items: [...f.items],
+        standing: f.standing,
+        sideId: f.sideId,
+        defeats: f.defeats,
+        ...(f.allianceId && { allianceId: f.allianceId }),
+      },
+    ]),
+  );
+
 const pickWeighted = (random: Random, candidates: Candidate[]) => {
   const total = candidates.reduce((sum, c) => sum + c.weight, 0);
   let roll = random.next() * total;
@@ -392,7 +415,8 @@ export const simulate = (setup: ArenaSetup): Match => {
     ),
     balance: teamBalance(setup),
     round: 0,
-    limit: roundLimit(new Set(setup.contestants.map((c) => c.sideId)).size),
+    limit: roundLimit(setup.contestants.length),
+    rolls: [],
     random: createRandom(`${setup.seed}:match`),
   };
   const all = Object.values(fighters);
@@ -404,11 +428,14 @@ export const simulate = (setup: ArenaSetup): Match => {
     const phase = phaseOf(state.round);
     const events: EventResult[] = [];
     const free = state.random.shuffle(all.filter((f) => f.standing));
-    while (free.length) {
+    const count = MIN_EVENTS + state.random.int(MAX_EVENTS - MIN_EVENTS + 1);
+    while (free.length && events.length < count) {
       const a = free[0];
       const candidates = candidatesFor(state, a, free, phase);
       const chosen = pickWeighted(state.random, candidates);
+      state.rolls = [];
       const result = resolveEvent(state, chosen.kind, chosen.actors);
+      if (state.rolls.length) result.rolls = state.rolls;
       events.push(result);
       for (const f of chosen.actors) {
         const index = free.indexOf(f);
@@ -416,7 +443,7 @@ export const simulate = (setup: ArenaSetup): Match => {
       }
       if (standingSides(all).size <= 1) break;
     }
-    rounds.push({ number: state.round, phase, events });
+    rounds.push({ number: state.round, phase, events, after: stateOf(all) });
   }
 
   if (standingSides(all).size > 1) {
@@ -431,6 +458,7 @@ export const simulate = (setup: ArenaSetup): Match => {
       const kind = ARENA.events.find(
         (e) => e.type === 'finale' && (e.when?.alignment === 'good') === honour,
       )!;
+      state.rolls = [];
       const result = resolveEvent(state, kind, [a, b]);
       if (!result.defeated.length) {
         // Nobody fell after a long duel: the more wounded yields.
@@ -447,7 +475,12 @@ export const simulate = (setup: ArenaSetup): Match => {
       result.notable = true;
       events.push(result);
     }
-    rounds.push({ number: state.round, phase: phaseOf(state.round), events });
+    rounds.push({
+      number: state.round,
+      phase: phaseOf(state.round),
+      events,
+      after: stateOf(all),
+    });
   }
 
   const winner = all.find((f) => f.standing)!;
@@ -506,4 +539,30 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
   }
   const moments = events.filter((e) => chosen.has(e)).slice(-MAX_MOMENTS);
   return { winners, rows, moments };
+};
+
+export type FillShape = number | 'mixed';
+
+/**
+ * Fills the arena up to `target` contestants with random characters: solos
+ * (shape 1), random parties of `shape` members, or a mix of both.
+ */
+export const fillRoster = (
+  setup: ArenaSetup,
+  target: number,
+  shape: FillShape,
+  locale: Locale,
+  random: Random = createRandom(newSeed()),
+): ArenaSetup => {
+  let next = setup;
+  const goal = Math.min(MAX_CONTESTANTS, target);
+  while (next.contestants.length < goal) {
+    const left = goal - next.contestants.length;
+    const size = Math.min(left, shape === 'mixed' ? 1 + random.int(4) : shape);
+    next =
+      size < 2
+        ? addRandom(next, 1)
+        : addParty(next, generateParty({ size }), locale);
+  }
+  return next;
 };

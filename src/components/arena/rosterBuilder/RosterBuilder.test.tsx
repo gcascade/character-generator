@@ -18,6 +18,7 @@ const setup = (count = 0) => {
     onAddCharacter: vi.fn(),
     onAddParty: vi.fn(),
     onAddRandom: vi.fn(),
+    onFill: vi.fn(),
     onRandomLoadouts: vi.fn(),
     onClear: vi.fn(),
   };
@@ -74,6 +75,24 @@ describe('RosterBuilder', () => {
     );
     expect(props.onAddRandom).toHaveBeenCalledWith(4);
     expect(screen.getByText('3 / 48 contestants')).toBeInTheDocument();
+  });
+
+  it('fills the arena with teams of the chosen size', async () => {
+    const props = setup(2);
+    await userEvent.click(screen.getByRole('combobox', { name: 'Up to' }));
+    await userEvent.click(
+      within(screen.getByRole('listbox')).getByRole('option', { name: '24' }),
+    );
+    await userEvent.click(screen.getByRole('combobox', { name: 'As' }));
+    await userEvent.click(
+      within(screen.getByRole('listbox')).getByRole('option', {
+        name: 'teams of 3',
+      }),
+    );
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Fill the arena' }),
+    );
+    expect(props.onFill).toHaveBeenCalledWith(24, 3);
   });
 
   it('says when the arena is full', () => {

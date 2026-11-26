@@ -31,7 +31,9 @@ describe('arena share links (spec 012 US5)', () => {
     expect(shared!.sides.map((s) => s.name)).toEqual(
       setup.sides.map((s) => s.name),
     );
-    expect(simulate(shared!).rounds).toEqual(simulate(setup).rounds);
+    // Side ids are renamed by the link; the story is the same.
+    const events = (s: typeof setup) => simulate(s).rounds.map((r) => r.events);
+    expect(events(shared!)).toEqual(events(setup));
   });
 
   it('keeps a 48-contestant link under 8 KB', async () => {

@@ -5,6 +5,7 @@ import {
   canStart,
   contestantSkills,
   emptySetup,
+  fillRoster,
   MAX_CONTESTANTS,
   randomLoadouts,
   removeContestant,
@@ -148,7 +149,9 @@ describe('arena match (spec 012 US2)', () => {
       const standing = Object.values(match.fighters).filter((f) => f.standing);
       expect(new Set(standing.map((f) => f.sideId)).size).toBe(1);
       expect(standing[0].sideId).toBe(match.winnerSideId);
-      expect(match.rounds.length).toBeLessThanOrEqual(roundLimit(n) + 1);
+      expect(match.rounds.length).toBeLessThanOrEqual(
+        roundLimit(setup.contestants.length) + 1,
+      );
       const alive = new Set(setup.contestants.map((c) => c.id));
       match.rounds.forEach((round, index) => {
         const actors = round.events.flatMap((e) => e.actors);
@@ -161,9 +164,12 @@ describe('arena match (spec 012 US2)', () => {
             actors.length,
           );
         }
-        const last = index === match.rounds.length - 1;
-        if (!last) {
-          for (const id of alive) expect(actors).toContain(id);
+        // 4 to 6 events per period, fewer only when too few fighters are left.
+        if (!finale) {
+          expect(round.events.length).toBeLessThanOrEqual(6);
+          if (alive.size >= 12 && index < match.rounds.length - 1) {
+            expect(round.events.length).toBeGreaterThanOrEqual(4);
+          }
         }
         for (const e of round.events)
           for (const id of e.defeated) alive.delete(id);
@@ -314,4 +320,29 @@ describe('teams, alignment and ties (spec 012 US3)', () => {
     }
     expect(wins / matches).toBeGreaterThan(0.6);
   }, 60_000);
+});
+
+describe('filling the arena (maintainer feedback)', () => {
+  it('fills up to the target with teams of the chosen size', () => {
+    const setup = fillRoster(addRandom(emptySetup(), 2), 12, 3, 'en');
+    expect(setup.contestants).toHaveLength(12);
+    const teams = setup.sides.filter((s) => s.kind === 'team');
+    expect(teams.length).toBeGreaterThanOrEqual(3);
+    for (const team of teams) {
+      expect(
+        setup.contestants.filter((c) => c.sideId === team.id).length,
+      ).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it('fills with solos, or a mix, and never past 48', () => {
+    expect(
+      fillRoster(emptySetup(), 5, 1, 'en').sides.every(
+        (s) => s.kind === 'solo',
+      ),
+    ).toBe(true);
+    expect(
+      fillRoster(emptySetup(), 100, 'mixed', 'fr').contestants,
+    ).toHaveLength(48);
+  });
 });

@@ -147,6 +147,24 @@ describe('Arena page — match (spec 012 US2)', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('shows the dice and the state of the contestants', async () => {
+    await start();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Skip to the end' }),
+    );
+    expect(screen.getAllByText(/%\s→\s\d+/).length).toBeGreaterThan(0);
+    await userEvent.click(
+      screen.getByRole('switch', { name: 'Show the dice' }),
+    );
+    expect(screen.queryAllByText(/%\s→\s\d+/)).toHaveLength(0);
+    await userEvent.click(
+      screen.getByRole('button', { name: 'State of the contestants' }),
+    );
+    expect(
+      screen.getByRole('region', { name: 'State of the contestants' }),
+    ).toBeInTheDocument();
+  });
+
   it('keeps the same events when the language changes', async () => {
     await start();
     const lines = screen.getAllByRole('listitem').length;

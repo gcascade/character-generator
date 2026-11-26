@@ -19,6 +19,7 @@ const meta = {
     onAddCharacter: fn(),
     onAddParty: fn(),
     onAddRandom: fn(),
+    onFill: fn(),
     onRandomLoadouts: fn(),
     onClear: fn(),
   },
