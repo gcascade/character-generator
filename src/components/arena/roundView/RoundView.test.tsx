@@ -1,5 +1,6 @@
 import { arenaSetup } from '@Test/stubs/Arena.stubs';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { simulate } from '../../../content/arena';
 import { LocaleProvider } from '../../../i18n';
@@ -32,6 +33,19 @@ describe('RoundView', () => {
     render(<RoundView round={first} setup={arenaSetup} standing={1} finale />);
     expect(
       screen.getByRole('heading', { name: 'The finale' }),
+    ).toBeInTheDocument();
+  });
+
+  it('opens the card of a contestant when hovering a highlighted name', async () => {
+    render(<RoundView round={first} setup={arenaSetup} standing={4} />);
+    const [event] = first.events;
+    const name = arenaSetup.contestants.find((c) => c.id === event.actors[0])!
+      .character.firstName;
+    const [highlighted] = screen.getAllByText(name, { selector: 'span' });
+    await userEvent.hover(highlighted);
+    const tooltip = await screen.findByRole('tooltip');
+    expect(
+      within(tooltip).getByRole('group', { name: `Skills of ${name}` }),
     ).toBeInTheDocument();
   });
 });

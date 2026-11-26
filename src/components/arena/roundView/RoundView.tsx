@@ -9,9 +9,10 @@ import React, { FC } from 'react';
 import { ARENA_TEXTS } from '../../../content/data';
 import {
   eventSides,
-  renderEvent,
+  eventParts,
   renderRoundTitle,
 } from '../../../content/arenaText';
+import ContestantPeek, { PeekCard } from '../contestantPeek/ContestantPeek';
 import { useLocale, useT } from '../../../i18n';
 import type { ArenaSetup, EventResult, Round } from '../../../types/arena';
 import PortraitStack from '../portraitStack/PortraitStack';
@@ -90,8 +91,41 @@ const RoundView: FC<RoundViewProps> = ({
     <PortraitStack
       characters={ids.map(character)}
       faded={ids.map((id) => event.defeated.includes(id))}
+      peek={(index) => (
+        <PeekCard
+          setup={setup}
+          id={ids[index]}
+          state={event.before?.[ids[index]]}
+        />
+      )}
     />
   );
+  const text = (event: EventResult) =>
+    eventParts(event, setup, locale).map((part, index) =>
+      typeof part === 'string' ? (
+        part
+      ) : (
+        <ContestantPeek
+          key={index}
+          setup={setup}
+          id={part.actor}
+          state={event.before?.[part.actor]}
+        >
+          <Box
+            component="span"
+            tabIndex={0}
+            sx={{
+              fontWeight: 600,
+              textDecoration: 'underline dotted',
+              textUnderlineOffset: '3px',
+              cursor: 'help',
+            }}
+          >
+            {part.name}
+          </Box>
+        </ContestantPeek>
+      ),
+    );
   const Icon = finale
     ? FinaleIcon
     : round.phase === 'day'
@@ -139,7 +173,7 @@ const RoundView: FC<RoundViewProps> = ({
                     }}
                   />
                 )}
-                {renderEvent(event, setup, locale)}
+                {text(event)}
               </Typography>
               {showRolls && <Rolls event={event} setup={setup} />}
             </Box>
