@@ -175,11 +175,11 @@ switch rewords the same events.
 
 **Independent test**: a shared link opened in a fresh browser shows the same roster and story.
 
-- [ ] T027 [US5] `encodeArena` / `decodeArena` / `arenaUrl` in src/content/share.ts (`#a1.`, deflate-raw with
+- [x] T027 [US5] `encodeArena` / `decodeArena` / `arenaUrl` in src/content/share.ts (`#a1.`, deflate-raw with
       `CompressionStream`, base64url, positional arrays reusing the character encoding, zod validation, unknown ids
       dropped); tests (round trip of a 48-contestant setup gives the same `simulate` result — SC-006; damaged data →
       undefined; 48-contestant link under 8 KB)
-- [ ] T028 [US5] Replay (shownRounds back to 1), Play again (new seed: new skills and story), Share (copy link) in
+- [x] T028 [US5] Replay (shownRounds back to 1), Play again (new seed: new skills and story), Share (copy link) in
       src/pages/arena/Arena.tsx; opening `/arena#a1.…` shows the shared match read-only with "Use this roster"
       (confirmation before replacing the local setup) and an error message for unreadable links; page tests
 

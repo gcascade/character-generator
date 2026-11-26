@@ -4,10 +4,20 @@ import {
   FastForward as SkipIcon,
   PlayArrow as StartIcon,
   Replay as ReplayIcon,
+  Share as ShareIcon,
   SkipNext as NextIcon,
+  SystemUpdateAlt as UseIcon,
 } from '@mui/icons-material';
-import { Alert, Box, Button, Typography } from '@mui/material';
-import React, { FC, useContext, useMemo } from 'react';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+} from '@mui/material';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import ShareDialog from '../../components/common/share/ShareDialog';
 import ContestantCard from '../../components/arena/contestantCard/ContestantCard';
 import LoadoutPicker from '../../components/arena/loadoutPicker/LoadoutPicker';
 import RosterBuilder from '../../components/arena/rosterBuilder/RosterBuilder';
@@ -19,10 +29,12 @@ import {
   simulate,
   summarize,
 } from '../../content/arena';
+import { ARENA_PREFIX, arenaUrl, decodeArena } from '../../content/share';
 import { CharacterContext } from '../../contexts/CharacterContext';
 import { DataContext } from '../../contexts/DataContext';
 import useArena from '../../hooks/useArena';
 import useParty from '../../hooks/useParty';
+import useShare from '../../hooks/useShare';
 import { useLocale, useT } from '../../i18n';
 import type { ArenaSetup } from '../../types/arena';
 
@@ -87,24 +99,48 @@ const isFinale = (events: { eventId: string }[]) =>
   events.length > 0 &&
   events.every((e) => e.eventId.startsWith('event-finale'));
 
+type MatchViewProps = {
+  setup: ArenaSetup;
+  /** Rounds revealed; more than the match has shows the summary. */
+  shownRounds: number;
+  onShow: (rounds: number) => void;
+  /** A new draw with the same roster (own matches only). */
+  onPlayAgain?: VoidFunction;
+  onBack?: VoidFunction;
+  /** Takes a shared roster as one's own. */
+  onUseRoster?: VoidFunction;
+};
+
 /** The match told round by round, up to the rounds the player has revealed. */
-const MatchView: FC = () => {
+const MatchView: FC<MatchViewProps> = ({
+  setup,
+  shownRounds,
+  onShow,
+  onPlayAgain,
+  onBack,
+  onUseRoster,
+}) => {
   const t = useT();
-  const arena = useArena();
-  const { setup } = arena;
+  const { share, fallbackUrl, closeFallback } = useShare();
   const { contestants, sides, seed } = setup;
   const match = useMemo(
     () => simulate({ contestants, sides, seed, shownRounds: 0 }),
     [contestants, sides, seed],
   );
   const total = match.rounds.length;
-  const shown = Math.min(setup.shownRounds, total);
-  const finished = setup.shownRounds > total;
+  const shown = Math.min(shownRounds, total);
+  const finished = shownRounds > total;
   const standingAfter = match.rounds.reduce<number[]>((list, round) => {
     const before = list.at(-1) ?? contestants.length;
     const fallen = round.events.reduce((n, e) => n + e.defeated.length, 0);
     return [...list, before - fallen];
   }, []);
+  const onShare = async () =>
+    share({
+      title: t('arena.title'),
+      url: await arenaUrl(setup),
+      copied: 'arena.shared',
+    });
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -126,38 +162,88 @@ const MatchView: FC = () => {
             <Button
               variant="contained"
               startIcon={<NextIcon />}
-              onClick={() => arena.showRounds(setup.shownRounds + 1)}
+              onClick={() => onShow(shownRounds + 1)}
             >
               {t('arena.nextRound')}
             </Button>
-            <Button
-              startIcon={<SkipIcon />}
-              onClick={() => arena.showRounds(total + 1)}
-            >
+            <Button startIcon={<SkipIcon />} onClick={() => onShow(total + 1)}>
               {t('arena.skip')}
             </Button>
           </>
         )}
         {finished && (
-          <>
-            <Button
-              variant="contained"
-              startIcon={<ReplayIcon />}
-              onClick={() => arena.showRounds(1)}
-            >
-              {t('arena.replay')}
-            </Button>
-            <Button startIcon={<AgainIcon />} onClick={arena.newDraw}>
-              {t('arena.playAgain')}
-            </Button>
-          </>
+          <Button
+            variant="contained"
+            startIcon={<ReplayIcon />}
+            onClick={() => onShow(1)}
+          >
+            {t('arena.replay')}
+          </Button>
         )}
-        <Button startIcon={<BackIcon />} onClick={() => arena.showRounds(0)}>
-          {t('arena.backToSetup')}
+        {finished && onPlayAgain && (
+          <Button startIcon={<AgainIcon />} onClick={onPlayAgain}>
+            {t('arena.playAgain')}
+          </Button>
+        )}
+        <Button startIcon={<ShareIcon />} onClick={() => void onShare()}>
+          {t('arena.share')}
         </Button>
+        {onUseRoster && (
+          <Button startIcon={<UseIcon />} onClick={onUseRoster}>
+            {t('arena.useRoster')}
+          </Button>
+        )}
+        {onBack && (
+          <Button startIcon={<BackIcon />} onClick={onBack}>
+            {t('arena.backToSetup')}
+          </Button>
+        )}
       </Box>
+      <ShareDialog url={fallbackUrl} onClose={closeFallback} />
     </Box>
   );
+};
+
+type Shared = 'loading' | 'unreadable' | ArenaSetup | undefined;
+
+/** A match opened from an `#a1.` link (spec 012 US5): read-only, with its own progress. */
+const SharedMatch: FC<{ shared: ArenaSetup }> = ({ shared }) => {
+  const t = useT();
+  const arena = useArena();
+  const navigate = useNavigate();
+  const [shownRounds, setShownRounds] = useState(1);
+  return (
+    <MatchView
+      setup={shared}
+      shownRounds={shownRounds}
+      onShow={setShownRounds}
+      onUseRoster={() => {
+        if (!window.confirm(t('arena.useRosterConfirm'))) return;
+        arena.replace({ ...shared, shownRounds: 0 });
+        void navigate('/arena', { replace: true });
+      }}
+    />
+  );
+};
+
+const useSharedMatch = (): Shared => {
+  const { hash } = useLocation();
+  const data = hash.startsWith(`#${ARENA_PREFIX}`)
+    ? hash.slice(ARENA_PREFIX.length + 1)
+    : undefined;
+  const [result, setResult] = useState<{ data: string; setup: Shared }>();
+  useEffect(() => {
+    if (!data) return;
+    let active = true;
+    void decodeArena(data).then((setup) => {
+      if (active) setResult({ data, setup: setup ?? 'unreadable' });
+    });
+    return () => {
+      active = false;
+    };
+  }, [data]);
+  if (!data) return undefined;
+  return result?.data === data ? result.setup : 'loading';
 };
 
 /** The arena (spec 012): build a roster, then watch the match. */
@@ -171,6 +257,32 @@ const Arena: FC = () => {
   const { party, savedParties } = useParty();
   const start = canStart(setup);
   const watching = setup.shownRounds > 0 && start.ok;
+  const shared = useSharedMatch();
+
+  if (shared) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+          maxWidth: 900,
+          mx: 'auto',
+        }}
+      >
+        <Typography variant="h3" component="h1">
+          {t('arena.sharedTitle')}
+        </Typography>
+        {shared === 'loading' && (
+          <CircularProgress aria-label={t('arena.sharedTitle')} />
+        )}
+        {shared === 'unreadable' && (
+          <Alert severity="error">{t('arena.unreadable')}</Alert>
+        )}
+        {typeof shared === 'object' && <SharedMatch shared={shared} />}
+      </Box>
+    );
+  }
 
   if (watching) {
     return (
@@ -186,7 +298,13 @@ const Arena: FC = () => {
         <Typography variant="h3" component="h1">
           {t('arena.title')}
         </Typography>
-        <MatchView />
+        <MatchView
+          setup={setup}
+          shownRounds={setup.shownRounds}
+          onShow={arena.showRounds}
+          onPlayAgain={arena.newDraw}
+          onBack={() => arena.showRounds(0)}
+        />
       </Box>
     );
   }

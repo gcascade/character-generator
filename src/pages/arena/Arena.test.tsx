@@ -1,9 +1,12 @@
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { MemoryRouter } from 'react-router';
+import { AlertManagerProvider } from '../../contexts/AlertManagerContext';
 import { ArenaProvider } from '../../contexts/ArenaContext';
+import { addRandom, emptySetup } from '../../content/arena';
+import { encodeArena } from '../../content/share';
 import { CharacterProvider } from '../../contexts/CharacterContext';
 import { DataProvider } from '../../contexts/DataContext';
 import { PartyProvider } from '../../contexts/PartyContext';
@@ -15,17 +18,19 @@ const SwitchToFrench = () => {
   return <button onClick={() => setLocale('fr')}>fr</button>;
 };
 
-const renderArena = () =>
+const renderArena = (entry = '/arena') =>
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[entry]}>
       <LocaleProvider initial="en">
         <CharacterProvider initCharacter={korvusBlackiron}>
           <DataProvider>
             <PartyProvider>
-              <ArenaProvider>
-                <SwitchToFrench />
-                <Arena />
-              </ArenaProvider>
+              <AlertManagerProvider>
+                <ArenaProvider>
+                  <SwitchToFrench />
+                  <Arena />
+                </ArenaProvider>
+              </AlertManagerProvider>
             </PartyProvider>
           </DataProvider>
         </CharacterProvider>
@@ -170,6 +175,59 @@ describe('Arena page — match (spec 012 US2)', () => {
     );
     expect(
       screen.getByRole('button', { name: 'Start the match' }),
+    ).toBeInTheDocument();
+  });
+});
+
+describe('Arena page — sharing (spec 012 US5)', () => {
+  afterEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  it('copies a link to the match', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    });
+    renderArena();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Add 4 random characters' }),
+    );
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Start the match' }),
+    );
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Share the match' }),
+    );
+    await waitFor(() => expect(writeText).toHaveBeenCalled());
+    expect(writeText.mock.calls[0][0]).toMatch(/\/arena#a1\./);
+  });
+
+  it('opens a shared match read-only, and can use its roster', async () => {
+    const shared = { ...addRandom(emptySetup(), 5), seed: 'shared' };
+    renderArena(`/arena#a1.${await encodeArena(shared)}`);
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'A shared match' }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole('region', { name: 'Day 1' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Play again' }),
+    ).not.toBeInTheDocument();
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Use this roster' }),
+    );
+    expect(await screen.findAllByRole('article')).toHaveLength(5);
+  });
+
+  it('explains when a link cannot be read', async () => {
+    renderArena('/arena#a1.broken');
+    expect(
+      await screen.findByText(/This arena link cannot be read/),
     ).toBeInTheDocument();
   });
 });

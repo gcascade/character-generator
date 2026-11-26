@@ -37,7 +37,8 @@ export const MAX_CONTESTANTS = 48;
 export const MAX_PERKS = 2;
 export const MAX_ITEMS = 3;
 
-const uuid = () => crypto.randomUUID();
+/** Short ids keep share links small; contestant ids also seed their skills. */
+const uuid = () => newSeed();
 
 export const emptySetup = (): ArenaSetup => ({
   contestants: [],

@@ -23,6 +23,8 @@ import { completeParty } from './partyDepth';
 import { fragmentIds } from './generate';
 import { MAX_PARTY_SIZE, MIN_PARTY_SIZE } from './party';
 import { storedCharacterSchema } from './storedCharacter';
+import { arenaSetupSchema } from './storedArena';
+import type { ArenaSetup } from '../types/arena';
 
 /*
  * Share links (spec 007): `<app>/share#c1.<data>`, `#p2.<data>` or (spec 010) `#n1.<data>`. The data is
@@ -608,3 +610,160 @@ export const parseShareHash = (hash: string): SharedContent | undefined => {
   }
   return undefined;
 };
+
+// --- arena (spec 012 R9) -------------------------------------------------------
+
+const toBytes = async (stream: ReadableStream<Uint8Array>) =>
+  new Uint8Array(await new Response(stream).arrayBuffer());
+
+const compress = async (text: string) =>
+  toBytes(
+    new Response(text).body!.pipeThrough(new CompressionStream('deflate-raw')),
+  );
+
+const decompress = async (bytes: Uint8Array) =>
+  new TextDecoder('utf-8', { fatal: true }).decode(
+    await toBytes(
+      new Response(bytes as BodyInit).body!.pipeThrough(
+        new DecompressionStream('deflate-raw'),
+      ),
+    ),
+  );
+
+const bytesToBase64Url = (bytes: Uint8Array) => {
+  let binary = '';
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+};
+
+const base64UrlToBytes = (data: string) =>
+  Uint8Array.from(atob(data.replace(/-/g, '+').replace(/_/g, '/')), (c) =>
+    c.charCodeAt(0),
+  );
+
+/** A character for the arena link: written stories are dropped, only what the arena uses is kept. */
+const arenaCharacter = (character: Character): Character => {
+  const copy = { ...character };
+  delete copy.portraitId;
+  if (copy.epithet !== undefined || copy.background !== undefined) {
+    copy.epithet = copy.epithet ?? '';
+    copy.background = { title: '', content: [] };
+  }
+  return copy;
+};
+
+const arenaPayload = z.tuple([
+  z.string().min(1).max(40),
+  z
+    .array(
+      z.tuple([
+        z.union([z.literal(0), z.literal(1)]),
+        z.string().max(200).nullable(),
+        z
+          .array(
+            z.tuple([z.string().max(60), z.number().int(), z.number().int()]),
+          )
+          .max(40),
+      ]),
+    )
+    .max(48),
+  z
+    .array(
+      z.tuple([
+        z.string().min(1).max(40),
+        z.unknown(),
+        z.number().int().min(0),
+        z.string().max(60).nullable(),
+        z.array(z.string().max(60)).max(5),
+        z.array(z.string().max(60)).max(5),
+      ]),
+    )
+    .max(48),
+]);
+
+/** The roster, choices and seed of a match, compressed for a link. */
+export const encodeArena = async (setup: ArenaSetup) => {
+  const sideIndex = new Map(setup.sides.map((s, i) => [s.id, i]));
+  const contestantIndex = new Map(setup.contestants.map((c, i) => [c.id, i]));
+  const payload = [
+    setup.seed,
+    setup.sides.map((side) => [
+      side.kind === 'team' ? 1 : 0,
+      side.name ?? null,
+      side.ties.map((tie) => [
+        tie.type,
+        contestantIndex.get(tie.from),
+        contestantIndex.get(tie.to),
+      ]),
+    ]),
+    setup.contestants.map((c) => [
+      c.id,
+      toPayload(arenaCharacter(c.character)),
+      sideIndex.get(c.sideId),
+      c.role ?? null,
+      c.perks,
+      c.items,
+    ]),
+  ];
+  return bytesToBase64Url(await compress(JSON.stringify(payload)));
+};
+
+/** A shared match, validated like a stored arena (constitution IV); undefined when unreadable. */
+export const decodeArena = async (
+  data: string,
+): Promise<ArenaSetup | undefined> => {
+  try {
+    const parsed = arenaPayload.safeParse(
+      JSON.parse(await decompress(base64UrlToBytes(data))),
+    );
+    if (!parsed.success) return undefined;
+    const [seed, sides, contestants] = parsed.data;
+    const sideIds = sides.map((_, i) => `side-${i}`);
+    const ids = contestants.map(([id]) => id);
+    const characters = contestants.map(([, character]) =>
+      fromPayload(character),
+    );
+    if (characters.some((c) => !c)) return undefined;
+    const setup = {
+      seed,
+      shownRounds: 1,
+      sides: sides.map(([kind, sideName, ties], i) => ({
+        id: sideIds[i],
+        kind: kind === 1 ? ('team' as const) : ('solo' as const),
+        ...(sideName !== null && { name: sideName }),
+        ties: ties.map(([type, from, to], t) => ({
+          id: `tie-${i}-${t}`,
+          type,
+          from: ids[from] ?? '',
+          to: ids[to] ?? '',
+        })),
+      })),
+      contestants: contestants.map(([id, , side, role, perks, items], i) => ({
+        id,
+        character: characters[i]!,
+        sideId: sideIds[side] ?? '',
+        ...(role !== null && { role }),
+        perks,
+        items,
+      })),
+    };
+    const checked = arenaSetupSchema.safeParse(setup);
+    return checked.success &&
+      checked.data.contestants.length === contestants.length
+      ? checked.data
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+export const ARENA_PREFIX = 'a1.';
+
+/** `<app>/arena#a1.<data>` */
+export const arenaUrl = async (
+  setup: ArenaSetup,
+  base = `${location.origin}${import.meta.env.BASE_URL}`,
+) => `${base}arena#${ARENA_PREFIX}${await encodeArena(setup)}`;
