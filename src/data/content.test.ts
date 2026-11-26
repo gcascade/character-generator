@@ -58,8 +58,8 @@ describe('locale files', () => {
       );
     });
 
-    // Party, tie and hook texts use their own placeholders, checked below.
-    if (['party', 'ties', 'hooks'].includes(file)) return;
+    // Party, tie, hook and arena texts use their own placeholders, checked elsewhere.
+    if (['party', 'ties', 'hooks', 'arena'].includes(file)) return;
 
     if (file === 'ui') {
       it('uses the same {params} in both languages', () => {

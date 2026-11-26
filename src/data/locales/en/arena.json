@@ -1,0 +1,616 @@
+{
+  "skills": {
+    "melee": "Melee",
+    "ranged": "Ranged",
+    "magic": "Magic",
+    "athletics": "Athletics",
+    "stealth": "Stealth",
+    "endurance": "Endurance",
+    "perception": "Perception",
+    "survival": "Survival",
+    "lore": "Lore",
+    "healing": "Healing",
+    "persuasion": "Persuasion",
+    "intimidation": "Intimidation",
+    "deception": "Deception"
+  },
+  "families": {
+    "combat": "Combat",
+    "physical": "Physical",
+    "mind": "Mind",
+    "social": "Social"
+  },
+  "perks": {
+    "perk-survivalist": {
+      "name": "Survivalist",
+      "description": "Finds food and shelter easily (+15 Survival)."
+    },
+    "perk-lucky": {
+      "name": "Lucky",
+      "description": "Rerolls one failed check per match."
+    },
+    "perk-brute": {
+      "name": "Brute",
+      "description": "Hits harder and takes more blows (+10 Melee, +4 HP)."
+    },
+    "perk-sharpshooter": {
+      "name": "Sharpshooter",
+      "description": "Rarely misses (+15 Ranged)."
+    },
+    "perk-shadow": {
+      "name": "Shadow",
+      "description": "Vanishes in a heartbeat (+15 Stealth)."
+    },
+    "perk-silver-tongue": {
+      "name": "Silver tongue",
+      "description": "Talks their way out of anything (+10 Persuasion, +10 Deception)."
+    },
+    "perk-fearsome": {
+      "name": "Fearsome",
+      "description": "One look is enough (+15 Intimidation)."
+    },
+    "perk-healers-hands": {
+      "name": "Healer's hands",
+      "description": "Heals others better (+15 Healing)."
+    },
+    "perk-scholar": {
+      "name": "Scholar",
+      "description": "Knows the old traps (+15 Lore)."
+    },
+    "perk-tough": {
+      "name": "Tough",
+      "description": "Hard to bring down (+10 Endurance, +8 HP)."
+    },
+    "perk-quick": {
+      "name": "Quick",
+      "description": "Fast on their feet, escapes easily (+10 Athletics)."
+    },
+    "perk-arcane-spark": {
+      "name": "Arcane spark",
+      "description": "A touch of magic, even without training (+15 Magic)."
+    },
+    "perk-watchful": {
+      "name": "Watchful",
+      "description": "Never caught off guard (+15 Perception)."
+    },
+    "perk-charming": {
+      "name": "Charming",
+      "description": "Makes friends quickly (+5 Persuasion, alliances more likely)."
+    }
+  },
+  "items": {
+    "item-sword": {
+      "a": "a sword",
+      "the": "the sword",
+      "description": "A trusty blade (damage 6, +5 Melee)."
+    },
+    "item-axe": {
+      "a": "an axe",
+      "the": "the axe",
+      "description": "Heavy and brutal (damage 7)."
+    },
+    "item-spear": {
+      "a": "a spear",
+      "the": "the spear",
+      "description": "Keeps foes at a distance and catches fish (damage 6)."
+    },
+    "item-dagger": {
+      "a": "a dagger",
+      "the": "the dagger",
+      "description": "Small, quiet, sharp (damage 4, +5 Stealth)."
+    },
+    "item-bow": {
+      "a": "a bow",
+      "the": "the bow",
+      "description": "Strikes from afar (ranged, damage 6)."
+    },
+    "item-crossbow": {
+      "a": "a crossbow",
+      "the": "the crossbow",
+      "description": "Slow to load, hard to stop (ranged, damage 7)."
+    },
+    "item-throwing-knives": {
+      "a": "throwing knives",
+      "the": "the throwing knives",
+      "description": "A handful of quick blades (ranged, damage 4)."
+    },
+    "item-wand": {
+      "a": "a magic wand",
+      "the": "the magic wand",
+      "description": "Casts bolts of light (magic, damage 6)."
+    },
+    "item-staff": {
+      "a": "a wizard's staff",
+      "the": "the wizard's staff",
+      "description": "Focuses spells (magic, damage 5, +5 Magic)."
+    },
+    "item-shield": {
+      "a": "a shield",
+      "the": "the shield",
+      "description": "Blocks blows (+5 Athletics)."
+    },
+    "item-chain-shirt": {
+      "a": "a chain shirt",
+      "the": "the chain shirt",
+      "description": "Light armour (+5 HP)."
+    },
+    "item-cloak": {
+      "a": "a dark cloak",
+      "the": "the dark cloak",
+      "description": "Blends into the shadows (+10 Stealth)."
+    },
+    "item-rope": {
+      "a": "a rope",
+      "the": "the rope",
+      "description": "Gets you out of pits and up walls (+5 Athletics)."
+    },
+    "item-lantern": {
+      "a": "a lantern",
+      "the": "the lantern",
+      "description": "Light in the dark (+5 Perception)."
+    },
+    "item-map": {
+      "a": "a map of the arena",
+      "the": "the map",
+      "description": "Shows the safe paths (+10 Survival)."
+    },
+    "item-lockpick": {
+      "a": "a set of lockpicks",
+      "the": "the lockpicks",
+      "description": "Opens chests and cages."
+    },
+    "item-healing-potion": {
+      "a": "a healing potion",
+      "the": "the healing potion",
+      "description": "Heals wounds once."
+    },
+    "item-rations": {
+      "a": "a bag of rations",
+      "the": "the rations",
+      "description": "Keeps hunger away."
+    },
+    "item-smoke-bomb": {
+      "a": "a smoke bomb",
+      "the": "the smoke bomb",
+      "description": "A sure escape, once."
+    },
+    "item-holy-water": {
+      "a": "a flask of holy water",
+      "the": "the holy water",
+      "description": "Blessed water that heals, once."
+    }
+  },
+  "events": {
+    "event-find-chapel": {
+      "success": "Searching a ruined chapel, {a} finds {item} under a toppled statue of a forgotten saint.",
+      "failure": "{a} searches a ruined chapel for an hour and finds only pigeons, who are not pleased."
+    },
+    "event-find-chest": {
+      "success": "{a} spots a chest half buried in the moss and pries out {item}.",
+      "failure": "{a} digs up a promising chest. It is full of very old socks."
+    },
+    "event-find-camp": {
+      "success": "{a} comes across an abandoned camp, still warm, and leaves with {item}.",
+      "failure": "{a} finds an abandoned camp, but someone was faster: only ashes remain."
+    },
+    "event-find-tree": {
+      "success": "{a} climbs an ancient oak to reach a bundle caught in its branches: {item}.",
+      "failure": "{a} tries to climb an ancient oak, slips twice and decides that whatever is up there can stay there."
+    },
+    "event-find-river": {
+      "success": "{a} fishes a waterlogged satchel out of the river. Inside: {item}.",
+      "failure": "{a} wades into the river after a floating satchel and comes back with nothing but wet boots."
+    },
+    "event-find-armoury": {
+      "success": "Under cover of darkness, {a} slips into the arena's old armoury and takes {item}.",
+      "failure": "{a} tries to sneak into the old armoury, knocks over a rack of shields and flees in a terrible clatter."
+    },
+    "event-find-lantern-night": {
+      "success": "Despite the darkness, {a} notices a glint between two rocks: {item}.",
+      "failure": "{a} gropes around in the dark for a glint seen at dusk and finds only a very surprised toad."
+    },
+    "event-gift-sky": {
+      "only": "A small parachute drifts down from the sky and lands at the feet of {a}: {item}, with a note saying \"Good luck!\""
+    },
+    "event-forage-berries": {
+      "success": "{a} finds a thicket of blackberries and eats until {{a:his|her|their}} fingers are purple.",
+      "failure": "{a} eats a handful of bright red berries. The rest of the afternoon is spent regretting it."
+    },
+    "event-forage-hunt": {
+      "success": "{a} brings down a hare with a single shot and roasts it over a small fire.",
+      "failure": "{a} spends the morning chasing a hare. The hare wins."
+    },
+    "event-forage-fish": {
+      "success": "{a} catches three fat trout with bare hands and a lot of patience.",
+      "failure": "{a} tries to catch fish with bare hands and falls in the stream. The fish seem amused."
+    },
+    "event-forage-mushrooms": {
+      "success": "{a} recognises a ring of edible mushrooms and makes a surprisingly good soup.",
+      "failure": "{a} eats a pretty blue mushroom and spends an hour discussing philosophy with a tree."
+    },
+    "event-forage-spring": {
+      "success": "{a} follows the sound of water to a clear spring and drinks deeply.",
+      "failure": "{a} drinks from a muddy puddle out of thirst. It was not a good idea."
+    },
+    "event-hazard-pit": {
+      "success": "{a} notices loose branches on the path just in time and steps around a deep pit trap.",
+      "failure": "{a} falls into a pit trap and needs a long, painful time to climb back out.",
+      "defeated": "{a} falls into a deep pit trap and cannot climb out; at nightfall, the arena wardens carry {a} away."
+    },
+    "event-hazard-quicksand": {
+      "success": "{a} sinks into quicksand up to the knees, but pulls free with a mighty effort.",
+      "failure": "{a} gets out of the quicksand, exhausted and covered in mud.",
+      "lost": "{a} escapes the quicksand, but {theItem} is swallowed by the mud.",
+      "defeated": "{a} is caught in quicksand up to the chest; the arena wardens carry {a} away, unconscious."
+    },
+    "event-hazard-rockslide": {
+      "success": "A rockslide thunders down the slope; {a} dives aside just in time.",
+      "failure": "A rockslide catches {a}, who limps away bruised and dusty.",
+      "defeated": "A rockslide buries {a} up to the shoulders; the arena wardens carry {a} away."
+    },
+    "event-hazard-bees": {
+      "success": "{a} disturbs a wild beehive and outruns the whole swarm, waving both arms.",
+      "failure": "{a} disturbs a wild beehive. The bees have opinions, and share them at length.",
+      "defeated": "{a} is chased by a furious swarm of bees into the river; the arena wardens carry {a} away, very swollen."
+    },
+    "event-hazard-cold": {
+      "success": "The night is freezing, but {a} curls up under a rock and holds on until dawn.",
+      "failure": "The night is freezing and {a} shivers until dawn without a wink of sleep.",
+      "defeated": "The cold is too much for {a}; at dawn, the arena wardens carry {a} away, wrapped in a blanket."
+    },
+    "event-hazard-runes": {
+      "success": "{a} recognises warding runes carved on an archway and walks around it. Wise choice.",
+      "failure": "{a} walks under an archway carved with runes, which go off in a flash of blue fire.",
+      "defeated": "{a} triggers a rune trap and is thrown across the clearing; the arena wardens carry {a} away."
+    },
+    "event-hazard-snake": {
+      "success": "{a} spots a viper coiled in the grass and gives it a very respectful berth.",
+      "failure": "A viper bites {a}, who spends a feverish hour sucking out the venom.",
+      "defeated": "A viper bites {a}; the fever comes fast, and the arena wardens carry {a} away to the healers."
+    },
+    "event-hazard-river": {
+      "success": "{a} crosses a fast river from stone to stone without even wetting a boot.",
+      "failure": "{a} slips crossing the river and is carried downstream before reaching the bank.",
+      "lost": "{a} slips crossing the river; the current carries away {theItem}.",
+      "defeated": "{a} is swept away by the river; the arena wardens carry {a} away far downstream."
+    },
+    "event-rest-cave": {
+      "only": "{a} finds a dry cave and sleeps soundly for the first time since the start."
+    },
+    "event-rest-tree": {
+      "only": "{a} ties {{a:himself|herself|themself}} to a high branch and sleeps above the arena, out of reach."
+    },
+    "event-quiet-song": {
+      "only": "{a} sings an old song to keep up {{a:his|her|their}} courage. Somewhere in the dark, someone hums along."
+    },
+    "event-quiet-sharpen": {
+      "only": "{a} spends a quiet hour sharpening, polishing and admiring {{a:his|her|their}} gear."
+    },
+    "event-quiet-stars": {
+      "only": "{a} lies on {{a:his|her|their}} back and counts the stars, wondering how it all came to this."
+    },
+    "event-quiet-squirrel": {
+      "only": "{a} has a long conversation with a squirrel. The squirrel makes some excellent points."
+    },
+    "event-quiet-practice": {
+      "only": "{a} practises alone in a clearing, striking at shadows until the moves feel right."
+    },
+    "event-quiet-watch": {
+      "only": "{a} keeps watch all night with {{a:his|her|their}} back to a rock. Nothing comes. That is almost worse."
+    },
+    "event-potion": {
+      "only": "{a} uses {theItem}; the wounds close and the colour comes back."
+    },
+    "event-treat": {
+      "success": "{a} cleans and binds {{a:his|her|their}} wounds with steady hands.",
+      "failure": "{a} tries to bandage a wound and makes it worse. Bandaging is harder than it looks."
+    },
+    "event-arena-mist": {
+      "success": "A grey mist rolls over the arena, heavy and choking; {a} holds {{a:his|her|their}} breath and pushes through.",
+      "failure": "A choking mist rolls over the arena and {a} comes out coughing, eyes streaming.",
+      "defeated": "The choking mist swallows {a}; when it lifts, the arena wardens carry {a} away."
+    },
+    "event-arena-fire": {
+      "success": "A wall of magical fire sweeps across the arena; {a} sprints ahead of it and makes it out.",
+      "failure": "A wall of magical fire sweeps across the arena and singes {a}, who smells of roast for the rest of the day.",
+      "defeated": "The wall of fire cuts off every path for {a}; the arena wardens carry {a} away through a hidden door."
+    },
+    "event-arena-storm": {
+      "success": "A storm summoned by the arena masters breaks overhead; {a} weathers it under a ledge.",
+      "failure": "The arena masters summon a storm, and a bolt of lightning lands far too close to {a}.",
+      "defeated": "Lightning strikes right next to {a}; dazed and smoking, {a} is carried out by the wardens."
+    },
+    "event-arena-beast": {
+      "success": "The masters release a manticore into the arena. {a} fights it off and it slinks away, sulking.",
+      "failure": "A manticore released by the masters catches {a}, who escapes with a few scratches and a deep dislike of manticores.",
+      "defeated": "A manticore corners {a}; the wardens drive it back with torches and carry {a} out of the arena."
+    },
+    "event-arena-walls": {
+      "success": "With a grinding of stone, the arena walls move closer; {a} scrambles over the rubble in time.",
+      "failure": "The arena walls move closer and {a} is caught by falling stones while running.",
+      "defeated": "The moving walls trap {a} in a dead end; the arena wardens carry {a} away through the gate."
+    },
+    "event-fight-clearing": {
+      "win": "{a} and {b} meet in a clearing and draw their weapons. {a} lands the better blows and {b} retreats into the trees.",
+      "lose": "{a} and {b} meet in a clearing and draw their weapons. {b} is quicker, and {a} has to flee, wounded.",
+      "draw": "{a} and {b} meet in a clearing and draw their weapons. Neither gives an inch; they part, panting, promising to finish it later.",
+      "defeat": "{a} and {b} meet in a clearing and draw their weapons. {a} wins the duel; the arena wardens carry {b} away.",
+      "defeated": "{a} and {b} meet in a clearing and draw their weapons. {b} wins the duel; the arena wardens carry {a} away."
+    },
+    "event-fight-bridge": {
+      "win": "{a} and {b} meet in the middle of a rope bridge. Only one of them will cross. {a} forces {b} back to the far side.",
+      "lose": "{a} and {b} meet in the middle of a rope bridge. Only one of them will cross. {b} forces {a} back the way {{a:he|she|they}} came.",
+      "draw": "{a} and {b} meet in the middle of a rope bridge. Only one of them will cross. The bridge sways so much that they both decide to go round instead.",
+      "defeat": "{a} and {b} meet in the middle of a rope bridge. Only one of them will cross. {b} loses the fight and the footing, and splashes into the river below; the arena wardens carry {b} away.",
+      "defeated": "{a} and {b} meet in the middle of a rope bridge. Only one of them will cross. {a} loses the fight and the footing, and splashes into the river below; the arena wardens carry {a} away."
+    },
+    "event-fight-night": {
+      "win": "In the dark, {a} stumbles right into {b}. Steel rings out. {a} strikes true, and {b} vanishes into the night, hurt.",
+      "lose": "In the dark, {a} stumbles right into {b}. Steel rings out. {b} strikes true, and {a} vanishes into the night, hurt.",
+      "draw": "In the dark, {a} stumbles right into {b}. Steel rings out. They fight blind for a while, then lose each other in the darkness.",
+      "defeat": "In the dark, {a} stumbles right into {b}. Steel rings out. When the moon comes out, {b} is down; the arena wardens carry {b} away.",
+      "defeated": "In the dark, {a} stumbles right into {b}. Steel rings out. When the moon comes out, {a} is down; the arena wardens carry {a} away."
+    },
+    "event-fight-brawl": {
+      "win": "{a} and {b} both reach for the same loaf of bread. It turns into a brawl. {a} keeps the bread and most of {{a:his|her|their}} teeth.",
+      "lose": "{a} and {b} both reach for the same loaf of bread. It turns into a brawl. {b} keeps the bread; {a} keeps a black eye.",
+      "draw": "{a} and {b} both reach for the same loaf of bread. It turns into a brawl. The bread is trampled in the fight. Nobody wins.",
+      "defeat": "{a} and {b} both reach for the same loaf of bread. It turns into a brawl. {a} wins the brawl and the bread; the arena wardens carry {b} away, still hungry.",
+      "defeated": "{a} and {b} both reach for the same loaf of bread. It turns into a brawl. {b} wins the brawl and the bread; the arena wardens carry {a} away, still hungry."
+    },
+    "event-fight-arrows": {
+      "win": "{a} spots {b} across a ravine and nocks an arrow. The shot finds its mark; {b} dives behind the rocks, wounded.",
+      "lose": "{a} spots {b} across a ravine and nocks an arrow. {b} shoots back faster, and {a} has to take cover, wounded.",
+      "draw": "{a} spots {b} across a ravine and nocks an arrow. They trade shots until both run out of patience.",
+      "defeat": "{a} spots {b} across a ravine and nocks an arrow. The arrow strikes home; the arena wardens carry {b} away.",
+      "defeated": "{a} spots {b} across a ravine and nocks an arrow. {b} shoots first and better; the arena wardens carry {a} away."
+    },
+    "event-fight-spells": {
+      "win": "{a} calls up a crackling spell as {b} comes over the hill. The spell hits {b} full on, and {b} runs off with smoking clothes.",
+      "lose": "{a} calls up a crackling spell as {b} comes over the hill. The spell backfires and singes {a}'s eyebrows; {b} takes the chance to strike.",
+      "draw": "{a} calls up a crackling spell as {b} comes over the hill. Sparks fly, the grass catches fire, and both have to run.",
+      "defeat": "{a} calls up a crackling spell as {b} comes over the hill. A blinding flash, and {b} is down; the arena wardens carry {b} away.",
+      "defeated": "{a} calls up a crackling spell as {b} comes over the hill. {b} breaks the spell and answers in kind; the arena wardens carry {a} away."
+    },
+    "event-fight-ruins": {
+      "win": "{a} and {b} circle each other among the ruins of an old tower. {a} drives {b} out of the ruins.",
+      "lose": "{a} and {b} circle each other among the ruins of an old tower. {b} drives {a} out of the ruins.",
+      "draw": "{a} and {b} circle each other among the ruins of an old tower. A wall collapses between them, and the fight ends there.",
+      "defeat": "{a} and {b} circle each other among the ruins of an old tower. {a} has the last word; the arena wardens carry {b} away.",
+      "defeated": "{a} and {b} circle each other among the ruins of an old tower. {b} has the last word; the arena wardens carry {a} away."
+    },
+    "event-fight-mud": {
+      "win": "{a} charges {b} with a war cry, slips in the mud, and the fight begins on all fours. {a} comes out on top, muddy but proud.",
+      "lose": "{a} charges {b} with a war cry, slips in the mud, and the fight begins on all fours. {b} comes out on top; {a} crawls away, muddy and humbled.",
+      "draw": "{a} charges {b} with a war cry, slips in the mud, and the fight begins on all fours. Nobody can tell who is who under the mud. They give up.",
+      "defeat": "{a} charges {b} with a war cry, slips in the mud, and the fight begins on all fours. {a} pins {b} in the mud; the arena wardens carry {b} away, dripping.",
+      "defeated": "{a} charges {b} with a war cry, slips in the mud, and the fight begins on all fours. {b} pins {a} in the mud; the arena wardens carry {a} away, dripping."
+    },
+    "event-ambush-bushes": {
+      "success": "{a} waits in the bushes and leaps out on {b}, who never saw it coming.",
+      "defeat": "{a} ambushes {b} from the bushes; it is over in a moment, and the arena wardens carry {b} away.",
+      "failure": "{a} tries to ambush {b}, but sneezes at the wrong moment.",
+      "defeated": "{a} tries to ambush {b}, who was expecting it; the arena wardens carry {a} away."
+    },
+    "event-ambush-night": {
+      "success": "{a} creeps up on {b}'s camp in the dark and strikes before vanishing again.",
+      "defeat": "{a} creeps up on {b} while {b} sleeps; at dawn, the arena wardens carry {b} away.",
+      "failure": "{a} creeps up on {b} in the dark and steps on a very loud twig.",
+      "defeated": "{a} creeps up on {b}, who was only pretending to sleep; the arena wardens carry {a} away."
+    },
+    "event-social-intimidate": {
+      "success": "{a} stares {b} down with a growl until {b} decides to be somewhere else.",
+      "took": "{a} glares at {b} so fiercely that {b} drops {item} and runs.",
+      "failure": "{a} tries to frighten {b}, who laughs and throws a stone at {{a:his|her|their}} head."
+    },
+    "event-social-spare": {
+      "success": "Cornered by {b}, {a} talks so well about honour and the long road ahead that {b} lets {{a:him|her|them}} go.",
+      "failure": "Cornered by {b}, {a} tries to talk the way out. {b} is not in a talking mood."
+    },
+    "event-social-trap": {
+      "success": "{a} pretends to have found treasure by a cliff. {b} goes to look and tumbles down the slope.",
+      "defeat": "{a} lures {b} onto a crumbling ledge with a tall tale; the arena wardens carry {b} away.",
+      "failure": "{a} tells {b} a story about hidden treasure. {b} has heard that one before."
+    },
+    "event-social-bluff": {
+      "success": "{a} convinces {b} that a whole army is hiding behind the hill. {b} runs.",
+      "took": "{a} convinces {b} that {item} is cursed. {b} drops it and {a} picks it up, unbothered.",
+      "failure": "{a} claims to have an army behind the hill. {b} looks. There is no army."
+    },
+    "event-social-riddle": {
+      "success": "{a} challenges {b} to a riddle contest and wins it with a question about wind.",
+      "took": "{a} wins a riddle contest against {b}, and the prize: {item}.",
+      "failure": "{a} challenges {b} to a riddle contest and loses to a question about cheese."
+    },
+    "event-social-taunt": {
+      "success": "{a} shouts insults at {b} from a hilltop, so creative that {b} leaves to think about them.",
+      "failure": "{a} shouts insults at {b}, who answers with better ones. {a} is wounded in {{a:his|her|their}} pride."
+    },
+    "event-steal-camp": {
+      "success": "While {b} sleeps, {a} sneaks into the camp and leaves with {item}.",
+      "failure": "{a} tries to steal from {b}'s camp and gets a boot thrown at {{a:his|her|their}} head."
+    },
+    "event-steal-pickpocket": {
+      "success": "{a} bumps into {b}, apologises warmly, and walks away with {item}.",
+      "failure": "{a} bumps into {b} to pick a pocket; {b} checks every pocket and glares."
+    },
+    "event-finish": {
+      "win": "{a} follows the trail of a wounded {b}, without mercy. {b} is hit again but limps away.",
+      "lose": "{a} follows the trail of a wounded {b}, without mercy. {b} finds the strength to fight back and drives {a} off.",
+      "draw": "{a} follows the trail of a wounded {b}, without mercy. {b} slips away before {a} can strike again.",
+      "defeat": "{a} follows the trail of a wounded {b}, without mercy. {a} finishes what was started; the arena wardens carry {b} away.",
+      "defeated": "{a} follows the trail of a wounded {b}, without mercy. Cornered, {b} fights back like a lion; the arena wardens carry {a} away."
+    },
+    "event-spare": {
+      "only": "{a} finds {b} wounded and defenceless, and walks away. \"Not like this.\""
+    },
+    "event-finale-duel": {
+      "defeat": "The arena falls silent for the last duel. {a} and {b} fight until one of them cannot rise; it is {b}, and the arena wardens carry {b} away.",
+      "defeated": "The arena falls silent for the last duel. {a} and {b} fight until one of them cannot rise; it is {a}, and the arena wardens carry {a} away."
+    },
+    "event-finale-honour": {
+      "defeat": "{a} and {b} salute each other before a duel of honour. When {b} falls to one knee, {a} offers a hand; {b} takes it, smiles, and walks out of the arena.",
+      "defeated": "{a} and {b} salute each other before a duel of honour. When {a} falls to one knee, {b} offers a hand; {a} takes it, smiles, and walks out of the arena."
+    },
+    "event-team-heal": {
+      "success": "{a} tends to {b}'s wounds by the fire. By morning, {b} is back on {{b:his|her|their}} feet.",
+      "failure": "{a} tries to tend to {b}'s wounds, but there is little to be done without proper herbs."
+    },
+    "event-team-heal-song": {
+      "success": "{a} hums an old healing song over {b}; the pain fades with each verse.",
+      "failure": "{a} sings a healing song for {b}. It does not heal, but it is a lovely song."
+    },
+    "event-share-food": {
+      "only": "{a} shares {{a:his|her|their}} last rations with {b}. Neither will admit how hungry they are."
+    },
+    "event-banter-plan": {
+      "only": "{a} and {b} spend the evening drawing plans in the dirt. The plans get more ambitious with every hour."
+    },
+    "event-banter-joke": {
+      "only": "{a} tells {b} a joke so bad that {b} laughs for ten minutes. Somewhere, a rival hears and wonders."
+    },
+    "event-banter-watch": {
+      "only": "{a} keeps watch so that {b} can sleep. Then they swap. Nobody sneaks up on them tonight."
+    },
+    "event-trade": {
+      "only": "{a} gives {item} to {b}: \"You will need it more than I do.\""
+    },
+    "event-alliance-offer": {
+      "success": "{a} lowers {{a:his|her|their}} weapon and offers {b} an alliance. After a long silence, {b} shakes on it.",
+      "failure": "{a} offers {b} an alliance. {b} answers by backing away slowly, never turning around."
+    },
+    "event-alliance-fire": {
+      "success": "Freezing, {b} approaches the fire of {a}, who makes room. By morning, they are allies.",
+      "failure": "{b} approaches the fire of {a}, who throws a pinecone in warning. The message is clear."
+    },
+    "event-split-argument": {
+      "only": "Old grudges catch up with {a} and {b}. After a bitter argument, {a} walks away from the team for good."
+    },
+    "event-split-share": {
+      "only": "{a} catches {b} hiding food from the team. That was the last straw: {a} goes alone from now on."
+    },
+    "event-betray-sleep": {
+      "success": "While {b} sleeps, {a} breaks their alliance with a treacherous blow, and is gone before dawn.",
+      "defeat": "{a} waits until {b} is asleep and ends their alliance in the cruellest way; the arena wardens carry {b} away."
+    },
+    "event-betray-back": {
+      "success": "{a} smiles at {b}, then strikes. \"Nothing personal. It's the arena.\"",
+      "defeat": "{a} turns on {b} without warning. \"Nothing personal.\" The arena wardens carry {b} away."
+    },
+    "event-protect": {
+      "success": "{c} goes for the wounded {b}, but {a} steps in between and drives {c} back.",
+      "failure": "{a} throws {{a:himself|herself|themself}} between {b} and {c}, and takes the blows meant for {b}.",
+      "defeat": "{a} rushes to protect {b} from {c}, and wins; the arena wardens carry {c} away.",
+      "defeated": "{a} stands between {b} and {c} to the very end; the arena wardens carry {a} away, but {b} is safe."
+    },
+    "event-protect-leader": {
+      "success": "\"Behind me!\" {a} shields {b} and faces {c}, who thinks better of it.",
+      "failure": "\"Behind me!\" {a} shields {b} from {c} and pays for it with a few wounds.",
+      "defeat": "\"Behind me!\" {a} leads the defence of {b} against {c} and wins; the arena wardens carry {c} away.",
+      "defeated": "\"Behind me!\" {a} holds {c} off long enough for {b} to escape; the arena wardens carry {a} away."
+    },
+    "event-sacrifice": {
+      "only": "When {c} closes in on the wounded {b}, {a} takes the blow instead and falls. The arena wardens carry {a} out, while {b} gets away."
+    },
+    "event-team-camp": {
+      "only": "{a} and {b} build a hidden camp under the roots of a fallen tree, and take turns sleeping."
+    },
+    "event-team-scout": {
+      "only": "{a} scouts ahead while {b} watches their backs. They move through the arena like a single shadow."
+    },
+    "event-team-oath": {
+      "only": "By the fire, {a} and {b} renew an old promise: whatever happens, they leave this arena together."
+    },
+    "event-team-heal-herbs": {
+      "success": "{a} gathers silverleaf and makes a poultice for {b}. It stings, it smells, and it works.",
+      "failure": "{a} gathers herbs for {b}, but picks the wrong ones. At least they smell nice."
+    },
+    "event-share-water": {
+      "only": "{a} finds a spring and fills both flasks, the one for {b} first."
+    },
+    "event-alliance-enemy": {
+      "success": "{a} and {b} have been chased by the same rival all day. By evening, they agree to face the threat together.",
+      "failure": "{a} suggests to {b} that they team up against a common rival. {b} suspects a trap, and walks away."
+    },
+    "event-betray-draught": {
+      "success": "{a} offers {b} a cup of herbal tea laced with a sleeping draught, then slips away with a quiet \"sorry\".",
+      "defeat": "{a} slips a sleeping draught into the cup of {b}; the arena wardens carry {b} away, snoring."
+    },
+    "event-split-chaotic": {
+      "only": "{a} announces to {b} that teamwork is overrated and wanders off whistling."
+    },
+    "event-prank": {
+      "success": "{a} fills the boots of {b} with pinecones during the night. {b} spends the morning limping and swearing.",
+      "failure": "{a} tries to fill the boots of {b} with pinecones and is caught red-handed."
+    },
+    "event-fight-stream": {
+      "win": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. {a} reacts first and chases {b} downstream.",
+      "lose": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. {b} reacts first and chases {a} downstream.",
+      "draw": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. They splash at each other for a while, then both retreat, soaked.",
+      "defeat": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. The fight is short and splashy; the arena wardens carry {b} away.",
+      "defeated": "{a} and {b} both kneel to drink at the same stream, look up, and freeze. The fight is short and splashy; the arena wardens carry {a} away."
+    },
+    "event-fight-cave": {
+      "win": "{a} ducks into a cave to sleep, and finds {b} already there. {a} wins the cave; {b} spends the night outside, nursing a bruise.",
+      "lose": "{a} ducks into a cave to sleep, and finds {b} already there. {b} keeps the cave; {a} spends the night outside, nursing a bruise.",
+      "draw": "{a} ducks into a cave to sleep, and finds {b} already there. After a long scuffle in the dark, they grudgingly sleep at opposite ends.",
+      "defeat": "{a} ducks into a cave to sleep, and finds {b} already there. The cave echoes with the fight; at dawn, the arena wardens carry {b} away.",
+      "defeated": "{a} ducks into a cave to sleep, and finds {b} already there. The cave echoes with the fight; at dawn, the arena wardens carry {a} away."
+    },
+    "event-fight-honour": {
+      "win": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} has the upper hand, and lets {b} withdraw with dignity.",
+      "lose": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {b} has the upper hand, and {a} withdraws with a nod of respect.",
+      "draw": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" The duel is perfectly even. They part with a salute.",
+      "defeat": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} wins the duel of honour; {b} yields, and the arena wardens carry {b} out with respect.",
+      "defeated": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {b} wins the duel of honour; {a} yields, and the arena wardens carry {a} out with respect."
+    },
+    "event-fight-spells-night": {
+      "win": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. Dazzled, {b} stumbles away into the night.",
+      "lose": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. {b} shields {{b:his|her|their}} eyes and charges; {a} has to flee, scorched by the backlash.",
+      "draw": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. The spell lights up the whole arena, and both decide to hide before anyone else comes.",
+      "defeat": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. A second spell finishes the duel; the arena wardens carry {b} away.",
+      "defeated": "In the dark, {a} lights up the clearing with a spell, right in the face of {b}. {b} strikes before the second spell; the arena wardens carry {a} away."
+    },
+    "event-fight-sling": {
+      "win": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. The shot hits home, and {b} runs zigzagging for the trees.",
+      "lose": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. {b} dodges and shoots back; {a} has to leave the rock in a hurry.",
+      "draw": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. Every shot misses. Both pretend they meant to.",
+      "defeat": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. The shot is perfect; the arena wardens carry {b} away.",
+      "defeated": "From the top of a rock, {a} takes aim at {b}, who is crossing a field below. {b} shoots back, and better; the arena wardens carry {a} away."
+    },
+    "event-ambush-tree": {
+      "success": "{a} drops from a tree onto {b}, strikes, and is gone before {b} understands what happened.",
+      "defeat": "{a} drops from a tree onto {b}; it is over at once, and the arena wardens carry {b} away.",
+      "failure": "{a} drops from a tree onto {b}, misses, and lands in a bush. {b} laughs on the way out.",
+      "defeated": "{a} drops from a tree, straight onto the raised weapon of {b}; the arena wardens carry {a} away."
+    },
+    "event-find-statue": {
+      "success": "{a} reads the old inscription on a statue, presses the right stone, and a hidden niche opens: {item}.",
+      "failure": "{a} presses every stone of an old statue. One of them was a wasp nest."
+    },
+    "event-hazard-wolves": {
+      "success": "A pack of wolves circles the camp of {a}, who waves a burning branch until they leave.",
+      "failure": "Wolves attack {a} in the night; it takes a long fight to drive them off.",
+      "defeated": "A pack of wolves corners {a}; the wardens drive them off with horns and torches, and carry {a} out of the arena."
+    },
+    "event-hazard-thorns": {
+      "success": "{a} finds a way through a field of thornbushes without a single scratch.",
+      "failure": "{a} tries to cut through a field of thornbushes and comes out looking like a pincushion.",
+      "defeated": "{a} gets hopelessly tangled in a field of enchanted thorns; the arena wardens carry {a} away."
+    },
+    "event-quiet-letter": {
+      "only": "By the light of a small fire, {a} writes a letter home, in case. Then tears it up, out of stubbornness."
+    },
+    "event-quiet-crowd": {
+      "only": "{a} climbs onto a rock and bows to the invisible crowd. Somewhere, the arena masters are applauding."
+    },
+    "event-rest-spring": {
+      "only": "{a} finds a hot spring hidden between the rocks, and soaks until every ache is gone."
+    }
+  },
+  "rounds": {
+    "day": "Day {number}",
+    "night": "Night {number}",
+    "finale": "The finale"
+  }
+}

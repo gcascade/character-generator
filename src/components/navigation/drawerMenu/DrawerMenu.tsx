@@ -1,4 +1,5 @@
 import { Group as GroupIcon } from '@mui/icons-material';
+import { SportsKabaddi as ArenaIcon } from '@mui/icons-material';
 import { Groups as PartyIcon } from '@mui/icons-material';
 import { Home as HomeIcon } from '@mui/icons-material';
 import { Storefront as NpcIcon } from '@mui/icons-material';
@@ -106,6 +107,12 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({
             <NpcIcon />
           </ListItemIcon>
           <ListItemText primary={t('nav.npcs')} />
+        </ListItemButton>
+        <ListItemButton {...item('/arena')}>
+          <ListItemIcon className="listItemIcon">
+            <ArenaIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('nav.arena')} />
         </ListItemButton>
         <ListItemButton {...item('/characters')}>
           <ListItemIcon className="listItemIcon">

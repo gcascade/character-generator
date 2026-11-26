@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`seeded random (spec 012 R1) > pins the first values, so a change of algorithm is noticed 1`] = `
+[
+  62,
+  32,
+  32,
+]
+`;

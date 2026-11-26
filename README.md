@@ -109,6 +109,24 @@ gender (or leave them to chance), reroll any property or section with its die, a
 in the **Side characters** tab of **My characters**, each with its own page, and can be shared by link. With an AI
 provider, the AI writes the name and the sheet.
 
+# Arena
+
+The **Arena** page (`/arena`) is a small spectator battle royale. Add the current character, saved characters, the
+current or a saved party (it enters as a team) and random characters, up to 48. Each contestant gets skills rolled for
+the match — thirteen values from 0 to 100, each the percent chance to succeed (melee, ranged, magic, athletics,
+stealth, endurance, perception, survival, lore, healing, persuasion, intimidation, deception) and hit points — from
+their class, race and age plus a little chance. Skills only exist in the arena: character pages don't show them. Give
+each contestant up to two perks (Survivalist, Lucky, Silver tongue…) and three items (sword, bow, magic wand, healing
+potion, rope…), or draw them at random, then start.
+
+The match is told day and night, round by round: finds, traps, hunts, duels, ambushes, threats and tricks, alliances,
+betrayals, protection and sacrifices, decided by skill rolls. Teammates never fight each other unless an old grudge
+splits the team; good characters never betray an ally; friends protect each other; a balanced party gets a bonus on
+every roll. Defeated contestants are carried out of the arena by its wardens. Reveal the rounds one by one or skip to
+the end for the summary: winner, foes defeated, notable moments. **Replay** tells the same story again, **Play again**
+draws new skills and a new story, and **Share the match** makes a link that tells exactly the same match anywhere, in
+the visitor's language.
+
 # AI portraits
 
 **Paint a portrait** (under the portrait of the generated character, a saved character, a party member's full view
@@ -174,6 +192,11 @@ that every locale has every text, with the same placeholders, and that each one 
   (share links store positions), with a minimum age and fragments in `src/data/content/npc.json`, texts in
   `src/data/locales/<locale>/npc.json` and a label `occupation.<Value>` in `labels.json`; daily-life fragments belong
   to an occupation, the other sections are shared.
+- **Add an arena event**: add it to `events` in `src/data/content/arena.json` (its `type` decides what it does:
+  `find`, `hazard`, `fight`, `social`, `alliance`, `betray`… with conditions under `when`) and its texts per outcome
+  in `src/data/locales/<locale>/arena.json`, with `{a}`, `{b}`, `{c}`, `{item}`, `{theItem}` and per-actor selections
+  `{{a:masculine|feminine|non-binary}}`; `src/data/arena.test.ts` lists the outcomes each type needs. Perks, items and
+  skill profiles live in the same files.
 - **Add a language**: add a folder under `src/data/locales/` with every file, register it in `src/i18n/` and
   `src/content/data.ts`; the tests list what is missing.
 
