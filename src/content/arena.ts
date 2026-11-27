@@ -14,9 +14,12 @@ import type { Character } from '../types/character';
 import type { Party } from '../types/party';
 import {
   allied,
+  bondOf,
+  COUPLE_BOND,
   fitsActor,
   friendly,
   friends,
+  grudgeOf,
   hasItemTag,
   hostile,
   isGood,
@@ -239,7 +242,15 @@ export const roundLimit = (contestantCount: number) =>
 export const MIN_EVENTS = 4;
 export const MAX_EVENTS = 6;
 
-const FIGHTS = ['fight', 'ambush', 'finish', 'betray'];
+const FIGHTS = [
+  'fight',
+  'ambush',
+  'finish',
+  'betray',
+  'revenge',
+  'melee',
+  'gang',
+];
 
 const standingSides = (fighters: Fighter[]) =>
   new Set(fighters.filter((f) => f.standing).map((f) => f.sideId));
@@ -290,6 +301,71 @@ const teamBalance = (setup: ArenaSetup) => {
 type Candidate = { kind: ArenaEventKind; actors: Fighter[]; weight: number };
 
 /** The event kinds that can happen to a now, with their partners and weights. */
+const originalSide = (state: MatchState, f: Fighter) =>
+  state.setup.contestants.find((c) => c.id === f.id)?.sideId;
+
+/** The actors of a group event, or nothing when the group cannot gather (research R12). */
+const groupFor = (
+  state: MatchState,
+  kind: ArenaEventKind,
+  a: Fighter,
+  others: Fighter[],
+): Fighter[] | undefined => {
+  const { random } = state;
+  const some = (pool: Fighter[], min: number, max: number) =>
+    pool.length < min
+      ? undefined
+      : random.shuffle(pool).slice(0, min + random.int(max - min + 1));
+  switch (kind.type) {
+    case 'melee': {
+      const group = some(others, 2, 4);
+      return group && group.some((f) => !friends(a, f))
+        ? [a, ...group]
+        : undefined;
+    }
+    case 'gang': {
+      if (kind.when?.coalition) {
+        // The most dangerous contestant against those who are not their friends.
+        const foes = others.filter((f) => !friends(a, f) && f.defeats > 0);
+        if (!foes.length) return undefined;
+        const target = foes.reduce((x, y) => (y.defeats > x.defeats ? y : x));
+        const helpers = some(
+          others.filter(
+            (f) => f !== target && !friends(f, target) && !sameSide(f, a),
+          ),
+          1,
+          2,
+        );
+        return helpers && [target, a, ...helpers];
+      }
+      // A team (or an alliance, or a couple) falls on someone.
+      // A team (or an alliance, or a couple) falls on someone who is a foe of all of them.
+      const mates = some(
+        others.filter((f) => friends(a, f)),
+        1,
+        3,
+      );
+      if (!mates) return undefined;
+      const attackers = [a, ...mates];
+      const foes = others.filter(
+        (f) => !attackers.includes(f) && attackers.every((x) => !friends(x, f)),
+      );
+      if (!foes.length) return undefined;
+      return [random.pick(foes), ...attackers];
+    }
+    case 'group-hazard': {
+      const group = some(others, 2, 4);
+      return group && [a, ...group];
+    }
+    case 'feast': {
+      const group = some(others, 2, 5);
+      return group && [a, ...group];
+    }
+    default:
+      return undefined;
+  }
+};
+
 const candidatesFor = (
   state: MatchState,
   a: Fighter,
@@ -319,9 +395,11 @@ const candidatesFor = (
       continue;
     }
     const fits = (b: Fighter) => {
-      if (kind.relation === 'friend' ? !friends(a, b) : friends(a, b))
-        return false;
+      if (kind.relation === 'friend' && !friends(a, b)) return false;
+      if (kind.relation === 'foe' && friends(a, b)) return false;
       if (when.targetWounded && !isWounded(b)) return false;
+      if (when.couple && a.partner !== b.id) return false;
+      if (when.grudge && grudgeOf(state, a, b) !== when.grudge) return false;
       if (when.tie === 'friendly' && !friendly(state, a, b)) return false;
       if (when.tie === 'hostile' && !hostile(state, a, b)) return false;
       switch (kind.type) {
@@ -333,7 +411,22 @@ const candidatesFor = (
             a.items.some((i) => !b.items.includes(i))
           );
         case 'split':
-          return sameSide(a, b);
+          return sameSide(a, b) && !a.partner;
+        case 'couple':
+          return (
+            !a.partner &&
+            !b.partner &&
+            !sameSide(a, b) &&
+            bondOf(state, a, b) >= COUPLE_BOND
+          );
+        case 'jealousy':
+          return (
+            !!b.partner &&
+            b.partner !== a.id &&
+            a.sideId === originalSide(state, b)
+          );
+        case 'reconcile':
+          return !!grudgeOf(state, a, b) || !!grudgeOf(state, b, a);
         case 'betray':
           return allied(a, b) && !sameSide(a, b);
         case 'alliance': {
@@ -349,6 +442,11 @@ const candidatesFor = (
           return true;
       }
     };
+    if (kind.actors === 'group') {
+      const group = groupFor(state, kind, a, others);
+      if (group) list.push({ kind, actors: group, weight });
+      continue;
+    }
     if (kind.actors === 2) {
       const partners = others.filter(fits);
       if (!partners.length) continue;
@@ -361,9 +459,11 @@ const candidatesFor = (
       (b) =>
         friends(a, b) &&
         isWounded(b) &&
+        (!when.couple || a.partner === b.id) &&
         (kind.type === 'sacrifice'
-          ? friendly(state, a, b)
+          ? friendly(state, a, b) || a.partner === b.id
           : friendly(state, a, b) ||
+            a.partner === b.id ||
             isGood(state, a) ||
             state.setup.contestants.find((c) => c.id === a.id)?.role ===
               'role-leader'),
@@ -390,6 +490,7 @@ const stateOf = (fighters: Fighter[]): Round['after'] =>
         sideId: f.sideId,
         defeats: f.defeats,
         ...(f.allianceId && { allianceId: f.allianceId }),
+        ...(f.partner && { partner: f.partner }),
       },
     ]),
   );
@@ -417,6 +518,8 @@ export const simulate = (setup: ArenaSetup): Match => {
     round: 0,
     limit: roundLimit(setup.contestants.length),
     rolls: [],
+    bonds: {},
+    grudges: {},
     random: createRandom(`${setup.seed}:match`),
   };
   const all = Object.values(fighters);
@@ -498,6 +601,8 @@ export type MatchSummary = {
   rows: { id: string; defeats: number; defeatedRound?: number }[];
   /** Up to five notable moments, in the order they happened. */
   moments: EventResult[];
+  /** The winners are a couple formed during the match. */
+  couple: boolean;
 };
 
 const MAX_MOMENTS = 5;
@@ -542,7 +647,12 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
     chosen.add(e);
   }
   const moments = events.filter((e) => chosen.has(e)).slice(-MAX_MOMENTS);
-  return { winners, rows, moments };
+  return {
+    winners,
+    rows,
+    moments,
+    couple: match.winnerSideId.startsWith('couple:'),
+  };
 };
 
 export type FillShape = number | 'mixed';

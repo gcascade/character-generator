@@ -61,6 +61,15 @@ export const PeekCard: FC<PeekCardProps> = ({ setup, id, state }) => {
           </Typography>
         </Box>
       </Box>
+      {state?.partner && (
+        <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
+          {t('arena.partner', {
+            name:
+              setup.contestants.find((c) => c.id === state.partner)?.character
+                .firstName ?? '',
+          })}
+        </Typography>
+      )}
       {contestant.perks.length > 0 && (
         <Typography variant="body2">
           <strong>{t('arena.perks')}</strong>{' '}

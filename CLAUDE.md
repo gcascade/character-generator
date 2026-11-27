@@ -135,6 +135,8 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   (`rolls`) and each round the state of everyone after it (`after`), shown by `RoundView` (portraits via
   `eventSides`, stacked by `PortraitStack`) and `ContestantStatus`; names come apart with `eventParts` and open a
   `ContestantPeek` card (hover, focus, or a tap that pins it) showing the state in `before` (actors before the event); `fillRoster` fills with solos or teams.
+- Bonds (`state.bonds`) make couples (`couple:<id>` side, `partner`, win together); grudges (`state.grudges`) drive
+  revenge; group events (`actors: "group"`, `groupFor`) use `{all}`, `{others}`, `{fallen}`, `{hurt}` lists.
 - Invariants tested over 1,000 matches: one winning side within the round limit, teammates never defeat each other,
   good characters never betray; balanced teams beat single-class teams (coverage bonus, `BALANCE_BONUS`).
 

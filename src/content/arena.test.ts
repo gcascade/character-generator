@@ -16,6 +16,7 @@ import {
   summarize,
 } from './arena';
 import { renderEvent } from './arenaText';
+import { ARENA } from './data';
 import { generateRandomCharacter } from './generate';
 import { generateParty } from './party';
 import { assignRoles } from './partyDepth';
@@ -164,11 +165,12 @@ describe('arena match (spec 012 US2)', () => {
             actors.length,
           );
         }
-        // 4 to 6 events per period, fewer only when too few fighters are left.
+        // 4 to 6 events per period, fewer only when nobody is left to act
+        // (group events gather several contestants at once).
         if (!finale) {
           expect(round.events.length).toBeLessThanOrEqual(6);
-          if (alive.size >= 12 && index < match.rounds.length - 1) {
-            expect(round.events.length).toBeGreaterThanOrEqual(4);
+          if (index < match.rounds.length - 1 && round.events.length < 4) {
+            for (const id of alive) expect(actors).toContain(id);
           }
         }
         for (const e of round.events)
@@ -344,5 +346,78 @@ describe('filling the arena (maintainer feedback)', () => {
     expect(
       fillRoster(emptySetup(), 100, 'mixed', 'fr').contestants,
     ).toHaveLength(48);
+  });
+});
+
+describe('couples, group events and grudges (maintainer feedback)', () => {
+  const matches = Array.from({ length: 300 }, (_, i) => {
+    const setup = {
+      ...fillRoster(emptySetup(), 16, i % 2 ? 'mixed' : 1, 'en'),
+      seed: `bond${i}`,
+    };
+    return { setup, match: simulate(setup) };
+  });
+  const typeOf = new Map(ARENA.events.map((e) => [e.id, e.type]));
+
+  it('forms couples that leave their sides, never fight each other and win together', () => {
+    let couples = 0;
+    let coupleWins = 0;
+    for (const { match } of matches) {
+      const partners = Object.values(match.fighters).filter((f) => f.partner);
+      for (const f of partners) {
+        const other = match.fighters[f.partner!];
+        expect(other.partner).toBe(f.id);
+        expect(other.sideId).toBe(f.sideId);
+        expect(f.defeatedBy).not.toBe(other.id);
+      }
+      if (partners.length) couples++;
+      if (match.winnerSideId.startsWith('couple:')) {
+        coupleWins++;
+        const winners = Object.values(match.fighters).filter(
+          (f) => f.sideId === match.winnerSideId,
+        );
+        expect(winners).toHaveLength(2);
+      }
+    }
+    expect(couples).toBeGreaterThan(20);
+    expect(coupleWins).toBeGreaterThan(0);
+  });
+
+  it('gathers at least three contestants for group events', () => {
+    let groups = 0;
+    for (const { match } of matches) {
+      for (const event of match.rounds.flatMap((r) => r.events)) {
+        const type = typeOf.get(event.eventId)!;
+        if (['melee', 'gang', 'group-hazard', 'feast'].includes(type)) {
+          groups++;
+          expect(event.actors.length).toBeGreaterThanOrEqual(3);
+          expect(new Set(event.actors).size).toBe(event.actors.length);
+        }
+      }
+    }
+    expect(groups).toBeGreaterThan(100);
+  });
+
+  it('only takes revenge on someone who did harm, and tells every group event in both languages', () => {
+    for (const { setup, match } of matches.slice(0, 60)) {
+      const harmed = new Set<string>();
+      for (const event of match.rounds.flatMap((r) => r.events)) {
+        const type = typeOf.get(event.eventId)!;
+        if (type === 'revenge') {
+          const [avenger, target] = event.actors;
+          const personal =
+            ARENA.events.find((e) => e.id === event.eventId)?.when?.grudge ===
+            'personal';
+          if (personal) expect(harmed.has(`${avenger}<${target}`)).toBe(true);
+        }
+        // Anyone who rolled against someone in a fight may have hurt them.
+        if (event.actors.length >= 2) {
+          for (const x of event.actors)
+            for (const y of event.actors) if (x !== y) harmed.add(`${x}<${y}`);
+        }
+        expect(renderEvent(event, setup, 'en')).not.toMatch(/[{}]/);
+        expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
+      }
+    }
   });
 });

@@ -30,6 +30,14 @@ const OUTCOMES: Record<string, string[]> = {
   betray: ['success', 'defeat'],
   protect: ['success', 'failure', 'defeat', 'defeated'],
   sacrifice: ['only'],
+  couple: ['only'],
+  jealousy: ['only'],
+  revenge: ['win', 'lose', 'draw', 'defeat', 'defeated'],
+  reconcile: ['success', 'failure'],
+  melee: ['none', 'hurt', 'defeat'],
+  gang: ['defeat', 'escape'],
+  'group-hazard': ['safe', 'hurt', 'defeat'],
+  feast: ['only'],
 };
 
 const outcomesOf = (kind: (typeof ARENA.events)[number]) => [
@@ -78,7 +86,18 @@ describe('arena content (spec 012)', () => {
                   { firstName: 'Bo', gender: b },
                   { firstName: 'Cy', gender: a },
                 ],
-                { item: 'x', theItem: 'x', team: 'x' },
+                {
+                  item: 'x',
+                  theItem: 'x',
+                  team: 'x',
+                  lists: {
+                    all: [0, 1, 2],
+                    others: [1, 2],
+                    fallen: [1],
+                    hurt: [2],
+                  },
+                  and: 'and',
+                },
               );
               expect(filled, id).not.toMatch(/[{}]/);
             }
@@ -89,7 +108,7 @@ describe('arena content (spec 012)', () => {
 
   it('follows the French rules', () => {
     const elision =
-      /\b(que|de|le|la|ce|jusque|lorsque|puisque)\s+\{(a|b|c|item|theItem)\}/i;
+      /\b(que|de|le|la|ce|jusque|lorsque|puisque)\s+\{(a|b|c|item|theItem|all|others|fallen|hurt)\}/i;
     for (const outcomes of Object.values(ARENA_TEXTS.fr.events)) {
       for (const text of Object.values(outcomes)) {
         expect(text).not.toMatch(elision);

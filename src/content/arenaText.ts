@@ -6,7 +6,15 @@ import { capitalize } from './renderText';
 
 export type TextActor = { firstName: string; gender: Gender };
 
-export type TextExtras = { item?: string; theItem?: string; team?: string };
+export type TextExtras = {
+  item?: string;
+  theItem?: string;
+  team?: string;
+  /** Lists of actor indexes: `{all}`, `{others}`, `{fallen}`, `{hurt}` (group events). */
+  lists?: Partial<Record<'all' | 'others' | 'fallen' | 'hurt', number[]>>;
+  /** The word joining the last two names of a list ("and", "et"). */
+  and?: string;
+};
 
 const ACTORS = ['a', 'b', 'c'] as const;
 
@@ -40,14 +48,28 @@ export const fillActorText = (
     }
     return options[genderIndex(actor(key).gender)];
   });
+  const nameAt = (index: number) => {
+    const found = actors[index];
+    if (!found) throw new Error(`Missing actor ${index} in "${text}"`);
+    return markNames
+      ? `\uE000${index}${found.firstName}\uE001`
+      : found.firstName;
+  };
   const filled = selected.replace(PLACEHOLDER, (whole, key: string) => {
+    const list = extras.lists?.[key as keyof NonNullable<TextExtras['lists']>];
+    if (list) {
+      const names = list.map(nameAt);
+      return names.length < 2
+        ? (names[0] ?? '')
+        : `${names.slice(0, -1).join(', ')} ${extras.and ?? 'and'} ${names.at(-1)}`;
+    }
     if ((ACTORS as readonly string[]).includes(key)) {
       const name = actor(key).firstName;
       return markNames
         ? `\uE000${ACTORS.indexOf(key as (typeof ACTORS)[number])}${name}\uE001`
         : name;
     }
-    const value = extras[key as keyof TextExtras];
+    const value = extras[key as 'item' | 'theItem' | 'team'];
     if (value === undefined) throw new Error(`Missing {${key}} in "${text}"`);
     return value;
   });
@@ -58,6 +80,32 @@ const actorOf = (setup: ArenaSetup, id: string): TextActor => {
   const contestant = setup.contestants.find((c) => c.id === id);
   if (!contestant) throw new Error(`Unknown contestant ${id}`);
   return contestant.character;
+};
+
+const extrasOf = (
+  result: EventResult,
+  setup: ArenaSetup,
+  locale: Locale,
+): TextExtras => {
+  const texts = ARENA_TEXTS[locale];
+  const item = result.itemId ? texts.items[result.itemId] : undefined;
+  const side = setup.sides.find(
+    (s) =>
+      s.id === setup.contestants.find((c) => c.id === result.actors[0])?.sideId,
+  );
+  const indexes = (ids: string[] = []) =>
+    ids.map((id) => result.actors.indexOf(id)).filter((i) => i >= 0);
+  return {
+    ...(item && { item: item.a, theItem: item.the }),
+    ...(side?.name && { team: side.name }),
+    lists: {
+      all: result.actors.map((_, i) => i),
+      others: result.actors.slice(1).map((_, i) => i + 1),
+      fallen: indexes(result.defeated),
+      hurt: indexes(result.hurt),
+    },
+    and: texts.and,
+  };
 };
 
 /** One event of a match in the given language (spec 012 FR-012). */
@@ -71,18 +119,10 @@ export const renderEvent = (
   if (text === undefined) {
     throw new Error(`No text for ${result.eventId}.${result.outcome}`);
   }
-  const item = result.itemId ? texts.items[result.itemId] : undefined;
-  const side = setup.sides.find(
-    (s) =>
-      s.id === setup.contestants.find((c) => c.id === result.actors[0])?.sideId,
-  );
   return fillActorText(
     text,
     result.actors.map((id) => actorOf(setup, id)),
-    {
-      ...(item && { item: item.a, theItem: item.the }),
-      ...(side?.name && { team: side.name }),
-    },
+    extrasOf(result, setup, locale),
   );
 };
 
@@ -101,7 +141,9 @@ export const renderRoundTitle = (
 };
 
 /** Event types where the only actor undergoes the event (shown on the right). */
-const UNDERGONE = ['hazard', 'arena'];
+const UNDERGONE = ['hazard', 'arena', 'group-hazard', 'melee'];
+/** Event types where everyone acts together (shown on the left). */
+const TOGETHER = ['feast'];
 /** Event types with a single actor acting on their own (shown on the left). */
 const SOLO = ['find', 'gift', 'forage', 'rest', 'quiet', 'potion', 'treat'];
 
@@ -115,6 +157,9 @@ export const eventSides = (
   const type = ARENA.events.find((e) => e.id === result.eventId)?.type ?? '';
   const [first, ...others] = result.actors;
   if (UNDERGONE.includes(type)) return { left: [], right: result.actors };
+  if (TOGETHER.includes(type)) return { left: result.actors, right: [] };
+  // Group attacks: the target comes first, the attackers act.
+  if (type === 'gang') return { left: others, right: [first] };
   if (SOLO.includes(type)) return { left: [first], right: [] };
   return { left: [first], right: others };
 };
@@ -132,18 +177,10 @@ export const eventParts = (
   if (text === undefined) {
     throw new Error(`No text for ${result.eventId}.${result.outcome}`);
   }
-  const item = result.itemId ? texts.items[result.itemId] : undefined;
-  const side = setup.sides.find(
-    (s) =>
-      s.id === setup.contestants.find((c) => c.id === result.actors[0])?.sideId,
-  );
   const marked = fillActorText(
     text,
     result.actors.map((id) => actorOf(setup, id)),
-    {
-      ...(item && { item: item.a, theItem: item.the }),
-      ...(side?.name && { team: side.name }),
-    },
+    extrasOf(result, setup, locale),
     true,
   );
   return marked

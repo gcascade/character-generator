@@ -66,6 +66,15 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
           const team = sideOf(sideId);
           return (
             <Box key={sideId}>
+              {sideId.startsWith('couple:') && (
+                <Typography
+                  variant="overline"
+                  component="h3"
+                  sx={{ lineHeight: 1.6 }}
+                >
+                  {t('arena.couple')}
+                </Typography>
+              )}
               {team?.kind === 'team' && (
                 <Typography
                   variant="overline"

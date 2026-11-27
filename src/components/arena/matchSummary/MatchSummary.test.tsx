@@ -35,4 +35,13 @@ describe('MatchSummary', () => {
       screen.getByText('Aela Brightwind, Brom Ironfoot'),
     ).toBeInTheDocument();
   });
+
+  it('names a winning couple', () => {
+    const couple = { ...summary, winners: ['korvus', 'sil'], couple: true };
+    render(<MatchSummary setup={arenaSetup} summary={couple} />);
+    expect(screen.getByText('Winning couple')).toBeInTheDocument();
+    expect(
+      screen.getByText('Korvus Blackiron & Sil Quickfingers'),
+    ).toBeInTheDocument();
+  });
 });

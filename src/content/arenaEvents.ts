@@ -23,7 +23,39 @@ export type MatchState = {
   random: Random;
   /** Rolls of the event being resolved. */
   rolls: RollRecord[];
+  /** How close two fighters have grown, by `pairKey` (couples form from it). */
+  bonds: Record<string, number>;
+  /** Wrongs remembered: grudges[a][b] = why a resents b. */
+  grudges: Record<string, Record<string, 'personal' | 'friend'>>;
 };
+
+export const pairKey = (a: Fighter, b: Fighter) =>
+  a.id < b.id ? `${a.id}|${b.id}` : `${b.id}|${a.id}`;
+
+/** Bond a couple needs to form (research R11). */
+export const COUPLE_BOND = 3;
+
+export const bondOf = (state: MatchState, a: Fighter, b: Fighter) =>
+  state.bonds[pairKey(a, b)] ?? 0;
+
+const addBond = (state: MatchState, a: Fighter, b: Fighter, amount: number) => {
+  state.bonds[pairKey(a, b)] = bondOf(state, a, b) + amount;
+};
+
+/** a remembers a wrong done by b (a personal one is never downgraded). */
+const addGrudge = (
+  state: MatchState,
+  a: Fighter,
+  b: Fighter,
+  why: 'personal' | 'friend',
+) => {
+  if (a.id === b.id) return;
+  const list = (state.grudges[a.id] ??= {});
+  if (list[b.id] !== 'personal') list[b.id] = why;
+};
+
+export const grudgeOf = (state: MatchState, a: Fighter, b: Fighter) =>
+  state.grudges[a.id]?.[b.id];
 
 const FRIENDLY_TIES = [
   'tie-life-debt',
@@ -179,6 +211,7 @@ const hurt = (
 ): boolean => {
   const armour = hasItemTag(target, 'armour') ? 2 : 0;
   target.hp -= Math.max(1, amount - armour);
+  if (by) addGrudge(state, target, by, 'personal');
   if (target.hp > 0) return false;
   if (!by && standingCount(state) <= 1) {
     target.hp = 1;
@@ -190,6 +223,15 @@ const hurt = (
   if (by) {
     target.defeatedBy = by.id;
     by.defeats++;
+    // Teammates and the partner of the fallen remember who did it.
+    for (const f of Object.values(state.fighters)) {
+      if (
+        f.standing &&
+        (f.sideId === target.sideId || f.partner === target.id)
+      ) {
+        addGrudge(state, f, by, 'friend');
+      }
+    }
   }
   return true;
 };
@@ -320,6 +362,19 @@ const solo = (
   ...(kind.notable && { notable: true }),
   ...extra,
 });
+
+/** Group attackers who were not friends become allies. */
+const allyAll = (fighters: Fighter[]) => {
+  const standing = fighters.filter((f) => f.standing);
+  const alliance =
+    standing.find((f) => f.allianceId)?.allianceId ??
+    `alliance:${standing[0]?.id}`;
+  for (const f of standing) {
+    if (!f.partner && standing.some((g) => g !== f && g.sideId !== f.sideId)) {
+      f.allianceId = alliance;
+    }
+  }
+};
 
 /** Plays an event kind with its actors and returns what happened (research R4). */
 export const resolveEvent = (
@@ -459,17 +514,20 @@ export const resolveEvent = (
       ) {
         b.items = b.items.filter((i) => i !== taken);
         if (a.items.length < MAX_HELD) a.items.push(taken);
+        addGrudge(state, b, a, 'personal');
         return result('success', { itemId: taken });
       }
       scratch(a, 2);
       return result('failure');
     }
     case 'spare':
+      addBond(state, a, b, 2);
       return result('only');
     case 'team-heal': {
       const bonus = hasPerkTag(a, 'healer') ? 10 : 0;
       if (fighterCheck(state, a, 'healing', modifier + bonus).success) {
         heal(b, 10);
+        addBond(state, a, b, 2);
         return result('success');
       }
       return result('failure');
@@ -477,8 +535,10 @@ export const resolveEvent = (
     case 'share':
       heal(a, 2);
       heal(b, 3);
+      addBond(state, a, b, 1);
       return result('only');
     case 'banter':
+      addBond(state, a, b, 1);
       return result('only');
     case 'trade': {
       const given = a.items.find((i) => !b.items.includes(i));
@@ -501,6 +561,7 @@ export const resolveEvent = (
         const alliance = a.allianceId ?? b.allianceId ?? `alliance:${a.id}`;
         a.allianceId = alliance;
         b.allianceId = alliance;
+        addBond(state, a, b, 3);
         return result('success', { notable: true });
       }
       return result('failure');
@@ -508,6 +569,7 @@ export const resolveEvent = (
     case 'betray': {
       a.allianceId = undefined;
       b.allianceId = undefined;
+      addGrudge(state, b, a, 'personal');
       const damage =
         weaponDamage(state, a, bestStyle(state, a)) + 6 + random.int(5);
       if (hurt(state, b, damage, a))
@@ -516,6 +578,7 @@ export const resolveEvent = (
     }
     case 'protect': {
       const { outcome, defeated } = fight(state, a, c, bestStyle(state, a), 5);
+      addBond(state, a, b, 2);
       const map: Record<FightOutcome, string> = {
         defeat: 'defeat',
         defeated: 'defeated',
@@ -533,6 +596,117 @@ export const resolveEvent = (
       a.defeatedBy = c.id;
       c.defeats++;
       return result('only', { defeated: [a.id], notable: true });
+    }
+    case 'couple': {
+      // They leave their teams and alliances, and win or lose together.
+      const sideId = `couple:${a.id}`;
+      for (const f of [a, b]) {
+        f.sideId = sideId;
+        f.allianceId = undefined;
+      }
+      a.partner = b.id;
+      b.partner = a.id;
+      return result('only', { notable: true });
+    }
+    case 'jealousy':
+      return result('only');
+    case 'revenge': {
+      const { outcome, defeated } = fight(
+        state,
+        a,
+        b,
+        bestStyle(state, a),
+        modifier,
+      );
+      if (defeated.includes(b.id)) delete state.grudges[a.id]?.[b.id];
+      return result(outcome, {
+        defeated,
+        notable: defeated.length > 0 || undefined,
+      });
+    }
+    case 'reconcile': {
+      if (fighterCheck(state, a, 'persuasion', modifier).success) {
+        delete state.grudges[a.id]?.[b.id];
+        delete state.grudges[b.id]?.[a.id];
+        addBond(state, a, b, 2);
+        return result('success');
+      }
+      return result('failure');
+    }
+    case 'melee': {
+      // Everyone strikes someone who is not a friend; several may fall.
+      const defeated: string[] = [];
+      const hurtIds = new Set<string>();
+      for (const attacker of random.shuffle(actors)) {
+        if (!attacker.standing) continue;
+        const targets = actors.filter(
+          (t) => t !== attacker && t.standing && !friends(attacker, t),
+        );
+        if (!targets.length) continue;
+        const target = random.pick(targets);
+        const damage = strike(
+          state,
+          attacker,
+          target,
+          bestStyle(state, attacker),
+          0,
+        );
+        if (!damage) continue;
+        hurtIds.add(target.id);
+        if (hurt(state, target, damage, attacker)) defeated.push(target.id);
+      }
+      const hurtList = [...hurtIds].filter((id) => !defeated.includes(id));
+      return result(
+        defeated.length ? 'defeat' : hurtList.length ? 'hurt' : 'none',
+        {
+          defeated,
+          ...(hurtList.length && { hurt: hurtList }),
+          notable: defeated.length > 1 || undefined,
+        },
+      );
+    }
+    case 'gang': {
+      // a is the target; the others attack together.
+      const attackers = actors.slice(1);
+      for (const attacker of attackers) {
+        if (!a.standing) break;
+        const damage = strike(
+          state,
+          attacker,
+          a,
+          bestStyle(state, attacker),
+          10,
+        );
+        if (damage && hurt(state, a, damage, attacker)) {
+          if (kind.when?.coalition) allyAll(attackers);
+          return result('defeat', { defeated: [a.id], notable: true });
+        }
+      }
+      if (kind.when?.coalition) allyAll(attackers);
+      return result('escape');
+    }
+    case 'group-hazard': {
+      const defeated: string[] = [];
+      const hurtIds: string[] = [];
+      for (const f of actors) {
+        if (fighterCheck(state, f, skill, modifier).success) continue;
+        if (hurt(state, f, (kind.damage ?? 5) + random.int(3)))
+          defeated.push(f.id);
+        else hurtIds.push(f.id);
+      }
+      return result(
+        defeated.length ? 'defeat' : hurtIds.length ? 'hurt' : 'safe',
+        {
+          defeated,
+          ...(hurtIds.length && { hurt: hurtIds }),
+        },
+      );
+    }
+    case 'feast': {
+      for (const f of actors) heal(f, 6);
+      for (const f of actors)
+        for (const g of actors) if (f.id < g.id) addBond(state, f, g, 2);
+      return result('only');
     }
     default:
       throw new Error(`Unknown event type ${kind.type}`);

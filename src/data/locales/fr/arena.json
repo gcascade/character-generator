@@ -529,7 +529,7 @@
       "only": "{a} trouve une source et remplit les deux gourdes, en commençant par celle prévue pour {b}."
     },
     "event-alliance-enemy": {
-      "success": "{a} et {b} ont été pourchassés par le même rival toute la journée. Le soir venu, ils conviennent d'affronter la menace ensemble.",
+      "success": "Le même rival traque {a} et {b} depuis le matin. Le soir venu, ils conviennent d'affronter la menace ensemble.",
       "failure": "{a} propose à {b} de s'unir contre un rival commun. {b} flaire un piège et s'éloigne."
     },
     "event-betray-draught": {
@@ -606,11 +606,144 @@
     },
     "event-rest-spring": {
       "only": "{a} découvre une source chaude cachée entre les rochers, et s'y prélasse jusqu'à ce que toutes les douleurs s'effacent."
+    },
+    "event-couple-fire": {
+      "only": "Sous les étoiles, {a} et {b} avouent enfin ce que tout le monde avait deviné : ils quitteront l'arène ensemble, ou pas du tout. Ils laissent leurs anciens compagnons pour affronter la suite côte à côte."
+    },
+    "event-couple-rescue": {
+      "only": "Pour la deuxième fois de la journée, {a} tire {b} hors de danger. Cette fois, aucun des deux ne lâche la main de l'autre. Désormais, ils se battent comme un seul."
+    },
+    "event-couple-dance": {
+      "only": "Au loin, les tambours de l'arène résonnent. {a} adresse à {b} une révérence maladroite, et ils dansent dans les ruines jusqu'à l'aube. Au matin, ils forment une équipe à deux."
+    },
+    "event-couple-oath": {
+      "only": "{a} et {b} gravent leurs initiales dans un vieux chêne, puis se disputent pour savoir qui a les lettres les plus tordues."
+    },
+    "event-couple-watch": {
+      "only": "{b} dort ; {a} veille, et jure avoir surveillé les ombres plutôt que le visage endormi à côté."
+    },
+    "event-couple-plans": {
+      "only": "{a} et {b} préparent leur vie après l'arène : une ferme, deux chèvres, et plus jamais aucun combat."
+    },
+    "event-jealousy-glare": {
+      "only": "{a} regarde {b} s'éloigner aux côtés d'une autre personne, et se souvient de chaque feu de camp partagé autrefois en équipe."
+    },
+    "event-jealousy-words": {
+      "only": "{a} croise {b} au détour d'un sentier. « Tu nous as laissés pour ça ? » Le silence qui suit fait plus mal que n'importe quel coup."
+    },
+    "event-protect-partner": {
+      "success": "{c} s'en prend à {b} et tombe sur {a}, le regard brûlant. {c} décide qu'il existe des cibles plus faciles.",
+      "failure": "{a} se jette devant {b} et encaisse les coups portés par {c}.",
+      "defeat": "Personne ne touche à {b} : {a} affronte {c} avec une fureur rarement vue dans l'arène, et les gardiens de l'arène emportent {c} hors de l'arène.",
+      "defeated": "{a} retient {c} assez longtemps pour permettre à {b} de fuir ; les gardiens de l'arène emportent {a} hors de l'arène, un sourire aux lèvres."
+    },
+    "event-sacrifice-partner": {
+      "only": "{c} frappe {b}, mais c'est {a} qui reçoit le coup. Les gardiens emportent {a} hors de l'arène ; {b} continue sans compagnie, avec une promesse à tenir."
+    },
+    "event-revenge-hunt": {
+      "win": "{a} n'a rien oublié du tort causé par {b}. Après une longue traque, la confrontation arrive enfin. {a} prend une part de sa revanche, et {b} prend la fuite.",
+      "lose": "{a} n'a rien oublié du tort causé par {b}. Après une longue traque, la confrontation arrive enfin. {b} retourne la situation, et {a} doit fuir.",
+      "draw": "{a} n'a rien oublié du tort causé par {b}. Après une longue traque, la confrontation arrive enfin. La vieille blessure reste ouverte : personne ne parvient à conclure aujourd'hui.",
+      "defeat": "{a} n'a rien oublié du tort causé par {b}. Après une longue traque, la confrontation arrive enfin. {a} règle ses comptes ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} n'a rien oublié du tort causé par {b}. Après une longue traque, la confrontation arrive enfin. La vengeance tourne mal : les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-revenge-duel": {
+      "win": "D'un bout à l'autre de la clairière, {a} interpelle {b} : « Toi et moi. Maintenant. » {a} remporte la manche, et la rancune pèse un peu moins lourd.",
+      "lose": "D'un bout à l'autre de la clairière, {a} interpelle {b} : « Toi et moi. Maintenant. » {b} gagne encore, et la rancune pèse plus lourd.",
+      "draw": "D'un bout à l'autre de la clairière, {a} interpelle {b} : « Toi et moi. Maintenant. » Ils se battent jusqu'à l'épuisement, et jurent que ce n'est pas fini.",
+      "defeat": "D'un bout à l'autre de la clairière, {a} interpelle {b} : « Toi et moi. Maintenant. » La rancune s'arrête ici : les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "D'un bout à l'autre de la clairière, {a} interpelle {b} : « Toi et moi. Maintenant. » La rancune finit mal : les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-avenge-friend": {
+      "win": "{a} retrouve {b}, responsable de la chute d'un compagnon. « C'est pour ceux qui sont tombés. » {a} frappe fort, et {b} recule sous le choc.",
+      "lose": "{a} retrouve {b}, responsable de la chute d'un compagnon. « C'est pour ceux qui sont tombés. » La colère ne suffit pas : {b} repousse {a}.",
+      "draw": "{a} retrouve {b}, responsable de la chute d'un compagnon. « C'est pour ceux qui sont tombés. » Le combat s'achève sans vainqueur, et la dette reste impayée.",
+      "defeat": "{a} retrouve {b}, responsable de la chute d'un compagnon. « C'est pour ceux qui sont tombés. » Les compagnons tombés sont vengés : les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "{a} retrouve {b}, responsable de la chute d'un compagnon. « C'est pour ceux qui sont tombés. » {a} rejoint le compagnon tombé : les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-avenge-night": {
+      "win": "Au clair de lune, {a} traque {b} toute la nuit, pour un ami tombé. À l'aube, {a} porte un coup, et {b} disparaît dans la brume.",
+      "lose": "Au clair de lune, {a} traque {b} toute la nuit, pour un ami tombé. À l'aube, {b} attend de pied ferme, et c'est {a} qui doit fuir.",
+      "draw": "Au clair de lune, {a} traque {b} toute la nuit, pour un ami tombé. La piste se perd dans la nuit.",
+      "defeat": "Au clair de lune, {a} traque {b} toute la nuit, pour un ami tombé. À l'aube, la dette est payée : les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Au clair de lune, {a} traque {b} toute la nuit, pour un ami tombé. À l'aube, le chasseur est devenu la proie : les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-reconcile-words": {
+      "success": "{a} s'assied près du feu où se tient {b}, et ils parlent jusqu'à ce que la vieille rancune se consume avec les bûches.",
+      "failure": "{a} tente de faire la paix avec {b}, qui répond en tournant les talons."
+    },
+    "event-reconcile-gift": {
+      "success": "{a} laisse une offrande de paix sur un rocher, là où {b} la trouvera. À leur rencontre suivante, personne ne dégaine.",
+      "failure": "{a} laisse une offrande de paix pour {b}, qui l'envoie d'un coup de pied dans la rivière."
+    },
+    "event-melee-chest": {
+      "none": "Un coffre doré tombe du ciel. {all} se ruent dessus, et dans la confusion, le coffre roule au fond d'un ravin. Personne ne l'aura.",
+      "hurt": "Un coffre doré tombe du ciel, et {all} se le disputent. Des bleus pour {hurt}, et le coffre reste fermé.",
+      "defeat": "Un coffre doré tombe du ciel, et {all} se le disputent. Quand la poussière retombe, les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-melee-ruins": {
+      "none": "Dans les ruines plongées dans le noir, {all} se rentrent dedans. Après beaucoup de cris, chacun s'enfuit dans une direction différente.",
+      "hurt": "Dans les ruines plongées dans le noir, {all} se battent à l'aveugle. À l'aube, les coups ont laissé leurs traces sur {hurt}.",
+      "defeat": "Dans les ruines plongées dans le noir, {all} se battent à l'aveugle. À l'aube, les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-melee-spring": {
+      "none": "{all} atteignent l'unique source en même temps. Après un long face-à-face tendu, chacun boit à tour de rôle, l'œil mauvais.",
+      "hurt": "{all} atteignent l'unique source en même temps, et ça tourne à la mêlée. L'eau est trouble, et les bleus aussi nombreux pour {hurt}.",
+      "defeat": "{all} atteignent l'unique source en même temps, et ça tourne à la mêlée ; les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-gang-team": {
+      "defeat": "{others} encerclent {a} sans un mot. Tout va très vite, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "escape": "{others} encerclent {a}, qui se faufile entre eux et disparaît dans les fourrés."
+    },
+    "event-gang-night": {
+      "defeat": "En pleine nuit, {others} fondent sur le campement où dort {a} ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "escape": "En pleine nuit, {others} fondent sur le campement où dort {a}, mais n'y trouvent qu'un mannequin de branches."
+    },
+    "event-gang-coalition": {
+      "defeat": "{a} a fait tomber trop de monde. {others} oublient leurs querelles pour en venir à bout, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "escape": "{others} unissent leurs forces contre {a}, la plus grande menace de l'arène. C'est un échec, mais l'alliance tient bon."
+    },
+    "event-group-bridge": {
+      "safe": "Le pont cède sous {all} ; tout le monde bondit en lieu sûr au dernier moment.",
+      "hurt": "Le pont cède sous {all}. Un bain glacé et quelques bleus pour {hurt}.",
+      "defeat": "Le pont cède sous {all}, et les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-group-flood": {
+      "safe": "Une crue dévale la vallée où campent {all}. Tout le monde grimpe dans un arbre à temps.",
+      "hurt": "Une crue dévale la vallée où campent {all} ; le courant emporte un moment {hurt}.",
+      "defeat": "Une crue dévale la vallée où campent {all}, et les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-group-mist": {
+      "safe": "Une brume empoisonnée recouvre {all}, qui retiennent leur souffle et passent au travers.",
+      "hurt": "Une brume empoisonnée recouvre {all} ; quintes de toux pour {hurt}.",
+      "defeat": "Une brume empoisonnée recouvre {all}, et les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-group-rockfall": {
+      "safe": "Des rochers pleuvent sur {all} ; tout le monde les voit venir et plonge à l'abri.",
+      "hurt": "Des rochers pleuvent sur {all} ; quelques-uns atteignent {hurt}.",
+      "defeat": "Des rochers pleuvent sur {all}, et les gardiens emportent {fallen} hors de l'arène."
+    },
+    "event-feast-truce": {
+      "only": "Une pluie battante pousse {all} dans la même grotte. Pour une nuit, c'est la trêve : de la soupe, des histoires, et personne ne dort la main sur une arme. Ou presque."
+    },
+    "event-feast-banquet": {
+      "only": "Les maîtres de l'arène dressent un banquet dans une clairière, et {all} y sont conviés. Sanglier rôti, gâteaux au miel, et beaucoup de regards soupçonneux d'un bout à l'autre de la table."
+    },
+    "event-feast-song": {
+      "only": "Autour d'un grand feu, {all} chantent la même vieille chanson dans des langues différentes. Personne n'avoue y prendre plaisir."
+    },
+    "event-find-cache": {
+      "success": "{a} remarque de la terre fraîchement retournée au pied d'un arbre et déterre une cachette : {item}.",
+      "failure": "{a} creuse au pied d'un arbre pendant une heure, et ne trouve qu'un vieux blaireau très en colère."
+    },
+    "event-quiet-memory": {
+      "only": "À la lueur du feu, {a} tourne et retourne un petit souvenir dans ses mains, en pensant à son foyer."
     }
   },
   "rounds": {
     "day": "Jour {number}",
     "night": "Nuit {number}",
     "finale": "La finale"
-  }
+  },
+  "and": "et"
 }

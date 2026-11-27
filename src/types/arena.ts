@@ -99,6 +99,8 @@ export type Fighter = {
   defeatedBy?: string;
   defeats: number;
   luckUsed: boolean;
+  /** The other half of a couple formed during the match. */
+  partner?: string;
 };
 
 export type EventOutcome = string;
@@ -122,6 +124,8 @@ export type EventResult = {
   actors: string[];
   itemId?: string;
   defeated: string[];
+  /** Group events: those who were hurt. */
+  hurt?: string[];
   notable?: boolean;
   /** The rolls behind the outcome, in order. */
   rolls?: RollRecord[];
@@ -134,7 +138,14 @@ export type Phase = 'day' | 'night';
 /** A contestant's state at the end of a round, for the status panel. */
 export type FighterState = Pick<
   Fighter,
-  'hp' | 'maxHp' | 'items' | 'standing' | 'sideId' | 'allianceId' | 'defeats'
+  | 'hp'
+  | 'maxHp'
+  | 'items'
+  | 'standing'
+  | 'sideId'
+  | 'allianceId'
+  | 'defeats'
+  | 'partner'
 >;
 
 export type Round = {
