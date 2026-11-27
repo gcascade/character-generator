@@ -32,6 +32,7 @@ const fighter = (overrides: Partial<Fighter> = {}): Fighter => ({
   standing: true,
   defeats: 0,
   luckUsed: false,
+  hunger: 0,
   ...overrides,
 });
 
@@ -42,6 +43,7 @@ const state = (seed: string): MatchState => ({
     arenaSetup.contestants.map((c) => [c.id, c.character]),
   ),
   balance: {},
+  guests: 0,
   round: 1,
   limit: 8,
   random: createRandom(seed),

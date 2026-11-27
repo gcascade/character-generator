@@ -2,6 +2,7 @@ import type { Locale } from '../i18n';
 import type {
   ArenaSetup,
   Contestant,
+  Decree,
   EventResult,
   Fighter,
   Match,
@@ -10,13 +11,16 @@ import type {
   Side,
   Skills,
 } from '../types/arena';
-import type { Character } from '../types/character';
+import {
+  CharacterAlignments,
+  CharacterClasses,
+  type Character,
+} from '../types/character';
 import type { Party } from '../types/party';
 import {
   allied,
   bondOf,
   COUPLE_BOND,
-  dropItems,
   fitsActor,
   friendly,
   friends,
@@ -25,17 +29,20 @@ import {
   hostile,
   isGood,
   isWounded,
+  leaveArena,
+  MAX_GUESTS,
   MAX_HELD,
   type MatchState,
   resolveEvent,
   sameSide,
 } from './arenaEvents';
-import { ARENA, type ArenaEventKind } from './data';
+import { ARENA, NAMES, type ArenaEventKind } from './data';
 import { balanceOf } from './partyDepth';
 import { generateRandomCharacter } from './generate';
 import { generateParty, renderParty } from './party';
 import { createRandom, newSeed, type Random } from './random';
 import { rollSkills } from './skills';
+import { compatibleRaceGenders, firstNamesFor } from './template';
 
 export const MAX_CONTESTANTS = 48;
 export const MAX_PERKS = 2;
@@ -288,7 +295,11 @@ const FIGHTS = [
   'revenge',
   'melee',
   'gang',
+  'companion-attack',
 ];
+
+/** Events that feed someone weigh more as hunger grows (spec 013). */
+const MEALS = ['forage', 'eat', 'feed'];
 
 const standingSides = (fighters: Fighter[]) =>
   new Set(fighters.filter((f) => f.standing).map((f) => f.sideId));
@@ -310,6 +321,7 @@ const startFighters = (setup: ArenaSetup) =>
           standing: true,
           defeats: 0,
           luckUsed: false,
+          hunger: 0,
         },
       ];
     }),
@@ -419,6 +431,18 @@ const candidatesFor = (
     const when = kind.when ?? {};
     let weight = kind.weight;
     if (FIGHTS.includes(kind.type)) weight *= 1.5 + state.round * 0.5;
+    if (MEALS.includes(kind.type) || kind.effect === 'feed')
+      weight *= 1 + a.hunger / 2;
+    if (kind.type === 'arrival') {
+      if (state.guests >= MAX_GUESTS || state.winner) continue;
+      if (state.round < 3 || state.round > state.limit - 2) continue;
+      if (kind.guest === 'wanderer' && a.partner) continue;
+      if (
+        kind.guest === 'gladiator' &&
+        Object.values(state.fighters).filter((f) => f.standing).length < 3
+      )
+        continue;
+    }
     if (kind.type === 'arena') {
       // The arena tightens in the second half of the match, deadly at the very end.
       if (state.round < Math.ceil(state.limit * 0.4)) continue;
@@ -448,6 +472,8 @@ const candidatesFor = (
       switch (kind.type) {
         case 'steal':
           return b.items.length > 0;
+        case 'relic-steal':
+          return !!b.relic;
         case 'trade':
           return (
             b.items.length < MAX_HELD &&
@@ -532,8 +558,11 @@ const stateOf = (fighters: Fighter[]): Round['after'] =>
         standing: f.standing,
         sideId: f.sideId,
         defeats: f.defeats,
+        hunger: f.hunger,
         ...(f.allianceId && { allianceId: f.allianceId }),
         ...(f.partner && { partner: f.partner }),
+        ...(f.companion && { companion: f.companion }),
+        ...(f.relic && { relic: true }),
       },
     ]),
   );
@@ -559,11 +588,104 @@ const announce = (id: string, actors: string[]): EventResult => ({
 export const isAnnouncement = (event: EventResult) =>
   event.eventId.startsWith('announce-');
 
+// --- Guests and decrees (spec 013) ------------------------------------------
+
+const GUEST_CLASSES = {
+  gladiator: [
+    CharacterClasses.Warrior,
+    CharacterClasses.Barbarian,
+    CharacterClasses.Paladin,
+    CharacterClasses.Ranger,
+  ],
+  wanderer: Object.values(CharacterClasses),
+};
+
+/** A guest drawn from the seed, so the same match always has the same guests. */
+const makeGuest = (
+  setup: ArenaSetup,
+  role: 'gladiator' | 'wanderer',
+  number: number,
+): { contestant: Contestant; side: Side } => {
+  const random = createRandom(`${setup.seed}:guest:${number}`);
+  const taken = namesIn(setup);
+  const draw = (): Character => {
+    const { race, gender } = random.pick(compatibleRaceGenders({}));
+    const alignments = Object.values(CharacterAlignments).filter(
+      (a) => role === 'gladiator' || !a.endsWith('Evil'),
+    );
+    return {
+      race,
+      gender,
+      characterClass: random.pick(GUEST_CLASSES[role]),
+      alignment: random.pick(alignments),
+      age: 18 + random.int(40),
+      firstName: random.pick(firstNamesFor(race, gender)),
+      lastName: random.pick(NAMES[race].last),
+    };
+  };
+  let character = draw();
+  for (let i = 0; i < 20 && taken.has(fullName(character)); i++) {
+    character = draw();
+  }
+  const id = `guest-${number}`;
+  const side: Side = { id: `guest:${id}`, kind: 'solo', ties: [] };
+  const weapons = ARENA.items.filter((i) => i.kind === 'weapon');
+  const perks = random.shuffle(ARENA.perks.map((p) => p.id));
+  const contestant: Contestant = {
+    id,
+    character,
+    sideId: side.id,
+    guest: role,
+    perks:
+      role === 'gladiator'
+        ? ['perk-brute', perks.find((p) => p !== 'perk-brute')!]
+        : perks.slice(0, MAX_PERKS),
+    items:
+      role === 'gladiator'
+        ? [random.pick(weapons).id, 'item-shield']
+        : [random.pick(ARENA.items).id],
+  };
+  return { contestant, side };
+};
+
+/** About one match in six gets a decree (spec 013 clarification). */
+export const DECREE_CHANCE = 1 / 6;
+
+const planDecree = (
+  setup: ArenaSetup,
+  limit: number,
+): Pick<Decree, 'type' | 'round'> | undefined => {
+  const random = createRandom(`${setup.seed}:decree`);
+  if (random.next() >= DECREE_CHANCE) return undefined;
+  const type = random.pick(['survive', 'relic', 'champion'] as const);
+  const round = 3 + random.int(Math.max(1, Math.floor(limit / 2) - 2));
+  return round < limit - 1 ? { type, round } : undefined;
+};
+
+/** The setup with the guests who entered the match, for texts, cards and summaries. */
+export const matchSetup = (setup: ArenaSetup, match: Match): ArenaSetup =>
+  match.entrants.length
+    ? {
+        ...setup,
+        contestants: [...setup.contestants, ...match.entrants],
+        sides: [...setup.sides, ...match.entrantSides],
+      }
+    : setup;
+
 /** Plays the whole match from the setup and its seed (spec 012 FR-011 to FR-018). */
 export const simulate = (setup: ArenaSetup): Match => {
   const fighters = startFighters(setup);
+  // A copy that grows with the guests.
+  const live: ArenaSetup = {
+    ...setup,
+    contestants: [...setup.contestants],
+    sides: [...setup.sides],
+  };
+  const entrants: Contestant[] = [];
+  const entrantSides: Side[] = [];
+  const all = Object.values(fighters);
   const state: MatchState = {
-    setup,
+    setup: live,
     fighters,
     characters: Object.fromEntries(
       setup.contestants.map((c) => [c.id, c.character]),
@@ -575,17 +697,43 @@ export const simulate = (setup: ArenaSetup): Match => {
     bonds: {},
     grudges: {},
     dropped: [],
+    guests: 0,
     random: createRandom(`${setup.seed}:match`),
   };
-  const all = Object.values(fighters);
+  state.enter = (role, host) => {
+    const { contestant, side } = makeGuest(live, role, entrants.length + 1);
+    live.contestants.push(contestant);
+    live.sides.push(side);
+    entrants.push(contestant);
+    entrantSides.push(side);
+    state.characters[contestant.id] = contestant.character;
+    const skills = contestantSkills(live, contestant.id);
+    const guest: Fighter = {
+      id: contestant.id,
+      sideId: role === 'wanderer' ? host.sideId : side.id,
+      ...(role === 'wanderer' &&
+        host.allianceId && { allianceId: host.allianceId }),
+      skills,
+      hp: skills.hp,
+      maxHp: skills.hp,
+      items: [...contestant.items],
+      perks: [...contestant.perks],
+      standing: true,
+      defeats: 0,
+      luckUsed: false,
+      hunger: 0,
+    };
+    fighters[guest.id] = guest;
+    all.push(guest);
+    return guest;
+  };
+  const plan = planDecree(setup, state.limit);
   // Teams whose last member has just fallen get a line of their own.
   const gone = new Set<string>();
   const teamsOut = (result: EventResult) =>
     result.defeated.flatMap((id) => {
       const sideId = fighters[id].sideId;
-      const team = setup.sides.find(
-        (s) => s.id === sideId && s.kind === 'team',
-      );
+      const team = live.sides.find((s) => s.id === sideId && s.kind === 'team');
       if (!team || gone.has(sideId)) return [];
       if (all.some((f) => f.standing && f.sideId === sideId)) return [];
       gone.add(sideId);
@@ -593,11 +741,35 @@ export const simulate = (setup: ArenaSetup): Match => {
     });
   const rounds: Round[] = [];
   const phaseOf = (n: number): Phase => (n % 2 === 1 ? 'day' : 'night');
+  const standingIds = () => all.filter((f) => f.standing).map((f) => f.id);
 
-  while (standingSides(all).size > 1 && state.round < state.limit) {
+  while (
+    !state.winner &&
+    standingSides(all).size > 1 &&
+    state.round < state.limit
+  ) {
     state.round++;
     const phase = phaseOf(state.round);
     const events: EventResult[] = [];
+    if (plan?.round === state.round && standingSides(all).size > 2) {
+      // The arena masters change the rules (spec 013 FR-005).
+      const maxDefeats = Math.max(...all.map((f) => f.defeats));
+      const lastNight = state.limit - 1 - ((state.limit - 1) % 2);
+      const goal =
+        plan.type === 'survive'
+          ? Math.min(lastNight, state.round + 4 - ((state.round + 4) % 2))
+          : plan.type === 'champion'
+            ? Math.max(2, maxDefeats + 2)
+            : 0;
+      if (plan.type !== 'survive' || goal > state.round) {
+        state.decree = { ...plan, goal };
+        events.push({
+          ...announce(`decree-${plan.type}`, []),
+          ...(plan.type === 'survive' && { count: goal / 2 + 1 }),
+          ...(plan.type === 'champion' && { count: goal }),
+        });
+      }
+    }
     const free = state.random.shuffle(all.filter((f) => f.standing));
     const count = MIN_EVENTS + state.random.int(MAX_EVENTS - MIN_EVENTS + 1);
     const told = () => events.filter((e) => !isAnnouncement(e)).length;
@@ -608,8 +780,9 @@ export const simulate = (setup: ArenaSetup): Match => {
       state.rolls = [];
       const before = stateOf(chosen.actors);
       const result = resolveEvent(state, chosen.kind, chosen.actors);
-      result.before = before;
-      result.after = stateOf(chosen.actors);
+      const actors = result.actors.map((id) => fighters[id]);
+      result.before = { ...stateOf(actors), ...before };
+      result.after = stateOf(actors);
       if (state.rolls.length) result.rolls = state.rolls;
       events.push(result);
       events.push(...teamsOut(result));
@@ -617,26 +790,45 @@ export const simulate = (setup: ArenaSetup): Match => {
         const index = free.indexOf(f);
         if (index >= 0) free.splice(index, 1);
       }
-      if (standingSides(all).size <= 1) break;
+      const decree = state.decree;
+      if (decree?.type === 'champion') {
+        const champion = all.find(
+          (f) => f.standing && f.defeats >= decree.goal,
+        );
+        if (champion) state.winner = { sideId: champion.sideId };
+      }
+      if (state.winner || standingSides(all).size <= 1) break;
     }
+    // Hunger grows with every period (spec 013 FR-003).
+    for (const f of all) if (f.standing) f.hunger++;
     // The narrator sums up the period: who left the arena, or nobody.
     const fallen = events.flatMap((e) => (isAnnouncement(e) ? [] : e.defeated));
     events.push(
       announce(`${fallen.length ? 'recap' : 'quiet'}-${phase}`, fallen),
     );
+    if (
+      state.decree?.type === 'survive' &&
+      state.round === state.decree.goal &&
+      standingSides(all).size > 1
+    ) {
+      state.winner = { sideId: all.find((f) => f.standing)!.sideId, shared: true };
+    }
+    if (state.winner && state.decree) {
+      const winners = state.winner.shared
+        ? standingIds()
+        : all
+            .filter((f) => f.standing && f.sideId === state.winner!.sideId)
+            .map((f) => f.id);
+      events.push(announce(`decree-won-${state.decree.type}`, winners));
+    }
     rounds.push({ number: state.round, phase, events, after: stateOf(all) });
   }
 
-  if (standingSides(all).size > 1) {
+  if (!state.winner && standingSides(all).size > 1) {
     // The finale: duels between the last sides until one remains, the winner
     // of each duel facing the next opponent (maintainer feedback).
     state.round++;
-    const events: EventResult[] = [
-      announce(
-        'finale',
-        all.filter((f) => f.standing).map((f) => f.id),
-      ),
-    ];
+    const events: EventResult[] = [announce('finale', standingIds())];
     let champion: Fighter | undefined;
     while (standingSides(all).size > 1) {
       const standing = state.random.shuffle(all.filter((f) => f.standing));
@@ -657,7 +849,7 @@ export const simulate = (setup: ArenaSetup): Match => {
         const winner = loser === a ? b : a;
         loser.hp = 0;
         loser.standing = false;
-        dropItems(state, loser);
+        leaveArena(state, loser);
         loser.defeatedRound = state.round;
         loser.defeatedBy = winner.id;
         winner.defeats++;
@@ -677,8 +869,17 @@ export const simulate = (setup: ArenaSetup): Match => {
     });
   }
 
-  const winner = all.find((f) => f.standing)!;
-  return { rounds, winnerSideId: winner.sideId, fighters };
+  const winnerSideId =
+    state.winner?.sideId ?? all.find((f) => f.standing)!.sideId;
+  return {
+    rounds,
+    winnerSideId,
+    fighters,
+    entrants,
+    entrantSides,
+    ...(state.decree && { decree: state.decree }),
+    ...(state.winner?.shared && { shared: true }),
+  };
 };
 
 export type MatchSummary = {
@@ -690,6 +891,10 @@ export type MatchSummary = {
   moments: EventResult[];
   /** The winners are a couple formed during the match. */
   couple: boolean;
+  /** Everyone standing won together (a survival decree, spec 013). */
+  shared: boolean;
+  /** The decree that changed the end, if any. */
+  decree?: Decree['type'];
 };
 
 const MAX_MOMENTS = 5;
@@ -698,10 +903,12 @@ const MAX_MOMENTS = 5;
 export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
   const fighters = Object.values(match.fighters);
   const winners = fighters
-    .filter((f) => f.sideId === match.winnerSideId)
+    .filter((f) =>
+      match.shared ? f.standing : f.sideId === match.winnerSideId,
+    )
     .sort((a, b) => Number(b.standing) - Number(a.standing))
     .map((f) => f.id);
-  const rows = setup.contestants
+  const rows = matchSetup(setup, match).contestants
     .map((c) => match.fighters[c.id])
     .map((f) => ({
       id: f.id,
@@ -740,7 +947,9 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
     winners,
     rows,
     moments,
-    couple: match.winnerSideId.startsWith('couple:'),
+    couple: !match.shared && match.winnerSideId.startsWith('couple:'),
+    shared: !!match.shared,
+    ...(match.decree && { decree: match.decree.type }),
   };
 };
 
