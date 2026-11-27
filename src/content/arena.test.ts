@@ -30,6 +30,9 @@ import {
 import type { Party } from '../types/party';
 import { createRandom } from './random';
 
+// Hundreds of simulated matches per test: slower on CI runners than locally.
+vi.setConfig({ testTimeout: 60_000 });
+
 describe('arena roster (spec 012 US1)', () => {
   it('adds solo contestants, never the same saved character twice', () => {
     const saved = { ...generateRandomCharacter(), id: 'saved-1' };
