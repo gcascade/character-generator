@@ -16,6 +16,7 @@ import {
   allied,
   bondOf,
   COUPLE_BOND,
+  dropItems,
   fitsActor,
   friendly,
   friends,
@@ -90,6 +91,16 @@ export const addCharacter = (
   };
 };
 
+const NUMERALS = ['II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+
+/** A team name nobody else uses in the arena: "The Grey Company II" for a second one. */
+const uniqueTeamName = (setup: ArenaSetup, name: string) => {
+  const taken = new Set(setup.sides.map((s) => s.name));
+  if (!taken.has(name)) return name;
+  const free = NUMERALS.map((n) => `${name} ${n}`).find((n) => !taken.has(n));
+  return free ?? `${name} ${setup.sides.length + 1}`;
+};
+
 /** Adds a party as one team, with its roles and ties (members already enrolled are skipped). */
 export const addParty = (
   setup: ArenaSetup,
@@ -119,7 +130,7 @@ export const addParty = (
       ? {
           id: sideId,
           kind: 'team',
-          name: renderParty(party, locale).name,
+          name: uniqueTeamName(setup, renderParty(party, locale).name),
           ties,
         }
       : { id: sideId, kind: 'solo', ties: [] };
@@ -391,6 +402,11 @@ const candidatesFor = (
       if (kind.type === 'potion' && !(isWounded(a) && hasItemTag(a, 'heal')))
         continue;
       if (kind.type === 'gift' && a.items.length >= MAX_HELD) continue;
+      if (
+        kind.type === 'scavenge' &&
+        (!state.dropped.length || a.items.length >= MAX_HELD)
+      )
+        continue;
       list.push({ kind, actors: [a], weight });
       continue;
     }
@@ -505,6 +521,17 @@ const pickWeighted = (random: Random, candidates: Candidate[]) => {
   return candidates[candidates.length - 1];
 };
 
+/** A narrator's line between events (maintainer feedback): no rolls, no portraits. */
+const announce = (id: string, actors: string[]): EventResult => ({
+  eventId: `announce-${id}`,
+  outcome: 'only',
+  actors,
+  defeated: [],
+});
+
+export const isAnnouncement = (event: EventResult) =>
+  event.eventId.startsWith('announce-');
+
 /** Plays the whole match from the setup and its seed (spec 012 FR-011 to FR-018). */
 export const simulate = (setup: ArenaSetup): Match => {
   const fighters = startFighters(setup);
@@ -520,9 +547,23 @@ export const simulate = (setup: ArenaSetup): Match => {
     rolls: [],
     bonds: {},
     grudges: {},
+    dropped: [],
     random: createRandom(`${setup.seed}:match`),
   };
   const all = Object.values(fighters);
+  // Teams whose last member has just fallen get a line of their own.
+  const gone = new Set<string>();
+  const teamsOut = (result: EventResult) =>
+    result.defeated.flatMap((id) => {
+      const sideId = fighters[id].sideId;
+      const team = setup.sides.find(
+        (s) => s.id === sideId && s.kind === 'team',
+      );
+      if (!team || gone.has(sideId)) return [];
+      if (all.some((f) => f.standing && f.sideId === sideId)) return [];
+      gone.add(sideId);
+      return [announce('team-out', [id])];
+    });
   const rounds: Round[] = [];
   const phaseOf = (n: number): Phase => (n % 2 === 1 ? 'day' : 'night');
 
@@ -532,7 +573,8 @@ export const simulate = (setup: ArenaSetup): Match => {
     const events: EventResult[] = [];
     const free = state.random.shuffle(all.filter((f) => f.standing));
     const count = MIN_EVENTS + state.random.int(MAX_EVENTS - MIN_EVENTS + 1);
-    while (free.length && events.length < count) {
+    const told = () => events.filter((e) => !isAnnouncement(e)).length;
+    while (free.length && told() < count) {
       const a = free[0];
       const candidates = candidatesFor(state, a, free, phase);
       const chosen = pickWeighted(state.random, candidates);
@@ -542,23 +584,37 @@ export const simulate = (setup: ArenaSetup): Match => {
       result.before = before;
       if (state.rolls.length) result.rolls = state.rolls;
       events.push(result);
+      events.push(...teamsOut(result));
       for (const f of chosen.actors) {
         const index = free.indexOf(f);
         if (index >= 0) free.splice(index, 1);
       }
       if (standingSides(all).size <= 1) break;
     }
+    // The narrator sums up the period: who left the arena, or nobody.
+    const fallen = events.flatMap((e) => (isAnnouncement(e) ? [] : e.defeated));
+    events.push(
+      announce(`${fallen.length ? 'recap' : 'quiet'}-${phase}`, fallen),
+    );
     rounds.push({ number: state.round, phase, events, after: stateOf(all) });
   }
 
   if (standingSides(all).size > 1) {
-    // The finale: duels between the last sides until one remains.
+    // The finale: duels between the last sides until one remains, the winner
+    // of each duel facing the next opponent (maintainer feedback).
     state.round++;
-    const events: EventResult[] = [];
+    const events: EventResult[] = [
+      announce(
+        'finale',
+        all.filter((f) => f.standing).map((f) => f.id),
+      ),
+    ];
+    let champion: Fighter | undefined;
     while (standingSides(all).size > 1) {
       const standing = state.random.shuffle(all.filter((f) => f.standing));
-      const a = standing[0];
+      const a = champion?.standing ? champion : standing[0];
       const b = standing.find((f) => f.sideId !== a.sideId)!;
+      if (champion) events.push(announce('next-duel', [a.id, b.id]));
       const honour = isGood(state, a) && isGood(state, b);
       const kind = ARENA.events.find(
         (e) => e.type === 'finale' && (e.when?.alignment === 'good') === honour,
@@ -573,6 +629,7 @@ export const simulate = (setup: ArenaSetup): Match => {
         const winner = loser === a ? b : a;
         loser.hp = 0;
         loser.standing = false;
+        dropItems(state, loser);
         loser.defeatedRound = state.round;
         loser.defeatedBy = winner.id;
         winner.defeats++;
@@ -581,6 +638,7 @@ export const simulate = (setup: ArenaSetup): Match => {
       }
       result.notable = true;
       events.push(result);
+      champion = a.standing ? a : b;
     }
     rounds.push({
       number: state.round,
@@ -626,7 +684,9 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
         (b.defeatedRound ?? Infinity) - (a.defeatedRound ?? Infinity) ||
         b.defeats - a.defeats,
     );
-  const events = match.rounds.flatMap((r) => r.events);
+  const events = match.rounds
+    .flatMap((r) => r.events)
+    .filter((e) => !isAnnouncement(e));
   const notable = events.filter((e) => e.notable);
   // Defeats by another contestant make better moments than those by the arena.
   const byHand = (e: EventResult) =>

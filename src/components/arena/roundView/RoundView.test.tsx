@@ -48,4 +48,29 @@ describe('RoundView', () => {
       within(tooltip).getByRole('group', { name: `Skills of ${name}` }),
     ).toBeInTheDocument();
   });
+
+  it('shows the narrator apart, and who is out', () => {
+    const round = {
+      number: 9,
+      phase: 'day' as const,
+      after: first.after,
+      events: [
+        {
+          eventId: 'announce-finale',
+          outcome: 'only',
+          actors: ['aela', 'korvus'],
+          defeated: [],
+        },
+        {
+          eventId: 'event-finale-duel',
+          outcome: 'defeat',
+          actors: ['aela', 'korvus'],
+          defeated: ['korvus'],
+        },
+      ],
+    };
+    render(<RoundView round={round} setup={arenaSetup} standing={1} finale />);
+    expect(screen.getByText(/the finale begins/)).toBeInTheDocument();
+    expect(screen.getByText('Korvus is out')).toBeInTheDocument();
+  });
 });

@@ -38,6 +38,7 @@ const OUTCOMES: Record<string, string[]> = {
   gang: ['defeat', 'escape'],
   'group-hazard': ['safe', 'hurt', 'defeat'],
   feast: ['only'],
+  scavenge: ['only'],
 };
 
 const outcomesOf = (kind: (typeof ARENA.events)[number]) => [
@@ -95,6 +96,7 @@ describe('arena content (spec 012)', () => {
                     others: [1, 2],
                     fallen: [1],
                     hurt: [2],
+                    looter: [0],
                   },
                   and: 'and',
                 },
@@ -115,6 +117,18 @@ describe('arena content (spec 012)', () => {
         expect(text).not.toMatch(/ [:;!?»]|« /);
         expect(text).not.toMatch(/\biels?\b|·/);
       }
+    }
+  });
+
+  it('has every narrator line in both languages, with the same placeholders', () => {
+    const ids = Object.keys(ARENA_TEXTS.en.announcements);
+    expect(Object.keys(ARENA_TEXTS.fr.announcements).sort()).toEqual(
+      [...ids].sort(),
+    );
+    for (const id of ids) {
+      expect(params(ARENA_TEXTS.fr.announcements[id]), id).toEqual(
+        params(ARENA_TEXTS.en.announcements[id]),
+      );
     }
   });
 

@@ -126,6 +126,8 @@ export type EventResult = {
   defeated: string[];
   /** Group events: those who were hurt. */
   hurt?: string[];
+  /** Who got away with the loot (a chest fought over). */
+  looter?: string;
   notable?: boolean;
   /** The rolls behind the outcome, in order. */
   rolls?: RollRecord[];

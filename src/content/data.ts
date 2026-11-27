@@ -194,6 +194,8 @@ export type ArenaEventKind = {
   relation?: 'friend' | 'foe' | 'any';
   /** Hazards: a failure loses an item. */
   loseItem?: boolean;
+  /** Melees: the best fighter still standing gets an item. */
+  loot?: boolean;
   /** Social events: what a success does to b. */
   effect?: 'hurt' | 'take';
   when?: {
@@ -243,6 +245,8 @@ export type ArenaTexts = {
   perks: Record<string, { name: string; description: string }>;
   items: Record<string, { a: string; the: string; description: string }>;
   events: Record<string, GenderedOutcomes>;
+  /** The narrator's lines between events, by announcement id. */
+  announcements: Record<string, string>;
   rounds: Record<string, string>;
   /** Joins the last two names of a list. */
   and: string;

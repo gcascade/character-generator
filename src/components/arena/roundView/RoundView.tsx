@@ -4,7 +4,7 @@ import {
   PersonOff as DefeatIcon,
   WbSunny as DayIcon,
 } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Chip, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import { ARENA_TEXTS } from '../../../content/data';
 import {
@@ -147,39 +147,74 @@ const RoundView: FC<RoundViewProps> = ({
         </Typography>
       </Box>
       <Box component="ul" sx={{ m: 0, pl: 0, listStyle: 'none' }}>
-        {round.events.map((event, index) => (
-          <Box
-            component="li"
-            key={index}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: { xs: 1, sm: 1.5 },
-              py: 1,
-              borderTop: index ? 1 : 0,
-              borderColor: 'divider',
-            }}
-          >
-            {stack(eventSides(event).left, event)}
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography variant="story" component="p" sx={{ m: 0 }}>
-                {event.defeated.length > 0 && (
-                  <DefeatIcon
-                    fontSize="small"
-                    sx={{
-                      color: 'text.secondary',
-                      mr: 0.5,
-                      verticalAlign: 'text-bottom',
-                    }}
-                  />
-                )}
+        {round.events.map((event, index) =>
+          event.eventId.startsWith('announce-') ? (
+            // The narrator: a line of its own between events.
+            <Box
+              component="li"
+              key={index}
+              sx={{
+                my: 1.5,
+                px: 2,
+                py: 1.5,
+                borderRadius: 2,
+                bgcolor: 'action.hover',
+                textAlign: 'center',
+              }}
+            >
+              <Typography
+                variant="story"
+                component="p"
+                sx={{ m: 0, fontStyle: 'italic' }}
+              >
                 {text(event)}
               </Typography>
-              {showRolls && <Rolls event={event} setup={setup} />}
             </Box>
-            {stack(eventSides(event).right, event)}
-          </Box>
-        ))}
+          ) : (
+            <Box
+              component="li"
+              key={index}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: { xs: 1, sm: 1.5 },
+                py: 1,
+                borderTop: index ? 1 : 0,
+                borderColor: 'divider',
+              }}
+            >
+              {stack(eventSides(event).left, event)}
+              <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                <Typography variant="story" component="p" sx={{ m: 0 }}>
+                  {text(event)}
+                </Typography>
+                {event.defeated.length > 0 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 0.5,
+                      mt: 0.5,
+                    }}
+                  >
+                    {event.defeated.map((id) => (
+                      <Chip
+                        key={id}
+                        size="small"
+                        icon={<DefeatIcon fontSize="small" />}
+                        label={t('arena.out', {
+                          name: character(id).firstName,
+                        })}
+                      />
+                    ))}
+                  </Box>
+                )}
+                {showRolls && <Rolls event={event} setup={setup} />}
+              </Box>
+              {stack(eventSides(event).right, event)}
+            </Box>
+          ),
+        )}
       </Box>
     </Box>
   );
