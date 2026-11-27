@@ -8,7 +8,8 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ['../public'],
-  viteFinal: (viteConfig) => ({ ...viteConfig, base: './' }),
+  // Storybook copies public/ itself (staticDirs); Vite copying it too races on CI (EEXIST).
+  viteFinal: (viteConfig) => ({ ...viteConfig, base: './', publicDir: false }),
 };
 
 export default config;

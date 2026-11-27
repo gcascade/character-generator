@@ -76,6 +76,74 @@
     "perk-charming": {
       "name": "Charmeur",
       "description": "Se fait vite des amis (+5 Persuasion, alliances plus probables)."
+    },
+    "perk-beast-friend": {
+      "name": "Ami des bêtes",
+      "description": "Les animaux lui font confiance : plus de rencontres, apprivoisement facilité (+5 Survie)."
+    },
+    "perk-iron-stomach": {
+      "name": "Estomac d'acier",
+      "description": "La faim monte deux fois moins vite, et les baies douteuses ne font aucun mal (+5 Endurance)."
+    },
+    "perk-climber": {
+      "name": "Grimpeur",
+      "description": "Escalade n'importe quelle falaise sans corde (+5 Athlétisme)."
+    },
+    "perk-night-eyes": {
+      "name": "Nyctalope",
+      "description": "Voit dans le noir comme en plein jour (+5 Perception)."
+    },
+    "perk-crowd-favourite": {
+      "name": "Favori du public",
+      "description": "Les spectateurs l'adorent : cadeaux et aide arrivent plus souvent (+5 Persuasion)."
+    },
+    "perk-tracker": {
+      "name": "Pisteur",
+      "description": "Lit toutes les traces : meilleures chasses, reliques trouvées plus vite (+5 Survie, +5 Perception)."
+    },
+    "flaw-gullible": {
+      "name": "Crédulité",
+      "description": "Croit toutes les histoires : facile à duper et à voler (−5 Perception)."
+    },
+    "flaw-clumsy": {
+      "name": "Maladresse",
+      "description": "Trébuche, laisse tout tomber, tombe dans tous les pièges (−10 Athlétisme, −5 Discrétion)."
+    },
+    "flaw-glutton": {
+      "name": "Gourmandise",
+      "description": "Toujours faim : la faim monte plus vite (−5 Endurance)."
+    },
+    "flaw-coward": {
+      "name": "Lâcheté",
+      "description": "Évite les combats dès que possible (−10 Corps à corps, −10 Intimidation)."
+    },
+    "flaw-hothead": {
+      "name": "Tête brûlée",
+      "description": "Cherche la bagarre et se fait peu d'alliés (−5 Perception, −10 Persuasion)."
+    },
+    "flaw-beast-fear": {
+      "name": "Peur des bêtes",
+      "description": "Panique devant les animaux, n'en apprivoise aucun (−5 Survie)."
+    },
+    "flaw-loud": {
+      "name": "Grande gueule",
+      "description": "Parle, chante et piétine : on l'entend de loin (−15 Discrétion)."
+    },
+    "flaw-frail": {
+      "name": "Fragilité",
+      "description": "Se blesse facilement (−6 PV, −5 Endurance)."
+    },
+    "flaw-greedy": {
+      "name": "Cupidité",
+      "description": "Ne résiste à aucun butin, même au prix du danger (−5 Persuasion)."
+    },
+    "flaw-unlucky": {
+      "name": "Malchance",
+      "description": "Une fois par match, une réussite tourne à l'échec."
+    },
+    "flaw-heavy-sleeper": {
+      "name": "Sommeil de plomb",
+      "description": "Rien ne peut l'en tirer : une proie facile la nuit (−5 Perception)."
     }
   },
   "items": {
@@ -178,6 +246,36 @@
       "a": "une fiole d'eau bénite",
       "the": "l'eau bénite",
       "description": "Une eau bénie qui soigne, une fois."
+    },
+    "item-flint": {
+      "a": "un briquet à silex",
+      "the": "le briquet",
+      "description": "Allume des feux : chaleur, cuisine, et bêtes tenues à distance (+5 Survie)."
+    },
+    "item-net": {
+      "a": "un filet",
+      "the": "le filet",
+      "description": "Attrape poissons et animaux (+5 Survie)."
+    },
+    "item-antidote": {
+      "a": "un antidote",
+      "the": "l'antidote",
+      "description": "Guérit une fois du poison ou du venin."
+    },
+    "item-bird-call": {
+      "a": "un appeau",
+      "the": "l'appeau",
+      "description": "Imite les animaux, une grande aide pour les apprivoiser (+3 Perception)."
+    },
+    "item-waterskin": {
+      "a": "une gourde",
+      "the": "la gourde",
+      "description": "De l'eau fraîche pour les jours de chaleur (+5 Endurance)."
+    },
+    "item-grappling-hook": {
+      "a": "un grappin",
+      "the": "le grappin",
+      "description": "Escalade les murs et franchit les gouffres (+5 Athlétisme)."
     }
   },
   "events": {
@@ -752,6 +850,469 @@
     },
     "event-quiet-memory": {
       "only": "À la lueur du feu, {a} tourne et retourne un petit souvenir dans ses mains, en pensant à son foyer."
+    },
+    "event-tool-cliff": {
+      "success": "Le seul chemin passe par une falaise à pic. {a} la descend lentement, prise après prise, et arrive en bas.",
+      "failure": "Le seul chemin passe par une falaise à pic. {a} glisse à mi-hauteur et fait le reste de la descente sur le dos, la peau à vif.",
+      "defeated": "Le seul chemin passe par une falaise à pic. {a} chute de très haut, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Le seul chemin passe par une falaise à pic. {a} attache {theItem} à un arbre et descend en rappel sans une égratignure.",
+      "knack": "Le seul chemin passe par une falaise à pic. {a} la descend comme un escalier, en sifflotant."
+    },
+    "event-tool-chasm": {
+      "success": "Un gouffre coupe le chemin. {a} prend son élan et saute ; le bord d'en face s'effrite, mais tient bon.",
+      "failure": "Un gouffre coupe le chemin. {a} saute, trop court, et reste accroché par le bout des doigts avant de se hisser, en sang.",
+      "defeated": "Un gouffre coupe le chemin. {a} saute sans atteindre l'autre bord, et les gardiens remontent {a} du fond pour l'emporter hors de l'arène.",
+      "tool": "Un gouffre coupe le chemin. {a} lance {theItem} autour d'une souche, de l'autre côté, et traverse à la force des bras.",
+      "knack": "Un gouffre coupe le chemin. {a} descend une paroi et remonte l'autre comme si de rien n'était."
+    },
+    "event-tool-well": {
+      "success": "{a} se penche au-dessus d'un vieux puits pour chercher de l'eau, perd l'équilibre et se rattrape à la margelle juste à temps.",
+      "failure": "{a} tombe dans un vieux puits, et il faut une heure d'escalade douloureuse pour en sortir.",
+      "defeated": "{a} tombe dans un vieux puits sans pouvoir en ressortir, et au matin les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} attache {theItem} à la margelle d'un vieux puits, descend boire tout son soûl et remonte.",
+      "knack": "{a} descend dans un vieux puits par les interstices des pierres, boit tout son soûl et remonte.",
+      "lost": "{a} tombe dans un vieux puits et finit par en sortir, mais {theItem} reste au fond."
+    },
+    "event-tool-cave": {
+      "success": "{a} traverse une grotte noire comme un four, une main sur la paroi, et ressort de l'autre côté.",
+      "failure": "{a} traverse une grotte noire comme un four et se cogne à chaque rocher.",
+      "defeated": "{a} tombe dans un trou au fond d'une grotte obscure, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} allume {theItem} et traverse une grotte profonde en évitant les trous du sol.",
+      "knack": "{a} traverse une grotte noire comme un four aussi facilement qu'un pré en plein midi : ces yeux-là voient dans le noir."
+    },
+    "event-tool-mine": {
+      "success": "{a} s'abrite dans une vieille mine et sait lire les étais : cette galerie est sûre, celle-là non.",
+      "failure": "{a} s'abrite dans une vieille mine ; un pan du plafond s'effondre pendant la nuit.",
+      "defeated": "{a} s'abrite dans une vieille mine, qui s'effondre, et à l'aube les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} allume {theItem} pour explorer une vieille mine et y trouve un coin sec et sûr pour dormir.",
+      "knack": "{a} explore une vieille mine sans lumière, repère les étais pourris et dort dans la seule galerie sûre."
+    },
+    "event-tool-cage": {
+      "success": "Un filet tombe des arbres et hisse {a} dans une cage suspendue ; {a} tord les barreaux et se faufile dehors.",
+      "failure": "Un filet tombe des arbres et hisse {a} dans une cage suspendue, d'où {a} ne sort qu'à l'aube, le ventre vide et les membres raides.",
+      "defeated": "Un filet tombe des arbres et hisse {a} dans une cage suspendue ; les maîtres de l'arène la laissent fermée, et les gardiens emportent la cage hors de l'arène.",
+      "tool": "Un filet tombe des arbres et hisse {a} dans une cage suspendue ; {theItem} vient à bout du cadenas en quelques secondes."
+    },
+    "event-tool-vines": {
+      "success": "Des lianes épineuses enserrent {a}, qui s'en arrache à la seule force des bras.",
+      "failure": "Des lianes épineuses enserrent {a} ; il faut longtemps pour s'en défaire, et les épines laissent de longues griffures.",
+      "defeated": "Des lianes épineuses enserrent {a} et se resserrent si fort qu'il faut l'intervention des gardiens ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Des lianes épineuses enserrent {a}, qui les tranche en trois coups avec {theItem}."
+    },
+    "event-tool-arrows": {
+      "success": "Un fil tendu déclenche une volée de flèches ; {a} se jette à plat ventre à temps.",
+      "failure": "Un fil tendu déclenche une volée de flèches ; l'une d'elles éraffle {a}.",
+      "defeated": "Un fil tendu déclenche une volée de flèches, et {a} reste à terre ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Un fil tendu déclenche une volée de flèches, qui se plantent toutes dans {theItem}, levé à temps par {a}."
+    },
+    "event-tool-cold": {
+      "success": "Un vent glacial balaie l'arène ; {a} grelotte toute la nuit mais tient bon.",
+      "failure": "Un vent glacial balaie l'arène ; au réveil, {a} ne sent plus ses doigts, tout bleus.",
+      "defeated": "Un vent glacial balaie l'arène ; à l'aube, {a} n'arrive plus à se lever, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Un vent glacial balaie l'arène ; {a} s'enroule dans {theItem} et dort comme une souche."
+    },
+    "event-tool-maze": {
+      "success": "{a} s'égare dans un labyrinthe de haies et trouve la sortie en gardant une main contre la haie.",
+      "failure": "{a} s'égare dans un labyrinthe de haies et y passe la journée entière, la gorge sèche.",
+      "defeated": "{a} ne trouve jamais la sortie d'un labyrinthe de haies, et à la nuit les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} déplie {theItem}, y trouve le labyrinthe de haies et le traverse sans hésiter."
+    },
+    "event-tool-poison": {
+      "success": "{a} s'apprête à manger une poignée de jolies baies, puis les reconnaît : de la belladone.",
+      "failure": "{a} mange une poignée de baies et passe des heures à les regretter.",
+      "defeated": "{a} mange une poignée de baies empoisonnées, et les gardiens de l'arène emportent {a} hors de l'arène, pâle comme un linge.",
+      "tool": "{a} mange des baies empoisonnées, sent venir les crampes et avale {theItem} juste à temps.",
+      "knack": "{a} mange une poignée de baies empoisonnées, rote, et en redemande."
+    },
+    "event-tool-smoke": {
+      "success": "{a} tombe sur un camp de gardes en patrouille et s'éclipse sans se faire voir.",
+      "failure": "{a} tombe sur un camp de gardes, qui chassent {a} à coups de bâton.",
+      "defeated": "{a} tombe sur un camp de gardes, qui décident que la partie s'arrête là ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} tombe sur un camp de gardes, lance {theItem} et disparaît dans la fumée.",
+      "knack": "{a} tombe sur un camp de gardes et a déjà disparu avant que le premier ne se lève."
+    },
+    "event-tool-hunt-bow": {
+      "success": "{a} pose des collets et attrape un lièvre avant le soir.",
+      "failure": "{a} pose des collets toute la journée ; les lièvres sont plus malins.",
+      "tool": "{a} abat un faisan avec {theItem} et le fait rôtir sur un petit feu."
+    },
+    "event-tool-fish": {
+      "success": "{a} attrape deux poissons à la main dans un ruisseau peu profond.",
+      "failure": "{a} passe une heure dans un ruisseau glacé et n'y attrape qu'un rhume.",
+      "tool": "{a} taille une lance de pêche avec {theItem} et sort trois truites avant midi."
+    },
+    "event-tool-trap-chest": {
+      "success": "{a} remarque l'aiguille piégée d'un coffre fermé, la désarme et prend {item}.",
+      "failure": "{a} ouvre un coffre et se prend une aiguille dans le pouce. Le coffre est vide, évidemment."
+    },
+    "event-tame-any": {
+      "success": "{a} rencontre {animal} et met une heure à s'en approcher, pas à pas. Le soir venu, la bête suit {a} partout.",
+      "failure": "{a} tente d'apprivoiser {animal}, qui n'a aucune envie de l'être ; {a} s'en tire avec une belle morsure.",
+      "defeated": "{a} tente d'apprivoiser {animal}, qui attaque, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} rencontre {animal} et lui tend {theItem}. Une amitié vient de naître."
+    },
+    "event-tame-wolf": {
+      "success": "Un loup solitaire tourne toute la nuit autour du feu où dort {a}. À l'aube, la bête se couche à ses pieds.",
+      "failure": "Un loup solitaire tourne autour du feu ; {a} tend la main trop tôt et se fait mordre.",
+      "defeated": "Un loup solitaire tourne autour du feu où dort {a}, puis appelle sa meute ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Un loup solitaire tourne autour du feu ; {a} lui lance {theItem}. À l'aube, ils sont inséparables."
+    },
+    "event-tame-bear": {
+      "success": "{a} parle d'une voix basse et calme à un ours pendant une heure entière. Contre toute attente, l'ours écoute, et reste.",
+      "failure": "{a} tente de parler à un ours. L'ours répond d'un coup de patte, et {a} atterrit dans un buisson.",
+      "defeated": "{a} tente d'apprivoiser un ours, une idée que personne d'autre n'aurait eue, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} partage {theItem} avec un ours affamé. L'ours décide de rester pour de bon."
+    },
+    "event-tame-raven": {
+      "success": "{a} répond à un corbeau dans sa propre langue. L'oiseau se pose sur son épaule et n'en bouge plus.",
+      "failure": "{a} croasse en direction d'un corbeau, qui répond quelque chose de très grossier et s'envole.",
+      "defeated": "{a} grimpe à un arbre mort pour rejoindre un corbeau, et la branche cède ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-tame-hawk": {
+      "success": "{a} libère un faucon pris dans un roncier. L'oiseau fait un tour dans le ciel, puis revient se poser sur son bras.",
+      "failure": "{a} libère un faucon pris dans un roncier et récolte quelques coups de serres pour sa peine.",
+      "defeated": "{a} escalade un piton rocheux pour atteindre un nid de faucon et tombe ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-tame-hound": {
+      "success": "Un chien errant tout maigre suit {a} de loin toute la journée. Le soir venu, le chien a fait son choix : ce sera {a}.",
+      "failure": "Un chien errant gronde, et {a} recule un peu trop lentement : un coup de dents dans le mollet.",
+      "defeated": "Une meute de chiens errants encercle {a} ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} partage {theItem} avec un chien errant ; ils ne se quitteront plus."
+    },
+    "event-tame-panther": {
+      "success": "Une panthère noire observe {a} du haut d'une branche. {a} ne bouge plus pendant des heures. À l'aube, la panthère descend et s'assoit à côté.",
+      "failure": "Une panthère noire saute d'une branche juste devant {a}, donne un coup de griffe et disparaît.",
+      "defeated": "Une panthère noire bondit d'une branche sur {a} ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-tame-goat": {
+      "success": "{a} poursuit une chèvre de montagne dans les rochers pendant une heure. Impressionnée par tant d'obstination, la chèvre finit par suivre {a}.",
+      "failure": "{a} poursuit une chèvre de montagne dans les rochers et redescend plus vite que prévu, d'un coup de cornes.",
+      "defeated": "{a} poursuit une chèvre de montagne en haut d'une falaise ; la chèvre sait redescendre, mais pas {a}. Les gardiens emportent {a} hors de l'arène."
+    },
+    "event-tame-snake": {
+      "success": "{a} fredonne une vieille comptine à un serpent, qui s'enroule autour de son bras et y reste.",
+      "failure": "{a} fredonne une vieille comptine à un serpent, qui n'aime pas la musique et mord.",
+      "defeated": "{a} ramasse un serpent qui se révèle très venimeux, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-beast-any": {
+      "success": "Des yeux brillent dans le noir : {animal} rôde tout près, et {a} crie et gesticule jusqu'à ce que la bête s'en aille.",
+      "failure": "Dans le noir, {animal} attaque {a} et s'enfuit après quelques morsures.",
+      "defeated": "Dans le noir, {animal} attaque {a}, et les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{animal} rôde tout près ; {a} allume {theItem}, et la bête fuit devant la flamme."
+    },
+    "event-beast-boar": {
+      "success": "Un sanglier charge {a}, qui s'écarte au dernier moment ; le sanglier s'écrase contre un arbre.",
+      "failure": "Un sanglier charge {a} et l'envoie voler dans les fougères.",
+      "defeated": "Un sanglier charge {a}, encore et encore, et les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-beast-bear": {
+      "success": "Un ours renifle le buisson où {a} se cache, puis s'éloigne. {a} recommence enfin à respirer.",
+      "failure": "Un ours trouve {a} dans sa cachette ; {a} s'enfuit avec des traces de griffes dans le dos.",
+      "defeated": "Un ours trouve {a} dans sa cachette ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-beast-snake": {
+      "success": "{a} repère un serpent lové sous un rocher juste avant de s'y asseoir.",
+      "failure": "Un serpent mord {a} à la cheville ; la jambe enfle et lance pendant des heures.",
+      "defeated": "Un serpent mord {a}, et le venin agit vite ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Un serpent mord {a}, qui avale aussitôt {theItem} et sent le venin refluer.",
+      "knack": "Un serpent mord {a}, qui hausse les épaules : il en faut plus pour venir à bout d'un tel estomac."
+    },
+    "event-beast-wolves": {
+      "success": "Des loups hurlent tout près. Quand l'un d'eux bondit sur {a}, un seul coup suffit à faire fuir la meute.",
+      "failure": "Des loups harcèlent {a} toute la nuit ; à l'aube, {a} a des morsures partout et n'a pas fermé l'œil.",
+      "defeated": "Des loups encerclent {a} dans la nuit ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-companion-hunt": {
+      "only": "{theAnimal} revient avec de quoi manger et le dépose devant {a}. Le dîner est servi."
+    },
+    "event-companion-find": {
+      "only": "{theAnimal} disparaît une heure et revient bredouille, avec un air de grande fierté.",
+      "found": "{theAnimal} creuse sous une racine et rapporte {item} à {a}."
+    },
+    "event-companion-warm": {
+      "only": "{a} dort contre {theAnimal}, au chaud et en sécurité, pour une fois."
+    },
+    "event-companion-guard": {
+      "only": "{theAnimal} veille toute la nuit ; deux fois, un grognement prévient {a} qu'on rôde autour du camp."
+    },
+    "event-companion-play": {
+      "only": "Pendant une heure, {a} oublie l'arène et joue avec {theAnimal}. La foule adore."
+    },
+    "event-companion-leave": {
+      "only": "{theAnimal} entend un appel venu de la forêt, regarde {a} une dernière fois et retourne à la vie sauvage."
+    },
+    "event-companion-attack": {
+      "success": "{a} siffle, et {theAnimal} bondit sur {b}, qui s'en sort avec de profondes griffures.",
+      "failure": "{a} siffle, et {theAnimal} bondit sur {b}, qui esquive et prend la fuite.",
+      "defeat": "{a} siffle, et {theAnimal} bondit sur {b} ; les gardiens de l'arène emportent {b} hors de l'arène."
+    },
+    "event-companion-ambush": {
+      "success": "Dans le noir, {theAnimal} s'approche sans bruit et attaque {b} dans son sommeil ; {a} n'a même pas eu le temps de donner l'ordre.",
+      "failure": "Dans le noir, {theAnimal} s'approche sans bruit, mais {b} se réveille à temps et grimpe à un arbre.",
+      "defeat": "Dans le noir, {theAnimal} se glisse jusqu'à {b} ; quand {a} arrive, tout est fini, et les gardiens de l'arène emportent {b} hors de l'arène."
+    },
+    "event-eat-rations": {
+      "only": "L'estomac dans les talons, {a} mange {theItem} lentement, en savourant chaque miette."
+    },
+    "event-eat-share-nothing": {
+      "only": "{a} se cache pour manger {theItem} dans le noir, histoire que personne ne vienne en réclamer."
+    },
+    "event-feed-crowd": {
+      "only": "Des spectateurs prennent {a} en pitié et lancent du pain par-dessus le mur. Pas une miette ne touche le sol."
+    },
+    "event-feed-priest": {
+      "only": "Un prêtre de l'arène passe parmi les combattants avec un panier et offre à {a} un repas et une bénédiction."
+    },
+    "event-feed-orchard": {
+      "only": "{a} découvre un vieux verger et mange des pommes jusqu'à plus faim."
+    },
+    "event-feed-eggs": {
+      "only": "{a} grimpe jusqu'à un nid et redescend avec quatre œufs, gobés crus sur place."
+    },
+    "event-hunger-day": {
+      "success": "{a} n'a rien mangé depuis des jours, serre sa ceinture d'un cran et continue.",
+      "failure": "{a} n'a rien mangé depuis des jours ; la tête qui tourne, {a} trébuche et tombe plus d'une fois.",
+      "defeated": "{a} n'a rien mangé depuis des jours et s'effondre dans la poussière ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-hunger-night": {
+      "success": "La faim empêche {a} de dormir, mais {a} tient bon jusqu'à l'aube.",
+      "failure": "{a} mâchonne de l'écorce et des racines toute la nuit, et récolte des crampes d'estomac pour tout dîner.",
+      "defeated": "Après des jours de faim, {a} ne se réveille pas à l'aube ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-hunger-mirage": {
+      "success": "{a} voit un poulet rôti flotter dans les airs, comprend que la faim joue des tours et s'assoit pour se reposer.",
+      "failure": "{a} poursuit un poulet rôti imaginaire, droit dans un roncier.",
+      "defeated": "{a} poursuit un poulet rôti imaginaire, puis tombe et ne se relève pas ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-forage-roots": {
+      "success": "{a} déterre des carottes sauvages et des racines ; pas un festin, mais assez.",
+      "failure": "{a} creuse tout l'après-midi sans trouver autre chose que des vers. Il y a des limites."
+    },
+    "event-forage-honey": {
+      "success": "{a} enfume une ruche sauvage et vole un rayon de miel entier sans une seule piqûre.",
+      "failure": "{a} tente de voler du miel à une ruche sauvage ; les abeilles gagnent."
+    },
+    "event-forage-ceps": {
+      "success": "{a} cueille uniquement les bons champignons et mijote un excellent ragoût.",
+      "failure": "{a} cueille les mauvais champignons et voit des arbres parler toute la soirée."
+    },
+    "event-guest-gladiator-gate": {
+      "win": "Une porte latérale s'ouvre sous les hurlements de la foule : {a}, qui combat dans l'arène depuis des années, entre dans les jeux et choisit {b} pour premier adversaire. {a} renverse {b} d'un coup de bouclier et se tourne pour saluer les tribunes.",
+      "lose": "Une porte latérale s'ouvre sous les hurlements de la foule : {a}, qui combat dans l'arène depuis des années, entre dans les jeux et choisit {b} pour premier adversaire. {b} tient bon, et {a} se retire avec un sourire, en promettant une revanche.",
+      "draw": "Une porte latérale s'ouvre sous les hurlements de la foule : {a}, qui combat dans l'arène depuis des années, entre dans les jeux et choisit {b} pour premier adversaire. Ils échangent des coups jusqu'à lasser la foule ; {a} part chercher une autre proie.",
+      "defeat": "Une porte latérale s'ouvre sous les hurlements de la foule : {a}, qui combat dans l'arène depuis des années, entre dans les jeux et choisit {b} pour premier adversaire. {a} connaît trop bien l'arène ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Une porte latérale s'ouvre sous les hurlements de la foule : {a}, qui combat dans l'arène depuis des années, entre dans les jeux et choisit {b} pour premier adversaire. {b} l'emporte, à la stupeur générale, et les gardiens emportent {a} hors de l'arène après un seul combat."
+    },
+    "event-guest-gladiator-champion": {
+      "win": "Les maîtres de l'arène envoient {a}, sans défaite depuis dix saisons, qui marche droit sur {b}. {a} joue un moment avec {b}, puis laisse sa proie fuir, pour le plus grand plaisir de la foule.",
+      "lose": "Les maîtres de l'arène envoient {a}, sans défaite depuis dix saisons, qui marche droit sur {b}. {b} place un coup chanceux, et {a} recule, la surprise et la rage dans les yeux.",
+      "draw": "Les maîtres de l'arène envoient {a}, sans défaite depuis dix saisons, qui marche droit sur {b}. Le combat dure jusqu'à la nuit sans vainqueur.",
+      "defeat": "Les maîtres de l'arène envoient {a}, sans défaite depuis dix saisons, qui marche droit sur {b}. La série de victoires continue ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Les maîtres de l'arène envoient {a}, sans défaite depuis dix saisons, qui marche droit sur {b}. {b} met fin à dix saisons de victoires ; les gardiens de l'arène emportent {a} hors de l'arène, et les tribunes s'enflamment."
+    },
+    "event-guest-gladiator-night": {
+      "win": "En pleine nuit, une nouvelle recrue escalade le mur : {a}, qui fond aussitôt sur {b}. {a} prend le dessus, et {b} s'enfuit dans le noir.",
+      "lose": "En pleine nuit, une nouvelle recrue escalade le mur : {a}, qui fond aussitôt sur {b}. {b} ne dormait que d'un œil, et {a} doit reculer.",
+      "draw": "En pleine nuit, une nouvelle recrue escalade le mur : {a}, qui fond aussitôt sur {b}. Ils se battent à l'aveugle dans le noir et se séparent sans vainqueur.",
+      "defeat": "En pleine nuit, une nouvelle recrue escalade le mur : {a}, qui fond aussitôt sur {b}. À l'aube, {a} a gagné ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "En pleine nuit, une nouvelle recrue escalade le mur : {a}, qui fond aussitôt sur {b}. {b} repousse {a} pour de bon ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-guest-wanderer-hermit": {
+      "only": "{a}, ermite qui vit depuis des années dans les bois de l'arène, sort des arbres et décide de suivre {b}."
+    },
+    "event-guest-wanderer-deserter": {
+      "only": "{a}, de la garde de l'arène, en a assez des jeux, jette son uniforme et rejoint {b}."
+    },
+    "event-guest-wanderer-volunteer": {
+      "only": "Une personne du public, {a}, saute la barrière en criant vouloir se battre avec {b}. Les maîtres de l'arène laissent faire."
+    },
+    "event-visitor-gift": {
+      "only": "Un spectateur du premier rang lance {item} dans l'arène, juste devant {a}."
+    },
+    "event-visitor-child": {
+      "only": "Un enfant se glisse sous la barrière, tend {item} à {a}, et repart en courant vers des parents furieux."
+    },
+    "event-visitor-healer": {
+      "only": "Une guérisseuse des tribunes soudoie un garde et passe une heure à soigner {a}."
+    },
+    "event-visitor-bard": {
+      "only": "Un barde des tribunes improvise une chanson sur {a}. Le soir venu, la moitié de l'arène la chante."
+    },
+    "event-visitor-merchant": {
+      "success": "Un marchand se glisse entre les barreaux et marchande avec {a}, qui repart avec {item} pour une bouchée de pain.",
+      "failure": "Un marchand se glisse entre les barreaux et propose des merveilles à {a}, à des prix que personne dans l'arène ne peut payer."
+    },
+    "event-visitor-stones": {
+      "success": "Des spectateurs en colère lancent des pierres sur {a}, qui les esquive toutes et salue avec ironie.",
+      "failure": "Des spectateurs en colère lancent des pierres sur {a} ; quelques-unes font mouche.",
+      "defeated": "Des spectateurs en colère lancent des pierres sur {a}, tant et si bien que les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-visitor-fortune": {
+      "only": "Une vieille diseuse de bonne aventure interpelle {a} à travers les barreaux : « Tu verras la fin de ces jeux. » Puis elle rit, et s'en va."
+    },
+    "event-visitor-noble": {
+      "only": "Une dame noble des tribunes, émue par tant de courage, fait porter {item} à {a} par un serviteur."
+    },
+    "event-relic-search": {
+      "success": "{a} fouille les ruines et la trouve sous une colonne tombée : la relique d'or.",
+      "failure": "{a} fouille les ruines toute la journée à la recherche de la relique, et n'y trouve que des gravats."
+    },
+    "event-relic-clues": {
+      "success": "{a} déchiffre les vieux signes gravés sur les murs de l'arène, les suit, et déterre la relique.",
+      "failure": "{a} suit les signes gravés sur les murs, qui mènent tout droit à une fosse d'aisance. Quelqu'un a de l'humour."
+    },
+    "event-relic-tracks": {
+      "success": "{a} remonte les traces des gardes qui ont caché la relique, jusqu'à un arbre creux.",
+      "failure": "{a} suit des traces pendant des heures, pour finir nez à nez avec un cerf très surpris."
+    },
+    "event-relic-steal": {
+      "success": "{a} se glisse jusqu'à {b} et subtilise la relique sans un bruit.",
+      "failure": "{a} se glisse jusqu'à {b} pour prendre la relique, marche sur une branche, et doit fuir.",
+      "caught": "{a} tente de prendre la relique à {b}, qui s'y attendait ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "seized": "{a} tente de prendre la relique à {b} ; le combat qui suit tourne mal pour {b}, que les gardiens emportent hors de l'arène, et la relique change de mains."
+    },
+    "event-relic-ambush": {
+      "success": "{a} bondit sur {b} et lui arrache la relique des mains.",
+      "failure": "{a} bondit sur {b} pour saisir la relique ; {b} tient bon et s'échappe.",
+      "caught": "{a} bondit sur {b} pour saisir la relique, et perd le combat ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "seized": "{a} bondit sur {b}, gagne le combat et prend la relique ; les gardiens de l'arène emportent {b} hors de l'arène."
+    },
+    "event-relic-return": {
+      "success": "La relique en main, {a} traverse l'arène en courant et atteint les portes.",
+      "failure": "La relique en main, {a} court vers les portes, mais les gardes les referment et indiquent l'autre côté."
+    },
+    "event-relic-sneak": {
+      "success": "À la faveur de la nuit, {a} se faufile entre tout le monde et dépose la relique devant les portes.",
+      "failure": "{a} tente de rejoindre les portes en cachette avec la relique, mais son éclat doré trahit la cachette."
+    },
+    "event-tool-heat": {
+      "success": "Une chaleur écrasante tombe sur l'arène ; {a} trouve de l'ombre et attend le soir.",
+      "failure": "Une chaleur écrasante tombe sur l'arène ; {a} marche trop longtemps au soleil et titube, la tête qui tourne.",
+      "defeated": "Une chaleur écrasante tombe sur l'arène, et {a} s'effondre de soif ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "Une chaleur écrasante tombe sur l'arène ; {a} sort {theItem}, boit une longue gorgée et repart, frais comme un gardon."
+    },
+    "event-tool-fire-night": {
+      "success": "{a} frotte deux bâtons pendant une heure et finit par faire prendre un feu.",
+      "failure": "{a} frotte deux bâtons toute la nuit et n'y gagne que des ampoules et un rhume.",
+      "defeated": "Faute de feu, {a} passe une nuit glaciale sous la pluie et ne peut plus continuer ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} bat {theItem} et allume en un rien de temps un joyeux feu de camp."
+    },
+    "event-tool-cook": {
+      "success": "{a} trouve des herbes sauvages et les mange crues. Pas fameux, mais nourrissant.",
+      "failure": "{a} attrape un poisson mais n'a rien pour le cuire, et ne se résout pas à le manger cru.",
+      "tool": "{a} allume un feu avec {theItem} et cuisine un vrai repas. L'odeur rend fous tous les environs."
+    },
+    "event-tool-net-fish": {
+      "success": "{a} construit un petit barrage de pierres et y piège quelques poissons.",
+      "failure": "{a} tente de piéger des poissons derrière un barrage de pierres ; les poissons le contournent.",
+      "tool": "{a} lance {theItem} dans la rivière et le ressort chargé de poissons."
+    },
+    "event-tame-net": {
+      "success": "{a} poursuit {animal} dans les fourrés, l'accule, et gagne lentement sa confiance.",
+      "failure": "{a} poursuit {animal} dans les fourrés et récolte des griffures pour rien.",
+      "defeated": "{a} accule {animal}, qui fait volte-face et attaque ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} lance {theItem} sur {animal}, attend la fin de la panique, et s'en fait une amitié pour la vie."
+    },
+    "event-tame-call": {
+      "success": "{a} imite si bien le cri du faucon qu'un vrai descend voir, curieux, et reste.",
+      "failure": "{a} imite le cri du faucon ; le faucon descend, y voit une insulte, et attaque.",
+      "defeated": "{a} imite le cri du faucon au bord d'une falaise, s'emporte un peu trop, et tombe ; les gardiens de l'arène emportent {a} hors de l'arène.",
+      "tool": "{a} souffle dans {theItem} ; un faucon répond, tournoie, et se pose sur son bras."
+    },
+    "event-druid-bear": {
+      "success": "{a} parle à un ours dans la vieille langue de la forêt. L'ours incline son énorme tête et suit {a}.",
+      "failure": "{a} parle à un ours dans la vieille langue de la forêt ; cet ours-là parle un autre dialecte, et frappe.",
+      "defeated": "{a} parle à un ours dans la vieille langue de la forêt, un peu trop lentement ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-beast-friend-pack": {
+      "only": "La nuit, des animaux sauvages viennent dormir tout autour ; {a} et {theAnimal} reposent au milieu, et personne n'ose approcher."
+    },
+    "event-tracker-hunt": {
+      "success": "{a} lit les traces d'un chevreuil comme un livre ouvert et rapporte de quoi dîner.",
+      "failure": "{a} suit un chevreuil pendant des heures ; le chevreuil piste mieux."
+    },
+    "event-favourite-cheers": {
+      "only": "Toute l'arène scande « {a} ! {a} ! ». Les acclamations portent {a}, qui en oublie tous ses bleus."
+    },
+    "event-climber-lookout": {
+      "success": "{a} escalade la plus haute tour de l'arène, repère de là-haut une cache oubliée et en revient avec {item}.",
+      "failure": "{a} escalade la plus haute tour de l'arène pour la vue, et la vue est tout ce qu'il y a à y trouver."
+    },
+    "event-night-eyes-scout": {
+      "success": "Pendant que les autres trébuchent dans le noir, {a} parcourt l'arène comme en plein jour, et ramasse {item}.",
+      "failure": "{a} parcourt l'arène toute la nuit avec ses yeux de chat, et constate que les autres ont bien caché leurs affaires."
+    },
+    "event-iron-stomach-feast": {
+      "only": "{a} mange un crapaud cru, une poignée de scarabées et un peu de mousse, et déclare que c'était un excellent repas."
+    },
+    "event-cleric-blessing": {
+      "success": "{a} s'agenouille et prie ; une lumière chaude referme le pire des blessures.",
+      "failure": "{a} s'agenouille et prie toute la nuit. Les dieux sont occupés ailleurs."
+    },
+    "event-bard-song": {
+      "only": "{a} chante pour les tribunes, et la foule paie en pain, fromage et pommes lancés par-dessus le mur."
+    },
+    "event-rogue-locks": {
+      "success": "{a} se glisse de nuit dans la réserve des gardes et en ressort avec {item}.",
+      "failure": "{a} se glisse de nuit dans la réserve des gardes ; elle est pleine de gardes."
+    },
+    "event-barbarian-rage": {
+      "success": "Un arbre tombe en travers du chemin, et {a} le soulève en rugissant pour le jeter sur le côté.",
+      "failure": "Un arbre tombe en travers du chemin ; {a} tente de le soulever, et se fait un tour de reins.",
+      "defeated": "Un arbre tombe droit sur {a}, qui tente de le retenir à mains nues ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-mage-portal": {
+      "success": "{a} marche sur une rune de l'arène qui s'embrase, et défait le sort avant qu'il ne se déclenche.",
+      "failure": "{a} marche sur une rune de l'arène, qui s'embrase et l'envoie voler à vingt pas.",
+      "defeated": "{a} marche sur une rune de l'arène, qui s'embrase et l'expédie droit dehors ; les gardiens n'ont plus qu'à emmener {a} à l'infirmerie."
+    },
+    "event-flaw-gullible": {
+      "success": "Un spectateur propose à {a} un caillou « magique » à travers les barreaux. Pour une fois, {a} flaire l'arnaque.",
+      "failure": "{a} échange une journée de vivres contre un caillou « magique ». C'est un caillou.",
+      "lost": "{a} échange {theItem} contre un caillou « magique » qui va forcément faire gagner les jeux. C'est un caillou.",
+      "defeated": "{a} suit un inconnu qui promet une sortie secrète. C'est bien une sortie ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-clumsy": {
+      "success": "{a} se prend les pieds dans une racine, dévale une pente et retombe sur ses pieds. La foule applaudit.",
+      "failure": "{a} se prend les pieds dans une racine et dévale toute la pente en ramassant chaque caillou au passage.",
+      "lost": "{a} se prend les pieds dans une racine, et {theItem} s'envole au fond d'un ravin.",
+      "defeated": "{a} se prend les pieds dans une racine au bord d'un ravin ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-glutton": {
+      "only": "{a} trouve un buisson de baies et les mange toutes, feuilles comprises, avant de faire la sieste avec un mal de ventre."
+    },
+    "event-flaw-coward": {
+      "only": "{a} entend un combat tout près et passe toute la période au fond d'un arbre creux, à sursauter au moindre bruit."
+    },
+    "event-flaw-hothead": {
+      "success": "{a} fonce sur {b} pour un regard, un mot, trois fois rien, et frappe avant toute discussion.",
+      "defeat": "{a} cherche la bagarre à {b} pour trois fois rien, et frappe bien trop fort ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "failure": "{a} cherche la bagarre à {b} pour trois fois rien, et récolte un œil au beurre noir."
+    },
+    "event-flaw-beast-fear": {
+      "success": "Un écureuil atterrit juste à côté, et {a} se fige, respire, et parvient à ne pas hurler.",
+      "failure": "Un écureuil atterrit juste à côté, et {a} part en hurlant, droit dans un arbre.",
+      "defeated": "Un écureuil atterrit juste à côté, et {a} s'enfuit en hurlant, droit dans le vide ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-loud": {
+      "success": "{a} chante à tue-tête en marchant, et par miracle, personne ne vient.",
+      "failure": "{a} chante à tue-tête en marchant ; une patrouille de gardes vient donner une leçon de savoir-vivre.",
+      "defeated": "{a} chante si fort que tous les gardes de l'arène accourent ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-sleeper": {
+      "success": "La pluie inonde le campement, et {a} se réveille juste à temps, pour une fois.",
+      "failure": "La pluie inonde le campement ; {a} dort au travers et se réveille dans une flaque, grelottant de froid.",
+      "lost": "{a} dort si profondément qu'un renard repart avec {theItem}.",
+      "defeated": "{a} dort pendant toute une crue et l'aube révèle un corps échoué loin en aval ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-greedy": {
+      "success": "{a} voit de l'or briller au fond d'une fosse, descend quand même, et remonte avec {item}.",
+      "failure": "{a} voit de l'or briller au fond d'une fosse, descend quand même : des cailloux peints, et une longue remontée."
+    },
+    "event-flaw-unlucky": {
+      "success": "Une branche tombe d'un arbre mort, exactement là où se tenait {a} une seconde plus tôt.",
+      "failure": "Un oiseau laisse tomber quelque chose sur {a}, puis une branche, puis tombe lui-même.",
+      "defeated": "La foudre frappe le seul arbre de la plaine, sous lequel s'abrite {a} ; les gardiens de l'arène emportent {a} hors de l'arène."
     }
   },
   "rounds": {
@@ -767,6 +1328,54 @@
     "announce-recap-day": "Le soleil se couche. Hors de l'arène aujourd'hui : {all}.",
     "announce-recap-night": "L'aube se lève. Hors de l'arène cette nuit : {all}.",
     "announce-quiet-day": "Le soleil se couche sur une journée sans perte : personne n'a quitté l'arène.",
-    "announce-quiet-night": "L'aube se lève après une nuit sans perte : personne n'a quitté l'arène."
+    "announce-quiet-night": "L'aube se lève après une nuit sans perte : personne n'a quitté l'arène.",
+    "announce-decree-survive": "Les trompettes sonnent, et les maîtres de l'arène lèvent la main : quiconque tiendra encore debout à l'aube du jour {count} aura sa part de la victoire.",
+    "announce-decree-relic": "Les trompettes sonnent : une relique d'or a été cachée quelque part dans l'arène. Qui la rapportera aux portes remportera les jeux.",
+    "announce-decree-champion": "Les trompettes sonnent : la foule réclame un champion. La première personne à mettre {count} adversaires hors de l'arène remportera les jeux.",
+    "announce-decree-won-survive": "L'aube se lève et les trompettes sonnent : {all} tiennent encore debout, et se partagent la victoire.",
+    "announce-decree-won-relic": "Les portes s'ouvrent devant la relique : les jeux sont finis, et la victoire revient à {all}.",
+    "announce-decree-won-champion": "La foule acclame son champion : les jeux sont finis, et la victoire revient à {all}."
+  },
+  "animals": {
+    "animal-wolf": {
+      "a": "un loup",
+      "the": "le loup"
+    },
+    "animal-boar": {
+      "a": "un sanglier",
+      "the": "le sanglier"
+    },
+    "animal-bear": {
+      "a": "un ours",
+      "the": "l'ours"
+    },
+    "animal-lynx": {
+      "a": "un lynx",
+      "the": "le lynx"
+    },
+    "animal-raven": {
+      "a": "un corbeau",
+      "the": "le corbeau"
+    },
+    "animal-hawk": {
+      "a": "un faucon",
+      "the": "le faucon"
+    },
+    "animal-snake": {
+      "a": "un serpent",
+      "the": "le serpent"
+    },
+    "animal-hound": {
+      "a": "un chien errant",
+      "the": "le chien"
+    },
+    "animal-goat": {
+      "a": "une chèvre de montagne",
+      "the": "la chèvre"
+    },
+    "animal-panther": {
+      "a": "une panthère",
+      "the": "la panthère"
+    }
   }
 }

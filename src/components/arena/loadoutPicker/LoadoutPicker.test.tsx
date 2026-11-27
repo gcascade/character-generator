@@ -29,41 +29,43 @@ const choose = async (field: string, option: string) => {
 };
 
 describe('LoadoutPicker', () => {
-  it('chooses a perk and an item', async () => {
+  it('chooses a perk, a flaw and an item', async () => {
     const { onPerks, onItems } = setup();
     expect(
       screen.getByRole('group', { name: 'Perks and items of Korvus' }),
     ).toBeInTheDocument();
-    await choose('Perk 1', 'Lucky');
+    await choose('Perk', 'Lucky');
     expect(onPerks).toHaveBeenCalledWith(['perk-lucky']);
     await choose('Item 1', 'a sword');
     expect(onItems).toHaveBeenCalledWith(['item-sword']);
   });
 
-  it('opens a new slot after each choice, up to two perks and three items', () => {
-    setup(
-      ['perk-lucky', 'perk-brute'],
+  it('keeps the perk when choosing a flaw, and opens item slots up to three', async () => {
+    const { onPerks } = setup(
+      ['perk-lucky'],
       ['item-sword', 'item-bow', 'item-rope'],
     );
     expect(screen.getAllByRole('combobox')).toHaveLength(5);
     expect(
       screen.getByText('Rerolls one failed check per match.'),
     ).toBeInTheDocument();
+    await choose('Flaw', 'Clumsy');
+    expect(onPerks).toHaveBeenCalledWith(['perk-lucky', 'flaw-clumsy']);
   });
 
-  it('does not offer the same perk twice', async () => {
+  it('offers only flaws in the flaw list', async () => {
     setup(['perk-lucky']);
-    await userEvent.click(screen.getByRole('combobox', { name: 'Perk 2' }));
+    await userEvent.click(screen.getByRole('combobox', { name: 'Flaw' }));
+    const list = within(screen.getByRole('listbox'));
     expect(
-      within(screen.getByRole('listbox')).queryByRole('option', {
-        name: /^Lucky/,
-      }),
+      list.queryByRole('option', { name: /^Lucky/ }),
     ).not.toBeInTheDocument();
+    expect(list.getByRole('option', { name: /^Gullible/ })).toBeInTheDocument();
   });
 
   it('removes a choice with None', async () => {
-    const { onPerks } = setup(['perk-lucky', 'perk-brute']);
-    await choose('Perk 1', 'None');
-    expect(onPerks).toHaveBeenCalledWith(['perk-brute']);
+    const { onPerks } = setup(['perk-lucky', 'flaw-clumsy']);
+    await choose('Perk', 'None');
+    expect(onPerks).toHaveBeenCalledWith(['flaw-clumsy']);
   });
 });

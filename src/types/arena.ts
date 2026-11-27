@@ -36,8 +36,23 @@ export type SkillBonuses = Partial<Record<Skill, number>>;
 
 export type PerkDefinition = {
   id: string;
+  /** A flaw: each contestant has at most one perk and one flaw. */
+  flaw?: boolean;
   bonuses?: SkillBonuses;
   hp?: number;
+  tags?: string[];
+};
+
+/** A wild animal of the arena (spec 013): tamed, it becomes a companion. */
+export type AnimalDefinition = {
+  id: string;
+  /** Malus to tame it. */
+  difficulty: number;
+  /** Harm it deals when it attacks. */
+  damage: number;
+  /** What it brings to its companion's checks. */
+  bonuses?: SkillBonuses;
+  /** `predator`: it attacks; `hunter`: it feeds its companion. */
   tags?: string[];
 };
 
@@ -66,6 +81,8 @@ export type Contestant = {
   items: string[];
   /** Saved character id, to avoid enrolling it twice. */
   sourceId?: string;
+  /** A guest who entered during the match (spec 013). */
+  guest?: 'gladiator' | 'wanderer';
 };
 
 export type Side = {
@@ -101,6 +118,12 @@ export type Fighter = {
   luckUsed: boolean;
   /** The other half of a couple formed during the match. */
   partner?: string;
+  /** A tamed animal (spec 013). */
+  companion?: string;
+  /** Periods since the last meal (spec 013): penalties from 3, harm from 5. */
+  hunger: number;
+  /** Holds the relic of a decree (spec 013). */
+  relic?: boolean;
 };
 
 export type EventOutcome = string;
@@ -129,6 +152,10 @@ export type EventResult = {
   /** Who got away with the loot (a chest fought over). */
   looter?: string;
   notable?: boolean;
+  /** The animal of the event (spec 013). */
+  animalId?: string;
+  /** A number told by the text: a day, a count of defeats (decrees). */
+  count?: number;
   /** The rolls behind the outcome, in order. */
   rolls?: RollRecord[];
   /** The actors' state just before the event (hit points, items…). */
@@ -150,7 +177,10 @@ export type FighterState = Pick<
   | 'allianceId'
   | 'defeats'
   | 'partner'
->;
+  | 'companion'
+  | 'relic'
+> &
+  Partial<Pick<Fighter, 'hunger'>>;
 
 export type Round = {
   number: number;
@@ -160,9 +190,24 @@ export type Round = {
   after: Record<string, FighterState>;
 };
 
+/** The arena masters change the end condition (spec 013). */
+export type Decree = {
+  type: 'survive' | 'relic' | 'champion';
+  /** Round when it is announced. */
+  round: number;
+  /** survive: the round at whose end everyone standing wins; champion: defeats needed. */
+  goal: number;
+};
+
 export type Match = {
   rounds: Round[];
   /** The winning side (team, or the solo contestant's side). */
   winnerSideId: string;
   fighters: Record<string, Fighter>;
+  /** Guests who entered during the match (spec 013), with their own sides. */
+  entrants: Contestant[];
+  entrantSides: Side[];
+  decree?: Decree;
+  /** Everyone standing won together (a survival decree). */
+  shared?: boolean;
 };

@@ -356,6 +356,138 @@
         "persuasion": 5
       },
       "tags": ["charming"]
+    },
+    {
+      "id": "perk-beast-friend",
+      "bonuses": {
+        "survival": 5
+      },
+      "tags": ["beast-friend"]
+    },
+    {
+      "id": "perk-iron-stomach",
+      "bonuses": {
+        "endurance": 5
+      },
+      "tags": ["iron-stomach", "antidote"]
+    },
+    {
+      "id": "perk-climber",
+      "bonuses": {
+        "athletics": 5
+      },
+      "tags": ["climb"]
+    },
+    {
+      "id": "perk-night-eyes",
+      "bonuses": {
+        "perception": 5
+      },
+      "tags": ["light"]
+    },
+    {
+      "id": "perk-crowd-favourite",
+      "bonuses": {
+        "persuasion": 5
+      },
+      "tags": ["favourite"]
+    },
+    {
+      "id": "perk-tracker",
+      "bonuses": {
+        "survival": 5,
+        "perception": 5
+      },
+      "tags": ["tracker"]
+    },
+    {
+      "id": "flaw-gullible",
+      "flaw": true,
+      "bonuses": {
+        "perception": -5
+      },
+      "tags": ["gullible"]
+    },
+    {
+      "id": "flaw-clumsy",
+      "flaw": true,
+      "bonuses": {
+        "athletics": -10,
+        "stealth": -5
+      },
+      "tags": ["clumsy"]
+    },
+    {
+      "id": "flaw-glutton",
+      "flaw": true,
+      "bonuses": {
+        "endurance": -5
+      },
+      "tags": ["glutton"]
+    },
+    {
+      "id": "flaw-coward",
+      "flaw": true,
+      "bonuses": {
+        "melee": -10,
+        "intimidation": -10
+      },
+      "tags": ["coward"]
+    },
+    {
+      "id": "flaw-hothead",
+      "flaw": true,
+      "bonuses": {
+        "perception": -5,
+        "persuasion": -10
+      },
+      "tags": ["hothead"]
+    },
+    {
+      "id": "flaw-beast-fear",
+      "flaw": true,
+      "bonuses": {
+        "survival": -5
+      },
+      "tags": ["beast-fear"]
+    },
+    {
+      "id": "flaw-loud",
+      "flaw": true,
+      "bonuses": {
+        "stealth": -15
+      },
+      "tags": ["loud"]
+    },
+    {
+      "id": "flaw-frail",
+      "flaw": true,
+      "hp": -6,
+      "bonuses": {
+        "endurance": -5
+      },
+      "tags": ["frail"]
+    },
+    {
+      "id": "flaw-greedy",
+      "flaw": true,
+      "bonuses": {
+        "persuasion": -5
+      },
+      "tags": ["greedy"]
+    },
+    {
+      "id": "flaw-unlucky",
+      "flaw": true,
+      "tags": ["unlucky"]
+    },
+    {
+      "id": "flaw-heavy-sleeper",
+      "flaw": true,
+      "bonuses": {
+        "perception": -5
+      },
+      "tags": ["sleeper"]
     }
   ],
   "items": [
@@ -365,12 +497,14 @@
       "damage": 6,
       "bonuses": {
         "melee": 5
-      }
+      },
+      "tags": ["blade"]
     },
     {
       "id": "item-axe",
       "kind": "weapon",
-      "damage": 7
+      "damage": 7,
+      "tags": ["blade"]
     },
     {
       "id": "item-spear",
@@ -379,7 +513,8 @@
       "bonuses": {
         "melee": 3,
         "survival": 3
-      }
+      },
+      "tags": ["blade"]
     },
     {
       "id": "item-dagger",
@@ -387,7 +522,8 @@
       "damage": 4,
       "bonuses": {
         "stealth": 5
-      }
+      },
+      "tags": ["blade"]
     },
     {
       "id": "item-bow",
@@ -441,7 +577,8 @@
       "kind": "protection",
       "bonuses": {
         "stealth": 10
-      }
+      },
+      "tags": ["warm"]
     },
     {
       "id": "item-rope",
@@ -457,14 +594,15 @@
       "bonuses": {
         "perception": 5
       },
-      "tags": ["light"]
+      "tags": ["light", "fire"]
     },
     {
       "id": "item-map",
       "kind": "tool",
       "bonuses": {
         "survival": 10
-      }
+      },
+      "tags": ["map"]
     },
     {
       "id": "item-lockpick",
@@ -490,6 +628,51 @@
       "id": "item-holy-water",
       "kind": "consumable",
       "tags": ["heal"]
+    },
+    {
+      "id": "item-flint",
+      "kind": "tool",
+      "bonuses": {
+        "survival": 5
+      },
+      "tags": ["fire"]
+    },
+    {
+      "id": "item-net",
+      "kind": "tool",
+      "bonuses": {
+        "survival": 5
+      },
+      "tags": ["net"]
+    },
+    {
+      "id": "item-antidote",
+      "kind": "consumable",
+      "tags": ["antidote"]
+    },
+    {
+      "id": "item-bird-call",
+      "kind": "tool",
+      "bonuses": {
+        "perception": 3
+      },
+      "tags": ["call"]
+    },
+    {
+      "id": "item-waterskin",
+      "kind": "tool",
+      "bonuses": {
+        "endurance": 5
+      },
+      "tags": ["water"]
+    },
+    {
+      "id": "item-grappling-hook",
+      "kind": "tool",
+      "bonuses": {
+        "athletics": 5
+      },
+      "tags": ["climb"]
     }
   ],
   "events": [
@@ -1640,6 +1823,1220 @@
       "actors": 1,
       "weight": 1.5,
       "phase": "night"
+    },
+    {
+      "id": "event-tool-cliff",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 7,
+      "weight": 3,
+      "tool": "climb"
+    },
+    {
+      "id": "event-tool-chasm",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 6,
+      "weight": 2,
+      "tool": "climb",
+      "phase": "day"
+    },
+    {
+      "id": "event-tool-well",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 5,
+      "weight": 2,
+      "tool": "climb",
+      "loseItem": true
+    },
+    {
+      "id": "event-tool-cave",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 5,
+      "weight": 3,
+      "tool": "light"
+    },
+    {
+      "id": "event-tool-mine",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "lore",
+      "damage": 6,
+      "weight": 2,
+      "tool": "light",
+      "phase": "night"
+    },
+    {
+      "id": "event-tool-cage",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 2,
+      "tool": "lockpick"
+    },
+    {
+      "id": "event-tool-vines",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 5,
+      "weight": 2,
+      "tool": "blade",
+      "phase": "day"
+    },
+    {
+      "id": "event-tool-arrows",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 6,
+      "weight": 2,
+      "tool": "block"
+    },
+    {
+      "id": "event-tool-cold",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 5,
+      "weight": 2,
+      "tool": "warm",
+      "phase": "night"
+    },
+    {
+      "id": "event-tool-maze",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "survival",
+      "damage": 4,
+      "weight": 2,
+      "tool": "map",
+      "phase": "day"
+    },
+    {
+      "id": "event-tool-poison",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 7,
+      "weight": 2,
+      "tool": "antidote"
+    },
+    {
+      "id": "event-tool-smoke",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "stealth",
+      "damage": 6,
+      "weight": 2,
+      "tool": "escape"
+    },
+    {
+      "id": "event-tool-hunt-bow",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2,
+      "tool": "ranged",
+      "phase": "day",
+      "boost": {
+        "perk-tracker": 2,
+        "perk-survivalist": 2
+      }
+    },
+    {
+      "id": "event-tool-fish",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2,
+      "tool": "blade",
+      "phase": "day",
+      "boost": {
+        "perk-tracker": 2,
+        "perk-survivalist": 2
+      }
+    },
+    {
+      "id": "event-tool-trap-chest",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -5,
+      "weight": 2
+    },
+    {
+      "id": "event-tame-any",
+      "type": "tame",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 1.5,
+      "tool": "food",
+      "when": {
+        "companion": false
+      },
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-wolf",
+      "type": "tame",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 1,
+      "animal": "animal-wolf",
+      "tool": "food",
+      "when": {
+        "companion": false
+      },
+      "phase": "night",
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-bear",
+      "type": "tame",
+      "actors": 1,
+      "skill": "persuasion",
+      "weight": 0.5,
+      "animal": "animal-bear",
+      "tool": "food",
+      "when": {
+        "companion": false
+      },
+      "phase": "day",
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-raven",
+      "type": "tame",
+      "actors": 1,
+      "skill": "lore",
+      "weight": 1,
+      "animal": "animal-raven",
+      "when": {
+        "companion": false
+      },
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-hawk",
+      "type": "tame",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 1,
+      "animal": "animal-hawk",
+      "when": {
+        "companion": false
+      },
+      "phase": "day",
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-hound",
+      "type": "tame",
+      "actors": 1,
+      "skill": "persuasion",
+      "weight": 1,
+      "animal": "animal-hound",
+      "tool": "food",
+      "when": {
+        "companion": false
+      },
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-panther",
+      "type": "tame",
+      "actors": 1,
+      "skill": "stealth",
+      "weight": 0.5,
+      "animal": "animal-panther",
+      "when": {
+        "companion": false
+      },
+      "phase": "night",
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-goat",
+      "type": "tame",
+      "actors": 1,
+      "skill": "athletics",
+      "weight": 1,
+      "animal": "animal-goat",
+      "when": {
+        "companion": false
+      },
+      "phase": "day",
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-snake",
+      "type": "tame",
+      "actors": 1,
+      "skill": "lore",
+      "weight": 0.5,
+      "animal": "animal-snake",
+      "when": {
+        "companion": false,
+        "alignment": "not-good"
+      },
+      "boost": {
+        "perk-beast-friend": 3,
+        "Druid": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-beast-any",
+      "type": "beast",
+      "actors": 1,
+      "skill": "athletics",
+      "weight": 3,
+      "animal": "predator",
+      "tool": "fire",
+      "phase": "night",
+      "boost": {
+        "perk-beast-friend": 2
+      }
+    },
+    {
+      "id": "event-beast-boar",
+      "type": "beast",
+      "actors": 1,
+      "skill": "athletics",
+      "weight": 2,
+      "animal": "animal-boar",
+      "phase": "day"
+    },
+    {
+      "id": "event-beast-bear",
+      "type": "beast",
+      "actors": 1,
+      "skill": "stealth",
+      "weight": 1,
+      "animal": "animal-bear",
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-beast-snake",
+      "type": "beast",
+      "actors": 1,
+      "skill": "perception",
+      "weight": 2,
+      "animal": "animal-snake",
+      "tool": "antidote"
+    },
+    {
+      "id": "event-beast-wolves",
+      "type": "beast",
+      "actors": 1,
+      "skill": "melee",
+      "weight": 2,
+      "animal": "animal-wolf",
+      "phase": "night",
+      "when": {
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-companion-hunt",
+      "type": "companion",
+      "actors": 1,
+      "effect": "feed",
+      "weight": 5,
+      "when": {
+        "companion": true
+      }
+    },
+    {
+      "id": "event-companion-find",
+      "type": "companion",
+      "actors": 1,
+      "effect": "find",
+      "weight": 3,
+      "when": {
+        "companion": true
+      }
+    },
+    {
+      "id": "event-companion-warm",
+      "type": "companion",
+      "actors": 1,
+      "effect": "heal",
+      "weight": 3,
+      "when": {
+        "companion": true
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-companion-guard",
+      "type": "companion",
+      "actors": 1,
+      "weight": 3,
+      "when": {
+        "companion": true
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-companion-play",
+      "type": "companion",
+      "actors": 1,
+      "weight": 2,
+      "when": {
+        "companion": true
+      },
+      "phase": "day"
+    },
+    {
+      "id": "event-companion-leave",
+      "type": "companion",
+      "actors": 1,
+      "effect": "leave",
+      "weight": 0.5,
+      "when": {
+        "companion": true,
+        "minRound": 4
+      }
+    },
+    {
+      "id": "event-companion-attack",
+      "type": "companion-attack",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 4,
+      "when": {
+        "companion": true
+      }
+    },
+    {
+      "id": "event-companion-ambush",
+      "type": "companion-attack",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "modifier": -10,
+      "when": {
+        "companion": true
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-eat-rations",
+      "type": "eat",
+      "actors": 1,
+      "weight": 4,
+      "when": {
+        "itemTag": "food",
+        "hunger": 2
+      }
+    },
+    {
+      "id": "event-eat-share-nothing",
+      "type": "eat",
+      "actors": 1,
+      "weight": 2,
+      "when": {
+        "itemTag": "food",
+        "hunger": 4
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-feed-crowd",
+      "type": "feed",
+      "actors": 1,
+      "weight": 1.5,
+      "when": {
+        "hunger": 3
+      },
+      "damage": 2,
+      "boost": {
+        "perk-crowd-favourite": 3,
+        "Bard": 2
+      }
+    },
+    {
+      "id": "event-feed-priest",
+      "type": "feed",
+      "actors": 1,
+      "weight": 1,
+      "when": {
+        "hunger": 3,
+        "alignment": "good"
+      },
+      "damage": 5
+    },
+    {
+      "id": "event-feed-orchard",
+      "type": "feed",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-feed-eggs",
+      "type": "feed",
+      "actors": 1,
+      "weight": 1,
+      "skill": "athletics",
+      "phase": "day"
+    },
+    {
+      "id": "event-hunger-day",
+      "type": "hunger",
+      "actors": 1,
+      "weight": 3,
+      "damage": 2,
+      "when": {
+        "hunger": 5
+      },
+      "phase": "day"
+    },
+    {
+      "id": "event-hunger-night",
+      "type": "hunger",
+      "actors": 1,
+      "weight": 3,
+      "damage": 2,
+      "when": {
+        "hunger": 5
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-hunger-mirage",
+      "type": "hunger",
+      "actors": 1,
+      "weight": 2,
+      "damage": 3,
+      "when": {
+        "hunger": 6
+      }
+    },
+    {
+      "id": "event-forage-roots",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2,
+      "damage": 2,
+      "boost": {
+        "perk-tracker": 2,
+        "perk-survivalist": 2
+      }
+    },
+    {
+      "id": "event-forage-honey",
+      "type": "forage",
+      "actors": 1,
+      "skill": "stealth",
+      "weight": 1,
+      "damage": 4,
+      "phase": "day",
+      "boost": {
+        "perk-tracker": 2,
+        "perk-survivalist": 2
+      }
+    },
+    {
+      "id": "event-forage-ceps",
+      "type": "forage",
+      "actors": 1,
+      "skill": "lore",
+      "weight": 2,
+      "damage": 3,
+      "phase": "day",
+      "boost": {
+        "perk-tracker": 2,
+        "perk-survivalist": 2
+      }
+    },
+    {
+      "id": "event-guest-gladiator-gate",
+      "type": "arrival",
+      "actors": 1,
+      "guest": "gladiator",
+      "weight": 0.4,
+      "notable": true
+    },
+    {
+      "id": "event-guest-gladiator-champion",
+      "type": "arrival",
+      "actors": 1,
+      "guest": "gladiator",
+      "weight": 0.3,
+      "notable": true,
+      "when": {
+        "minRound": 5
+      }
+    },
+    {
+      "id": "event-guest-gladiator-night",
+      "type": "arrival",
+      "actors": 1,
+      "guest": "gladiator",
+      "weight": 0.3,
+      "notable": true,
+      "phase": "night"
+    },
+    {
+      "id": "event-guest-wanderer-hermit",
+      "type": "arrival",
+      "actors": 1,
+      "guest": "wanderer",
+      "weight": 0.5,
+      "notable": true,
+      "boost": {
+        "perk-crowd-favourite": 2
+      }
+    },
+    {
+      "id": "event-guest-wanderer-deserter",
+      "type": "arrival",
+      "actors": 1,
+      "guest": "wanderer",
+      "weight": 0.4,
+      "notable": true
+    },
+    {
+      "id": "event-guest-wanderer-volunteer",
+      "type": "arrival",
+      "actors": 1,
+      "guest": "wanderer",
+      "weight": 0.4,
+      "notable": true,
+      "boost": {
+        "perk-crowd-favourite": 3
+      }
+    },
+    {
+      "id": "event-visitor-gift",
+      "type": "gift",
+      "actors": 1,
+      "weight": 1.5,
+      "boost": {
+        "perk-crowd-favourite": 3,
+        "Bard": 2
+      }
+    },
+    {
+      "id": "event-visitor-child",
+      "type": "gift",
+      "actors": 1,
+      "weight": 1,
+      "phase": "day",
+      "boost": {
+        "perk-crowd-favourite": 3
+      }
+    },
+    {
+      "id": "event-visitor-healer",
+      "type": "rest",
+      "actors": 1,
+      "damage": 8,
+      "weight": 1,
+      "when": {
+        "wounded": true
+      },
+      "boost": {
+        "perk-crowd-favourite": 2
+      }
+    },
+    {
+      "id": "event-visitor-bard",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1,
+      "boost": {
+        "Bard": 2
+      }
+    },
+    {
+      "id": "event-visitor-merchant",
+      "type": "find",
+      "actors": 1,
+      "skill": "persuasion",
+      "weight": 1.5,
+      "phase": "day"
+    },
+    {
+      "id": "event-visitor-stones",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 1,
+      "when": {
+        "alignment": "evil"
+      }
+    },
+    {
+      "id": "event-visitor-fortune",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1,
+      "phase": "night"
+    },
+    {
+      "id": "event-visitor-noble",
+      "type": "gift",
+      "actors": 1,
+      "weight": 1,
+      "when": {
+        "alignment": "good"
+      },
+      "boost": {
+        "perk-crowd-favourite": 2,
+        "Paladin": 2
+      }
+    },
+    {
+      "id": "event-relic-search",
+      "type": "relic-find",
+      "actors": 1,
+      "skill": "perception",
+      "weight": 40,
+      "when": {
+        "relic": "free"
+      },
+      "boost": {
+        "perk-tracker": 2
+      }
+    },
+    {
+      "id": "event-relic-clues",
+      "type": "relic-find",
+      "actors": 1,
+      "skill": "lore",
+      "weight": 30,
+      "when": {
+        "relic": "free"
+      },
+      "boost": {
+        "Mage": 2,
+        "Cleric": 2
+      }
+    },
+    {
+      "id": "event-relic-tracks",
+      "type": "relic-find",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 25,
+      "when": {
+        "relic": "free"
+      },
+      "boost": {
+        "perk-tracker": 3,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-relic-steal",
+      "type": "relic-steal",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "stealth",
+      "weight": 30,
+      "when": {
+        "relic": "target"
+      }
+    },
+    {
+      "id": "event-relic-ambush",
+      "type": "relic-steal",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "melee",
+      "weight": 20,
+      "when": {
+        "relic": "target",
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-relic-return",
+      "type": "relic-return",
+      "actors": 1,
+      "skill": "athletics",
+      "weight": 40,
+      "when": {
+        "relic": "held"
+      }
+    },
+    {
+      "id": "event-relic-sneak",
+      "type": "relic-return",
+      "actors": 1,
+      "skill": "stealth",
+      "weight": 30,
+      "when": {
+        "relic": "held"
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-tool-heat",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 5,
+      "weight": 2,
+      "tool": "water",
+      "phase": "day"
+    },
+    {
+      "id": "event-tool-fire-night",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "survival",
+      "damage": 4,
+      "weight": 2,
+      "tool": "fire",
+      "phase": "night"
+    },
+    {
+      "id": "event-tool-cook",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2,
+      "tool": "fire",
+      "boost": {
+        "perk-survivalist": 2
+      }
+    },
+    {
+      "id": "event-tool-net-fish",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2,
+      "tool": "net",
+      "phase": "day",
+      "boost": {
+        "perk-tracker": 2
+      }
+    },
+    {
+      "id": "event-tame-net",
+      "type": "tame",
+      "actors": 1,
+      "skill": "athletics",
+      "weight": 1,
+      "tool": "net",
+      "when": {
+        "companion": false
+      },
+      "boost": {
+        "perk-beast-friend": 2,
+        "Ranger": 2
+      }
+    },
+    {
+      "id": "event-tame-call",
+      "type": "tame",
+      "actors": 1,
+      "skill": "perception",
+      "weight": 1,
+      "tool": "call",
+      "animal": "animal-hawk",
+      "when": {
+        "companion": false
+      },
+      "boost": {
+        "perk-beast-friend": 2
+      }
+    },
+    {
+      "id": "event-druid-bear",
+      "type": "tame",
+      "actors": 1,
+      "skill": "magic",
+      "weight": 2,
+      "animal": "animal-bear",
+      "when": {
+        "companion": false,
+        "classes": ["Druid"]
+      }
+    },
+    {
+      "id": "event-beast-friend-pack",
+      "type": "companion",
+      "actors": 1,
+      "effect": "heal",
+      "weight": 3,
+      "when": {
+        "companion": true,
+        "perk": "perk-beast-friend"
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-tracker-hunt",
+      "type": "forage",
+      "actors": 1,
+      "skill": "survival",
+      "modifier": 10,
+      "weight": 3,
+      "when": {
+        "perk": "perk-tracker"
+      }
+    },
+    {
+      "id": "event-favourite-cheers",
+      "type": "rest",
+      "actors": 1,
+      "damage": 5,
+      "weight": 3,
+      "when": {
+        "perk": "perk-crowd-favourite"
+      }
+    },
+    {
+      "id": "event-climber-lookout",
+      "type": "find",
+      "actors": 1,
+      "skill": "athletics",
+      "modifier": 10,
+      "weight": 3,
+      "when": {
+        "perk": "perk-climber"
+      }
+    },
+    {
+      "id": "event-night-eyes-scout",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": 10,
+      "weight": 3,
+      "phase": "night",
+      "when": {
+        "perk": "perk-night-eyes"
+      }
+    },
+    {
+      "id": "event-iron-stomach-feast",
+      "type": "feed",
+      "actors": 1,
+      "damage": 3,
+      "weight": 3,
+      "when": {
+        "perk": "perk-iron-stomach",
+        "hunger": 2
+      }
+    },
+    {
+      "id": "event-cleric-blessing",
+      "type": "treat",
+      "actors": 1,
+      "weight": 2,
+      "when": {
+        "classes": ["Cleric", "Paladin"],
+        "wounded": true
+      }
+    },
+    {
+      "id": "event-bard-song",
+      "type": "feed",
+      "actors": 1,
+      "damage": 2,
+      "weight": 2,
+      "when": {
+        "classes": ["Bard"]
+      }
+    },
+    {
+      "id": "event-rogue-locks",
+      "type": "find",
+      "actors": 1,
+      "skill": "stealth",
+      "weight": 2,
+      "when": {
+        "classes": ["Rogue"]
+      },
+      "phase": "night"
+    },
+    {
+      "id": "event-barbarian-rage",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 4,
+      "weight": 2,
+      "when": {
+        "classes": ["Barbarian"]
+      }
+    },
+    {
+      "id": "event-mage-portal",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "magic",
+      "damage": 5,
+      "weight": 2,
+      "when": {
+        "classes": ["Mage"]
+      }
+    },
+    {
+      "id": "event-flaw-gullible",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 2,
+      "weight": 3,
+      "loseItem": true,
+      "when": {
+        "perk": "flaw-gullible"
+      }
+    },
+    {
+      "id": "event-flaw-clumsy",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 3,
+      "loseItem": true,
+      "when": {
+        "perk": "flaw-clumsy"
+      }
+    },
+    {
+      "id": "event-flaw-glutton",
+      "type": "feed",
+      "actors": 1,
+      "damage": 1,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-glutton",
+        "hunger": 1
+      }
+    },
+    {
+      "id": "event-flaw-coward",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-coward"
+      }
+    },
+    {
+      "id": "event-flaw-hothead",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "intimidation",
+      "effect": "hurt",
+      "damage": 4,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-hothead"
+      }
+    },
+    {
+      "id": "event-flaw-beast-fear",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 3,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-beast-fear"
+      }
+    },
+    {
+      "id": "event-flaw-loud",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "stealth",
+      "damage": 5,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-loud"
+      }
+    },
+    {
+      "id": "event-flaw-sleeper",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -10,
+      "damage": 3,
+      "weight": 3,
+      "phase": "night",
+      "loseItem": true,
+      "when": {
+        "perk": "flaw-heavy-sleeper"
+      }
+    },
+    {
+      "id": "event-flaw-greedy",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -10,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-greedy"
+      }
+    },
+    {
+      "id": "event-flaw-unlucky",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-unlucky"
+      }
+    }
+  ],
+  "animals": [
+    {
+      "id": "animal-wolf",
+      "difficulty": 15,
+      "damage": 7,
+      "bonuses": {
+        "melee": 5,
+        "perception": 5
+      },
+      "tags": ["predator", "hunter"]
+    },
+    {
+      "id": "animal-boar",
+      "difficulty": 10,
+      "damage": 8,
+      "bonuses": {
+        "melee": 5,
+        "endurance": 5
+      },
+      "tags": ["predator"]
+    },
+    {
+      "id": "animal-bear",
+      "difficulty": 30,
+      "damage": 12,
+      "bonuses": {
+        "melee": 10,
+        "intimidation": 10
+      },
+      "tags": ["predator", "hunter"]
+    },
+    {
+      "id": "animal-lynx",
+      "difficulty": 15,
+      "damage": 6,
+      "bonuses": {
+        "stealth": 10,
+        "perception": 5
+      },
+      "tags": ["predator", "hunter"]
+    },
+    {
+      "id": "animal-raven",
+      "difficulty": 0,
+      "damage": 2,
+      "bonuses": {
+        "perception": 10,
+        "lore": 5
+      }
+    },
+    {
+      "id": "animal-hawk",
+      "difficulty": 10,
+      "damage": 4,
+      "bonuses": {
+        "perception": 10,
+        "ranged": 5
+      },
+      "tags": ["hunter"]
+    },
+    {
+      "id": "animal-snake",
+      "difficulty": 20,
+      "damage": 9,
+      "bonuses": {
+        "stealth": 5,
+        "intimidation": 5
+      },
+      "tags": ["predator"]
+    },
+    {
+      "id": "animal-hound",
+      "difficulty": 5,
+      "damage": 5,
+      "bonuses": {
+        "perception": 10,
+        "survival": 5
+      },
+      "tags": ["hunter"]
+    },
+    {
+      "id": "animal-goat",
+      "difficulty": 0,
+      "damage": 3,
+      "bonuses": {
+        "athletics": 5,
+        "survival": 5
+      }
+    },
+    {
+      "id": "animal-panther",
+      "difficulty": 25,
+      "damage": 10,
+      "bonuses": {
+        "stealth": 10,
+        "melee": 5
+      },
+      "tags": ["predator", "hunter"]
     }
   ]
 }

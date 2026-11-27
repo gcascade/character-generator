@@ -83,4 +83,33 @@ describe('ContestantStatus', () => {
     );
     expect(screen.getByRole('heading', { name: 'Couple' })).toBeInTheDocument();
   });
+
+  it('shows a companion, hunger and the relic, and skips guests not yet entered (spec 013)', () => {
+    const state = {
+      ...base,
+      aela: { ...base.aela, companion: 'animal-wolf', hunger: 5 },
+      brom: { ...base.brom, hunger: 3, relic: true },
+    };
+    const withGuest = {
+      ...arenaSetup,
+      contestants: [
+        ...arenaSetup.contestants,
+        {
+          ...arenaSetup.contestants[0],
+          id: 'guest-1',
+          guest: 'gladiator' as const,
+        },
+      ],
+    };
+    render(
+      <ContestantStatus setup={withGuest} state={state} moment="After Day 4" />,
+    );
+    const aela = screen.getByRole('listitem', { name: 'Aela' });
+    expect(within(aela).getByText('With a wolf')).toBeInTheDocument();
+    expect(within(aela).getByText('Starving')).toBeInTheDocument();
+    const brom = screen.getByRole('listitem', { name: 'Brom' });
+    expect(within(brom).getByText('Hungry')).toBeInTheDocument();
+    expect(within(brom).getByText('Holds the relic')).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem', { name: 'Aela' })).toHaveLength(1);
+  });
 });

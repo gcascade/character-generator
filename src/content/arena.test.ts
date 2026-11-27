@@ -7,6 +7,7 @@ import {
   emptySetup,
   fillRoster,
   isAnnouncement,
+  matchSetup,
   MAX_CONTESTANTS,
   randomLoadouts,
   removeContestant,
@@ -28,6 +29,9 @@ import {
 } from '../types/character';
 import type { Party } from '../types/party';
 import { createRandom } from './random';
+
+// Hundreds of simulated matches per test: slower on CI runners than locally.
+vi.setConfig({ testTimeout: 60_000 });
 
 describe('arena roster (spec 012 US1)', () => {
   it('adds solo contestants, never the same saved character twice', () => {
@@ -94,7 +98,7 @@ describe('arena roster (spec 012 US1)', () => {
     );
   });
 
-  it('limits perks to two known ones and items to three', () => {
+  it('keeps one known perk and one known flaw, and three items', () => {
     const setup = addRandom(emptySetup(), 1);
     const id = setup.contestants[0].id;
     const withPerks = setPerks(setup, id, [
@@ -102,12 +106,16 @@ describe('arena roster (spec 012 US1)', () => {
       'perk-lucky',
       'perk-unknown',
       'perk-brute',
-      'perk-tough',
+      'flaw-clumsy',
+      'flaw-loud',
     ]);
     expect(withPerks.contestants[0].perks).toEqual([
       'perk-lucky',
-      'perk-brute',
+      'flaw-clumsy',
     ]);
+    expect(
+      setPerks(setup, id, ['flaw-loud', 'perk-tough']).contestants[0].perks,
+    ).toEqual(['perk-tough', 'flaw-loud']);
     const withItems = setItems(setup, id, [
       'item-sword',
       'item-bow',
@@ -129,8 +137,9 @@ describe('arena roster (spec 012 US1)', () => {
       addRandom(emptySetup(), 10),
       createRandom('l'),
     );
+    const flaw = (p: string) => !!ARENA.perks.find((d) => d.id === p)?.flaw;
     for (const c of setup.contestants) {
-      expect(c.perks).toHaveLength(2);
+      expect(c.perks.map(flaw)).toEqual([false, true]);
       expect(c.items.length).toBeGreaterThanOrEqual(1);
       expect(c.items.length).toBeLessThanOrEqual(3);
     }
@@ -149,8 +158,18 @@ describe('arena match (spec 012 US2)', () => {
       const setup = rosterOf(n, `m${i}`);
       const match = simulate(setup);
       const standing = Object.values(match.fighters).filter((f) => f.standing);
-      expect(new Set(standing.map((f) => f.sideId)).size).toBe(1);
-      expect(standing[0].sideId).toBe(match.winnerSideId);
+      const sides = new Set(standing.map((f) => f.sideId));
+      // A decree (spec 013) may end the match with other sides still standing.
+      const decreed = match.rounds
+        .at(-1)!
+        .events.some((e) => e.eventId.startsWith('announce-decree-won'));
+      if (decreed) {
+        expect(sides).toContain(match.winnerSideId);
+        if (match.shared) expect(sides.size).toBeGreaterThan(1);
+      } else {
+        expect(sides.size).toBe(1);
+        expect(standing[0].sideId).toBe(match.winnerSideId);
+      }
       expect(match.rounds.length).toBeLessThanOrEqual(
         roundLimit(setup.contestants.length) + 1,
       );
@@ -192,8 +211,12 @@ describe('arena match (spec 012 US2)', () => {
       const match = simulate(setup);
       for (const round of match.rounds) {
         for (const event of round.events) {
-          expect(renderEvent(event, setup, 'en')).not.toMatch(/[{}]/);
-          expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
+          expect(
+            renderEvent(event, matchSetup(setup, match), 'en'),
+          ).not.toMatch(/[{}]/);
+          expect(
+            renderEvent(event, matchSetup(setup, match), 'fr'),
+          ).not.toMatch(/[{}]/);
         }
       }
     }
@@ -246,7 +269,9 @@ describe('match summary (spec 012 FR-017)', () => {
       };
       const match = simulate(setup);
       const summary = summarize(setup, match);
-      expect(summary.rows).toHaveLength(setup.contestants.length);
+      expect(summary.rows).toHaveLength(
+        setup.contestants.length + match.entrants.length,
+      );
       expect(match.fighters[summary.winners[0]].standing).toBe(true);
       expect(summary.moments.length).toBeGreaterThanOrEqual(
         Math.min(3, match.rounds.flatMap((r) => r.events).length),
@@ -295,7 +320,7 @@ describe('teams, alignment and ties (spec 012 US3)', () => {
       setup = { ...addRandom(setup, i % 5), seed: `team${i}` };
       const match = simulate(setup);
       const characters = new Map(
-        setup.contestants.map((c) => [c.id, c.character]),
+        matchSetup(setup, match).contestants.map((c) => [c.id, c.character]),
       );
       for (const fighter of Object.values(match.fighters)) {
         if (!fighter.defeatedBy) continue;
@@ -422,8 +447,12 @@ describe('couples, group events and grudges (maintainer feedback)', () => {
           for (const x of event.actors)
             for (const y of event.actors) if (x !== y) harmed.add(`${x}<${y}`);
         }
-        expect(renderEvent(event, setup, 'en')).not.toMatch(/[{}]/);
-        expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
+        expect(renderEvent(event, matchSetup(setup, match), 'en')).not.toMatch(
+          /[{}]/,
+        );
+        expect(renderEvent(event, matchSetup(setup, match), 'fr')).not.toMatch(
+          /[{}]/,
+        );
       }
     }
   });
@@ -470,7 +499,9 @@ describe('the narrator (maintainer feedback)', () => {
       );
       expect(teams.size).toBe(outs.length);
       for (const e of match.rounds.flatMap((r) => r.events)) {
-        expect(renderEvent(e, setup, 'fr')).not.toMatch(/[{}]/);
+        expect(renderEvent(e, matchSetup(setup, match), 'fr')).not.toMatch(
+          /[{}]/,
+        );
       }
     }
     expect(finales).toBeGreaterThan(0);
@@ -510,7 +541,10 @@ describe('recaps and loot (maintainer feedback)', () => {
       for (const round of match.rounds) {
         if (round.events.some((e) => e.eventId.startsWith('event-finale')))
           continue;
-        const last = round.events.at(-1)!;
+        // A decree's verdict may follow the recap (spec 013).
+        const last = round.events
+          .filter((e) => !e.eventId.startsWith('announce-decree-won'))
+          .at(-1)!;
         const fallen = round.events
           .filter((e) => !isAnnouncement(e))
           .flatMap((e) => e.defeated);
@@ -540,7 +574,9 @@ describe('recaps and loot (maintainer feedback)', () => {
           scavenged++;
           expect(event.itemId).toBeTruthy();
         }
-        expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
+        expect(renderEvent(event, matchSetup(setup, match), 'fr')).not.toMatch(
+          /[{}]/,
+        );
       }
     }
     expect(chests).toBeGreaterThan(10);
@@ -557,5 +593,78 @@ describe('names in the arena (maintainer feedback)', () => {
       );
       expect(new Set(names).size).toBe(names.length);
     }
+  });
+});
+
+describe('the wilds (spec 013)', () => {
+  const matches = Array.from({ length: 600 }, (_, i) => {
+    const setup = randomLoadouts(
+      { ...fillRoster(emptySetup(), 12, 'mixed', 'en'), seed: `wild${i}` },
+      createRandom(`wild${i}`),
+    );
+    return { setup, match: simulate(setup) };
+  });
+  const typeOf = new Map(ARENA.events.map((e) => [e.id, e.type]));
+
+  it('uses tools, tames animals whose companions act, and rarely starves anyone (SC-002)', () => {
+    const count: Record<string, number> = {};
+    const add = (key: string, n = 1) => (count[key] = (count[key] ?? 0) + n);
+    for (const { match } of matches) {
+      for (const event of match.rounds.flatMap((r) => r.events)) {
+        const type = typeOf.get(event.eventId);
+        if (event.outcome === 'tool' || event.outcome === 'knack') add('tool');
+        if (type === 'tame' && event.after?.[event.actors[0]]?.companion)
+          add('tamed');
+        if (type === 'companion' || type === 'companion-attack')
+          add('companion');
+        if (type === 'hunger') add('starved', event.defeated.length);
+        add('defeats', event.defeated.length);
+      }
+    }
+    expect(count.tool).toBeGreaterThan(300);
+    expect(count.tamed).toBeGreaterThan(200);
+    expect(count.companion).toBeGreaterThan(50);
+    expect(count.starved / count.defeats).toBeLessThan(0.02);
+  });
+
+  it('brings at most two guests, who enter the story and can be told in both languages', () => {
+    let guests = 0;
+    for (const { setup, match } of matches.slice(0, 300)) {
+      expect(match.entrants.length).toBeLessThanOrEqual(2);
+      guests += match.entrants.length;
+      const full = matchSetup(setup, match);
+      for (const event of match.rounds.flatMap((r) => r.events)) {
+        expect(renderEvent(event, full, 'fr')).not.toMatch(/[{}]/);
+      }
+    }
+    expect(guests).toBeGreaterThan(20);
+  });
+
+  it('issues decrees in about one match in six, and ends them as announced (SC-002)', () => {
+    let decrees = 0;
+    for (const { match } of matches) {
+      if (!match.decree) continue;
+      decrees++;
+      const standing = Object.values(match.fighters).filter((f) => f.standing);
+      if (match.shared) {
+        expect(match.decree.type).toBe('survive');
+        expect(match.rounds.at(-1)!.number).toBe(match.decree.goal);
+        expect(summarize(emptySetup(), match).winners.sort()).toEqual(
+          standing.map((f) => f.id).sort(),
+        );
+      }
+      if (match.decree.type === 'champion') {
+        const champion = standing.find((f) => f.defeats >= match.decree!.goal);
+        if (
+          champion &&
+          !match.rounds
+            .at(-1)!
+            .events.some((e) => e.eventId.startsWith('event-finale'))
+        )
+          expect(match.winnerSideId).toBe(champion.sideId);
+      }
+    }
+    expect(decrees / matches.length).toBeGreaterThan(0.08);
+    expect(decrees / matches.length).toBeLessThan(0.25);
   });
 });

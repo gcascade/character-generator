@@ -47,6 +47,7 @@ import type { BalanceArea } from '../types/party';
 import type { NpcSection, Occupation } from '../types/npc';
 import type { GenderedText } from './renderText';
 import type {
+  AnimalDefinition,
   ItemDefinition,
   PerkDefinition,
   Skill,
@@ -196,8 +197,19 @@ export type ArenaEventKind = {
   loseItem?: boolean;
   /** Melees: the best fighter still standing gets an item. */
   loot?: boolean;
-  /** Social events: what a success does to b. */
-  effect?: 'hurt' | 'take';
+  /** Social events: what a success does to b; companion events: what the animal does. */
+  effect?: 'hurt' | 'take' | 'feed' | 'find' | 'heal' | 'leave';
+  /**
+   * An actor carrying an item with this tag gets the `tool` outcome, without a
+   * roll; with a perk that has it, the `knack` outcome (spec 013).
+   */
+  tool?: string;
+  /** Animal events: a given animal id, or any animal with this tag, or any. */
+  animal?: string;
+  /** Weight multipliers when a has this perk, class or race (spec 013). */
+  boost?: Record<string, number>;
+  /** Guest arrivals: a gladiator who fights alone, or a wanderer who joins a's side. */
+  guest?: 'gladiator' | 'wanderer';
   when?: {
     alignment?: 'good' | 'evil' | 'chaotic' | 'not-good';
     perk?: string;
@@ -215,6 +227,14 @@ export type ArenaEventKind = {
     grudge?: 'personal' | 'friend';
     /** Group attacks: attackers from different sides gang up on the most dangerous. */
     coalition?: boolean;
+    /** a's class is one of these. */
+    classes?: string[];
+    /** a has (true) or has not (false) a companion. */
+    companion?: boolean;
+    /** a's hunger is at least this. */
+    hunger?: number;
+    /** Relic decree: nobody holds it, a holds it, or b holds it. */
+    relic?: 'free' | 'held' | 'target';
   };
 };
 
@@ -234,6 +254,7 @@ export const ARENA = arena as unknown as {
   skills: ArenaSkillData;
   perks: PerkDefinition[];
   items: ItemDefinition[];
+  animals: AnimalDefinition[];
   events: ArenaEventKind[];
 };
 
@@ -244,6 +265,7 @@ export type ArenaTexts = {
   families: Record<SkillFamily, string>;
   perks: Record<string, { name: string; description: string }>;
   items: Record<string, { a: string; the: string; description: string }>;
+  animals: Record<string, { a: string; the: string }>;
   events: Record<string, GenderedOutcomes>;
   /** The narrator's lines between events, by announcement id. */
   announcements: Record<string, string>;

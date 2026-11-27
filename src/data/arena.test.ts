@@ -39,13 +39,36 @@ const OUTCOMES: Record<string, string[]> = {
   'group-hazard': ['safe', 'hurt', 'defeat'],
   feast: ['only'],
   scavenge: ['only'],
+  eat: ['only'],
+  feed: ['only'],
+  hunger: ['success', 'failure', 'defeated'],
+  tame: ['success', 'failure', 'defeated'],
+  beast: ['success', 'failure', 'defeated'],
+  companion: ['only'],
+  'companion-attack': ['success', 'failure', 'defeat'],
+  arrival: [],
+  'relic-find': ['success', 'failure'],
+  'relic-steal': ['success', 'failure', 'caught', 'seized'],
+  'relic-return': ['success', 'failure'],
 };
+
+/** A perk with this tag can stand in for the tool (spec 013). */
+const perkHasTag = (tag: string) =>
+  ARENA.perks.some((p) => p.tags?.includes(tag));
 
 const outcomesOf = (kind: (typeof ARENA.events)[number]) => [
   ...OUTCOMES[kind.type],
   ...(kind.loseItem ? ['lost'] : []),
   ...(kind.effect === 'hurt' ? ['defeat'] : []),
   ...(kind.effect === 'take' ? ['took'] : []),
+  ...(kind.type === 'companion' && kind.effect === 'find' ? ['found'] : []),
+  ...(kind.type === 'arrival'
+    ? kind.guest === 'gladiator'
+      ? ['win', 'lose', 'draw', 'defeat', 'defeated']
+      : ['only']
+    : []),
+  ...(kind.tool ? ['tool'] : []),
+  ...(kind.tool && perkHasTag(kind.tool) ? ['knack'] : []),
 ];
 
 const params = (text: string) =>
@@ -91,6 +114,9 @@ describe('arena content (spec 012)', () => {
                   item: 'x',
                   theItem: 'x',
                   team: 'x',
+                  animal: 'x',
+                  theAnimal: 'x',
+                  count: '3',
                   lists: {
                     all: [0, 1, 2],
                     others: [1, 2],
@@ -110,7 +136,7 @@ describe('arena content (spec 012)', () => {
 
   it('follows the French rules', () => {
     const elision =
-      /\b(que|de|le|la|ce|jusque|lorsque|puisque)\s+\{(a|b|c|item|theItem|all|others|fallen|hurt)\}/i;
+      /\b(que|de|le|la|ce|jusque|lorsque|puisque)\s+\{(a|b|c|item|theItem|all|others|fallen|hurt|animal|theAnimal)\}/i;
     for (const outcomes of Object.values(ARENA_TEXTS.fr.events)) {
       for (const text of Object.values(outcomes)) {
         expect(text).not.toMatch(elision);

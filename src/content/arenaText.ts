@@ -10,6 +10,10 @@ export type TextExtras = {
   item?: string;
   theItem?: string;
   team?: string;
+  animal?: string;
+  theAnimal?: string;
+  /** A day or a number of defeats (decrees). */
+  count?: string;
   /** Lists of actor indexes: `{all}`, `{others}`, `{fallen}`, `{hurt}` (group events). */
   lists?: Partial<
     Record<'all' | 'others' | 'fallen' | 'hurt' | 'looter', number[]>
@@ -71,7 +75,10 @@ export const fillActorText = (
         ? `\uE000${ACTORS.indexOf(key as (typeof ACTORS)[number])}${name}\uE001`
         : name;
     }
-    const value = extras[key as 'item' | 'theItem' | 'team'];
+    const value =
+      extras[
+        key as 'item' | 'theItem' | 'team' | 'animal' | 'theAnimal' | 'count'
+      ];
     if (value === undefined) throw new Error(`Missing {${key}} in "${text}"`);
     return value;
   });
@@ -91,6 +98,7 @@ const extrasOf = (
 ): TextExtras => {
   const texts = ARENA_TEXTS[locale];
   const item = result.itemId ? texts.items[result.itemId] : undefined;
+  const beast = result.animalId ? texts.animals[result.animalId] : undefined;
   const side = setup.sides.find(
     (s) =>
       s.id === setup.contestants.find((c) => c.id === result.actors[0])?.sideId,
@@ -100,6 +108,8 @@ const extrasOf = (
   return {
     ...(item && { item: item.a, theItem: item.the }),
     ...(side?.name && { team: side.name }),
+    ...(beast && { animal: beast.a, theAnimal: beast.the }),
+    ...(result.count !== undefined && { count: String(result.count) }),
     lists: {
       all: result.actors.map((_, i) => i),
       others: result.actors.slice(1).map((_, i) => i + 1),
@@ -146,11 +156,32 @@ export const renderRoundTitle = (
 };
 
 /** Event types where the only actor undergoes the event (shown on the right). */
-const UNDERGONE = ['hazard', 'arena', 'group-hazard', 'melee'];
+const UNDERGONE = [
+  'hazard',
+  'arena',
+  'group-hazard',
+  'melee',
+  'beast',
+  'hunger',
+];
 /** Event types where everyone acts together (shown on the left). */
 const TOGETHER = ['feast'];
 /** Event types with a single actor acting on their own (shown on the left). */
-const SOLO = ['find', 'gift', 'forage', 'rest', 'quiet', 'potion', 'treat'];
+const SOLO = [
+  'find',
+  'gift',
+  'forage',
+  'rest',
+  'quiet',
+  'potion',
+  'treat',
+  'eat',
+  'feed',
+  'tame',
+  'companion',
+  'relic-find',
+  'relic-return',
+];
 
 /**
  * Who starts an event and who undergoes it, for the portraits beside each line

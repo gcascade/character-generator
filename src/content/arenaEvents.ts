@@ -1,5 +1,6 @@
 import type {
   ArenaSetup,
+  Decree,
   EventResult,
   Fighter,
   RollRecord,
@@ -29,7 +30,18 @@ export type MatchState = {
   dropped: string[];
   /** Wrongs remembered: grudges[a][b] = why a resents b. */
   grudges: Record<string, Record<string, 'personal' | 'friend'>>;
+  /** The end condition changed by the arena masters (spec 013). */
+  decree?: Decree;
+  /** Set when a decree's goal is reached: the match ends at once. */
+  winner?: { sideId: string; shared?: boolean };
+  /** Brings a guest into the arena (spec 013); a wanderer joins the host's side. */
+  enter?: (guest: 'gladiator' | 'wanderer', host: Fighter) => Fighter;
+  /** Guests already entered. */
+  guests: number;
 };
+
+/** At most two guests per match (spec 013 FR-004). */
+export const MAX_GUESTS = 2;
 
 export const pairKey = (a: Fighter, b: Fighter) =>
   a.id < b.id ? `${a.id}|${b.id}` : `${b.id}|${a.id}`;
@@ -80,6 +92,11 @@ const perk = (id: string) => ARENA.perks.find((p) => p.id === id);
 const hasTag = (f: Fighter, tag: string) =>
   hasPerkTag(f, tag) || hasItemTag(f, tag);
 const item = (id: string) => ARENA.items.find((i) => i.id === id);
+export const animal = (id: string) => ARENA.animals.find((x) => x.id === id);
+
+/** Hunger from which checks get harder, and the harm starts (spec 013 FR-003). */
+export const HUNGRY = 3;
+export const STARVING = 5;
 
 export const hasPerkTag = (f: Fighter, tag: string) =>
   f.perks.some((p) => perk(p)?.tags?.includes(tag));
@@ -97,7 +114,10 @@ export const skillValue = (state: MatchState, f: Fighter, skill: Skill) => {
   for (const p of f.perks) value += perk(p)?.bonuses?.[skill] ?? 0;
   for (const i of f.items) value += item(i)?.bonuses?.[skill] ?? 0;
   value += state.balance[f.id] ?? 0;
+  if (f.companion) value += animal(f.companion)?.bonuses?.[skill] ?? 0;
   if (isWounded(f) && PHYSICAL.includes(skill)) value -= 10;
+  if (f.hunger >= STARVING) value -= 10;
+  else if (f.hunger >= HUNGRY) value -= 5;
   return value;
 };
 
@@ -112,6 +132,13 @@ export const fighterCheck = (
   const chance = clamp(value + modifier);
   const first = check(value, modifier, state.random);
   state.rolls.push({ actor: f.id, skill, chance, ...first });
+  // An unlucky fighter sees one success of the match turn into a failure.
+  if (first.success && !f.luckUsed && hasPerkTag(f, 'unlucky')) {
+    f.luckUsed = true;
+    const second = check(value, modifier, state.random);
+    state.rolls.push({ actor: f.id, skill, chance, ...second, reroll: true });
+    return second;
+  }
   if (first.success || f.luckUsed || !hasPerkTag(f, 'reroll')) return first;
   f.luckUsed = true;
   const second = check(value, modifier, state.random);
@@ -179,6 +206,11 @@ export const fitsActor = (
   if (when.alignment === 'chaotic' && !isChaotic(state, a)) return false;
   if (when.alignment === 'not-good' && isGood(state, a)) return false;
   if (when.perk && !a.perks.includes(when.perk)) return false;
+  if (
+    when.classes &&
+    !when.classes.includes(state.characters[a.id].characterClass)
+  )
+    return false;
   if (when.itemTag && !hasItemTag(a, when.itemTag)) return false;
   if (
     when.wounded !== undefined &&
@@ -187,6 +219,16 @@ export const fitsActor = (
   )
     return false;
   if (when.caster && !isCaster(state, a)) return false;
+  if (when.companion !== undefined && when.companion !== !!a.companion)
+    return false;
+  if (when.hunger !== undefined && a.hunger < when.hunger) return false;
+  if (when.relic) {
+    if (state.decree?.type !== 'relic' || state.winner) return false;
+    const holder = Object.values(state.fighters).find((f) => f.relic);
+    if (when.relic === 'free' && holder) return false;
+    if (when.relic === 'held' && !a.relic) return false;
+    if (when.relic === 'target' && (!holder || holder === a)) return false;
+  }
   if (kind.skill === 'magic' && kind.type === 'fight' && !isCaster(state, a))
     return false;
   if (kind.skill === 'ranged' && kind.type === 'fight' && !canShoot(state, a))
@@ -222,7 +264,7 @@ const hurt = (
   target.hp = 0;
   target.standing = false;
   target.defeatedRound = state.round;
-  dropItems(state, target);
+  leaveArena(state, target);
   if (by) {
     target.defeatedBy = by.id;
     by.defeats++;
@@ -243,6 +285,28 @@ const hurt = (
 export const dropItems = (state: MatchState, f: Fighter) => {
   state.dropped.push(...f.items);
   f.items = [];
+};
+
+/** Someone leaves the arena: items stay, the companion runs off, the relic is free again. */
+export const leaveArena = (state: MatchState, f: Fighter) => {
+  dropItems(state, f);
+  f.companion = undefined;
+  f.relic = undefined;
+};
+
+/** A meal: hunger is gone. */
+const feed = (f: Fighter) => {
+  f.hunger = 0;
+};
+
+/** The animal of an event: a given one, one with a tag, or any. */
+const animalFor = (state: MatchState, kind: ArenaEventKind) => {
+  const wanted = kind.animal;
+  if (wanted && animal(wanted)) return animal(wanted)!;
+  const pool = wanted
+    ? ARENA.animals.filter((x) => x.tags?.includes(wanted))
+    : ARENA.animals;
+  return state.random.pick(pool);
 };
 
 /** Minor harm (hunger, a slap): never enough to leave the arena. */
@@ -396,10 +460,33 @@ export const resolveEvent = (
   const ids = actors.map((f) => f.id);
   const result = (outcome: string, extra: Partial<EventResult> = {}) => ({
     ...solo(kind, a, outcome, extra),
-    actors: ids,
+    actors: extra.actors ?? ids,
   });
   const skill = kind.skill ?? 'perception';
   const modifier = kind.modifier ?? 0;
+
+  // The right tool settles it, without a roll (spec 013 FR-001).
+  const tool = kind.tool
+    ? a.items.find((i) => item(i)?.tags?.includes(kind.tool!))
+    : undefined;
+  // A perk can do the same, with its own text.
+  const knack = !tool && !!kind.tool && hasPerkTag(a, kind.tool);
+  if (tool || knack) {
+    if (tool && item(tool)?.kind === 'consumable')
+      a.items.splice(a.items.indexOf(tool), 1);
+    const extra: Partial<EventResult> = tool ? { itemId: tool } : {};
+    if (kind.type === 'forage' || kind.type === 'hunger') {
+      feed(a);
+      heal(a, 4);
+    }
+    if (kind.type === 'tame') {
+      const beast = animalFor(state, kind);
+      a.companion = beast.id;
+      extra.animalId = beast.id;
+    }
+    if (kind.type === 'beast') extra.animalId = animalFor(state, kind).id;
+    return result(tool ? 'tool' : 'knack', extra);
+  }
 
   switch (kind.type) {
     case 'find': {
@@ -415,9 +502,12 @@ export const resolveEvent = (
     }
     case 'forage': {
       const food =
-        (hasItemTag(a, 'food') ? 15 : 0) + (hasTag(a, 'forager') ? 10 : 0);
+        (hasItemTag(a, 'food') ? 15 : 0) +
+        (hasTag(a, 'forager') ? 10 : 0) +
+        (hasPerkTag(a, 'tracker') ? 10 : 0);
       if (fighterCheck(state, a, skill, modifier + food).success) {
         heal(a, 4);
+        feed(a);
         return result('success');
       }
       scratch(a, kind.damage ?? 3);
@@ -426,7 +516,8 @@ export const resolveEvent = (
     case 'hazard':
     case 'arena': {
       const help =
-        (hasItemTag(a, 'climb') && skill === 'athletics' ? 15 : 0) +
+        (hasItemTag(a, 'climb') && skill === 'athletics' ? 15 : 0) -
+        (hasPerkTag(a, 'clumsy') && skill === 'athletics' ? 10 : 0) +
         (hasTag(a, 'trap-sense') && (skill === 'perception' || skill === 'lore')
           ? 15
           : 0);
@@ -475,7 +566,14 @@ export const resolveEvent = (
     case 'ambush': {
       const spotted =
         hasTag(b, 'alert') || fighterCheck(state, b, 'perception', -10).success;
-      const hidden = fighterCheck(state, a, 'stealth', modifier).success;
+      const asleep =
+        kind.phase === 'night' && hasPerkTag(b, 'sleeper') ? 15 : 0;
+      const hidden = fighterCheck(
+        state,
+        a,
+        'stealth',
+        modifier + asleep,
+      ).success;
       if (hidden && !spotted) {
         const damage =
           weaponDamage(state, a, bestStyle(state, a)) + 4 + random.int(5);
@@ -491,8 +589,10 @@ export const resolveEvent = (
     case 'social': {
       // Opposed by the target's perception for lies, by their endurance for threats.
       const resist: Skill = skill === 'deception' ? 'perception' : 'endurance';
+      const fooled =
+        skill === 'deception' && hasPerkTag(b, 'gullible') ? 15 : 0;
       const success =
-        fighterCheck(state, a, skill, modifier).success &&
+        fighterCheck(state, a, skill, modifier + fooled).success &&
         !fighterCheck(state, b, resist, -20).success;
       if (success) {
         if (kind.effect === 'hurt') {
@@ -516,9 +616,12 @@ export const resolveEvent = (
     }
     case 'steal': {
       const taken = b.items.length ? random.pick(b.items) : undefined;
+      const easy =
+        (hasPerkTag(b, 'gullible') ? 15 : 0) +
+        (kind.phase === 'night' && hasPerkTag(b, 'sleeper') ? 15 : 0);
       if (
         taken &&
-        fighterCheck(state, a, skill, modifier).success &&
+        fighterCheck(state, a, skill, modifier + easy).success &&
         !fighterCheck(state, b, 'perception', -15).success
       ) {
         b.items = b.items.filter((i) => i !== taken);
@@ -544,6 +647,8 @@ export const resolveEvent = (
     case 'share':
       heal(a, 2);
       heal(b, 3);
+      a.hunger = Math.max(0, a.hunger - 2);
+      b.hunger = Math.max(0, b.hunger - 3);
       addBond(state, a, b, 1);
       return result('only');
     case 'banter':
@@ -563,7 +668,9 @@ export const resolveEvent = (
     }
     case 'alliance': {
       const charm = hasPerkTag(a, 'charming') ? 15 : 0;
-      const both = isGood(state, a) && isGood(state, b) ? 10 : 0;
+      const both =
+        (isGood(state, a) && isGood(state, b) ? 10 : 0) -
+        (hasPerkTag(a, 'hothead') ? 15 : 0);
       if (
         fighterCheck(state, a, 'persuasion', modifier + charm + both).success
       ) {
@@ -601,7 +708,7 @@ export const resolveEvent = (
       heal(b, 12);
       a.hp = 0;
       a.standing = false;
-      dropItems(state, a);
+      leaveArena(state, a);
       a.defeatedRound = state.round;
       a.defeatedBy = c.id;
       c.defeats++;
@@ -734,10 +841,146 @@ export const resolveEvent = (
       return result('only', { itemId: found });
     }
     case 'feast': {
-      for (const f of actors) heal(f, 6);
+      for (const f of actors) {
+        heal(f, 6);
+        feed(f);
+      }
       for (const f of actors)
         for (const g of actors) if (f.id < g.id) addBond(state, f, g, 2);
       return result('only');
+    }
+    case 'eat': {
+      const used = consume(a, 'food');
+      feed(a);
+      heal(a, 3);
+      return result('only', used ? { itemId: used } : {});
+    }
+    case 'feed': {
+      // Someone (a spectator, a lucky find) brings food.
+      feed(a);
+      heal(a, kind.damage ?? 3);
+      return result('only');
+    }
+    case 'hunger': {
+      // Starving: endurance holds, or hunger bites; it can end a long fast.
+      if (fighterCheck(state, a, 'endurance', modifier - 3 * a.hunger).success)
+        return result('success');
+      const harm = (kind.damage ?? 3) + a.hunger + random.int(3);
+      if (a.hunger >= 7 && hurt(state, a, harm))
+        return result('defeated', { defeated: [a.id] });
+      scratch(a, harm);
+      return result('failure');
+    }
+    case 'tame': {
+      const beast = animalFor(state, kind);
+      const extra = { animalId: beast.id };
+      const friend =
+        (hasPerkTag(a, 'beast-friend') ? 15 : 0) -
+        (hasPerkTag(a, 'beast-fear') ? 20 : 0);
+      const call = hasItemTag(a, 'call') ? 10 : 0;
+      if (
+        fighterCheck(
+          state,
+          a,
+          skill,
+          modifier + friend + call - beast.difficulty,
+        ).success
+      ) {
+        a.companion = beast.id;
+        return result('success', { ...extra, notable: true });
+      }
+      if (hurt(state, a, beast.damage + random.int(4)))
+        return result('defeated', { ...extra, defeated: [a.id] });
+      return result('failure', extra);
+    }
+    case 'beast': {
+      // A wild animal attacks; a companion helps drive it off.
+      const beast = animalFor(state, kind);
+      const extra = { animalId: beast.id };
+      const help =
+        (a.companion ? 20 : 0) - (hasPerkTag(a, 'beast-fear') ? 10 : 0);
+      if (
+        fighterCheck(state, a, skill, modifier + help - beast.difficulty / 2)
+          .success
+      )
+        return result('success', extra);
+      if (hurt(state, a, beast.damage + random.int(4)))
+        return result('defeated', { ...extra, defeated: [a.id] });
+      return result('failure', extra);
+    }
+    case 'companion': {
+      // The companion acts on its own: hunts, finds, licks wounds, or runs off.
+      const extra = { animalId: a.companion };
+      if (kind.effect === 'feed') {
+        feed(a);
+        heal(a, 3);
+      }
+      if (kind.effect === 'heal') heal(a, 6);
+      if (kind.effect === 'leave') a.companion = undefined;
+      if (kind.effect === 'find') {
+        const found = findItem(state, a);
+        if (!found) return result('only', extra);
+        return result('found', { ...extra, itemId: found });
+      }
+      return result('only', extra);
+    }
+    case 'companion-attack': {
+      // The companion springs at b.
+      const beast = animal(a.companion!)!;
+      const extra = { animalId: beast.id };
+      if (fighterCheck(state, b, 'athletics', modifier - 10).success)
+        return result('failure', extra);
+      if (hurt(state, b, beast.damage + 2 + random.int(4), a))
+        return result('defeat', { ...extra, defeated: [b.id] });
+      return result('success', extra);
+    }
+    case 'arrival': {
+      // A guest enters the arena (spec 013 FR-004): actors are the guest, then a.
+      const guest = state.enter!(kind.guest!, a);
+      state.guests++;
+      const both = { actors: [guest.id, a.id], notable: true };
+      if (kind.guest === 'wanderer') {
+        addBond(state, guest, a, 2);
+        return result('only', both);
+      }
+      const { outcome, defeated } = fight(state, guest, a);
+      return result(outcome, { ...both, defeated });
+    }
+    case 'relic-find': {
+      const tracks = hasPerkTag(a, 'tracker') ? 15 : 0;
+      if (fighterCheck(state, a, skill, modifier + tracks).success) {
+        a.relic = true;
+        return result('success', { notable: true });
+      }
+      return result('failure');
+    }
+    case 'relic-steal': {
+      // b holds the relic.
+      if (
+        fighterCheck(state, a, skill, modifier).success &&
+        !fighterCheck(state, b, 'perception', -15).success
+      ) {
+        b.relic = undefined;
+        a.relic = true;
+        addGrudge(state, b, a, 'personal');
+        return result('success', { notable: true });
+      }
+      const { outcome, defeated } = fight(state, b, a);
+      if (outcome === 'defeat')
+        return result('caught', { defeated, notable: true });
+      if (outcome === 'defeated') {
+        a.relic = true;
+        return result('seized', { defeated, notable: true });
+      }
+      return result('failure');
+    }
+    case 'relic-return': {
+      if (fighterCheck(state, a, skill, modifier).success) {
+        state.winner = { sideId: a.sideId };
+        return result('success', { notable: true });
+      }
+      scratch(a, 3);
+      return result('failure');
     }
     default:
       throw new Error(`Unknown event type ${kind.type}`);

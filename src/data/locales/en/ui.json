@@ -364,5 +364,15 @@
   "arena.newItems": "New: {items}",
   "arena.lostItems": "Lost: {items}",
   "arena.autoplay": "Play",
-  "arena.pause": "Pause"
+  "arena.pause": "Pause",
+  "arena.guest": "Guest of the arena",
+  "arena.companion": "With {animal}",
+  "arena.hungry": "Hungry",
+  "arena.starving": "Starving",
+  "arena.relic": "Holds the relic",
+  "arena.winnersShared": "Shared victory",
+  "arena.byDecree": "By decree of the arena masters",
+  "arena.strength": "Perk",
+  "arena.flaw": "Flaw",
+  "arena.perkAndFlaw": "Perk and flaw"
 }

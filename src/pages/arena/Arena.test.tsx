@@ -105,7 +105,8 @@ describe('Arena page — perks and items (spec 012 US4)', () => {
     const loadout = screen.getByRole('group', {
       name: 'Perks and items of Korvus',
     });
-    expect(within(loadout).getAllByRole('combobox')).toHaveLength(2);
+    // A perk, a flaw, and the first item.
+    expect(within(loadout).getAllByRole('combobox')).toHaveLength(3);
     await userEvent.click(
       screen.getByRole('button', { name: 'Random perks and items' }),
     );
