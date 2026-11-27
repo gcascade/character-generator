@@ -678,8 +678,8 @@
     },
     "event-melee-chest": {
       "none": "A golden chest falls from the sky. {all} rush at it, and in the confusion the chest rolls into a ravine. Nobody gets it.",
-      "hurt": "A golden chest falls from the sky, and {all} fight over it. Bruises for {hurt}, and the chest stays shut.",
-      "defeat": "A golden chest falls from the sky, and {all} fight over it. When the dust settles, the arena wardens carry {fallen} out of the arena."
+      "hurt": "A golden chest falls from the sky, and {all} fight over it. Bruises for {hurt}; in the end, {looter} runs off with what was inside: {item}.",
+      "defeat": "A golden chest falls from the sky, and {all} fight over it. When the dust settles, the arena wardens carry {fallen} out of the arena, and {looter} opens the chest: {item}."
     },
     "event-melee-ruins": {
       "none": "In the dark ruins, {all} stumble into each other. After a lot of shouting, everyone runs in a different direction.",
@@ -732,6 +732,20 @@
     "event-feast-song": {
       "only": "Around one big fire, {all} sing the same old song in different languages. Nobody admits enjoying it."
     },
+    "event-melee-crate": {
+      "none": "A crate of supplies lands in the night. {all} circle it warily until dawn, and by then the arena masters have taken it back.",
+      "hurt": "A crate of supplies lands in the night, and {all} fight over it in the dark. Bruises for {hurt}; {looter} drags the crate away and finds {item} inside.",
+      "defeat": "A crate of supplies lands in the night, and {all} fight over it in the dark; the arena wardens carry {fallen} out of the arena, and {looter} keeps the crate: {item}."
+    },
+    "event-scavenge-camp": {
+      "only": "{a} comes across the deserted camp of a contestant who is out of the arena, and picks up what was left behind: {item}."
+    },
+    "event-scavenge-night": {
+      "only": "By moonlight, {a} searches the place of an old fight and finds {item} in the grass."
+    },
+    "event-scavenge-trade": {
+      "only": "{a} haggles with a wandering arena servant, who sells off the belongings of the fallen. {a} leaves with {item}."
+    },
     "event-find-cache": {
       "success": "{a} notices freshly turned earth under a tree and digs up a hidden cache: {item}.",
       "failure": "{a} digs under a tree for an hour, and finds a very old, very angry badger."
@@ -749,6 +763,10 @@
   "announcements": {
     "announce-finale": "Only {all} remain. The arena masters close the gates: the finale begins, one duel after another.",
     "announce-next-duel": "Without catching {{a:his|her|their}} breath, {a} turns to face {b}.",
-    "announce-team-out": "{team} is no more: its last member has fallen."
+    "announce-team-out": "It is over for {team}: the team's last member has fallen.",
+    "announce-recap-day": "The sun sets. Out of the arena today: {all}.",
+    "announce-recap-night": "Dawn breaks. Out of the arena tonight: {all}.",
+    "announce-quiet-day": "The sun sets on a day without losses: nobody left the arena.",
+    "announce-quiet-night": "Dawn breaks after a night without losses: nobody left the arena."
   }
 }

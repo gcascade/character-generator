@@ -38,6 +38,7 @@ const OUTCOMES: Record<string, string[]> = {
   gang: ['defeat', 'escape'],
   'group-hazard': ['safe', 'hurt', 'defeat'],
   feast: ['only'],
+  scavenge: ['only'],
 };
 
 const outcomesOf = (kind: (typeof ARENA.events)[number]) => [
@@ -95,6 +96,7 @@ describe('arena content (spec 012)', () => {
                     others: [1, 2],
                     fallen: [1],
                     hurt: [2],
+                    looter: [0],
                   },
                   and: 'and',
                 },

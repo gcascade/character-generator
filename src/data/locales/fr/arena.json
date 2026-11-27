@@ -678,8 +678,8 @@
     },
     "event-melee-chest": {
       "none": "Un coffre doré tombe du ciel. {all} se ruent dessus, et dans la confusion, le coffre roule au fond d'un ravin. Personne ne l'aura.",
-      "hurt": "Un coffre doré tombe du ciel, et {all} se le disputent. Des bleus pour {hurt}, et le coffre reste fermé.",
-      "defeat": "Un coffre doré tombe du ciel, et {all} se le disputent. Quand la poussière retombe, les gardiens emportent {fallen} hors de l'arène."
+      "hurt": "Un coffre doré tombe du ciel, et {all} se le disputent. Des bleus pour {hurt} ; au bout du compte, {looter} file avec son contenu : {item}.",
+      "defeat": "Un coffre doré tombe du ciel, et {all} se le disputent. Quand la poussière retombe, les gardiens emportent {fallen} hors de l'arène, et {looter} ouvre le coffre : {item}."
     },
     "event-melee-ruins": {
       "none": "Dans les ruines plongées dans le noir, {all} se rentrent dedans. Après beaucoup de cris, chacun s'enfuit dans une direction différente.",
@@ -732,6 +732,20 @@
     "event-feast-song": {
       "only": "Autour d'un grand feu, {all} chantent la même vieille chanson dans des langues différentes. Personne n'avoue y prendre plaisir."
     },
+    "event-melee-crate": {
+      "none": "Une caisse de vivres atterrit dans la nuit. {all} lui tournent autour, méfiants, jusqu'à l'aube, et les maîtres de l'arène la reprennent alors.",
+      "hurt": "Une caisse de vivres atterrit dans la nuit, et {all} se la disputent dans le noir. Des bleus pour {hurt} ; {looter} traîne la caisse à l'écart et y trouve {item}.",
+      "defeat": "Une caisse de vivres atterrit dans la nuit, et {all} se la disputent dans le noir ; les gardiens emportent {fallen} hors de l'arène, et {looter} garde la caisse : {item}."
+    },
+    "event-scavenge-camp": {
+      "only": "{a} tombe sur le campement désert d'un participant hors jeu, et récupère ce qui y est resté : {item}."
+    },
+    "event-scavenge-night": {
+      "only": "Au clair de lune, {a} fouille les lieux d'un ancien combat et trouve {item} dans l'herbe."
+    },
+    "event-scavenge-trade": {
+      "only": "{a} marchande avec un serviteur de l'arène qui revend les affaires des éliminés, et repart avec {item}."
+    },
     "event-find-cache": {
       "success": "{a} remarque de la terre fraîchement retournée au pied d'un arbre et déterre une cachette : {item}.",
       "failure": "{a} creuse au pied d'un arbre pendant une heure, et ne trouve qu'un vieux blaireau très en colère."
@@ -749,6 +763,10 @@
   "announcements": {
     "announce-finale": "Il ne reste que {all}. Les maîtres de l'arène ferment les portes : la finale commence, un duel après l'autre.",
     "announce-next-duel": "Sans reprendre son souffle, {a} se tourne vers {b}.",
-    "announce-team-out": "{team} n'est plus : son dernier membre vient de tomber."
+    "announce-team-out": "C'en est fini pour {team} : le dernier membre de l'équipe vient de tomber.",
+    "announce-recap-day": "Le soleil se couche. Hors de l'arène aujourd'hui : {all}.",
+    "announce-recap-night": "L'aube se lève. Hors de l'arène cette nuit : {all}.",
+    "announce-quiet-day": "Le soleil se couche sur une journée sans perte : personne n'a quitté l'arène.",
+    "announce-quiet-night": "L'aube se lève après une nuit sans perte : personne n'a quitté l'arène."
   }
 }

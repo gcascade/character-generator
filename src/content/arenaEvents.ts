@@ -25,6 +25,8 @@ export type MatchState = {
   rolls: RollRecord[];
   /** How close two fighters have grown, by `pairKey` (couples form from it). */
   bonds: Record<string, number>;
+  /** Items left behind by contestants who are out, for others to pick up. */
+  dropped: string[];
   /** Wrongs remembered: grudges[a][b] = why a resents b. */
   grudges: Record<string, Record<string, 'personal' | 'friend'>>;
 };
@@ -220,6 +222,7 @@ const hurt = (
   target.hp = 0;
   target.standing = false;
   target.defeatedRound = state.round;
+  dropItems(state, target);
   if (by) {
     target.defeatedBy = by.id;
     by.defeats++;
@@ -234,6 +237,12 @@ const hurt = (
     }
   }
   return true;
+};
+
+/** What someone carried stays in the arena when they leave it. */
+export const dropItems = (state: MatchState, f: Fighter) => {
+  state.dropped.push(...f.items);
+  f.items = [];
 };
 
 /** Minor harm (hunger, a slap): never enough to leave the arena. */
@@ -592,6 +601,7 @@ export const resolveEvent = (
       heal(b, 12);
       a.hp = 0;
       a.standing = false;
+      dropItems(state, a);
       a.defeatedRound = state.round;
       a.defeatedBy = c.id;
       c.defeats++;
@@ -637,6 +647,7 @@ export const resolveEvent = (
       // Everyone strikes someone who is not a friend; several may fall.
       const defeated: string[] = [];
       const hurtIds = new Set<string>();
+      const dealt = new Map<Fighter, number>();
       for (const attacker of random.shuffle(actors)) {
         if (!attacker.standing) continue;
         const targets = actors.filter(
@@ -652,15 +663,29 @@ export const resolveEvent = (
           0,
         );
         if (!damage) continue;
+        dealt.set(attacker, (dealt.get(attacker) ?? 0) + damage);
         hurtIds.add(target.id);
         if (hurt(state, target, damage, attacker)) defeated.push(target.id);
       }
       const hurtList = [...hurtIds].filter((id) => !defeated.includes(id));
+      // A chest: whoever fought best and still stands opens it.
+      const best = [...dealt.entries()]
+        .filter(([f]) => f.standing)
+        .sort((x, y) => y[1] - x[1])[0]?.[0];
+      if (kind.loot && best && best.items.length >= MAX_HELD) {
+        // Full hands: something is left behind for the chest's contents.
+        state.dropped.push(best.items.shift()!);
+      }
+      const loot =
+        kind.loot && best
+          ? { looter: best.id, itemId: findItem(state, best) }
+          : {};
       return result(
         defeated.length ? 'defeat' : hurtList.length ? 'hurt' : 'none',
         {
           defeated,
           ...(hurtList.length && { hurt: hurtList }),
+          ...loot,
           notable: defeated.length > 1 || undefined,
         },
       );
@@ -701,6 +726,12 @@ export const resolveEvent = (
           ...(hurtIds.length && { hurt: hurtIds }),
         },
       );
+    }
+    case 'scavenge': {
+      const index = random.int(state.dropped.length);
+      const [found] = state.dropped.splice(index, 1);
+      a.items.push(found);
+      return result('only', { itemId: found });
     }
     case 'feast': {
       for (const f of actors) heal(f, 6);

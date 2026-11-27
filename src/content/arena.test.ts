@@ -223,6 +223,7 @@ describe('arena match (spec 012 US2)', () => {
       const setup = rosterOf(12, `t${i}`);
       const counts = new Map<string, number>();
       for (const event of simulate(setup).rounds.flatMap((r) => r.events)) {
+        if (isAnnouncement(event)) continue;
         const key = `${event.eventId}.${event.outcome}`;
         counts.set(key, (counts.get(key) ?? 0) + 1);
       }
@@ -492,5 +493,57 @@ describe('team names (maintainer feedback)', () => {
     expect(new Set(names).size).toBe(4);
     const base = names[0]!;
     expect(names).toEqual([base, `${base} II`, `${base} III`, `${base} IV`]);
+  });
+});
+
+describe('recaps and loot (maintainer feedback)', () => {
+  const matches = Array.from({ length: 200 }, (_, i) => {
+    const setup = {
+      ...fillRoster(emptySetup(), 14, 'mixed', 'en'),
+      seed: `loot${i}`,
+    };
+    return { setup, match: simulate(setup) };
+  });
+
+  it('ends every period with a recap of who left the arena', () => {
+    for (const { match } of matches) {
+      for (const round of match.rounds) {
+        if (round.events.some((e) => e.eventId.startsWith('event-finale')))
+          continue;
+        const last = round.events.at(-1)!;
+        const fallen = round.events
+          .filter((e) => !isAnnouncement(e))
+          .flatMap((e) => e.defeated);
+        expect(last.eventId).toBe(
+          `announce-${fallen.length ? 'recap' : 'quiet'}-${round.phase}`,
+        );
+        expect(last.actors).toEqual(fallen);
+      }
+    }
+  });
+
+  it('gives what is in a chest to someone still standing, and only scavenges what the fallen left', () => {
+    let chests = 0;
+    let scavenged = 0;
+    for (const { setup, match } of matches) {
+      const dropped: string[] = [];
+      for (const event of match.rounds.flatMap((r) => r.events)) {
+        for (const id of event.defeated)
+          dropped.push(...(event.before?.[id]?.items ?? []));
+        if (event.looter) {
+          chests++;
+          expect(event.itemId).toBeTruthy();
+          expect(event.actors).toContain(event.looter);
+          expect(event.defeated).not.toContain(event.looter);
+        }
+        if (event.eventId.startsWith('event-scavenge')) {
+          scavenged++;
+          expect(event.itemId).toBeTruthy();
+        }
+        expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
+      }
+    }
+    expect(chests).toBeGreaterThan(10);
+    expect(scavenged).toBeGreaterThan(10);
   });
 });

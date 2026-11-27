@@ -48,6 +48,7 @@ const state = (seed: string): MatchState => ({
   rolls: [],
   bonds: {},
   grudges: {},
+  dropped: [],
 });
 
 describe('perks and items in the engine (spec 012 US4)', () => {

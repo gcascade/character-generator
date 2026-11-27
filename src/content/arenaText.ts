@@ -11,7 +11,9 @@ export type TextExtras = {
   theItem?: string;
   team?: string;
   /** Lists of actor indexes: `{all}`, `{others}`, `{fallen}`, `{hurt}` (group events). */
-  lists?: Partial<Record<'all' | 'others' | 'fallen' | 'hurt', number[]>>;
+  lists?: Partial<
+    Record<'all' | 'others' | 'fallen' | 'hurt' | 'looter', number[]>
+  >;
   /** The word joining the last two names of a list ("and", "et"). */
   and?: string;
 };
@@ -103,6 +105,7 @@ const extrasOf = (
       others: result.actors.slice(1).map((_, i) => i + 1),
       fallen: indexes(result.defeated),
       hurt: indexes(result.hurt),
+      looter: indexes(result.looter ? [result.looter] : []),
     },
     and: texts.and,
   };

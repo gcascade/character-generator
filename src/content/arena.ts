@@ -16,6 +16,7 @@ import {
   allied,
   bondOf,
   COUPLE_BOND,
+  dropItems,
   fitsActor,
   friendly,
   friends,
@@ -401,6 +402,11 @@ const candidatesFor = (
       if (kind.type === 'potion' && !(isWounded(a) && hasItemTag(a, 'heal')))
         continue;
       if (kind.type === 'gift' && a.items.length >= MAX_HELD) continue;
+      if (
+        kind.type === 'scavenge' &&
+        (!state.dropped.length || a.items.length >= MAX_HELD)
+      )
+        continue;
       list.push({ kind, actors: [a], weight });
       continue;
     }
@@ -541,6 +547,7 @@ export const simulate = (setup: ArenaSetup): Match => {
     rolls: [],
     bonds: {},
     grudges: {},
+    dropped: [],
     random: createRandom(`${setup.seed}:match`),
   };
   const all = Object.values(fighters);
@@ -584,6 +591,11 @@ export const simulate = (setup: ArenaSetup): Match => {
       }
       if (standingSides(all).size <= 1) break;
     }
+    // The narrator sums up the period: who left the arena, or nobody.
+    const fallen = events.flatMap((e) => (isAnnouncement(e) ? [] : e.defeated));
+    events.push(
+      announce(`${fallen.length ? 'recap' : 'quiet'}-${phase}`, fallen),
+    );
     rounds.push({ number: state.round, phase, events, after: stateOf(all) });
   }
 
@@ -617,6 +629,7 @@ export const simulate = (setup: ArenaSetup): Match => {
         const winner = loser === a ? b : a;
         loser.hp = 0;
         loser.standing = false;
+        dropItems(state, loser);
         loser.defeatedRound = state.round;
         loser.defeatedBy = winner.id;
         winner.defeats++;

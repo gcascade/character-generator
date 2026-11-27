@@ -1488,7 +1488,8 @@
       "type": "melee",
       "actors": "group",
       "weight": 2,
-      "phase": "day"
+      "phase": "day",
+      "loot": true
     },
     {
       "id": "event-melee-ruins",
@@ -1594,6 +1595,37 @@
       "actors": "group",
       "weight": 1.5,
       "phase": "night"
+    },
+    {
+      "id": "event-melee-crate",
+      "type": "melee",
+      "actors": "group",
+      "weight": 2,
+      "phase": "night",
+      "loot": true,
+      "when": {
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-scavenge-camp",
+      "type": "scavenge",
+      "actors": 1,
+      "weight": 3,
+      "phase": "day"
+    },
+    {
+      "id": "event-scavenge-night",
+      "type": "scavenge",
+      "actors": 1,
+      "weight": 3,
+      "phase": "night"
+    },
+    {
+      "id": "event-scavenge-trade",
+      "type": "scavenge",
+      "actors": 1,
+      "weight": 2
     },
     {
       "id": "event-find-cache",

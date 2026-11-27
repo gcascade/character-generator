@@ -194,6 +194,8 @@ export type ArenaEventKind = {
   relation?: 'friend' | 'foe' | 'any';
   /** Hazards: a failure loses an item. */
   loseItem?: boolean;
+  /** Melees: the best fighter still standing gets an item. */
+  loot?: boolean;
   /** Social events: what a success does to b. */
   effect?: 'hurt' | 'take';
   when?: {
