@@ -1,5 +1,7 @@
 import {
   ArrowBack as BackIcon,
+  Pause as PauseIcon,
+  PlayCircle as PlayIcon,
   Casino as AgainIcon,
   ExpandMore as ExpandIcon,
   FastForward as SkipIcon,
@@ -46,7 +48,7 @@ import useArena from '../../hooks/useArena';
 import useParty from '../../hooks/useParty';
 import useShare from '../../hooks/useShare';
 import { useLocale, useT } from '../../i18n';
-import type { ArenaSetup } from '../../types/arena';
+import type { ArenaSetup, Round } from '../../types/arena';
 
 const Roster: FC<{ setup: ArenaSetup }> = ({ setup }) => {
   const t = useT();
@@ -110,6 +112,28 @@ const Roster: FC<{ setup: ArenaSetup }> = ({ setup }) => {
   );
 };
 
+/** Time between two events while the match plays by itself. */
+const AUTOPLAY_MS = 1500;
+
+/** Everyone's state before the first round (for the panel during autoplay). */
+const startState = (setup: ArenaSetup): Round['after'] =>
+  Object.fromEntries(
+    setup.contestants.map((c) => {
+      const { hp } = contestantSkills(setup, c.id);
+      return [
+        c.id,
+        {
+          hp,
+          maxHp: hp,
+          items: [...c.items],
+          standing: true,
+          sideId: c.sideId,
+          defeats: 0,
+        },
+      ];
+    }),
+  );
+
 const isFinale = (events: { eventId: string }[]) =>
   events.some((e) => e.eventId.startsWith('event-finale'));
 
@@ -139,6 +163,9 @@ const MatchView: FC<MatchViewProps> = ({
   const theme = useTheme();
   const wide = useMediaQuery(theme.breakpoints.up('md'));
   const [showRolls, setShowRolls] = useState(true);
+  // Autoplay (maintainer feedback): events appear one by one in the last round.
+  const [playing, setPlaying] = useState(false);
+  const [partial, setPartial] = useState<number>();
   const { share, fallbackUrl, closeFallback } = useShare();
   const { contestants, sides, seed } = setup;
   const match = useMemo(
@@ -160,11 +187,59 @@ const MatchView: FC<MatchViewProps> = ({
       copied: 'arena.shared',
     });
 
+  useEffect(() => {
+    if (!playing) return;
+    const timer = setTimeout(() => {
+      const round = match.rounds[shown - 1];
+      const count = partial ?? round?.events.length ?? 0;
+      if (round && count < round.events.length) {
+        setPartial(count + 1);
+      } else if (shownRounds < total) {
+        onShow(shownRounds + 1);
+        setPartial(1);
+      } else {
+        onShow(total + 1);
+        setPartial(undefined);
+        setPlaying(false);
+      }
+    }, AUTOPLAY_MS);
+    return () => clearTimeout(timer);
+  }, [playing, partial, shown, shownRounds, total, match, onShow]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const reduced = window.matchMedia?.(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    const latest = [...document.querySelectorAll('[data-latest="true"]')].at(
+      -1,
+    );
+    latest?.scrollIntoView?.({
+      block: 'center',
+      behavior: reduced ? 'auto' : 'smooth',
+    });
+  }, [playing, partial, shown]);
+
+  const showRound = (count: number) => {
+    setPlaying(false);
+    setPartial(undefined);
+    onShow(count);
+  };
+
   const lastShown = match.rounds[shown - 1];
-  const status = lastShown && (
+  // While playing, the panel follows the events shown so far.
+  const visibleState = useMemo(() => {
+    if (!lastShown) return undefined;
+    if (partial === undefined) return lastShown.after;
+    const start = match.rounds[shown - 2]?.after ?? startState(setup);
+    return lastShown.events
+      .slice(0, partial)
+      .reduce((acc, e) => ({ ...acc, ...e.after }), { ...start });
+  }, [lastShown, partial, match, shown, setup]);
+  const status = lastShown && visibleState && (
     <ContestantStatus
       setup={setup}
-      state={lastShown.after}
+      state={visibleState}
       moment={t('arena.statusAfter', {
         round: renderRoundTitle(lastShown, locale, isFinale(lastShown.events)),
       })}
@@ -190,6 +265,7 @@ const MatchView: FC<MatchViewProps> = ({
           finale={isFinale(round.events)}
           standing={standingAfter[index]}
           showRolls={showRolls}
+          visible={index === shown - 1 ? partial : undefined}
         />
       ))}
       {finished && (
@@ -201,11 +277,20 @@ const MatchView: FC<MatchViewProps> = ({
             <Button
               variant="contained"
               startIcon={<NextIcon />}
-              onClick={() => onShow(shownRounds + 1)}
+              onClick={() => showRound(shownRounds + 1)}
             >
               {t('arena.nextRound')}
             </Button>
-            <Button startIcon={<SkipIcon />} onClick={() => onShow(total + 1)}>
+            <Button
+              startIcon={playing ? <PauseIcon /> : <PlayIcon />}
+              onClick={() => setPlaying((value) => !value)}
+            >
+              {playing ? t('arena.pause') : t('arena.autoplay')}
+            </Button>
+            <Button
+              startIcon={<SkipIcon />}
+              onClick={() => showRound(total + 1)}
+            >
               {t('arena.skip')}
             </Button>
           </>
@@ -214,7 +299,7 @@ const MatchView: FC<MatchViewProps> = ({
           <Button
             variant="contained"
             startIcon={<ReplayIcon />}
-            onClick={() => onShow(1)}
+            onClick={() => showRound(1)}
           >
             {t('arena.replay')}
           </Button>

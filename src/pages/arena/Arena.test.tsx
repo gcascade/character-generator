@@ -1,5 +1,5 @@
 import { korvusBlackiron } from '@Test/stubs/Character.stubs';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { MemoryRouter } from 'react-router';
@@ -163,6 +163,24 @@ describe('Arena page — match (spec 012 US2)', () => {
     expect(
       screen.getByRole('region', { name: 'State of the contestants' }),
     ).toBeInTheDocument();
+  });
+
+  it('plays the match by itself, event after event, and pauses', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    await start();
+    const before = screen.getAllByRole('listitem').length;
+    await userEvent.click(screen.getByRole('button', { name: 'Play' }));
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1600 * 3);
+    });
+    expect(screen.getAllByRole('listitem').length).toBeGreaterThan(before);
+    await userEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    const paused = screen.getAllByRole('listitem').length;
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1600 * 3);
+    });
+    expect(screen.getAllByRole('listitem')).toHaveLength(paused);
+    vi.useRealTimers();
   });
 
   it('keeps the same events when the language changes', async () => {

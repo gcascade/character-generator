@@ -142,11 +142,38 @@ export const addParty = (
   };
 };
 
-/** Adds random solo contestants, up to the cap. */
+const fullName = (c: Pick<Character, 'firstName' | 'lastName'>) =>
+  `${c.firstName} ${c.lastName}`;
+
+const namesIn = (setup: ArenaSetup) =>
+  new Set(setup.contestants.map((c) => fullName(c.character)));
+
+/** Draws until the result has no name already in the arena (a few tries). */
+const fresh = <T>(
+  setup: ArenaSetup,
+  draw: () => T,
+  names: (t: T) => string[],
+) => {
+  const taken = namesIn(setup);
+  let result = draw();
+  for (let i = 0; i < 20 && names(result).some((n) => taken.has(n)); i++) {
+    result = draw();
+  }
+  return result;
+};
+
+/** Adds random solo contestants, up to the cap, never twice the same name. */
 export const addRandom = (setup: ArenaSetup, count: number): ArenaSetup => {
   let next = setup;
   for (let i = 0; i < count; i++) {
-    next = addCharacter(next, generateRandomCharacter());
+    next = addCharacter(
+      next,
+      fresh(
+        next,
+        () => generateRandomCharacter(),
+        (c) => [fullName(c)],
+      ),
+    );
   }
   return next;
 };
@@ -582,6 +609,7 @@ export const simulate = (setup: ArenaSetup): Match => {
       const before = stateOf(chosen.actors);
       const result = resolveEvent(state, chosen.kind, chosen.actors);
       result.before = before;
+      result.after = stateOf(chosen.actors);
       if (state.rolls.length) result.rolls = state.rolls;
       events.push(result);
       events.push(...teamsOut(result));
@@ -637,6 +665,7 @@ export const simulate = (setup: ArenaSetup): Match => {
         result.defeated = [loser.id];
       }
       result.notable = true;
+      result.after = stateOf([a, b]);
       events.push(result);
       champion = a.standing ? a : b;
     }
@@ -661,6 +690,8 @@ export type MatchSummary = {
   moments: EventResult[];
   /** The winners are a couple formed during the match. */
   couple: boolean;
+  /** How many events, by kind. */
+  tally: ReturnType<typeof tallyEvents>;
 };
 
 const MAX_MOMENTS = 5;
@@ -712,6 +743,7 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
     rows,
     moments,
     couple: match.winnerSideId.startsWith('couple:'),
+    tally: tallyEvents(match),
   };
 };
 
@@ -736,7 +768,83 @@ export const fillRoster = (
     next =
       size < 2
         ? addRandom(next, 1)
-        : addParty(next, generateParty({ size }), locale);
+        : addParty(
+            next,
+            fresh(
+              next,
+              () => generateParty({ size }),
+              (party) => party.members.map((m) => fullName(m.character)),
+            ),
+            locale,
+          );
   }
   return next;
+};
+
+/** Kinds of events, for the end-of-match tally (maintainer feedback). */
+export const EVENT_CATEGORIES = [
+  'fights',
+  'ambushes',
+  'finds',
+  'dangers',
+  'tricks',
+  'alliances',
+  'care',
+  'couples',
+  'revenge',
+  'quiet',
+] as const;
+
+export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+
+const CATEGORY_OF: Record<string, EventCategory> = {
+  fight: 'fights',
+  finish: 'fights',
+  finale: 'fights',
+  melee: 'fights',
+  ambush: 'ambushes',
+  gang: 'ambushes',
+  find: 'finds',
+  gift: 'finds',
+  scavenge: 'finds',
+  steal: 'finds',
+  trade: 'finds',
+  hazard: 'dangers',
+  arena: 'dangers',
+  'group-hazard': 'dangers',
+  social: 'tricks',
+  alliance: 'alliances',
+  betray: 'alliances',
+  split: 'alliances',
+  reconcile: 'alliances',
+  spare: 'alliances',
+  'team-heal': 'care',
+  treat: 'care',
+  potion: 'care',
+  share: 'care',
+  feast: 'care',
+  forage: 'care',
+  rest: 'care',
+  protect: 'care',
+  sacrifice: 'care',
+  couple: 'couples',
+  jealousy: 'couples',
+  revenge: 'revenge',
+  quiet: 'quiet',
+  banter: 'quiet',
+};
+
+/** How many events of each kind a match told (narrator lines aside). */
+export const tallyEvents = (match: Match) => {
+  const counts = Object.fromEntries(
+    EVENT_CATEGORIES.map((c) => [c, 0]),
+  ) as Record<EventCategory, number>;
+  let total = 0;
+  for (const event of match.rounds.flatMap((r) => r.events)) {
+    if (isAnnouncement(event)) continue;
+    const type = ARENA.events.find((e) => e.id === event.eventId)?.type ?? '';
+    counts[CATEGORY_OF[type] ?? 'quiet']++;
+    total++;
+  }
+  return { total, counts };
 };

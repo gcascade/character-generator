@@ -34,7 +34,7 @@ describe('arena share links (spec 012 US5)', () => {
     // Side ids are renamed by the link; the story is the same.
     const events = (s: typeof setup) =>
       simulate(s).rounds.map((r) =>
-        r.events.map((e) => ({ ...e, before: undefined })),
+        r.events.map((e) => ({ ...e, before: undefined, after: undefined })),
       );
     expect(events(shared!)).toEqual(events(setup));
   });

@@ -360,5 +360,21 @@
   "arena.winnerCouple": "Couple victorieux",
   "arena.couple": "Couple",
   "arena.partner": "En couple avec {name}",
-  "arena.out": "{name} : hors jeu"
+  "arena.out": "{name} : hors jeu",
+  "arena.newItems": "Nouveau : {items}",
+  "arena.lostItems": "Perdu : {items}",
+  "arena.autoplay": "Lecture auto",
+  "arena.pause": "Pause",
+  "arena.tally": "{count} événements",
+  "arena.tallyTitle": "Le match en chiffres",
+  "arena.category.fights": "Combats",
+  "arena.category.ambushes": "Embuscades",
+  "arena.category.finds": "Trouvailles et butin",
+  "arena.category.dangers": "Dangers",
+  "arena.category.tricks": "Menaces et ruses",
+  "arena.category.alliances": "Alliances et trahisons",
+  "arena.category.care": "Soins et repos",
+  "arena.category.couples": "Couples",
+  "arena.category.revenge": "Vengeances",
+  "arena.category.quiet": "Moments calmes"
 }

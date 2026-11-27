@@ -25,6 +25,20 @@ describe('ContestantPeek', () => {
     ).toBeInTheDocument();
   });
 
+  it('shows what an event changed: hit points and items', () => {
+    render(
+      <PeekCard
+        setup={arenaSetup}
+        id="aela"
+        before={{ ...state, hp: 17, items: ['item-rope'] }}
+        state={state}
+      />,
+    );
+    expect(screen.getByText('(−8)')).toBeInTheDocument();
+    expect(screen.getByText('New: a sword')).toBeInTheDocument();
+    expect(screen.getByText('Lost: a rope')).toBeInTheDocument();
+  });
+
   it('names the partner of a couple', () => {
     render(
       <PeekCard

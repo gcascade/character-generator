@@ -7,6 +7,7 @@ import {
   emptySetup,
   fillRoster,
   isAnnouncement,
+  tallyEvents,
   MAX_CONTESTANTS,
   randomLoadouts,
   removeContestant,
@@ -545,5 +546,36 @@ describe('recaps and loot (maintainer feedback)', () => {
     }
     expect(chests).toBeGreaterThan(10);
     expect(scavenged).toBeGreaterThan(10);
+  });
+});
+
+describe('event tally (maintainer feedback)', () => {
+  it('counts every event once, narrator lines aside, in a known category', () => {
+    for (let i = 0; i < 50; i++) {
+      const setup = {
+        ...fillRoster(emptySetup(), 12, 'mixed', 'en'),
+        seed: `tally${i}`,
+      };
+      const match = simulate(setup);
+      const { total, counts } = tallyEvents(match);
+      const told = match.rounds
+        .flatMap((r) => r.events)
+        .filter((e) => !isAnnouncement(e));
+      expect(total).toBe(told.length);
+      expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(total);
+      expect(counts.fights).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('names in the arena (maintainer feedback)', () => {
+  it('fills the arena without two contestants of the same name', () => {
+    for (let i = 0; i < 20; i++) {
+      const setup = fillRoster(emptySetup(), 48, i % 2 ? 'mixed' : 4, 'fr');
+      const names = setup.contestants.map(
+        (c) => `${c.character.firstName} ${c.character.lastName}`,
+      );
+      expect(new Set(names).size).toBe(names.length);
+    }
   });
 });

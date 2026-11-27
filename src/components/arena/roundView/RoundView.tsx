@@ -26,6 +26,8 @@ type RoundViewProps = {
   standing: number;
   /** Shows the dice rolled for each event. */
   showRolls?: boolean;
+  /** Only the first events, while the match plays by itself. */
+  visible?: number;
 };
 
 /** The rolls of an event: "Ana: Perception 54% → 32 ✓". */
@@ -81,6 +83,7 @@ const RoundView: FC<RoundViewProps> = ({
   finale,
   standing,
   showRolls = true,
+  visible,
 }) => {
   const t = useT();
   const { locale } = useLocale();
@@ -95,7 +98,8 @@ const RoundView: FC<RoundViewProps> = ({
         <PeekCard
           setup={setup}
           id={ids[index]}
-          state={event.before?.[ids[index]]}
+          state={event.after?.[ids[index]]}
+          before={event.before?.[ids[index]]}
         />
       )}
     />
@@ -109,7 +113,8 @@ const RoundView: FC<RoundViewProps> = ({
           key={index}
           setup={setup}
           id={part.actor}
-          state={event.before?.[part.actor]}
+          state={event.after?.[part.actor]}
+          before={event.before?.[part.actor]}
         >
           <Box
             component="span"
@@ -147,12 +152,13 @@ const RoundView: FC<RoundViewProps> = ({
         </Typography>
       </Box>
       <Box component="ul" sx={{ m: 0, pl: 0, listStyle: 'none' }}>
-        {round.events.map((event, index) =>
+        {round.events.slice(0, visible).map((event, index, shownEvents) =>
           event.eventId.startsWith('announce-') ? (
             // The narrator: a line of its own between events.
             <Box
               component="li"
               key={index}
+              data-latest={index === shownEvents.length - 1 || undefined}
               sx={{
                 my: 1.5,
                 px: 2,
@@ -174,6 +180,7 @@ const RoundView: FC<RoundViewProps> = ({
             <Box
               component="li"
               key={index}
+              data-latest={index === shownEvents.length - 1 || undefined}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
