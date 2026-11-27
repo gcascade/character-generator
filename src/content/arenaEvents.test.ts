@@ -1,7 +1,13 @@
 import { arenaSetup } from '@Test/stubs/Arena.stubs';
 import type { Fighter } from '../types/arena';
 import { setItems, setPerks, simulate } from './arena';
-import { fighterCheck, type MatchState, skillValue } from './arenaEvents';
+import {
+  fighterCheck,
+  type MatchState,
+  resolveEvent,
+  skillValue,
+} from './arenaEvents';
+import { ARENA } from './data';
 import { createRandom } from './random';
 
 const fighter = (overrides: Partial<Fighter> = {}): Fighter => ({
@@ -81,5 +87,45 @@ describe('perks and items in the engine (spec 012 US4)', () => {
     let equipped = setItems(plain, 'korvus', ['item-sword', 'item-shield']);
     equipped = setPerks(equipped, 'sil', ['perk-shadow', 'perk-lucky']);
     expect(simulate(equipped)).not.toEqual(simulate(plain));
+  });
+});
+
+describe('tools, animals and hunger (spec 013)', () => {
+  const kind = (id: string) => ARENA.events.find((e) => e.id === id)!;
+
+  it('settles an event with the right tool, without a roll, and uses up a consumable', () => {
+    const s = state('tool');
+    const climber = fighter({ items: ['item-rope'] });
+    const result = resolveEvent(s, kind('event-tool-cliff'), [climber]);
+    expect(result).toMatchObject({ outcome: 'tool', itemId: 'item-rope' });
+    expect(s.rolls).toEqual([]);
+    expect(climber.items).toEqual(['item-rope']);
+    const poisoned = fighter({ items: ['item-antidote'] });
+    resolveEvent(s, kind('event-tool-poison'), [poisoned]);
+    expect(poisoned.items).toEqual([]);
+  });
+
+  it('lets a perk stand in for the tool, with its own text', () => {
+    const s = state('knack');
+    const result = resolveEvent(s, kind('event-tool-cliff'), [
+      fighter({ perks: ['perk-climber'] }),
+    ]);
+    expect(result.outcome).toBe('knack');
+    expect(result.itemId).toBeUndefined();
+  });
+
+  it('gives a companion when taming works, whose bonuses count', () => {
+    const s = state('tame');
+    const tamer = fighter({ items: ['item-rations'] });
+    const result = resolveEvent(s, kind('event-tame-wolf'), [tamer]);
+    expect(result.outcome).toBe('tool');
+    expect(tamer.companion).toBe('animal-wolf');
+    expect(skillValue(s, tamer, 'perception')).toBe(55);
+  });
+
+  it('makes hunger cost points on every check', () => {
+    const s = state('hunger');
+    expect(skillValue(s, fighter({ hunger: 3 }), 'lore')).toBe(45);
+    expect(skillValue(s, fighter({ hunger: 6 }), 'lore')).toBe(40);
   });
 });

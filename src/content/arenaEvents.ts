@@ -199,6 +199,11 @@ export const fitsActor = (
   if (when.alignment === 'chaotic' && !isChaotic(state, a)) return false;
   if (when.alignment === 'not-good' && isGood(state, a)) return false;
   if (when.perk && !a.perks.includes(when.perk)) return false;
+  if (
+    when.classes &&
+    !when.classes.includes(state.characters[a.id].characterClass)
+  )
+    return false;
   if (when.itemTag && !hasItemTag(a, when.itemTag)) return false;
   if (
     when.wounded !== undefined &&
@@ -457,10 +462,12 @@ export const resolveEvent = (
   const tool = kind.tool
     ? a.items.find((i) => item(i)?.tags?.includes(kind.tool!))
     : undefined;
-  if (tool) {
-    if (item(tool)?.kind === 'consumable')
+  // A perk can do the same, with its own text.
+  const knack = !tool && !!kind.tool && hasPerkTag(a, kind.tool);
+  if (tool || knack) {
+    if (tool && item(tool)?.kind === 'consumable')
       a.items.splice(a.items.indexOf(tool), 1);
-    const extra: Partial<EventResult> = { itemId: tool };
+    const extra: Partial<EventResult> = tool ? { itemId: tool } : {};
     if (kind.type === 'forage' || kind.type === 'hunger') {
       feed(a);
       heal(a, 4);
@@ -471,7 +478,7 @@ export const resolveEvent = (
       extra.animalId = beast.id;
     }
     if (kind.type === 'beast') extra.animalId = animalFor(state, kind).id;
-    return result('tool', extra);
+    return result(tool ? 'tool' : 'knack', extra);
   }
 
   switch (kind.type) {
@@ -488,7 +495,9 @@ export const resolveEvent = (
     }
     case 'forage': {
       const food =
-        (hasItemTag(a, 'food') ? 15 : 0) + (hasTag(a, 'forager') ? 10 : 0);
+        (hasItemTag(a, 'food') ? 15 : 0) +
+        (hasTag(a, 'forager') ? 10 : 0) +
+        (hasPerkTag(a, 'tracker') ? 10 : 0);
       if (fighterCheck(state, a, skill, modifier + food).success) {
         heal(a, 4);
         feed(a);
@@ -843,7 +852,16 @@ export const resolveEvent = (
     case 'tame': {
       const beast = animalFor(state, kind);
       const extra = { animalId: beast.id };
-      if (fighterCheck(state, a, skill, modifier - beast.difficulty).success) {
+      const friend = hasPerkTag(a, 'beast-friend') ? 15 : 0;
+      const call = hasItemTag(a, 'call') ? 10 : 0;
+      if (
+        fighterCheck(
+          state,
+          a,
+          skill,
+          modifier + friend + call - beast.difficulty,
+        ).success
+      ) {
         a.companion = beast.id;
         return result('success', { ...extra, notable: true });
       }
@@ -904,7 +922,8 @@ export const resolveEvent = (
       return result(outcome, { ...both, defeated });
     }
     case 'relic-find': {
-      if (fighterCheck(state, a, skill, modifier).success) {
+      const tracks = hasPerkTag(a, 'tracker') ? 15 : 0;
+      if (fighterCheck(state, a, skill, modifier + tracks).success) {
         a.relic = true;
         return result('success', { notable: true });
       }

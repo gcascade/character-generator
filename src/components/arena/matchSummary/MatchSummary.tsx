@@ -34,9 +34,11 @@ const MatchSummary: FC<MatchSummaryProps> = ({ setup, summary }) => {
   );
   const team = summary.couple
     ? summary.winners.map(nameOf).join(' & ')
-    : side?.kind === 'team'
-      ? side.name
-      : undefined;
+    : summary.shared
+      ? t('arena.winnersShared')
+      : side?.kind === 'team'
+        ? side.name
+        : undefined;
   const champion = contestant(summary.winners[0]).character;
 
   return (
@@ -77,13 +79,20 @@ const MatchSummary: FC<MatchSummaryProps> = ({ setup, summary }) => {
               />
               {summary.couple
                 ? t('arena.winnerCouple')
-                : team
-                  ? t('arena.winnerTeam')
-                  : t('arena.winner')}
+                : summary.shared
+                  ? t('arena.byDecree')
+                  : team
+                    ? t('arena.winnerTeam')
+                    : t('arena.winner')}
             </Typography>
             <Typography variant="h5" component="p">
               {team ?? nameOf(summary.winners[0])}
             </Typography>
+            {summary.decree && !summary.shared && (
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {t('arena.byDecree')}
+              </Typography>
+            )}
             {team && !summary.couple && (
               <Typography sx={{ color: 'text.secondary' }}>
                 {summary.winners.map(nameOf).join(', ')}

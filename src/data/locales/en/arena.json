@@ -76,6 +76,30 @@
     "perk-charming": {
       "name": "Charming",
       "description": "Makes friends quickly (+5 Persuasion, alliances more likely)."
+    },
+    "perk-beast-friend": {
+      "name": "Beast friend",
+      "description": "Animals trust them: more encounters, easier taming (+5 Survival)."
+    },
+    "perk-iron-stomach": {
+      "name": "Iron stomach",
+      "description": "Hunger grows half as fast, and bad berries do no harm (+5 Endurance)."
+    },
+    "perk-climber": {
+      "name": "Climber",
+      "description": "Climbs any cliff without a rope (+5 Athletics)."
+    },
+    "perk-night-eyes": {
+      "name": "Night eyes",
+      "description": "Sees in the dark as in daylight (+5 Perception)."
+    },
+    "perk-crowd-favourite": {
+      "name": "Crowd favourite",
+      "description": "The spectators love them: gifts and help come more often (+5 Persuasion)."
+    },
+    "perk-tracker": {
+      "name": "Tracker",
+      "description": "Reads every trail: better hunts, and relics found sooner (+5 Survival, +5 Perception)."
     }
   },
   "items": {
@@ -178,6 +202,36 @@
       "a": "a flask of holy water",
       "the": "the holy water",
       "description": "Blessed water that heals, once."
+    },
+    "item-flint": {
+      "a": "a flint and steel",
+      "the": "the flint",
+      "description": "Lights fires: warmth, cooking, and beasts kept at bay (+5 Survival)."
+    },
+    "item-net": {
+      "a": "a net",
+      "the": "the net",
+      "description": "Catches fish and animals (+5 Survival)."
+    },
+    "item-antidote": {
+      "a": "an antidote",
+      "the": "the antidote",
+      "description": "Cures poison and venom once."
+    },
+    "item-bird-call": {
+      "a": "a bird call",
+      "the": "the bird call",
+      "description": "Mimics animals, a great help to tame them (+3 Perception)."
+    },
+    "item-waterskin": {
+      "a": "a waterskin",
+      "the": "the waterskin",
+      "description": "Fresh water for the hot days (+5 Endurance)."
+    },
+    "item-grappling-hook": {
+      "a": "a grappling hook",
+      "the": "the grappling hook",
+      "description": "Climbs walls and crosses chasms (+5 Athletics)."
     }
   },
   "events": {
@@ -752,6 +806,421 @@
     },
     "event-quiet-memory": {
       "only": "{a} turns a small keepsake over and over in the firelight, and thinks of home."
+    },
+    "event-tool-cliff": {
+      "success": "The only way on is down a sheer cliff. {a} climbs down by the cracks, slowly, and makes it.",
+      "failure": "The only way on is down a sheer cliff. {a} slips halfway and slides the rest of the way down, scraped raw.",
+      "defeated": "The only way on is down a sheer cliff. {a} falls from high up; the arena wardens carry {a} away.",
+      "tool": "The only way on is down a sheer cliff. {a} ties {theItem} to a tree and abseils down without a scratch.",
+      "knack": "The only way on is down a sheer cliff. {a} climbs down it like a staircase, whistling."
+    },
+    "event-tool-chasm": {
+      "success": "A chasm cuts the path. {a} takes a run-up and jumps; the far edge crumbles, but holds.",
+      "failure": "A chasm cuts the path. {a} jumps, falls short, and hangs by the fingertips before scrambling up, bleeding.",
+      "defeated": "A chasm cuts the path. {a} jumps and does not reach the other side; the arena wardens carry {a} away from the bottom.",
+      "tool": "A chasm cuts the path. {a} throws {theItem} around a stump on the other side and crosses hand over hand.",
+      "knack": "A chasm cuts the path. {a} climbs down one wall and up the other as if it were nothing."
+    },
+    "event-tool-well": {
+      "success": "{a} leans over an old well to look for water, loses balance, and catches the rim just in time.",
+      "failure": "{a} falls into an old well, and needs an hour of painful climbing to get out.",
+      "defeated": "{a} falls into an old well and cannot climb out; the arena wardens carry {a} away the next morning.",
+      "tool": "{a} lowers {theItem} into an old well, climbs down, drinks, and comes back up refreshed.",
+      "knack": "{a} climbs down an old well by the cracks between its stones, drinks, and climbs back up.",
+      "lost": "{a} falls into an old well and climbs out, but {theItem} stays at the bottom."
+    },
+    "event-tool-cave": {
+      "success": "{a} feels {{a:his|her|their}} way through a pitch-black cave, finger on the wall, and comes out the other side.",
+      "failure": "{a} crosses a pitch-black cave and bangs into every rock in it.",
+      "defeated": "{a} falls down a hole in a pitch-black cave; the arena wardens carry {a} away.",
+      "tool": "{a} lights {theItem} and crosses a deep cave, stepping around the holes in the floor.",
+      "knack": "{a} crosses a pitch-black cave as easily as a meadow at noon: those eyes see in the dark."
+    },
+    "event-tool-mine": {
+      "success": "{a} shelters in an old mine and reads the props: this gallery is safe, that one is not.",
+      "failure": "{a} shelters in an old mine; part of the ceiling comes down in the night.",
+      "defeated": "{a} shelters in an old mine, which caves in; the arena wardens carry {a} away at dawn.",
+      "tool": "By the light of {theItem}, {a} explores an old mine and finds a dry, safe corner to sleep.",
+      "knack": "{a} explores an old mine without a light, spots the rotten props, and sleeps in the one safe gallery."
+    },
+    "event-tool-cage": {
+      "success": "A net drops from the trees and drags {a} into a hanging cage; {a} bends the bars and squeezes out.",
+      "failure": "A net drops from the trees and drags {a} into a hanging cage, where {a} stays until dawn, hungry and stiff.",
+      "defeated": "A net drops from the trees and drags {a} into a hanging cage; the arena masters leave the cage shut. The arena wardens carry {a} away, cage and all.",
+      "tool": "A net drops from the trees and drags {a} into a hanging cage; {theItem} opens the lock in a few seconds."
+    },
+    "event-tool-vines": {
+      "success": "Thorny vines close around {a}, who tears free by sheer strength.",
+      "failure": "Thorny vines close around {a}; getting out leaves long scratches everywhere.",
+      "defeated": "Thorny vines close around {a} and tighten until the wardens cut {{a:him|her|them}} loose; the arena wardens carry {a} away.",
+      "tool": "Thorny vines close around {a}, who cuts through them with {theItem} in three strokes."
+    },
+    "event-tool-arrows": {
+      "success": "A tripwire sets off a volley of arrows; {a} throws {{a:himself|herself|themself}} flat in time.",
+      "failure": "A tripwire sets off a volley of arrows; one of them grazes {a}.",
+      "defeated": "A tripwire sets off a volley of arrows that leaves {a} on the ground; the arena wardens carry {a} away.",
+      "tool": "A tripwire sets off a volley of arrows; they all thud into {theItem}, raised just in time by {a}."
+    },
+    "event-tool-cold": {
+      "success": "A freezing wind sweeps the arena; {a} shivers all night but holds on.",
+      "failure": "A freezing wind sweeps the arena; {a} wakes up numb, with blue fingers.",
+      "defeated": "A freezing wind sweeps the arena; at dawn, {a} cannot get up, and the arena wardens carry {a} away.",
+      "tool": "A freezing wind sweeps the arena; wrapped in {theItem}, {a} sleeps like a log."
+    },
+    "event-tool-maze": {
+      "success": "{a} wanders into a hedge maze and finds the way out by keeping one hand on the wall.",
+      "failure": "{a} wanders into a hedge maze and spends the whole day in it, thirsty.",
+      "defeated": "{a} never finds the way out of a hedge maze; the arena wardens carry {a} away at nightfall.",
+      "tool": "{a} unfolds {theItem}, finds the hedge maze drawn on it, and walks straight through."
+    },
+    "event-tool-poison": {
+      "success": "{a} almost eats a handful of pretty berries, then recognises them: deadly nightshade.",
+      "failure": "{a} eats a handful of berries and spends hours being sick.",
+      "defeated": "{a} eats a handful of poisonous berries; the arena wardens carry {a} away, pale as a sheet.",
+      "tool": "{a} eats poisonous berries, feels the cramps start, and drinks {theItem} just in time.",
+      "knack": "{a} eats a handful of poisonous berries, burps, and asks for more."
+    },
+    "event-tool-smoke": {
+      "success": "{a} stumbles into a camp of arena guards on patrol and slips away before being seen.",
+      "failure": "{a} stumbles into a camp of arena guards, who chase {{a:him|her|them}} off with sticks.",
+      "defeated": "{a} stumbles into a camp of arena guards, who decide this contestant has had enough; the arena wardens carry {a} away.",
+      "tool": "{a} stumbles into a camp of arena guards, throws {theItem}, and is gone in the smoke.",
+      "knack": "{a} stumbles into a camp of arena guards and is gone before the first one stands up."
+    },
+    "event-tool-hunt-bow": {
+      "success": "{a} sets snares and catches a hare by evening.",
+      "failure": "{a} sets snares all day; the hares are smarter.",
+      "tool": "{a} shoots a pheasant with {theItem} and roasts it over a small fire."
+    },
+    "event-tool-fish": {
+      "success": "{a} catches two fish by hand in a shallow stream.",
+      "failure": "{a} spends an hour in a cold stream and catches nothing but a cold.",
+      "tool": "{a} carves a fishing spear with {theItem} and has three trout by noon."
+    },
+    "event-tool-trap-chest": {
+      "success": "{a} notices the needle trap on a locked chest, disarms it, and takes {item}.",
+      "failure": "{a} opens a chest and gets a needle in the thumb. The chest is empty, of course."
+    },
+    "event-tame-any": {
+      "success": "{a} meets {animal} and spends an hour moving closer, step by step. By evening, it follows {{a:him|her|them}} everywhere.",
+      "failure": "{a} tries to tame {animal}, which does not want to be tamed at all; {a} gets away bitten.",
+      "defeated": "{a} tries to tame {animal}, which attacks; the arena wardens carry {a} away.",
+      "tool": "{a} meets {animal} and holds out {theItem}. A friendship is born."
+    },
+    "event-tame-wolf": {
+      "success": "A lone wolf circles the fire of {a} all night. At dawn, the wolf lies down at {{a:his|her|their}} feet.",
+      "failure": "A lone wolf circles the fire of {a}, who reaches out a hand too soon and gets it bitten.",
+      "defeated": "A lone wolf circles the fire of {a}, then calls its pack; the arena wardens carry {a} away.",
+      "tool": "A lone wolf circles the fire of {a}, who throws it {theItem}. By dawn, they are inseparable."
+    },
+    "event-tame-bear": {
+      "success": "{a} talks to a bear in a low, calm voice for a whole hour. Unbelievably, the bear listens, and stays.",
+      "failure": "{a} tries talking to a bear. The bear answers with a paw; {a} flies into a bush.",
+      "defeated": "{a} tries to tame a bear, a plan nobody else would have tried; the arena wardens carry {a} away.",
+      "tool": "{a} shares {theItem} with a hungry bear. The bear decides to stay for good."
+    },
+    "event-tame-raven": {
+      "success": "{a} answers a raven in its own croaks. The bird lands on {{a:his|her|their}} shoulder and stays there.",
+      "failure": "{a} croaks at a raven, which croaks back something very rude and flies off.",
+      "defeated": "{a} climbs a dead tree after a raven, and the branch breaks; the arena wardens carry {a} away."
+    },
+    "event-tame-hawk": {
+      "success": "{a} frees a hawk caught in a thorn bush. The bird circles once, then comes back to {{a:his|her|their}} arm.",
+      "failure": "{a} frees a hawk caught in a thorn bush and gets clawed for the trouble.",
+      "defeated": "{a} climbs a crag to reach a hawk's nest and falls; the arena wardens carry {a} away."
+    },
+    "event-tame-hound": {
+      "success": "A skinny stray hound follows {a} at a distance all day. By evening, the hound has made its choice: {a} it is.",
+      "failure": "A stray hound growls at {a}, who backs away a little too slowly and gets a nip on the leg.",
+      "defeated": "A pack of stray hounds surrounds {a}; the arena wardens carry {a} away.",
+      "tool": "{a} shares {theItem} with a stray hound, who will never leave {{a:his|her|their}} side again."
+    },
+    "event-tame-panther": {
+      "success": "A black panther watches {a} from a branch. {a} stays still for hours. At dawn, the panther comes down and sits beside {{a:him|her|them}}.",
+      "failure": "A black panther drops from a branch next to {a}, swipes once, and vanishes.",
+      "defeated": "A black panther drops from a branch onto {a}; the arena wardens carry {a} away."
+    },
+    "event-tame-goat": {
+      "success": "{a} chases a mountain goat up the rocks for an hour. Impressed, the goat gives up and follows {{a:him|her|them}} down.",
+      "failure": "{a} chases a mountain goat up the rocks and gets head-butted back down.",
+      "defeated": "{a} chases a mountain goat up a cliff; the goat can climb down, {a} cannot. The arena wardens carry {a} away."
+    },
+    "event-tame-snake": {
+      "success": "{a} hums an old charm to a snake, which coils around {{a:his|her|their}} arm and stays.",
+      "failure": "{a} hums an old charm to a snake, which is not a music lover and bites.",
+      "defeated": "{a} picks up a snake that turns out to be very venomous; the arena wardens carry {a} away."
+    },
+    "event-beast-any": {
+      "success": "Eyes shine in the dark: {animal} prowls around {a}, who shouts and waves until it leaves.",
+      "failure": "{animal} attacks {a} in the dark and runs off after a few bites.",
+      "defeated": "{animal} attacks {a} in the dark; the arena wardens carry {a} away.",
+      "tool": "{animal} prowls around {a}, who lights {theItem}; the beast flees from the flame."
+    },
+    "event-beast-boar": {
+      "success": "A boar charges {a}, who jumps aside at the last moment; the boar crashes into a tree.",
+      "failure": "A boar charges {a} and sends {{a:him|her|them}} flying into the ferns.",
+      "defeated": "A boar charges {a}, again and again; the arena wardens carry {a} away."
+    },
+    "event-beast-bear": {
+      "success": "A bear sniffs the bush where {a} is hiding, then wanders off. {a} breathes again.",
+      "failure": "A bear finds {a} hiding in a bush; {a} escapes, with claw marks across the back.",
+      "defeated": "A bear finds {a} hiding in a bush; the arena wardens carry {a} away."
+    },
+    "event-beast-snake": {
+      "success": "{a} spots a snake coiled under a rock just before sitting on it.",
+      "failure": "A snake bites {a} on the ankle; the leg swells and throbs for hours.",
+      "defeated": "A snake bites {a}, and the venom works fast; the arena wardens carry {a} away.",
+      "tool": "A snake bites {a}, who drinks {theItem} at once and feels the venom fade.",
+      "knack": "A snake bites {a}, who shrugs: it takes more than that to upset that stomach."
+    },
+    "event-beast-wolves": {
+      "success": "Wolves howl close by. When one leaps at {a}, a single blow sends the whole pack away.",
+      "failure": "Wolves harass {a} all night; at dawn, {a} is covered in bites and has not slept.",
+      "defeated": "Wolves surround {a} in the night; the arena wardens carry {a} away."
+    },
+    "event-companion-hunt": {
+      "only": "{theAnimal} comes back with something to eat and drops it at the feet of {a}. Dinner is served."
+    },
+    "event-companion-find": {
+      "only": "{theAnimal} disappears for an hour and comes back empty-pawed, looking very proud of itself.",
+      "found": "{theAnimal} digs under a root and brings back {item} to {a}."
+    },
+    "event-companion-warm": {
+      "only": "{a} sleeps curled up against {theAnimal}, warm and safe for once."
+    },
+    "event-companion-guard": {
+      "only": "{theAnimal} keeps watch all night; twice, a growl warns {a} that someone is prowling."
+    },
+    "event-companion-play": {
+      "only": "For an hour, {a} forgets the arena and plays with {theAnimal}. The crowd loves it."
+    },
+    "event-companion-leave": {
+      "only": "{theAnimal} hears a call from the forest, looks at {a} one last time, and goes back to the wild."
+    },
+    "event-companion-attack": {
+      "success": "At a whistle from {a}, {theAnimal} springs at {b}, who gets away mauled.",
+      "failure": "At a whistle from {a}, {theAnimal} springs at {b}, who dodges and runs.",
+      "defeat": "At a whistle from {a}, {theAnimal} springs at {b}; the arena wardens carry {b} away."
+    },
+    "event-companion-ambush": {
+      "success": "In the dark, {theAnimal} creeps up on the sleeping {b} and attacks before {a} even gives the order.",
+      "failure": "In the dark, {theAnimal} creeps up on {b}, who wakes up just in time and climbs a tree.",
+      "defeat": "In the dark, {theAnimal} creeps up on {b}; when {a} arrives, it is over, and the arena wardens carry {b} away."
+    },
+    "event-eat-rations": {
+      "only": "Stomach growling, {a} eats {theItem} slowly, savouring every crumb."
+    },
+    "event-eat-share-nothing": {
+      "only": "{a} hides to eat {theItem} in the dark, so nobody comes to ask for some."
+    },
+    "event-feed-crowd": {
+      "only": "Spectators take pity on {a} and throw bread over the wall. {a} catches every piece."
+    },
+    "event-feed-priest": {
+      "only": "A priest of the arena walks among the contestants with a basket and gives {a} a meal and a blessing."
+    },
+    "event-feed-orchard": {
+      "only": "{a} finds an old orchard and eats apples until {{a:he is|she is|they are}} full."
+    },
+    "event-feed-eggs": {
+      "only": "{a} climbs to a nest and comes down with four eggs, eaten raw on the spot."
+    },
+    "event-hunger-day": {
+      "success": "{a} has not eaten in days, tightens {{a:his|her|their}} belt a notch, and keeps going.",
+      "failure": "{a} has not eaten in days; dizzy with hunger, {a} stumbles and falls more than once.",
+      "defeated": "{a} has not eaten in days and collapses in the dust; the arena wardens carry {a} away."
+    },
+    "event-hunger-night": {
+      "success": "Hunger keeps {a} awake all night, but {a} holds on until dawn.",
+      "failure": "{a} chews on bark and roots all night, and gets stomach cramps for dinner.",
+      "defeated": "Weakened by days of hunger, {a} does not wake up at dawn; the arena wardens carry {a} away."
+    },
+    "event-hunger-mirage": {
+      "success": "{a} sees a roast chicken floating in the air, understands it is hunger talking, and sits down to rest.",
+      "failure": "{a} chases a roast chicken that is not there, straight into a thorn bush.",
+      "defeated": "{a} chases a roast chicken that is not there, then falls and does not get up; the arena wardens carry {a} away."
+    },
+    "event-forage-roots": {
+      "success": "{a} digs up wild carrots and roots; not a feast, but enough.",
+      "failure": "{a} digs all afternoon and finds nothing edible but worms. {a} draws the line at worms."
+    },
+    "event-forage-honey": {
+      "success": "{a} smokes out a wild hive and steals a whole comb of honey without a single sting.",
+      "failure": "{a} tries to steal honey from a wild hive; the bees win."
+    },
+    "event-forage-ceps": {
+      "success": "{a} picks only the right mushrooms and cooks a fine stew.",
+      "failure": "{a} picks the wrong mushrooms and sees talking trees all evening."
+    },
+    "event-guest-gladiator-gate": {
+      "win": "A side gate opens and the crowd roars: {a}, a gladiator of the arena, walks in to join the games, and picks {b} as a first opponent. {a} knocks {b} down with a shield blow and turns to salute the stands.",
+      "lose": "A side gate opens and the crowd roars: {a}, a gladiator of the arena, walks in to join the games, and picks {b} as a first opponent. {b} holds firm, and {a} withdraws with a grin, promising a rematch.",
+      "draw": "A side gate opens and the crowd roars: {a}, a gladiator of the arena, walks in to join the games, and picks {b} as a first opponent. They trade blows until the crowd tires of it; {a} leaves to find other prey.",
+      "defeat": "A side gate opens and the crowd roars: {a}, a gladiator of the arena, walks in to join the games, and picks {b} as a first opponent. The gladiator knows the arena too well; the arena wardens carry {b} away.",
+      "defeated": "A side gate opens and the crowd roars: {a}, a gladiator of the arena, walks in to join the games, and picks {b} as a first opponent. {b} wins, to general amazement; the arena wardens carry {a} away after just one fight."
+    },
+    "event-guest-gladiator-champion": {
+      "win": "The arena masters send in their reigning champion, {a}, who strides straight towards {b}. {a} toys with {b} for a while, then lets {b} flee, to the crowd's delight.",
+      "lose": "The arena masters send in their reigning champion, {a}, who strides straight towards {b}. {b} lands a lucky blow, and {a} steps back, surprised and furious.",
+      "draw": "The arena masters send in their reigning champion, {a}, who strides straight towards {b}. The fight goes on until nightfall without a winner.",
+      "defeat": "The arena masters send in their reigning champion, {a}, who strides straight towards {b}. The champion lives up to the title; the arena wardens carry {b} away.",
+      "defeated": "The arena masters send in their reigning champion, {a}, who strides straight towards {b}. {b} defeats the reigning champion; the arena wardens carry {a} away, and the stands go wild."
+    },
+    "event-guest-gladiator-night": {
+      "win": "In the middle of the night, a new contestant climbs over the wall: {a}, who falls on {b} at once. {a} has the better of the fight, and {b} flees into the dark.",
+      "lose": "In the middle of the night, a new contestant climbs over the wall: {a}, who falls on {b} at once. {b} was not asleep, and {a} has to back off.",
+      "draw": "In the middle of the night, a new contestant climbs over the wall: {a}, who falls on {b} at once. They fight blind in the dark and part without a winner.",
+      "defeat": "In the middle of the night, a new contestant climbs over the wall: {a}, who falls on {b} at once. By dawn, the newcomer has won; the arena wardens carry {b} away.",
+      "defeated": "In the middle of the night, a new contestant climbs over the wall: {a}, who falls on {b} at once. {b} drives off the intruder for good; the arena wardens carry {a} away."
+    },
+    "event-guest-wanderer-hermit": {
+      "only": "{a}, a hermit who has lived in the arena's woods for years, comes out of the trees and decides to follow {b}."
+    },
+    "event-guest-wanderer-deserter": {
+      "only": "{a}, an arena guard sick of the games, throws away the uniform and joins {b}."
+    },
+    "event-guest-wanderer-volunteer": {
+      "only": "A spectator, {a}, jumps over the barrier, shouting to fight alongside {b}. The arena masters let it happen."
+    },
+    "event-visitor-gift": {
+      "only": "A spectator in the front row throws {item} into the arena, right at the feet of {a}."
+    },
+    "event-visitor-child": {
+      "only": "A child slips under the barrier, hands {item} to {a}, and runs back to a furious parent."
+    },
+    "event-visitor-healer": {
+      "only": "A healer from the stands bribes a guard and spends an hour tending the wounds of {a}."
+    },
+    "event-visitor-bard": {
+      "only": "A bard in the stands improvises a song about {a}. By evening, half the arena is singing it."
+    },
+    "event-visitor-merchant": {
+      "success": "A merchant slips through the bars and haggles with {a}, who leaves with {item} for a song.",
+      "failure": "A merchant slips through the bars and offers {a} wonders, at prices nobody in the arena can pay."
+    },
+    "event-visitor-stones": {
+      "success": "Angry spectators throw stones at {a}, who dodges them all and bows mockingly.",
+      "failure": "Angry spectators throw stones at {a}; a few hit their mark.",
+      "defeated": "Angry spectators throw stones at {a}, so many that the arena wardens carry {a} away."
+    },
+    "event-visitor-fortune": {
+      "only": "An old fortune teller calls to {a} through the bars: \"You will see the end of these games.\" Then she laughs, and leaves."
+    },
+    "event-visitor-noble": {
+      "only": "A noble lady in the stands is moved by the courage of {a} and has {item} sent down by a servant."
+    },
+    "event-relic-search": {
+      "success": "{a} searches the ruins and finds it, under a fallen column: the golden relic.",
+      "failure": "{a} searches the ruins all day for the relic and finds only rubble."
+    },
+    "event-relic-clues": {
+      "success": "{a} deciphers the old signs carved in the arena walls, follows them, and digs up the relic.",
+      "failure": "{a} follows the signs carved in the walls, which lead to a latrine pit. Someone has a sense of humour."
+    },
+    "event-relic-tracks": {
+      "success": "{a} follows the tracks of the guards who hid the relic, all the way to a hollow tree.",
+      "failure": "{a} follows tracks for hours, and ends up face to face with a very surprised deer."
+    },
+    "event-relic-steal": {
+      "success": "{a} creeps up on {b} and snatches the relic away without a sound.",
+      "failure": "{a} creeps up on {b} to take the relic, steps on a branch, and has to run.",
+      "caught": "{a} tries to take the relic from {b}, who was waiting for it; the arena wardens carry {a} away.",
+      "seized": "{a} tries to take the relic from {b}; the fight that follows ends with {b} carried away by the wardens, and the relic changes hands."
+    },
+    "event-relic-ambush": {
+      "success": "{a} jumps on {b} and tears the relic from {{b:his|her|their}} hands.",
+      "failure": "{a} jumps on {b} to grab the relic; {b} holds on and gets away.",
+      "caught": "{a} jumps on {b} to grab the relic, and loses the fight; the arena wardens carry {a} away.",
+      "seized": "{a} jumps on {b}, wins the fight, and takes the relic; the arena wardens carry {b} away."
+    },
+    "event-relic-return": {
+      "success": "Relic in hand, {a} runs across the arena and reaches the gates.",
+      "failure": "Relic in hand, {a} runs for the gates, but the guards close them and point the other way."
+    },
+    "event-relic-sneak": {
+      "success": "Under cover of night, {a} slips past everyone and lays the relic at the gates.",
+      "failure": "{a} tries to sneak to the gates with the relic, but its golden glint gives the hiding place away."
+    },
+    "event-tool-heat": {
+      "success": "A crushing heat falls on the arena; {a} finds shade and waits for evening.",
+      "failure": "A crushing heat falls on the arena; {a} walks too long under the sun and stumbles, dizzy.",
+      "defeated": "A crushing heat falls on the arena, and {a} collapses from thirst; the arena wardens carry {a} away.",
+      "tool": "A crushing heat falls on the arena; {a} drinks from {theItem} and walks on, fresh as a daisy."
+    },
+    "event-tool-fire-night": {
+      "success": "{a} rubs two sticks together for an hour and finally gets a fire going.",
+      "failure": "{a} rubs two sticks together all night and gets nothing but blisters and a cold.",
+      "defeated": "Without a fire, {a} spends a freezing night in the rain and cannot go on; the arena wardens carry {a} away.",
+      "tool": "{a} strikes {theItem} and has a merry fire going in no time."
+    },
+    "event-tool-cook": {
+      "success": "{a} finds wild herbs and eats them raw. Not great, but filling.",
+      "failure": "{a} catches a fish but cannot cook it, and cannot bring {{a:himself|herself|themself}} to eat it raw.",
+      "tool": "{a} lights a fire with {theItem} and cooks a real meal. The smell drives everyone around mad."
+    },
+    "event-tool-net-fish": {
+      "success": "{a} builds a little dam of stones and traps a few fish in it.",
+      "failure": "{a} tries to trap fish behind a dam of stones; the fish go around it.",
+      "tool": "{a} casts {theItem} into the river and pulls it out heavy with fish."
+    },
+    "event-tame-net": {
+      "success": "{a} chases {animal} through the undergrowth, corners it, and slowly wins its trust.",
+      "failure": "{a} chases {animal} through the undergrowth and gets scratched for nothing.",
+      "defeated": "{a} corners {animal}, which turns on its hunter; the arena wardens carry {a} away.",
+      "tool": "{a} throws {theItem} over {animal}, waits until the struggling stops, and makes a friend for life."
+    },
+    "event-tame-call": {
+      "success": "{a} imitates the cry of a hawk so well that a real one comes down, curious, and stays.",
+      "failure": "{a} imitates the cry of a hawk; the hawk comes down, decides it was an insult, and attacks.",
+      "defeated": "{a} imitates a hawk call on the edge of a cliff, gets too excited, and falls; the arena wardens carry {a} away.",
+      "tool": "{a} blows into {theItem}; a hawk answers, circles, and lands on {{a:his|her|their}} arm."
+    },
+    "event-druid-bear": {
+      "success": "{a} speaks to a bear in the old tongue of the forest. The bear bows its huge head and follows.",
+      "failure": "{a} speaks to a bear in the old tongue of the forest; this bear speaks another dialect, and swipes.",
+      "defeated": "{a} speaks to a bear in the old tongue of the forest, a little too slowly; the arena wardens carry {a} away."
+    },
+    "event-beast-friend-pack": {
+      "only": "At night, wild animals come to sleep around {a} and {theAnimal}. Nobody dares come near."
+    },
+    "event-tracker-hunt": {
+      "success": "{a} reads a deer's tracks like a book and comes back with dinner.",
+      "failure": "{a} follows a deer for hours; the deer is a better tracker."
+    },
+    "event-favourite-cheers": {
+      "only": "The whole arena chants the name of {a}. Carried by the cheers, {a} forgets every bruise."
+    },
+    "event-climber-lookout": {
+      "success": "{a} climbs the tallest tower of the arena, spots a forgotten cache from up there, and comes back with {item}.",
+      "failure": "{a} climbs the tallest tower of the arena for the view, and finds the view is all there is."
+    },
+    "event-night-eyes-scout": {
+      "success": "While the others stumble in the dark, {a} walks the arena as in daylight, and picks up {item}.",
+      "failure": "{a} walks the arena all night with those cat's eyes, and finds that everyone else hid their things well."
+    },
+    "event-iron-stomach-feast": {
+      "only": "{a} eats a raw toad, a handful of beetles and some moss, and declares it a fine meal."
+    },
+    "event-cleric-blessing": {
+      "success": "{a} kneels and prays; a warm light closes the worst of the wounds.",
+      "failure": "{a} kneels and prays all night. The gods are busy elsewhere."
+    },
+    "event-bard-song": {
+      "only": "{a} sings for the stands, and the crowd pays in bread, cheese and apples thrown over the wall."
+    },
+    "event-rogue-locks": {
+      "success": "{a} slips into the guards' storeroom in the night and leaves with {item}.",
+      "failure": "{a} slips into the guards' storeroom in the night; it is full of guards."
+    },
+    "event-barbarian-rage": {
+      "success": "A tree falls across the path of {a}, who lifts it with a roar and throws it aside.",
+      "failure": "A tree falls across the path of {a}, who tries to lift it, and pulls something in the back.",
+      "defeated": "A tree falls right on {a}, who tries to hold it up, alone; the arena wardens carry {a} away."
+    },
+    "event-mage-portal": {
+      "success": "A rune of the arena flares under the feet of {a}, who unravels the spell before it goes off.",
+      "failure": "A rune of the arena flares under the feet of {a} and throws {{a:him|her|them}} twenty paces away.",
+      "defeated": "A rune of the arena flares under the feet of {a} and teleports {{a:him|her|them}} straight outside; the arena wardens carry {a} to the infirmary."
     }
   },
   "rounds": {
@@ -767,6 +1236,54 @@
     "announce-recap-day": "The sun sets. Out of the arena today: {all}.",
     "announce-recap-night": "Dawn breaks. Out of the arena tonight: {all}.",
     "announce-quiet-day": "The sun sets on a day without losses: nobody left the arena.",
-    "announce-quiet-night": "Dawn breaks after a night without losses: nobody left the arena."
+    "announce-quiet-night": "Dawn breaks after a night without losses: nobody left the arena.",
+    "announce-decree-survive": "Trumpets sound, and the arena masters raise their hands: whoever still stands at dawn on day {count} will share the victory.",
+    "announce-decree-relic": "Trumpets sound: a golden relic has been hidden somewhere in the arena. Whoever brings it back to the gates wins the games.",
+    "announce-decree-champion": "Trumpets sound: the crowd wants a champion. The first to have put {count} opponents out of the arena wins the games.",
+    "announce-decree-won-survive": "Dawn breaks and the trumpets sound: {all} are still standing, and share the victory.",
+    "announce-decree-won-relic": "The gates open before the relic: the games are over, and the victory goes to {all}.",
+    "announce-decree-won-champion": "The crowd roars for its champion: the games are over, and the victory goes to {all}."
+  },
+  "animals": {
+    "animal-wolf": {
+      "a": "a wolf",
+      "the": "the wolf"
+    },
+    "animal-boar": {
+      "a": "a boar",
+      "the": "the boar"
+    },
+    "animal-bear": {
+      "a": "a bear",
+      "the": "the bear"
+    },
+    "animal-lynx": {
+      "a": "a lynx",
+      "the": "the lynx"
+    },
+    "animal-raven": {
+      "a": "a raven",
+      "the": "the raven"
+    },
+    "animal-hawk": {
+      "a": "a hawk",
+      "the": "the hawk"
+    },
+    "animal-snake": {
+      "a": "a snake",
+      "the": "the snake"
+    },
+    "animal-hound": {
+      "a": "a stray hound",
+      "the": "the hound"
+    },
+    "animal-goat": {
+      "a": "a mountain goat",
+      "the": "the goat"
+    },
+    "animal-panther": {
+      "a": "a panther",
+      "the": "the panther"
+    }
   }
 }

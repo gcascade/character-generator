@@ -26,6 +26,7 @@ import {
   friends,
   grudgeOf,
   hasItemTag,
+  hasPerkTag,
   hostile,
   isGood,
   isWounded,
@@ -432,7 +433,12 @@ const candidatesFor = (
     let weight = kind.weight;
     if (FIGHTS.includes(kind.type)) weight *= 1.5 + state.round * 0.5;
     if (MEALS.includes(kind.type) || kind.effect === 'feed')
-      weight *= 1 + a.hunger / 2;
+      weight *= 1 + Math.max(0, a.hunger - 2) / 2;
+    const { characterClass, race } = state.characters[a.id];
+    for (const [key, factor] of Object.entries(kind.boost ?? {})) {
+      if (a.perks.includes(key) || key === characterClass || key === race)
+        weight *= factor;
+    }
     if (kind.type === 'arrival') {
       if (state.guests >= MAX_GUESTS || state.winner) continue;
       if (state.round < 3 || state.round > state.limit - 2) continue;
@@ -642,7 +648,7 @@ const makeGuest = (
         : perks.slice(0, MAX_PERKS),
     items:
       role === 'gladiator'
-        ? [random.pick(weapons).id, 'item-shield']
+        ? [random.pick(weapons).id]
         : [random.pick(ARENA.items).id],
   };
   return { contestant, side };
@@ -737,7 +743,9 @@ export const simulate = (setup: ArenaSetup): Match => {
       if (!team || gone.has(sideId)) return [];
       if (all.some((f) => f.standing && f.sideId === sideId)) return [];
       gone.add(sideId);
-      return [announce('team-out', [id])];
+      // Named after an original member: a guest who joined has another side.
+      const member = live.contestants.find((c) => c.sideId === sideId)!;
+      return [announce('team-out', [member.id])];
     });
   const rounds: Round[] = [];
   const phaseOf = (n: number): Phase => (n % 2 === 1 ? 'day' : 'night');
@@ -800,7 +808,12 @@ export const simulate = (setup: ArenaSetup): Match => {
       if (state.winner || standingSides(all).size <= 1) break;
     }
     // Hunger grows with every period (spec 013 FR-003).
-    for (const f of all) if (f.standing) f.hunger++;
+    for (const f of all) {
+      // An iron stomach only gets hungry every other period.
+      if (!f.standing) continue;
+      if (hasPerkTag(f, 'iron-stomach') && state.round % 2) continue;
+      f.hunger++;
+    }
     // The narrator sums up the period: who left the arena, or nobody.
     const fallen = events.flatMap((e) => (isAnnouncement(e) ? [] : e.defeated));
     events.push(
@@ -811,7 +824,10 @@ export const simulate = (setup: ArenaSetup): Match => {
       state.round === state.decree.goal &&
       standingSides(all).size > 1
     ) {
-      state.winner = { sideId: all.find((f) => f.standing)!.sideId, shared: true };
+      state.winner = {
+        sideId: all.find((f) => f.standing)!.sideId,
+        shared: true,
+      };
     }
     if (state.winner && state.decree) {
       const winners = state.winner.shared
@@ -908,8 +924,8 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
     )
     .sort((a, b) => Number(b.standing) - Number(a.standing))
     .map((f) => f.id);
-  const rows = matchSetup(setup, match).contestants
-    .map((c) => match.fighters[c.id])
+  const rows = matchSetup(setup, match)
+    .contestants.map((c) => match.fighters[c.id])
     .map((f) => ({
       id: f.id,
       defeats: f.defeats,

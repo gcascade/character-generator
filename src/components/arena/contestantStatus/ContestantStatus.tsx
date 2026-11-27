@@ -5,6 +5,7 @@ import { useLocale, useT } from '../../../i18n';
 import type { ArenaSetup, FighterState } from '../../../types/arena';
 import ContestantPeek, { PeekCard } from '../contestantPeek/ContestantPeek';
 import PortraitStack from '../portraitStack/PortraitStack';
+import { stateNotes } from '../contestantPeek/stateNotes';
 
 type ContestantStatusProps = {
   setup: ArenaSetup;
@@ -31,7 +32,8 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
   const sideOf = (id: string) => setup.sides.find((s) => s.id === id);
 
   // Current sides, standing ones first.
-  const ids = setup.contestants.map((c) => c.id);
+  // Guests appear once they have entered (spec 013).
+  const ids = setup.contestants.map((c) => c.id).filter((id) => state[id]);
   const sides = [...new Set(ids.map((id) => state[id].sideId))].sort(
     (a, b) =>
       Number(ids.some((id) => state[id].sideId === b && state[id].standing)) -
@@ -93,6 +95,7 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
                     original?.kind === 'team' && now.sideId !== original.id;
                   const allies =
                     now.allianceId && nameOfAlliance(now.allianceId, id);
+                  const notes = stateNotes(contestant(id), now, texts, t);
                   return (
                     <Box
                       component="li"
@@ -167,7 +170,10 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
                             ? now.items.map((i) => texts.items[i]?.a).join(', ')
                             : t('arena.noItems')}
                         </Typography>
-                        {(left || allies || now.defeats > 0) && (
+                        {(left ||
+                          allies ||
+                          now.defeats > 0 ||
+                          notes.length > 0) && (
                           <Box
                             sx={{
                               display: 'flex',
@@ -190,6 +196,9 @@ const ContestantStatus: FC<ContestantStatusProps> = ({
                                 label={t('arena.alliance', { names: allies })}
                               />
                             )}
+                            {notes.map((note) => (
+                              <Chip key={note} size="small" label={note} />
+                            ))}
                             {now.defeats > 0 && (
                               <Chip
                                 size="small"

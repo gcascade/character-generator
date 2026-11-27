@@ -37,6 +37,7 @@ import RoundView from '../../components/arena/roundView/RoundView';
 import {
   canStart,
   contestantSkills,
+  matchSetup,
   simulate,
   summarize,
 } from '../../content/arena';
@@ -175,11 +176,11 @@ const MatchView: FC<MatchViewProps> = ({
   const total = match.rounds.length;
   const shown = Math.min(shownRounds, total);
   const finished = shownRounds > total;
-  const standingAfter = match.rounds.reduce<number[]>((list, round) => {
-    const before = list.at(-1) ?? contestants.length;
-    const fallen = round.events.reduce((n, e) => n + e.defeated.length, 0);
-    return [...list, before - fallen];
-  }, []);
+  // With the guests who entered (spec 013), for texts, cards and the summary.
+  const full = useMemo(() => matchSetup(setup, match), [setup, match]);
+  const standingAfter = match.rounds.map(
+    (round) => Object.values(round.after).filter((f) => f.standing).length,
+  );
   const onShare = async () =>
     share({
       title: t('arena.title'),
@@ -238,7 +239,7 @@ const MatchView: FC<MatchViewProps> = ({
   }, [lastShown, partial, match, shown, setup]);
   const status = lastShown && visibleState && (
     <ContestantStatus
-      setup={setup}
+      setup={full}
       state={visibleState}
       moment={t('arena.statusAfter', {
         round: renderRoundTitle(lastShown, locale, isFinale(lastShown.events)),
@@ -261,7 +262,7 @@ const MatchView: FC<MatchViewProps> = ({
         <RoundView
           key={round.number}
           round={round}
-          setup={setup}
+          setup={full}
           finale={isFinale(round.events)}
           standing={standingAfter[index]}
           showRolls={showRolls}
@@ -269,7 +270,7 @@ const MatchView: FC<MatchViewProps> = ({
         />
       ))}
       {finished && (
-        <MatchSummary setup={setup} summary={summarize(setup, match)} />
+        <MatchSummary setup={full} summary={summarize(setup, match)} />
       )}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
         {!finished && (

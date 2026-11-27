@@ -13,6 +13,7 @@ import { useLocale, useT } from '../../../i18n';
 import type { ArenaSetup, FighterState } from '../../../types/arena';
 import CharacterImage from '../../character/characterImage/CharacterImage';
 import SkillGrid from '../skillGrid/SkillGrid';
+import { stateNotes } from './stateNotes';
 
 type PeekCardProps = {
   setup: ArenaSetup;
@@ -82,6 +83,11 @@ export const PeekCard: FC<PeekCardProps> = ({ setup, id, state, before }) => {
           })}
         </Typography>
       )}
+      {stateNotes(contestant, state, texts, t).map((note) => (
+        <Typography key={note} variant="body2" sx={{ fontStyle: 'italic' }}>
+          {note}
+        </Typography>
+      ))}
       {contestant.perks.length > 0 && (
         <Typography variant="body2">
           <strong>{t('arena.perks')}</strong>{' '}

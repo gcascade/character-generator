@@ -199,10 +199,15 @@ export type ArenaEventKind = {
   loot?: boolean;
   /** Social events: what a success does to b; companion events: what the animal does. */
   effect?: 'hurt' | 'take' | 'feed' | 'find' | 'heal' | 'leave';
-  /** An actor carrying an item with this tag gets the `tool` outcome, without a roll (spec 013). */
+  /**
+   * An actor carrying an item with this tag gets the `tool` outcome, without a
+   * roll; with a perk that has it, the `knack` outcome (spec 013).
+   */
   tool?: string;
   /** Animal events: a given animal id, or any animal with this tag, or any. */
   animal?: string;
+  /** Weight multipliers when a has this perk, class or race (spec 013). */
+  boost?: Record<string, number>;
   /** Guest arrivals: a gladiator who fights alone, or a wanderer who joins a's side. */
   guest?: 'gladiator' | 'wanderer';
   when?: {
@@ -222,6 +227,8 @@ export type ArenaEventKind = {
     grudge?: 'personal' | 'friend';
     /** Group attacks: attackers from different sides gang up on the most dangerous. */
     coalition?: boolean;
+    /** a's class is one of these. */
+    classes?: string[];
     /** a has (true) or has not (false) a companion. */
     companion?: boolean;
     /** a's hunger is at least this. */

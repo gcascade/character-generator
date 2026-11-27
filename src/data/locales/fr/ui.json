@@ -364,5 +364,12 @@
   "arena.newItems": "Nouveau : {items}",
   "arena.lostItems": "Perdu : {items}",
   "arena.autoplay": "Lecture auto",
-  "arena.pause": "Pause"
+  "arena.pause": "Pause",
+  "arena.guest": "Recrue de l'arène",
+  "arena.companion": "Avec {animal}",
+  "arena.hungry": "A faim",
+  "arena.starving": "Meurt de faim",
+  "arena.relic": "Porte la relique",
+  "arena.winnersShared": "Victoire partagée",
+  "arena.byDecree": "Sur décret des maîtres de l'arène"
 }

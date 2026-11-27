@@ -58,3 +58,19 @@ friendly, as an NPC or a real fighter; events that change the end condition (sur
 - SC-002: In 1,000 matches: tools are used, animals tamed and companions act, guests appear in some matches, decrees in
   about one in six, starvation eliminations stay rare (under 2% of eliminations).
 - SC-003: Matches stay readable: about 50–70 lines for 12 contestants.
+
+## Clarifications (continued)
+
+- Q: Only the rope? → A (maintainer, 2026-11-27): more item and perk mechanics. Events can be tied to perks or classes,
+  and perks can make events more likely. Added: a `knack` outcome when a perk stands in for the tool, `boost` weights
+  per perk, class or race, `when.classes`; items flint, net, antidote, bird call, waterskin, grappling hook; perks
+  Beast friend, Iron stomach, Climber, Night eyes, Crowd favourite, Tracker.
+
+## Implementation notes
+
+- Engine: `src/content/arenaEvents.ts` (tool / knack, `tame`, `beast`, `companion`, `companion-attack`, `eat`, `feed`,
+  `hunger`, `arrival`, `relic-*`), `src/content/arena.ts` (`makeGuest`, `planDecree`, `matchSetup`, hunger tick,
+  decree checks, shared victory in `summarize`).
+- Measured over 400 matches of 12 (mixed roster, random loadouts): about 73 lines, 14 periods; 1.1 tool and 0.3 knack
+  outcomes, about one tamed animal per match; guests in about a quarter of matches; decrees in 14%; starvation 0.4% of
+  eliminations.
