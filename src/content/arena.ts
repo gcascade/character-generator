@@ -690,8 +690,6 @@ export type MatchSummary = {
   moments: EventResult[];
   /** The winners are a couple formed during the match. */
   couple: boolean;
-  /** How many events, by kind. */
-  tally: ReturnType<typeof tallyEvents>;
 };
 
 const MAX_MOMENTS = 5;
@@ -743,7 +741,6 @@ export const summarize = (setup: ArenaSetup, match: Match): MatchSummary => {
     rows,
     moments,
     couple: match.winnerSideId.startsWith('couple:'),
-    tally: tallyEvents(match),
   };
 };
 
@@ -779,72 +776,4 @@ export const fillRoster = (
           );
   }
   return next;
-};
-
-/** Kinds of events, for the end-of-match tally (maintainer feedback). */
-export const EVENT_CATEGORIES = [
-  'fights',
-  'ambushes',
-  'finds',
-  'dangers',
-  'tricks',
-  'alliances',
-  'care',
-  'couples',
-  'revenge',
-  'quiet',
-] as const;
-
-export type EventCategory = (typeof EVENT_CATEGORIES)[number];
-
-const CATEGORY_OF: Record<string, EventCategory> = {
-  fight: 'fights',
-  finish: 'fights',
-  finale: 'fights',
-  melee: 'fights',
-  ambush: 'ambushes',
-  gang: 'ambushes',
-  find: 'finds',
-  gift: 'finds',
-  scavenge: 'finds',
-  steal: 'finds',
-  trade: 'finds',
-  hazard: 'dangers',
-  arena: 'dangers',
-  'group-hazard': 'dangers',
-  social: 'tricks',
-  alliance: 'alliances',
-  betray: 'alliances',
-  split: 'alliances',
-  reconcile: 'alliances',
-  spare: 'alliances',
-  'team-heal': 'care',
-  treat: 'care',
-  potion: 'care',
-  share: 'care',
-  feast: 'care',
-  forage: 'care',
-  rest: 'care',
-  protect: 'care',
-  sacrifice: 'care',
-  couple: 'couples',
-  jealousy: 'couples',
-  revenge: 'revenge',
-  quiet: 'quiet',
-  banter: 'quiet',
-};
-
-/** How many events of each kind a match told (narrator lines aside). */
-export const tallyEvents = (match: Match) => {
-  const counts = Object.fromEntries(
-    EVENT_CATEGORIES.map((c) => [c, 0]),
-  ) as Record<EventCategory, number>;
-  let total = 0;
-  for (const event of match.rounds.flatMap((r) => r.events)) {
-    if (isAnnouncement(event)) continue;
-    const type = ARENA.events.find((e) => e.id === event.eventId)?.type ?? '';
-    counts[CATEGORY_OF[type] ?? 'quiet']++;
-    total++;
-  }
-  return { total, counts };
 };

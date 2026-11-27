@@ -364,17 +364,5 @@
   "arena.newItems": "New: {items}",
   "arena.lostItems": "Lost: {items}",
   "arena.autoplay": "Play",
-  "arena.pause": "Pause",
-  "arena.tally": "{count} events",
-  "arena.tallyTitle": "The match in numbers",
-  "arena.category.fights": "Fights",
-  "arena.category.ambushes": "Ambushes",
-  "arena.category.finds": "Finds and loot",
-  "arena.category.dangers": "Dangers",
-  "arena.category.tricks": "Threats and tricks",
-  "arena.category.alliances": "Alliances and betrayals",
-  "arena.category.care": "Care and rest",
-  "arena.category.couples": "Couples",
-  "arena.category.revenge": "Revenge",
-  "arena.category.quiet": "Quiet moments"
+  "arena.pause": "Pause"
 }

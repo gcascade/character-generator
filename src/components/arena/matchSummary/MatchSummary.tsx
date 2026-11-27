@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Chip,
   Table,
   TableBody,
   TableCell,
@@ -12,10 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { FC } from 'react';
-import {
-  EVENT_CATEGORIES,
-  type MatchSummary as Summary,
-} from '../../../content/arena';
+import type { MatchSummary as Summary } from '../../../content/arena';
 import { renderEvent } from '../../../content/arenaText';
 import { useLocale, useT } from '../../../i18n';
 import type { ArenaSetup } from '../../../types/arena';
@@ -110,35 +106,6 @@ const MatchSummary: FC<MatchSummaryProps> = ({ setup, summary }) => {
                 {renderEvent(event, setup, locale)}
               </Typography>
             ))}
-          </Box>
-        </Box>
-        <Box>
-          <Typography variant="h5" component="h3" sx={{ mb: 1 }}>
-            {t('arena.tallyTitle')}
-          </Typography>
-          <Typography sx={{ mb: 1 }}>
-            {t('arena.tally', { count: summary.tally.total })}
-          </Typography>
-          <Box
-            component="ul"
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 1,
-              m: 0,
-              p: 0,
-              listStyle: 'none',
-            }}
-          >
-            {EVENT_CATEGORIES.filter((c) => summary.tally.counts[c] > 0).map(
-              (c) => (
-                <Chip
-                  component="li"
-                  key={c}
-                  label={`${t(`arena.category.${c}`)} · ${summary.tally.counts[c]}`}
-                />
-              ),
-            )}
           </Box>
         </Box>
         <Box sx={{ overflowX: 'auto' }}>
