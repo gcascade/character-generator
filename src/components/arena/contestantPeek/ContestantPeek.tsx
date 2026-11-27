@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { contestantSkills } from '../../../content/arena';
-import { ARENA_TEXTS } from '../../../content/data';
+import { ARENA, ARENA_TEXTS } from '../../../content/data';
 import { label } from '../../../content/labels';
 import { useLocale, useT } from '../../../i18n';
 import type { ArenaSetup, FighterState } from '../../../types/arena';
@@ -88,12 +88,18 @@ export const PeekCard: FC<PeekCardProps> = ({ setup, id, state, before }) => {
           {note}
         </Typography>
       ))}
-      {contestant.perks.length > 0 && (
-        <Typography variant="body2">
-          <strong>{t('arena.perks')}</strong>{' '}
-          {contestant.perks.map((p) => texts.perks[p]?.name).join(', ')}
+      {contestant.perks.map((p) => (
+        <Typography variant="body2" key={p}>
+          <strong>
+            {t(
+              ARENA.perks.find((d) => d.id === p)?.flaw
+                ? 'arena.flaw'
+                : 'arena.strength',
+            )}
+          </strong>{' '}
+          {texts.perks[p]?.name}
         </Typography>
-      )}
+      ))}
       {gained.length > 0 && (
         <Typography variant="body2" sx={{ fontWeight: 600 }}>
           {t('arena.newItems', { items: itemNames(gained) })}

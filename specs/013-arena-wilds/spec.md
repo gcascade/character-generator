@@ -66,6 +66,10 @@ friendly, as an NPC or a real fighter; events that change the end condition (sur
   per perk, class or race, `when.classes`; items flint, net, antidote, bird call, waterskin, grappling hook; perks
   Beast friend, Iron stomach, Climber, Night eyes, Crowd favourite, Tracker.
 
+- Q: Perks? → A (maintainer, 2026-11-27): one positive and one negative per contestant (e.g. charming / naive).
+  Eleven flaws (Gullible, Clumsy, Glutton, Coward, Hothead, Afraid of animals, Loudmouth, Frail, Greedy, Unlucky,
+  Heavy sleeper) with maluses, engine effects and one event each; older rosters keep their first perk.
+
 ## Implementation notes
 
 - Engine: `src/content/arenaEvents.ts` (tool / knack, `tame`, `beast`, `companion`, `companion-attack`, `eat`, `feed`,

@@ -399,6 +399,95 @@
         "perception": 5
       },
       "tags": ["tracker"]
+    },
+    {
+      "id": "flaw-gullible",
+      "flaw": true,
+      "bonuses": {
+        "perception": -5
+      },
+      "tags": ["gullible"]
+    },
+    {
+      "id": "flaw-clumsy",
+      "flaw": true,
+      "bonuses": {
+        "athletics": -10,
+        "stealth": -5
+      },
+      "tags": ["clumsy"]
+    },
+    {
+      "id": "flaw-glutton",
+      "flaw": true,
+      "bonuses": {
+        "endurance": -5
+      },
+      "tags": ["glutton"]
+    },
+    {
+      "id": "flaw-coward",
+      "flaw": true,
+      "bonuses": {
+        "melee": -10,
+        "intimidation": -10
+      },
+      "tags": ["coward"]
+    },
+    {
+      "id": "flaw-hothead",
+      "flaw": true,
+      "bonuses": {
+        "perception": -5,
+        "persuasion": -10
+      },
+      "tags": ["hothead"]
+    },
+    {
+      "id": "flaw-beast-fear",
+      "flaw": true,
+      "bonuses": {
+        "survival": -5
+      },
+      "tags": ["beast-fear"]
+    },
+    {
+      "id": "flaw-loud",
+      "flaw": true,
+      "bonuses": {
+        "stealth": -15
+      },
+      "tags": ["loud"]
+    },
+    {
+      "id": "flaw-frail",
+      "flaw": true,
+      "hp": -6,
+      "bonuses": {
+        "endurance": -5
+      },
+      "tags": ["frail"]
+    },
+    {
+      "id": "flaw-greedy",
+      "flaw": true,
+      "bonuses": {
+        "persuasion": -5
+      },
+      "tags": ["greedy"]
+    },
+    {
+      "id": "flaw-unlucky",
+      "flaw": true,
+      "tags": ["unlucky"]
+    },
+    {
+      "id": "flaw-heavy-sleeper",
+      "flaw": true,
+      "bonuses": {
+        "perception": -5
+      },
+      "tags": ["sleeper"]
     }
   ],
   "items": [
@@ -2732,6 +2821,121 @@
       "weight": 2,
       "when": {
         "classes": ["Mage"]
+      }
+    },
+    {
+      "id": "event-flaw-gullible",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "damage": 2,
+      "weight": 3,
+      "loseItem": true,
+      "when": {
+        "perk": "flaw-gullible"
+      }
+    },
+    {
+      "id": "event-flaw-clumsy",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 3,
+      "loseItem": true,
+      "when": {
+        "perk": "flaw-clumsy"
+      }
+    },
+    {
+      "id": "event-flaw-glutton",
+      "type": "feed",
+      "actors": 1,
+      "damage": 1,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-glutton",
+        "hunger": 1
+      }
+    },
+    {
+      "id": "event-flaw-coward",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-coward"
+      }
+    },
+    {
+      "id": "event-flaw-hothead",
+      "type": "social",
+      "actors": 2,
+      "relation": "foe",
+      "skill": "intimidation",
+      "effect": "hurt",
+      "damage": 4,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-hothead"
+      }
+    },
+    {
+      "id": "event-flaw-beast-fear",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "endurance",
+      "damage": 3,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-beast-fear"
+      }
+    },
+    {
+      "id": "event-flaw-loud",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "stealth",
+      "damage": 5,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-loud"
+      }
+    },
+    {
+      "id": "event-flaw-sleeper",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -10,
+      "damage": 3,
+      "weight": 3,
+      "phase": "night",
+      "loseItem": true,
+      "when": {
+        "perk": "flaw-heavy-sleeper"
+      }
+    },
+    {
+      "id": "event-flaw-greedy",
+      "type": "find",
+      "actors": 1,
+      "skill": "perception",
+      "modifier": -10,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-greedy"
+      }
+    },
+    {
+      "id": "event-flaw-unlucky",
+      "type": "hazard",
+      "actors": 1,
+      "skill": "athletics",
+      "damage": 4,
+      "weight": 3,
+      "when": {
+        "perk": "flaw-unlucky"
       }
     }
   ],

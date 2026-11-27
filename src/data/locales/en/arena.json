@@ -100,6 +100,50 @@
     "perk-tracker": {
       "name": "Tracker",
       "description": "Reads every trail: better hunts, and relics found sooner (+5 Survival, +5 Perception)."
+    },
+    "flaw-gullible": {
+      "name": "Gullible",
+      "description": "Believes every story: easy to trick and to rob (−5 Perception)."
+    },
+    "flaw-clumsy": {
+      "name": "Clumsy",
+      "description": "Trips, drops things, falls into every trap (−10 Athletics, −5 Stealth)."
+    },
+    "flaw-glutton": {
+      "name": "Glutton",
+      "description": "Always hungry: hunger grows faster (−5 Endurance)."
+    },
+    "flaw-coward": {
+      "name": "Coward",
+      "description": "Avoids fights whenever possible (−10 Melee, −10 Intimidation)."
+    },
+    "flaw-hothead": {
+      "name": "Hothead",
+      "description": "Picks fights and makes few friends (−5 Perception, −10 Persuasion)."
+    },
+    "flaw-beast-fear": {
+      "name": "Afraid of animals",
+      "description": "Panics in front of animals, tames none (−5 Survival)."
+    },
+    "flaw-loud": {
+      "name": "Loudmouth",
+      "description": "Talks, sings and stomps: heard from afar (−15 Stealth)."
+    },
+    "flaw-frail": {
+      "name": "Frail",
+      "description": "Gets hurt easily (−6 HP, −5 Endurance)."
+    },
+    "flaw-greedy": {
+      "name": "Greedy",
+      "description": "Cannot resist loot, even at a risk (−5 Persuasion)."
+    },
+    "flaw-unlucky": {
+      "name": "Unlucky",
+      "description": "Once per match, a success turns into a failure."
+    },
+    "flaw-heavy-sleeper": {
+      "name": "Heavy sleeper",
+      "description": "Nothing wakes them up: easy prey at night (−5 Perception)."
     }
   },
   "items": {
@@ -1221,6 +1265,54 @@
       "success": "A rune of the arena flares under the feet of {a}, who unravels the spell before it goes off.",
       "failure": "A rune of the arena flares under the feet of {a} and throws {{a:him|her|them}} twenty paces away.",
       "defeated": "A rune of the arena flares under the feet of {a} and teleports {{a:him|her|them}} straight outside; the arena wardens carry {a} to the infirmary."
+    },
+    "event-flaw-gullible": {
+      "success": "A spectator offers to sell {a} a \"magic\" pebble through the bars. For once, {a} smells the trick.",
+      "failure": "{a} trades a day's worth of food for a \"magic\" pebble. It is a pebble.",
+      "lost": "{a} trades {theItem} for a \"magic\" pebble that will surely win the games. It is a pebble.",
+      "defeated": "{a} follows a stranger who promises a secret way out of the arena. It is a way out, indeed; the arena wardens carry {a} away."
+    },
+    "event-flaw-clumsy": {
+      "success": "{a} trips over a root, rolls down a slope, and lands on both feet. The crowd applauds.",
+      "failure": "{a} trips over a root and rolls all the way down a slope, collecting every stone on the way.",
+      "lost": "{a} trips over a root, and {theItem} flies off into a ravine.",
+      "defeated": "{a} trips over a root at the edge of a ravine; the arena wardens carry {a} away."
+    },
+    "event-flaw-glutton": {
+      "only": "{a} finds a bush of berries and eats every single one, leaves included, then naps with a stomach ache."
+    },
+    "event-flaw-coward": {
+      "only": "{a} hears a fight nearby and spends the whole period hidden in a hollow tree, jumping at every noise."
+    },
+    "event-flaw-hothead": {
+      "success": "{a} storms up to {b} over a look, a word, nothing at all, and lands a punch before anyone can talk.",
+      "defeat": "{a} picks a fight with {b} over nothing, and hits far too hard; the arena wardens carry {b} away.",
+      "failure": "{a} picks a fight with {b} over nothing, and gets a black eye for the trouble."
+    },
+    "event-flaw-beast-fear": {
+      "success": "A squirrel lands next to {a}, who freezes, breathes, and manages not to scream.",
+      "failure": "A squirrel lands next to {a}, who runs screaming straight into a tree.",
+      "defeated": "A squirrel lands next to {a}, who runs screaming off a cliff; the arena wardens carry {a} away."
+    },
+    "event-flaw-loud": {
+      "success": "{a} sings at the top of {{a:his|her|their}} lungs while walking, and by some miracle, nobody comes.",
+      "failure": "{a} sings at the top of {{a:his|her|their}} lungs while walking; a patrol of guards comes to teach some manners.",
+      "defeated": "{a} sings so loudly that every guard of the arena comes running; the arena wardens carry {a} away."
+    },
+    "event-flaw-sleeper": {
+      "success": "Rain floods the camp of {a}, who wakes up just in time, for once.",
+      "failure": "Rain floods the camp; {a} sleeps through it and wakes up in a puddle, shivering.",
+      "lost": "{a} sleeps so deeply that a fox walks off with {theItem}.",
+      "defeated": "{a} sleeps through a flood and is found at dawn far downstream; the arena wardens carry {a} away."
+    },
+    "event-flaw-greedy": {
+      "success": "{a} sees gold glinting at the bottom of a pit, climbs down anyway, and comes back up with {item}.",
+      "failure": "{a} sees gold glinting at the bottom of a pit, climbs down anyway: painted stones, and a long climb back up."
+    },
+    "event-flaw-unlucky": {
+      "success": "A branch falls from a dead tree, exactly where {a} was standing a second ago.",
+      "failure": "A bird drops something on {a}, then a branch, then the bird itself.",
+      "defeated": "Lightning strikes the only tree in the plain, right above {a}; the arena wardens carry {a} away."
     }
   },
   "rounds": {

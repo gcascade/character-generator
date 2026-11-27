@@ -371,5 +371,8 @@
   "arena.starving": "Meurt de faim",
   "arena.relic": "Porte la relique",
   "arena.winnersShared": "Victoire partagée",
-  "arena.byDecree": "Sur décret des maîtres de l'arène"
+  "arena.byDecree": "Sur décret des maîtres de l'arène",
+  "arena.strength": "Atout",
+  "arena.flaw": "Défaut",
+  "arena.perkAndFlaw": "Atout et défaut"
 }

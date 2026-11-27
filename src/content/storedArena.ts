@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import type { ArenaSetup } from '../types/arena';
-import { MAX_CONTESTANTS, MAX_ITEMS, MAX_PERKS, emptySetup } from './arena';
+import {
+  MAX_CONTESTANTS,
+  MAX_ITEMS,
+  emptySetup,
+  normalizePerks,
+} from './arena';
 import { ARENA } from './data';
 import { storedCharacterSchema } from './storedCharacter';
 
@@ -20,7 +25,7 @@ const contestantSchema = z.object({
   character: storedCharacterSchema,
   sideId: id,
   role: z.string().max(60).optional(),
-  perks: knownIds(ARENA.perks, MAX_PERKS).transform((ids) => [...new Set(ids)]),
+  perks: knownIds(ARENA.perks, 20).transform(normalizePerks),
   items: knownIds(ARENA.items, MAX_ITEMS),
   sourceId: z.string().max(220).optional(),
 });

@@ -245,12 +245,21 @@ const update = (
   contestants: setup.contestants.map((c) => (c.id === id ? change(c) : c)),
 });
 
-/** At most two different known perks. */
+const isFlaw = (id: string) => !!ARENA.perks.find((p) => p.id === id)?.flaw;
+
+/** At most one known perk and one known flaw, the perk first (maintainer feedback). */
+export const normalizePerks = (ids: readonly string[]): string[] => {
+  const valid = known(ids, ARENA.perks);
+  const perk = valid.find((id) => !isFlaw(id));
+  const flaw = valid.find(isFlaw);
+  return [perk, flaw].filter((id): id is string => !!id);
+};
+
 export const setPerks = (setup: ArenaSetup, id: string, perks: string[]) =>
-  update(setup, id, (c) => ({
-    ...c,
-    perks: [...new Set(known(perks, ARENA.perks))].slice(0, MAX_PERKS),
-  }));
+  update(setup, id, (c) => ({ ...c, perks: normalizePerks(perks) }));
+
+const STRENGTHS = ARENA.perks.filter((p) => !p.flaw).map((p) => p.id);
+const FLAWS = ARENA.perks.filter((p) => p.flaw).map((p) => p.id);
 
 /** At most three known items. */
 export const setItems = (setup: ArenaSetup, id: string, items: string[]) =>
@@ -259,7 +268,7 @@ export const setItems = (setup: ArenaSetup, id: string, items: string[]) =>
     items: known(items, ARENA.items).slice(0, MAX_ITEMS),
   }));
 
-/** Two random perks and one to three random items for everyone. */
+/** A random perk, a random flaw and one to three random items for everyone. */
 export const randomLoadouts = (
   setup: ArenaSetup,
   random: Random = createRandom(newSeed()),
@@ -268,7 +277,7 @@ export const randomLoadouts = (
   shownRounds: 0,
   contestants: setup.contestants.map((c) => ({
     ...c,
-    perks: random.shuffle(ARENA.perks.map((p) => p.id)).slice(0, MAX_PERKS),
+    perks: [random.pick(STRENGTHS), random.pick(FLAWS)],
     items: random
       .shuffle(ARENA.items.map((i) => i.id))
       .slice(0, 1 + random.int(MAX_ITEMS)),
@@ -435,6 +444,16 @@ const candidatesFor = (
     if (MEALS.includes(kind.type) || kind.effect === 'feed')
       weight *= 1 + Math.max(0, a.hunger - 2) / 2;
     const { characterClass, race } = state.characters[a.id];
+    // Flaws change what one does (maintainer feedback).
+    if (FIGHTS.includes(kind.type)) {
+      if (hasPerkTag(a, 'coward')) weight *= 0.5;
+      if (hasPerkTag(a, 'hothead')) weight *= 1.5;
+    }
+    if (
+      (kind.type === 'steal' || kind.type === 'scavenge') &&
+      hasPerkTag(a, 'greedy')
+    )
+      weight *= 2;
     for (const [key, factor] of Object.entries(kind.boost ?? {})) {
       if (a.perks.includes(key) || key === characterClass || key === race)
         weight *= factor;
@@ -636,16 +655,15 @@ const makeGuest = (
   const id = `guest-${number}`;
   const side: Side = { id: `guest:${id}`, kind: 'solo', ties: [] };
   const weapons = ARENA.items.filter((i) => i.kind === 'weapon');
-  const perks = random.shuffle(ARENA.perks.map((p) => p.id));
   const contestant: Contestant = {
     id,
     character,
     sideId: side.id,
     guest: role,
-    perks:
-      role === 'gladiator'
-        ? ['perk-brute', perks.find((p) => p !== 'perk-brute')!]
-        : perks.slice(0, MAX_PERKS),
+    perks: [
+      role === 'gladiator' ? 'perk-brute' : random.pick(STRENGTHS),
+      random.pick(FLAWS),
+    ],
     items:
       role === 'gladiator'
         ? [random.pick(weapons).id]
@@ -813,6 +831,8 @@ export const simulate = (setup: ArenaSetup): Match => {
       if (!f.standing) continue;
       if (hasPerkTag(f, 'iron-stomach') && state.round % 2) continue;
       f.hunger++;
+      // A glutton gets hungry faster.
+      if (hasPerkTag(f, 'glutton') && state.round % 2 === 0) f.hunger++;
     }
     // The narrator sums up the period: who left the arena, or nobody.
     const fallen = events.flatMap((e) => (isAnnouncement(e) ? [] : e.defeated));

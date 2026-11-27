@@ -371,5 +371,8 @@
   "arena.starving": "Starving",
   "arena.relic": "Holds the relic",
   "arena.winnersShared": "Shared victory",
-  "arena.byDecree": "By decree of the arena masters"
+  "arena.byDecree": "By decree of the arena masters",
+  "arena.strength": "Perk",
+  "arena.flaw": "Flaw",
+  "arena.perkAndFlaw": "Perk and flaw"
 }

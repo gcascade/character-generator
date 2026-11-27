@@ -95,7 +95,7 @@ describe('arena roster (spec 012 US1)', () => {
     );
   });
 
-  it('limits perks to two known ones and items to three', () => {
+  it('keeps one known perk and one known flaw, and three items', () => {
     const setup = addRandom(emptySetup(), 1);
     const id = setup.contestants[0].id;
     const withPerks = setPerks(setup, id, [
@@ -103,12 +103,16 @@ describe('arena roster (spec 012 US1)', () => {
       'perk-lucky',
       'perk-unknown',
       'perk-brute',
-      'perk-tough',
+      'flaw-clumsy',
+      'flaw-loud',
     ]);
     expect(withPerks.contestants[0].perks).toEqual([
       'perk-lucky',
-      'perk-brute',
+      'flaw-clumsy',
     ]);
+    expect(
+      setPerks(setup, id, ['flaw-loud', 'perk-tough']).contestants[0].perks,
+    ).toEqual(['perk-tough', 'flaw-loud']);
     const withItems = setItems(setup, id, [
       'item-sword',
       'item-bow',
@@ -130,8 +134,9 @@ describe('arena roster (spec 012 US1)', () => {
       addRandom(emptySetup(), 10),
       createRandom('l'),
     );
+    const flaw = (p: string) => !!ARENA.perks.find((d) => d.id === p)?.flaw;
     for (const c of setup.contestants) {
-      expect(c.perks).toHaveLength(2);
+      expect(c.perks.map(flaw)).toEqual([false, true]);
       expect(c.items.length).toBeGreaterThanOrEqual(1);
       expect(c.items.length).toBeLessThanOrEqual(3);
     }

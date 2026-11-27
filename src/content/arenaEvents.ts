@@ -132,6 +132,13 @@ export const fighterCheck = (
   const chance = clamp(value + modifier);
   const first = check(value, modifier, state.random);
   state.rolls.push({ actor: f.id, skill, chance, ...first });
+  // An unlucky fighter sees one success of the match turn into a failure.
+  if (first.success && !f.luckUsed && hasPerkTag(f, 'unlucky')) {
+    f.luckUsed = true;
+    const second = check(value, modifier, state.random);
+    state.rolls.push({ actor: f.id, skill, chance, ...second, reroll: true });
+    return second;
+  }
   if (first.success || f.luckUsed || !hasPerkTag(f, 'reroll')) return first;
   f.luckUsed = true;
   const second = check(value, modifier, state.random);
@@ -509,7 +516,8 @@ export const resolveEvent = (
     case 'hazard':
     case 'arena': {
       const help =
-        (hasItemTag(a, 'climb') && skill === 'athletics' ? 15 : 0) +
+        (hasItemTag(a, 'climb') && skill === 'athletics' ? 15 : 0) -
+        (hasPerkTag(a, 'clumsy') && skill === 'athletics' ? 10 : 0) +
         (hasTag(a, 'trap-sense') && (skill === 'perception' || skill === 'lore')
           ? 15
           : 0);
@@ -558,7 +566,14 @@ export const resolveEvent = (
     case 'ambush': {
       const spotted =
         hasTag(b, 'alert') || fighterCheck(state, b, 'perception', -10).success;
-      const hidden = fighterCheck(state, a, 'stealth', modifier).success;
+      const asleep =
+        kind.phase === 'night' && hasPerkTag(b, 'sleeper') ? 15 : 0;
+      const hidden = fighterCheck(
+        state,
+        a,
+        'stealth',
+        modifier + asleep,
+      ).success;
       if (hidden && !spotted) {
         const damage =
           weaponDamage(state, a, bestStyle(state, a)) + 4 + random.int(5);
@@ -574,8 +589,10 @@ export const resolveEvent = (
     case 'social': {
       // Opposed by the target's perception for lies, by their endurance for threats.
       const resist: Skill = skill === 'deception' ? 'perception' : 'endurance';
+      const fooled =
+        skill === 'deception' && hasPerkTag(b, 'gullible') ? 15 : 0;
       const success =
-        fighterCheck(state, a, skill, modifier).success &&
+        fighterCheck(state, a, skill, modifier + fooled).success &&
         !fighterCheck(state, b, resist, -20).success;
       if (success) {
         if (kind.effect === 'hurt') {
@@ -599,9 +616,12 @@ export const resolveEvent = (
     }
     case 'steal': {
       const taken = b.items.length ? random.pick(b.items) : undefined;
+      const easy =
+        (hasPerkTag(b, 'gullible') ? 15 : 0) +
+        (kind.phase === 'night' && hasPerkTag(b, 'sleeper') ? 15 : 0);
       if (
         taken &&
-        fighterCheck(state, a, skill, modifier).success &&
+        fighterCheck(state, a, skill, modifier + easy).success &&
         !fighterCheck(state, b, 'perception', -15).success
       ) {
         b.items = b.items.filter((i) => i !== taken);
@@ -648,7 +668,9 @@ export const resolveEvent = (
     }
     case 'alliance': {
       const charm = hasPerkTag(a, 'charming') ? 15 : 0;
-      const both = isGood(state, a) && isGood(state, b) ? 10 : 0;
+      const both =
+        (isGood(state, a) && isGood(state, b) ? 10 : 0) -
+        (hasPerkTag(a, 'hothead') ? 15 : 0);
       if (
         fighterCheck(state, a, 'persuasion', modifier + charm + both).success
       ) {
@@ -852,7 +874,9 @@ export const resolveEvent = (
     case 'tame': {
       const beast = animalFor(state, kind);
       const extra = { animalId: beast.id };
-      const friend = hasPerkTag(a, 'beast-friend') ? 15 : 0;
+      const friend =
+        (hasPerkTag(a, 'beast-friend') ? 15 : 0) -
+        (hasPerkTag(a, 'beast-fear') ? 20 : 0);
       const call = hasItemTag(a, 'call') ? 10 : 0;
       if (
         fighterCheck(
@@ -873,7 +897,8 @@ export const resolveEvent = (
       // A wild animal attacks; a companion helps drive it off.
       const beast = animalFor(state, kind);
       const extra = { animalId: beast.id };
-      const help = a.companion ? 20 : 0;
+      const help =
+        (a.companion ? 20 : 0) - (hasPerkTag(a, 'beast-fear') ? 10 : 0);
       if (
         fighterCheck(state, a, skill, modifier + help - beast.difficulty / 2)
           .success

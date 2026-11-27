@@ -100,6 +100,50 @@
     "perk-tracker": {
       "name": "Pisteur",
       "description": "Lit toutes les traces : meilleures chasses, reliques trouvées plus vite (+5 Survie, +5 Perception)."
+    },
+    "flaw-gullible": {
+      "name": "Crédulité",
+      "description": "Croit toutes les histoires : facile à duper et à voler (−5 Perception)."
+    },
+    "flaw-clumsy": {
+      "name": "Maladresse",
+      "description": "Trébuche, laisse tout tomber, tombe dans tous les pièges (−10 Athlétisme, −5 Discrétion)."
+    },
+    "flaw-glutton": {
+      "name": "Gourmandise",
+      "description": "Toujours faim : la faim monte plus vite (−5 Endurance)."
+    },
+    "flaw-coward": {
+      "name": "Lâcheté",
+      "description": "Évite les combats dès que possible (−10 Corps à corps, −10 Intimidation)."
+    },
+    "flaw-hothead": {
+      "name": "Tête brûlée",
+      "description": "Cherche la bagarre et se fait peu d'alliés (−5 Perception, −10 Persuasion)."
+    },
+    "flaw-beast-fear": {
+      "name": "Peur des bêtes",
+      "description": "Panique devant les animaux, n'en apprivoise aucun (−5 Survie)."
+    },
+    "flaw-loud": {
+      "name": "Grande gueule",
+      "description": "Parle, chante et piétine : on l'entend de loin (−15 Discrétion)."
+    },
+    "flaw-frail": {
+      "name": "Fragilité",
+      "description": "Se blesse facilement (−6 PV, −5 Endurance)."
+    },
+    "flaw-greedy": {
+      "name": "Cupidité",
+      "description": "Ne résiste à aucun butin, même au prix du danger (−5 Persuasion)."
+    },
+    "flaw-unlucky": {
+      "name": "Malchance",
+      "description": "Une fois par match, une réussite tourne à l'échec."
+    },
+    "flaw-heavy-sleeper": {
+      "name": "Sommeil de plomb",
+      "description": "Rien ne peut l'en tirer : une proie facile la nuit (−5 Perception)."
     }
   },
   "items": {
@@ -1221,6 +1265,54 @@
       "success": "{a} marche sur une rune de l'arène qui s'embrase, et défait le sort avant qu'il ne se déclenche.",
       "failure": "{a} marche sur une rune de l'arène, qui s'embrase et l'envoie voler à vingt pas.",
       "defeated": "{a} marche sur une rune de l'arène, qui s'embrase et l'expédie droit dehors ; les gardiens n'ont plus qu'à emmener {a} à l'infirmerie."
+    },
+    "event-flaw-gullible": {
+      "success": "Un spectateur propose à {a} un caillou « magique » à travers les barreaux. Pour une fois, {a} flaire l'arnaque.",
+      "failure": "{a} échange une journée de vivres contre un caillou « magique ». C'est un caillou.",
+      "lost": "{a} échange {theItem} contre un caillou « magique » qui va forcément faire gagner les jeux. C'est un caillou.",
+      "defeated": "{a} suit un inconnu qui promet une sortie secrète. C'est bien une sortie ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-clumsy": {
+      "success": "{a} se prend les pieds dans une racine, dévale une pente et retombe sur ses pieds. La foule applaudit.",
+      "failure": "{a} se prend les pieds dans une racine et dévale toute la pente en ramassant chaque caillou au passage.",
+      "lost": "{a} se prend les pieds dans une racine, et {theItem} s'envole au fond d'un ravin.",
+      "defeated": "{a} se prend les pieds dans une racine au bord d'un ravin ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-glutton": {
+      "only": "{a} trouve un buisson de baies et les mange toutes, feuilles comprises, avant de faire la sieste avec un mal de ventre."
+    },
+    "event-flaw-coward": {
+      "only": "{a} entend un combat tout près et passe toute la période au fond d'un arbre creux, à sursauter au moindre bruit."
+    },
+    "event-flaw-hothead": {
+      "success": "{a} fonce sur {b} pour un regard, un mot, trois fois rien, et frappe avant toute discussion.",
+      "defeat": "{a} cherche la bagarre à {b} pour trois fois rien, et frappe bien trop fort ; les gardiens de l'arène emportent {b} hors de l'arène.",
+      "failure": "{a} cherche la bagarre à {b} pour trois fois rien, et récolte un œil au beurre noir."
+    },
+    "event-flaw-beast-fear": {
+      "success": "Un écureuil atterrit juste à côté, et {a} se fige, respire, et parvient à ne pas hurler.",
+      "failure": "Un écureuil atterrit juste à côté, et {a} part en hurlant, droit dans un arbre.",
+      "defeated": "Un écureuil atterrit juste à côté, et {a} s'enfuit en hurlant, droit dans le vide ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-loud": {
+      "success": "{a} chante à tue-tête en marchant, et par miracle, personne ne vient.",
+      "failure": "{a} chante à tue-tête en marchant ; une patrouille de gardes vient donner une leçon de savoir-vivre.",
+      "defeated": "{a} chante si fort que tous les gardes de l'arène accourent ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-sleeper": {
+      "success": "La pluie inonde le campement, et {a} se réveille juste à temps, pour une fois.",
+      "failure": "La pluie inonde le campement ; {a} dort au travers et se réveille dans une flaque, grelottant de froid.",
+      "lost": "{a} dort si profondément qu'un renard repart avec {theItem}.",
+      "defeated": "{a} dort pendant toute une crue et l'aube révèle un corps échoué loin en aval ; les gardiens de l'arène emportent {a} hors de l'arène."
+    },
+    "event-flaw-greedy": {
+      "success": "{a} voit de l'or briller au fond d'une fosse, descend quand même, et remonte avec {item}.",
+      "failure": "{a} voit de l'or briller au fond d'une fosse, descend quand même : des cailloux peints, et une longue remontée."
+    },
+    "event-flaw-unlucky": {
+      "success": "Une branche tombe d'un arbre mort, exactement là où se tenait {a} une seconde plus tôt.",
+      "failure": "Un oiseau laisse tomber quelque chose sur {a}, puis une branche, puis tombe lui-même.",
+      "defeated": "La foudre frappe le seul arbre de la plaine, sous lequel s'abrite {a} ; les gardiens de l'arène emportent {a} hors de l'arène."
     }
   },
   "rounds": {

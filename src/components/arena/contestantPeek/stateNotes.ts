@@ -12,15 +12,25 @@ export const stateNotes = (
   state: FighterState | undefined,
   texts: ArenaTexts,
   t: ReturnType<typeof useT>,
-): string[] => [
-  ...(contestant.guest ? [t('arena.guest')] : []),
-  ...(state?.companion
-    ? [t('arena.companion', { animal: texts.animals[state.companion]?.a })]
-    : []),
-  ...((state?.hunger ?? 0) >= STARVING
-    ? [t('arena.starving')]
-    : (state?.hunger ?? 0) >= HUNGRY
-      ? [t('arena.hungry')]
-      : []),
-  ...(state?.relic ? [t('arena.relic')] : []),
-];
+): string[] =>
+  state && !state.standing
+    ? // Out of the arena: only who they were.
+      contestant.guest
+      ? [t('arena.guest')]
+      : []
+    : [
+        ...(contestant.guest ? [t('arena.guest')] : []),
+        ...(state?.companion
+          ? [
+              t('arena.companion', {
+                animal: texts.animals[state.companion]?.a,
+              }),
+            ]
+          : []),
+        ...((state?.hunger ?? 0) >= STARVING
+          ? [t('arena.starving')]
+          : (state?.hunger ?? 0) >= HUNGRY
+            ? [t('arena.hungry')]
+            : []),
+        ...(state?.relic ? [t('arena.relic')] : []),
+      ];

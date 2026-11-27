@@ -36,6 +36,8 @@ export type SkillBonuses = Partial<Record<Skill, number>>;
 
 export type PerkDefinition = {
   id: string;
+  /** A flaw: each contestant has at most one perk and one flaw. */
+  flaw?: boolean;
   bonuses?: SkillBonuses;
   hp?: number;
   tags?: string[];
