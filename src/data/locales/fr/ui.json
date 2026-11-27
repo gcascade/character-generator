@@ -359,5 +359,6 @@
   "arena.portraits": "Portraits : {names}",
   "arena.winnerCouple": "Couple victorieux",
   "arena.couple": "Couple",
-  "arena.partner": "En couple avec {name}"
+  "arena.partner": "En couple avec {name}",
+  "arena.out": "{name} : hors jeu"
 }

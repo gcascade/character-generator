@@ -445,8 +445,8 @@
       "only": "{a} finds {b} wounded and defenceless, and walks away. \"Not like this.\""
     },
     "event-finale-duel": {
-      "defeat": "The arena falls silent for the last duel. {a} and {b} fight until one of them cannot rise; it is {b}, and the arena wardens carry {b} away.",
-      "defeated": "The arena falls silent for the last duel. {a} and {b} fight until one of them cannot rise; it is {a}, and the arena wardens carry {a} away."
+      "defeat": "Before the whole arena, {a} and {b} fight until one of them cannot rise; it is {b}, and the arena wardens carry {b} away.",
+      "defeated": "Before the whole arena, {a} and {b} fight until one of them cannot rise; it is {a}, and the arena wardens carry {a} away."
     },
     "event-finale-honour": {
       "defeat": "{a} and {b} salute each other before a duel of honour. When {b} falls to one knee, {a} offers a hand; {b} takes it, smiles, and walks out of the arena.",
@@ -558,7 +558,7 @@
       "defeated": "{a} ducks into a cave to sleep, and finds {b} already there. The cave echoes with the fight; at dawn, the arena wardens carry {a} away."
     },
     "event-fight-honour": {
-      "win": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} has the upper hand, and lets {b} withdraw with dignity.",
+      "win": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} has the upper hand, and lets {b} step back with dignity, still in the arena.",
       "lose": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {b} has the upper hand, and {a} withdraws with a nod of respect.",
       "draw": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" The duel is perfectly even. They part with a salute.",
       "defeat": "{a} calls out to {b}: \"Face me openly, and let the best one win.\" {a} wins the duel of honour; {b} yields, and the arena wardens carry {b} out with respect.",
@@ -745,5 +745,10 @@
     "night": "Night {number}",
     "finale": "The finale"
   },
-  "and": "and"
+  "and": "and",
+  "announcements": {
+    "announce-finale": "Only {all} remain. The arena masters close the gates: the finale begins, one duel after another.",
+    "announce-next-duel": "Without catching {{a:his|her|their}} breath, {a} turns to face {b}.",
+    "announce-team-out": "{team} is no more: its last member has fallen."
+  }
 }

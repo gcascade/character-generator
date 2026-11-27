@@ -115,7 +115,9 @@ export const renderEvent = (
   locale: Locale,
 ): string => {
   const texts = ARENA_TEXTS[locale];
-  const text = texts.events[result.eventId]?.[result.outcome];
+  const text = result.eventId.startsWith('announce-')
+    ? texts.announcements[result.eventId]
+    : texts.events[result.eventId]?.[result.outcome];
   if (text === undefined) {
     throw new Error(`No text for ${result.eventId}.${result.outcome}`);
   }
@@ -154,6 +156,7 @@ const SOLO = ['find', 'gift', 'forage', 'rest', 'quiet', 'potion', 'treat'];
 export const eventSides = (
   result: EventResult,
 ): { left: string[]; right: string[] } => {
+  if (result.eventId.startsWith('announce-')) return { left: [], right: [] };
   const type = ARENA.events.find((e) => e.id === result.eventId)?.type ?? '';
   const [first, ...others] = result.actors;
   if (UNDERGONE.includes(type)) return { left: [], right: result.actors };
@@ -173,7 +176,9 @@ export const eventParts = (
   locale: Locale,
 ): EventPart[] => {
   const texts = ARENA_TEXTS[locale];
-  const text = texts.events[result.eventId]?.[result.outcome];
+  const text = result.eventId.startsWith('announce-')
+    ? texts.announcements[result.eventId]
+    : texts.events[result.eventId]?.[result.outcome];
   if (text === undefined) {
     throw new Error(`No text for ${result.eventId}.${result.outcome}`);
   }

@@ -445,8 +445,8 @@
       "only": "{a} trouve {b} {{b:blessé|blessée|mal en point}} et sans défense, et s'éloigne. « Pas comme ça. »"
     },
     "event-finale-duel": {
-      "defeat": "L'arène fait silence pour le dernier duel. {a} et {b} se battent jusqu'à ce que l'un des deux ne puisse plus se relever : c'est {b}, et les gardiens de l'arène emportent {b} hors de l'arène.",
-      "defeated": "L'arène fait silence pour le dernier duel. {a} et {b} se battent jusqu'à ce que l'un des deux ne puisse plus se relever : c'est {a}, et les gardiens de l'arène emportent {a} hors de l'arène."
+      "defeat": "Sous les yeux de toute l'arène, {a} et {b} se battent jusqu'à ce que l'un des deux ne puisse plus se relever : c'est {b}, et les gardiens de l'arène emportent {b} hors de l'arène.",
+      "defeated": "Sous les yeux de toute l'arène, {a} et {b} se battent jusqu'à ce que l'un des deux ne puisse plus se relever : c'est {a}, et les gardiens de l'arène emportent {a} hors de l'arène."
     },
     "event-finale-honour": {
       "defeat": "{a} et {b} se saluent avant un duel d'honneur. Quand {b} pose un genou à terre, {a} lui tend la main ; {b} la saisit, sourit et quitte l'arène.",
@@ -558,7 +558,7 @@
       "defeated": "{a} entre dans une grotte pour y dormir, et y trouve {b}, qui occupe déjà la place. La grotte résonne du combat ; à l'aube, les gardiens de l'arène emportent {a} hors de l'arène."
     },
     "event-fight-honour": {
-      "win": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {a} prend l'avantage, et laisse {b} se retirer dignement.",
+      "win": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {a} prend l'avantage, et laisse {b} reculer dignement, toujours en lice.",
       "lose": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {b} prend l'avantage, et {a} se retire avec un signe de tête respectueux.",
       "draw": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » Le duel est parfaitement égal. Ils se séparent sur un salut.",
       "defeat": "{a} interpelle {b} : « Affronte-moi à découvert, et que le meilleur gagne. » {a} remporte le duel d'honneur ; {b} s'incline, et les gardiens raccompagnent {b} avec respect hors de l'arène.",
@@ -745,5 +745,10 @@
     "night": "Nuit {number}",
     "finale": "La finale"
   },
-  "and": "et"
+  "and": "et",
+  "announcements": {
+    "announce-finale": "Il ne reste que {all}. Les maîtres de l'arène ferment les portes : la finale commence, un duel après l'autre.",
+    "announce-next-duel": "Sans reprendre son souffle, {a} se tourne vers {b}.",
+    "announce-team-out": "{team} n'est plus : son dernier membre vient de tomber."
+  }
 }

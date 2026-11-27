@@ -118,6 +118,18 @@ describe('arena content (spec 012)', () => {
     }
   });
 
+  it('has every narrator line in both languages, with the same placeholders', () => {
+    const ids = Object.keys(ARENA_TEXTS.en.announcements);
+    expect(Object.keys(ARENA_TEXTS.fr.announcements).sort()).toEqual(
+      [...ids].sort(),
+    );
+    for (const id of ids) {
+      expect(params(ARENA_TEXTS.fr.announcements[id]), id).toEqual(
+        params(ARENA_TEXTS.en.announcements[id]),
+      );
+    }
+  });
+
   it('names every skill, perk and item in both languages', () => {
     for (const locale of ['en', 'fr'] as const) {
       const texts = ARENA_TEXTS[locale];

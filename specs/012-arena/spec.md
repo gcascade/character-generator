@@ -41,6 +41,10 @@
   hazards, feasts). Contestants remember who hurt, robbed or betrayed them, or defeated a friend: revenge, avenging and
   reconciliation events follow.
 
+- Q: The finale felt like simultaneous events? → A: Two teams had the same name. Team names are now unique; a
+  narrator's line (a bubble of its own) opens the finale, links its duels (the winner faces the next opponent) and
+  tells when a team is gone; eliminating events say who is out.
+
 ## Context
 
 The maintainer wants a game that gives the generated characters and parties something to do. Two formats were

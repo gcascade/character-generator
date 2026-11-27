@@ -6,6 +6,7 @@ import {
   contestantSkills,
   emptySetup,
   fillRoster,
+  isAnnouncement,
   MAX_CONTESTANTS,
   randomLoadouts,
   removeContestant,
@@ -155,11 +156,11 @@ describe('arena match (spec 012 US2)', () => {
       );
       const alive = new Set(setup.contestants.map((c) => c.id));
       match.rounds.forEach((round, index) => {
-        const actors = round.events.flatMap((e) => e.actors);
+        // The narrator's lines are not events: they act for nobody.
+        const told = round.events.filter((e) => !isAnnouncement(e));
+        const actors = told.flatMap((e) => e.actors);
         // In the finale, a winner may fight several duels in a row.
-        const finale = round.events.every((e) =>
-          e.eventId.startsWith('event-finale'),
-        );
+        const finale = told.every((e) => e.eventId.startsWith('event-finale'));
         if (!finale) {
           expect(new Set(actors).size, `round ${round.number}`).toBe(
             actors.length,
@@ -168,8 +169,8 @@ describe('arena match (spec 012 US2)', () => {
         // 4 to 6 events per period, fewer only when nobody is left to act
         // (group events gather several contestants at once).
         if (!finale) {
-          expect(round.events.length).toBeLessThanOrEqual(6);
-          if (index < match.rounds.length - 1 && round.events.length < 4) {
+          expect(told.length).toBeLessThanOrEqual(6);
+          if (index < match.rounds.length - 1 && told.length < 4) {
             for (const id of alive) expect(actors).toContain(id);
           }
         }
@@ -250,7 +251,12 @@ describe('match summary (spec 012 FR-017)', () => {
         Math.min(3, match.rounds.flatMap((r) => r.events).length),
       );
       expect(summary.moments.length).toBeLessThanOrEqual(5);
-      expect(summary.moments.at(-1)).toBe(match.rounds.at(-1)!.events.at(-1));
+      expect(summary.moments.at(-1)).toBe(
+        match.rounds
+          .flatMap((r) => r.events)
+          .filter((e) => !isAnnouncement(e))
+          .at(-1),
+      );
       const survivors = summary.rows.filter(
         (r) => r.defeatedRound === undefined,
       );
@@ -419,5 +425,72 @@ describe('couples, group events and grudges (maintainer feedback)', () => {
         expect(renderEvent(event, setup, 'fr')).not.toMatch(/[{}]/);
       }
     }
+  });
+});
+
+describe('the narrator (maintainer feedback)', () => {
+  it('opens the finale, links its duels, and tells when a team is gone', () => {
+    let finales = 0;
+    let teamsOut = 0;
+    for (let i = 0; i < 300; i++) {
+      const setup = {
+        ...fillRoster(emptySetup(), 12, 'mixed', 'en'),
+        seed: `n${i}`,
+      };
+      const match = simulate(setup);
+      const last = match.rounds.at(-1)!;
+      if (last.events.some((e) => e.eventId.startsWith('event-finale'))) {
+        finales++;
+        expect(last.events[0].eventId).toBe('announce-finale');
+        const duels = last.events.filter((e) =>
+          e.eventId.startsWith('event-finale'),
+        );
+        const links = last.events.filter(
+          (e) => e.eventId === 'announce-next-duel',
+        );
+        expect(links).toHaveLength(duels.length - 1);
+        // The winner of each duel fights the next one.
+        duels.slice(1).forEach((duel, k) => {
+          const previous = duels[k];
+          const winner = previous.actors.find(
+            (id) => !previous.defeated.includes(id),
+          );
+          expect(duel.actors[0]).toBe(winner);
+        });
+      }
+      const outs = match.rounds
+        .flatMap((r) => r.events)
+        .filter((e) => e.eventId === 'announce-team-out');
+      teamsOut += outs.length;
+      const teams = new Set(
+        outs.map(
+          (e) => setup.contestants.find((c) => c.id === e.actors[0])!.sideId,
+        ),
+      );
+      expect(teams.size).toBe(outs.length);
+      for (const e of match.rounds.flatMap((r) => r.events)) {
+        expect(renderEvent(e, setup, 'fr')).not.toMatch(/[{}]/);
+      }
+    }
+    expect(finales).toBeGreaterThan(0);
+    expect(teamsOut).toBeGreaterThan(0);
+  });
+});
+
+describe('team names (maintainer feedback)', () => {
+  it('never gives two teams the same name', () => {
+    const party = generateParty({ size: 2 });
+    let setup = emptySetup();
+    for (let i = 0; i < 4; i++) {
+      setup = addParty(
+        setup,
+        { ...party, id: `p${i}`, members: party.members },
+        'en',
+      );
+    }
+    const names = setup.sides.map((s) => s.name);
+    expect(new Set(names).size).toBe(4);
+    const base = names[0]!;
+    expect(names).toEqual([base, `${base} II`, `${base} III`, `${base} IV`]);
   });
 });

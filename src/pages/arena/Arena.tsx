@@ -111,8 +111,7 @@ const Roster: FC<{ setup: ArenaSetup }> = ({ setup }) => {
 };
 
 const isFinale = (events: { eventId: string }[]) =>
-  events.length > 0 &&
-  events.every((e) => e.eventId.startsWith('event-finale'));
+  events.some((e) => e.eventId.startsWith('event-finale'));
 
 type MatchViewProps = {
   setup: ArenaSetup;
