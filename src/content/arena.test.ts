@@ -547,3 +547,15 @@ describe('recaps and loot (maintainer feedback)', () => {
     expect(scavenged).toBeGreaterThan(10);
   });
 });
+
+describe('names in the arena (maintainer feedback)', () => {
+  it('fills the arena without two contestants of the same name', () => {
+    for (let i = 0; i < 20; i++) {
+      const setup = fillRoster(emptySetup(), 48, i % 2 ? 'mixed' : 4, 'fr');
+      const names = setup.contestants.map(
+        (c) => `${c.character.firstName} ${c.character.lastName}`,
+      );
+      expect(new Set(names).size).toBe(names.length);
+    }
+  });
+});

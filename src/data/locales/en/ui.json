@@ -360,5 +360,9 @@
   "arena.winnerCouple": "Winning couple",
   "arena.couple": "Couple",
   "arena.partner": "In a couple with {name}",
-  "arena.out": "{name} is out"
+  "arena.out": "{name} is out",
+  "arena.newItems": "New: {items}",
+  "arena.lostItems": "Lost: {items}",
+  "arena.autoplay": "Play",
+  "arena.pause": "Pause"
 }

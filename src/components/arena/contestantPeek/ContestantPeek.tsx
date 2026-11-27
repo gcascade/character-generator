@@ -19,10 +19,12 @@ type PeekCardProps = {
   id: string;
   /** Hit points and items at this moment of the match. */
   state?: FighterState;
+  /** The state just before, to show what changed (an event's effect). */
+  before?: FighterState;
 };
 
 /** A contestant at a glance: portrait, skills, perks, and hit points and gear at a moment of the match. */
-export const PeekCard: FC<PeekCardProps> = ({ setup, id, state }) => {
+export const PeekCard: FC<PeekCardProps> = ({ setup, id, state, before }) => {
   const t = useT();
   const { locale } = useLocale();
   const texts = ARENA_TEXTS[locale];
@@ -31,6 +33,11 @@ export const PeekCard: FC<PeekCardProps> = ({ setup, id, state }) => {
   const { character } = contestant;
   const skills = contestantSkills(setup, id);
   const items = state?.items ?? contestant.items;
+  const gained = before ? items.filter((i) => !before.items.includes(i)) : [];
+  const lost = before ? before.items.filter((i) => !items.includes(i)) : [];
+  const hpChange = before && state ? state.hp - before.hp : 0;
+  const itemNames = (ids: string[]) =>
+    ids.map((i) => texts.items[i]?.a).join(', ');
   return (
     <Box sx={{ p: 1, width: 320, maxWidth: '80vw' }}>
       <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', mb: 1 }}>
@@ -58,6 +65,11 @@ export const PeekCard: FC<PeekCardProps> = ({ setup, id, state }) => {
             {state && !state.standing
               ? t('arena.fell')
               : `${t('arena.hp')} ${state?.hp ?? skills.hp}/${state?.maxHp ?? skills.hp}`}
+            {hpChange !== 0 && state?.standing && (
+              <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>
+                ({hpChange > 0 ? `+${hpChange}` : `−${-hpChange}`})
+              </Box>
+            )}
           </Typography>
         </Box>
       </Box>
@@ -74,6 +86,16 @@ export const PeekCard: FC<PeekCardProps> = ({ setup, id, state }) => {
         <Typography variant="body2">
           <strong>{t('arena.perks')}</strong>{' '}
           {contestant.perks.map((p) => texts.perks[p]?.name).join(', ')}
+        </Typography>
+      )}
+      {gained.length > 0 && (
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+          {t('arena.newItems', { items: itemNames(gained) })}
+        </Typography>
+      )}
+      {lost.length > 0 && (
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {t('arena.lostItems', { items: itemNames(lost) })}
         </Typography>
       )}
       <Typography variant="body2" sx={{ mb: 1 }}>

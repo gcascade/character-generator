@@ -133,6 +133,8 @@ export type EventResult = {
   rolls?: RollRecord[];
   /** The actors' state just before the event (hit points, items…). */
   before?: Record<string, FighterState>;
+  /** The actors' state just after it: what the event changed. */
+  after?: Record<string, FighterState>;
 };
 
 export type Phase = 'day' | 'night';

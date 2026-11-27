@@ -142,11 +142,38 @@ export const addParty = (
   };
 };
 
-/** Adds random solo contestants, up to the cap. */
+const fullName = (c: Pick<Character, 'firstName' | 'lastName'>) =>
+  `${c.firstName} ${c.lastName}`;
+
+const namesIn = (setup: ArenaSetup) =>
+  new Set(setup.contestants.map((c) => fullName(c.character)));
+
+/** Draws until the result has no name already in the arena (a few tries). */
+const fresh = <T>(
+  setup: ArenaSetup,
+  draw: () => T,
+  names: (t: T) => string[],
+) => {
+  const taken = namesIn(setup);
+  let result = draw();
+  for (let i = 0; i < 20 && names(result).some((n) => taken.has(n)); i++) {
+    result = draw();
+  }
+  return result;
+};
+
+/** Adds random solo contestants, up to the cap, never twice the same name. */
 export const addRandom = (setup: ArenaSetup, count: number): ArenaSetup => {
   let next = setup;
   for (let i = 0; i < count; i++) {
-    next = addCharacter(next, generateRandomCharacter());
+    next = addCharacter(
+      next,
+      fresh(
+        next,
+        () => generateRandomCharacter(),
+        (c) => [fullName(c)],
+      ),
+    );
   }
   return next;
 };
@@ -582,6 +609,7 @@ export const simulate = (setup: ArenaSetup): Match => {
       const before = stateOf(chosen.actors);
       const result = resolveEvent(state, chosen.kind, chosen.actors);
       result.before = before;
+      result.after = stateOf(chosen.actors);
       if (state.rolls.length) result.rolls = state.rolls;
       events.push(result);
       events.push(...teamsOut(result));
@@ -637,6 +665,7 @@ export const simulate = (setup: ArenaSetup): Match => {
         result.defeated = [loser.id];
       }
       result.notable = true;
+      result.after = stateOf([a, b]);
       events.push(result);
       champion = a.standing ? a : b;
     }
@@ -736,7 +765,15 @@ export const fillRoster = (
     next =
       size < 2
         ? addRandom(next, 1)
-        : addParty(next, generateParty({ size }), locale);
+        : addParty(
+            next,
+            fresh(
+              next,
+              () => generateParty({ size }),
+              (party) => party.members.map((m) => fullName(m.character)),
+            ),
+            locale,
+          );
   }
   return next;
 };

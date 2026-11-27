@@ -141,6 +141,8 @@ Path aliases (`tsconfig.json` + `vite.config.ts`, keep both in sync): `@Componen
   (the winner faces the next opponent) and tells when a team is gone, and sums up each period (`recap-*` / `quiet-*`); team names are made unique (`II`, `III`…).
 - Loot: items of the fallen go to `state.dropped` (picked up by `scavenge` events); a melee with `loot` gives a
   chest's item to the best fighter still standing (`looter`, `{looter}` placeholder).
+- Events keep their actors' state `before` and `after` (cards show what changed); the match view can play by itself (`AUTOPLAY_MS`, events revealed one by one).
+- Random fills never repeat a contestant's name (`fresh`).
 - Invariants tested over 1,000 matches: one winning side within the round limit, teammates never defeat each other,
   good characters never betray; balanced teams beat single-class teams (coverage bonus, `BALANCE_BONUS`).
 
