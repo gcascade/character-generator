@@ -188,10 +188,10 @@ export type ArenaEventKind = {
   damage?: number;
   weight: number;
   notable?: boolean;
-  /** Actors: 1 (solo), 2 (a and b) or 3 (a protects b from c). */
-  actors: 1 | 2 | 3;
+  /** Actors: 1 (solo), 2 (a and b), 3 (a protects b from c) or a group of 3 to 6. */
+  actors: 1 | 2 | 3 | 'group';
   /** Between a and b: same side or ally, other side, or b wounded on another side. */
-  relation?: 'friend' | 'foe';
+  relation?: 'friend' | 'foe' | 'any';
   /** Hazards: a failure loses an item. */
   loseItem?: boolean;
   /** Social events: what a success does to b. */
@@ -207,6 +207,12 @@ export type ArenaEventKind = {
     caster?: boolean;
     /** b must be wounded (pair events). */
     targetWounded?: boolean;
+    /** b must be a's partner in a couple. */
+    couple?: boolean;
+    /** a must hold a grudge against b: for a personal wrong, or for a fallen friend. */
+    grudge?: 'personal' | 'friend';
+    /** Group attacks: attackers from different sides gang up on the most dangerous. */
+    coalition?: boolean;
   };
 };
 
@@ -238,6 +244,8 @@ export type ArenaTexts = {
   items: Record<string, { a: string; the: string; description: string }>;
   events: Record<string, GenderedOutcomes>;
   rounds: Record<string, string>;
+  /** Joins the last two names of a list. */
+  and: string;
 };
 
 export const ARENA_TEXTS = { en: enArena, fr: frArena } as unknown as Record<

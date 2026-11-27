@@ -33,6 +33,14 @@
   points and items at that moment (just before the event).
 - Q: Filling the roster? → A: "Fill the arena" up to 8–48 contestants, as solos, teams of 2, 3 or 4, or a mix.
 
+### Session 2026-11-27
+
+- Q: New mechanics? → A: Couples, group events, grudges. Two contestants of different sides grow a bond (alliances,
+  care, sparing, shared feasts); past a threshold they can form a couple that leaves their teams and alliances and
+  wins together. Group events gather 3 to 6 contestants (melee, a team or coalition falling on one contestant, group
+  hazards, feasts). Contestants remember who hurt, robbed or betrayed them, or defeated a friend: revenge, avenging and
+  reconciliation events follow.
+
 ## Context
 
 The maintainer wants a game that gives the generated characters and parties something to do. Two formats were

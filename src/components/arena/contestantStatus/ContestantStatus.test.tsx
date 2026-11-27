@@ -67,4 +67,20 @@ describe('ContestantStatus', () => {
     expect(screen.getByText('Alliance: Sil')).toBeInTheDocument();
     expect(screen.getByText('Alliance: Korvus')).toBeInTheDocument();
   });
+
+  it('groups a couple formed during the match', () => {
+    const state = {
+      ...base,
+      korvus: { ...base.korvus, sideId: 'couple:korvus', partner: 'sil' },
+      sil: { ...base.sil, sideId: 'couple:korvus', partner: 'korvus' },
+    };
+    render(
+      <ContestantStatus
+        setup={arenaSetup}
+        state={state}
+        moment="After Day 4"
+      />,
+    );
+    expect(screen.getByRole('heading', { name: 'Couple' })).toBeInTheDocument();
+  });
 });

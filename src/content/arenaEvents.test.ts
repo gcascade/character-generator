@@ -46,6 +46,8 @@ const state = (seed: string): MatchState => ({
   limit: 8,
   random: createRandom(seed),
   rolls: [],
+  bonds: {},
+  grudges: {},
 });
 
 describe('perks and items in the engine (spec 012 US4)', () => {

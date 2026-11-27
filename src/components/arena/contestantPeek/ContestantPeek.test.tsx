@@ -25,6 +25,17 @@ describe('ContestantPeek', () => {
     ).toBeInTheDocument();
   });
 
+  it('names the partner of a couple', () => {
+    render(
+      <PeekCard
+        setup={arenaSetup}
+        id="aela"
+        state={{ ...state, partner: 'korvus' }}
+      />,
+    );
+    expect(screen.getByText('In a couple with Korvus')).toBeInTheDocument();
+  });
+
   it('says when the contestant is out', () => {
     render(
       <PeekCard

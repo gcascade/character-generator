@@ -606,11 +606,144 @@
     },
     "event-rest-spring": {
       "only": "{a} finds a hot spring hidden between the rocks, and soaks until every ache is gone."
+    },
+    "event-couple-fire": {
+      "only": "Under the stars, {a} and {b} finally say what everyone had guessed: they will leave the arena together, or not at all. They leave their old companions to face it side by side."
+    },
+    "event-couple-rescue": {
+      "only": "{a} pulls {b} out of harm's way for the second time today. This time, neither lets go of the other's hand. From now on, they fight as one."
+    },
+    "event-couple-dance": {
+      "only": "The arena drums beat in the distance. {a} offers {b} a clumsy bow, and they dance in the ruins until dawn. By morning, they are a team of two."
+    },
+    "event-couple-oath": {
+      "only": "{a} and {b} carve their initials into an old oak, then argue about whose letters are crooked."
+    },
+    "event-couple-watch": {
+      "only": "{a} keeps watch while {b} sleeps, and pretends not to have been watching {b} rather than the shadows."
+    },
+    "event-couple-plans": {
+      "only": "{a} and {b} plan their life after the arena: a farm, two goats, and absolutely no more fighting."
+    },
+    "event-jealousy-glare": {
+      "only": "{a} watches {b} walk away with someone else, and remembers every campfire they once shared as a team."
+    },
+    "event-jealousy-words": {
+      "only": "{a} crosses paths with {b}. \"You left us for that?\" The silence that follows is worse than any blow."
+    },
+    "event-protect-partner": {
+      "success": "{c} goes for {b}, and meets {a} instead, eyes blazing. {c} decides there are easier targets.",
+      "failure": "{a} throws {{a:himself|herself|themself}} in front of {b} and takes the blows {c} meant for {b}.",
+      "defeat": "Nobody touches {b}: {a} fights {c} with a fury the arena has rarely seen, and the arena wardens carry {c} away.",
+      "defeated": "{a} holds {c} off long enough for {b} to escape; the arena wardens carry {a} away, smiling."
+    },
+    "event-sacrifice-partner": {
+      "only": "When {c} lands the blow meant for {b}, it is {a} who takes it. The wardens carry {a} out of the arena; {b} walks on alone, with a promise to keep."
+    },
+    "event-revenge-hunt": {
+      "win": "{a} has not forgotten what {b} did. After a long hunt, {a} finally catches up. {a} gets some of the revenge owed, and {b} flees.",
+      "lose": "{a} has not forgotten what {b} did. After a long hunt, {a} finally catches up. {b} turns the hunt around, and {a} has to run.",
+      "draw": "{a} has not forgotten what {b} did. After a long hunt, {a} finally catches up. The old wound stays open: neither can finish it today.",
+      "defeat": "{a} has not forgotten what {b} did. After a long hunt, {a} finally catches up. {a} settles the score; the arena wardens carry {b} away.",
+      "defeated": "{a} has not forgotten what {b} did. After a long hunt, {a} finally catches up. Revenge turns sour: the arena wardens carry {a} away."
+    },
+    "event-revenge-duel": {
+      "win": "{a} calls out to {b} across the clearing: \"You and me. Now.\" {a} wins the round, and the grudge feels a little lighter.",
+      "lose": "{a} calls out to {b} across the clearing: \"You and me. Now.\" {b} wins again, and the grudge grows heavier.",
+      "draw": "{a} calls out to {b} across the clearing: \"You and me. Now.\" They fight to a standstill, and swear it is not over.",
+      "defeat": "{a} calls out to {b} across the clearing: \"You and me. Now.\" The grudge ends here: the arena wardens carry {b} away.",
+      "defeated": "{a} calls out to {b} across the clearing: \"You and me. Now.\" The grudge ends badly: the arena wardens carry {a} away."
+    },
+    "event-avenge-friend": {
+      "win": "{a} finds {b}, who took a companion out of the arena. \"This is for them.\" {a} strikes hard, and {b} retreats, shaken.",
+      "lose": "{a} finds {b}, who took a companion out of the arena. \"This is for them.\" Anger is not enough: {b} drives {a} away.",
+      "draw": "{a} finds {b}, who took a companion out of the arena. \"This is for them.\" The fight ends with no winner, and the debt still unpaid.",
+      "defeat": "{a} finds {b}, who took a companion out of the arena. \"This is for them.\" The fallen are avenged: the arena wardens carry {b} away.",
+      "defeated": "{a} finds {b}, who took a companion out of the arena. \"This is for them.\" {a} joins the fallen companion: the arena wardens carry {a} away."
+    },
+    "event-avenge-night": {
+      "win": "{a} spends the night tracking {b} by the light of the moon, for the sake of a fallen friend. At dawn, {a} lands a blow, and {b} disappears into the mist.",
+      "lose": "{a} spends the night tracking {b} by the light of the moon, for the sake of a fallen friend. At dawn, {b} is waiting, and {a} is the one who has to flee.",
+      "draw": "{a} spends the night tracking {b} by the light of the moon, for the sake of a fallen friend. The trail goes cold in the night.",
+      "defeat": "{a} spends the night tracking {b} by the light of the moon, for the sake of a fallen friend. By dawn, the debt is paid: the arena wardens carry {b} away.",
+      "defeated": "{a} spends the night tracking {b} by the light of the moon, for the sake of a fallen friend. By dawn, the hunter has become the prey: the arena wardens carry {a} away."
+    },
+    "event-reconcile-words": {
+      "success": "{a} sits down by the fire of {b}, and they talk until the old grudge burns out with the logs.",
+      "failure": "{a} tries to make peace with {b}, who answers by turning away."
+    },
+    "event-reconcile-gift": {
+      "success": "{a} leaves a peace offering on a rock where {b} will find it. The next time they meet, nobody draws a weapon.",
+      "failure": "{a} leaves a peace offering for {b}, who kicks it into the river."
+    },
+    "event-melee-chest": {
+      "none": "A golden chest falls from the sky. {all} rush at it, and in the confusion the chest rolls into a ravine. Nobody gets it.",
+      "hurt": "A golden chest falls from the sky, and {all} fight over it. Bruises for {hurt}, and the chest stays shut.",
+      "defeat": "A golden chest falls from the sky, and {all} fight over it. When the dust settles, the arena wardens carry {fallen} out of the arena."
+    },
+    "event-melee-ruins": {
+      "none": "In the dark ruins, {all} stumble into each other. After a lot of shouting, everyone runs in a different direction.",
+      "hurt": "In the dark ruins, {all} fight blindly. By dawn, {hurt} bear the marks.",
+      "defeat": "In the dark ruins, {all} fight blindly. By dawn, the arena wardens carry {fallen} out of the arena."
+    },
+    "event-melee-spring": {
+      "none": "{all} reach the only spring at the same time. A long, tense standoff follows, and everyone drinks in turn, glaring.",
+      "hurt": "{all} reach the only spring at the same time, and it turns into a brawl. {hurt} leave soaked and bruised.",
+      "defeat": "{all} reach the only spring at the same time, and it turns into a brawl; the arena wardens carry {fallen} out of the arena."
+    },
+    "event-gang-team": {
+      "defeat": "{others} surround {a} without a word. It is over quickly, and the arena wardens carry {a} away.",
+      "escape": "{others} surround {a}, who slips between them and vanishes into the undergrowth."
+    },
+    "event-gang-night": {
+      "defeat": "{others} fall on the camp of {a} in the middle of the night; the arena wardens carry {a} away.",
+      "escape": "{others} fall on the camp of {a} in the middle of the night, but find only a dummy made of branches."
+    },
+    "event-gang-coalition": {
+      "defeat": "{a} has defeated too many. {others} put their quarrels aside to bring {a} down, and the arena wardens carry {a} away.",
+      "escape": "{others} join forces against {a}, the most feared contestant. They fail, but the alliance holds."
+    },
+    "event-group-bridge": {
+      "safe": "The bridge under {all} gives way; everyone leaps to safety at the last moment.",
+      "hurt": "The bridge under {all} gives way. A cold bath and a few bruises for {hurt}.",
+      "defeat": "The bridge under {all} gives way, and the arena wardens carry {fallen} out of the arena."
+    },
+    "event-group-flood": {
+      "safe": "A flood rushes through the valley where {all} are camping. Everyone climbs a tree in time.",
+      "hurt": "A flood rushes through the valley where {all} are camping; the current sweeps away {hurt} for a while.",
+      "defeat": "A flood rushes through the valley where {all} are camping, and the arena wardens carry {fallen} out of the arena."
+    },
+    "event-group-mist": {
+      "safe": "A poisoned mist rolls over {all}, who hold their breath and get through it.",
+      "hurt": "A poisoned mist rolls over {all}; coughing fits for {hurt}.",
+      "defeat": "A poisoned mist rolls over {all}, and the arena wardens carry {fallen} out of the arena."
+    },
+    "event-group-rockfall": {
+      "safe": "Rocks rain down on {all}; everyone spots them in time and dives for cover.",
+      "hurt": "Rocks rain down on {all}; a few hit {hurt}.",
+      "defeat": "Rocks rain down on {all}, and the arena wardens carry {fallen} out of the arena."
+    },
+    "event-feast-truce": {
+      "only": "Rain falls hard, and {all} end up sharing the same cave. For one night, a truce: soup, stories, and nobody sleeps with a hand on a weapon. Almost nobody."
+    },
+    "event-feast-banquet": {
+      "only": "The arena masters set up a banquet in a clearing, and {all} are invited. Roast boar, honey cakes, and many suspicious looks across the table."
+    },
+    "event-feast-song": {
+      "only": "Around one big fire, {all} sing the same old song in different languages. Nobody admits enjoying it."
+    },
+    "event-find-cache": {
+      "success": "{a} notices freshly turned earth under a tree and digs up a hidden cache: {item}.",
+      "failure": "{a} digs under a tree for an hour, and finds a very old, very angry badger."
+    },
+    "event-quiet-memory": {
+      "only": "{a} turns a small keepsake over and over in the firelight, and thinks of home."
     }
   },
   "rounds": {
     "day": "Day {number}",
     "night": "Night {number}",
     "finale": "The finale"
-  }
+  },
+  "and": "and"
 }

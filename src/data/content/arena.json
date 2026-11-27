@@ -1050,7 +1050,7 @@
       "type": "alliance",
       "actors": 2,
       "relation": "foe",
-      "weight": 1.5,
+      "weight": 3,
       "notable": true
     },
     {
@@ -1058,7 +1058,7 @@
       "type": "alliance",
       "actors": 2,
       "relation": "foe",
-      "weight": 1.5,
+      "weight": 3,
       "phase": "night",
       "notable": true
     },
@@ -1186,7 +1186,7 @@
       "type": "alliance",
       "actors": 2,
       "relation": "foe",
-      "weight": 1.5,
+      "weight": 3,
       "notable": true,
       "when": {
         "minRound": 2
@@ -1327,6 +1327,287 @@
       "damage": 6,
       "weight": 1.5,
       "phase": "day"
+    },
+    {
+      "id": "event-couple-fire",
+      "type": "couple",
+      "actors": 2,
+      "relation": "any",
+      "weight": 35,
+      "phase": "night",
+      "notable": true
+    },
+    {
+      "id": "event-couple-rescue",
+      "type": "couple",
+      "actors": 2,
+      "relation": "any",
+      "weight": 35,
+      "phase": "day",
+      "notable": true
+    },
+    {
+      "id": "event-couple-dance",
+      "type": "couple",
+      "actors": 2,
+      "relation": "any",
+      "weight": 30,
+      "phase": "night",
+      "notable": true
+    },
+    {
+      "id": "event-couple-oath",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "when": {
+        "couple": true
+      }
+    },
+    {
+      "id": "event-couple-watch",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 3,
+      "phase": "night",
+      "when": {
+        "couple": true
+      }
+    },
+    {
+      "id": "event-couple-plans",
+      "type": "banter",
+      "actors": 2,
+      "relation": "friend",
+      "weight": 2,
+      "phase": "day",
+      "when": {
+        "couple": true
+      }
+    },
+    {
+      "id": "event-jealousy-glare",
+      "type": "jealousy",
+      "actors": 2,
+      "relation": "any",
+      "weight": 3
+    },
+    {
+      "id": "event-jealousy-words",
+      "type": "jealousy",
+      "actors": 2,
+      "relation": "any",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-protect-partner",
+      "type": "protect",
+      "actors": 3,
+      "weight": 6,
+      "when": {
+        "couple": true
+      }
+    },
+    {
+      "id": "event-sacrifice-partner",
+      "type": "sacrifice",
+      "actors": 3,
+      "weight": 3,
+      "notable": true,
+      "when": {
+        "couple": true,
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-revenge-hunt",
+      "type": "revenge",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 3,
+      "modifier": 10,
+      "when": {
+        "grudge": "personal"
+      }
+    },
+    {
+      "id": "event-revenge-duel",
+      "type": "revenge",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "when": {
+        "grudge": "personal"
+      }
+    },
+    {
+      "id": "event-avenge-friend",
+      "type": "revenge",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 3,
+      "modifier": 10,
+      "when": {
+        "grudge": "friend"
+      }
+    },
+    {
+      "id": "event-avenge-night",
+      "type": "revenge",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "night",
+      "when": {
+        "grudge": "friend"
+      }
+    },
+    {
+      "id": "event-reconcile-words",
+      "type": "reconcile",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 3,
+      "when": {
+        "alignment": "good"
+      }
+    },
+    {
+      "id": "event-reconcile-gift",
+      "type": "reconcile",
+      "actors": 2,
+      "relation": "foe",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-melee-chest",
+      "type": "melee",
+      "actors": "group",
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-melee-ruins",
+      "type": "melee",
+      "actors": "group",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-melee-spring",
+      "type": "melee",
+      "actors": "group",
+      "weight": 2,
+      "when": {
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-gang-team",
+      "type": "gang",
+      "actors": "group",
+      "weight": 3
+    },
+    {
+      "id": "event-gang-night",
+      "type": "gang",
+      "actors": "group",
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-gang-coalition",
+      "type": "gang",
+      "actors": "group",
+      "weight": 4,
+      "notable": true,
+      "when": {
+        "coalition": true,
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-group-bridge",
+      "type": "group-hazard",
+      "actors": "group",
+      "skill": "athletics",
+      "damage": 6,
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-group-flood",
+      "type": "group-hazard",
+      "actors": "group",
+      "skill": "athletics",
+      "damage": 5,
+      "weight": 2,
+      "phase": "night"
+    },
+    {
+      "id": "event-group-mist",
+      "type": "group-hazard",
+      "actors": "group",
+      "skill": "endurance",
+      "damage": 6,
+      "weight": 2,
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-group-rockfall",
+      "type": "group-hazard",
+      "actors": "group",
+      "skill": "perception",
+      "damage": 6,
+      "weight": 2,
+      "phase": "day"
+    },
+    {
+      "id": "event-feast-truce",
+      "type": "feast",
+      "actors": "group",
+      "weight": 2,
+      "phase": "night",
+      "when": {
+        "minRound": 2
+      }
+    },
+    {
+      "id": "event-feast-banquet",
+      "type": "feast",
+      "actors": "group",
+      "weight": 2,
+      "phase": "night",
+      "when": {
+        "minRound": 3
+      }
+    },
+    {
+      "id": "event-feast-song",
+      "type": "feast",
+      "actors": "group",
+      "weight": 1.5,
+      "phase": "night"
+    },
+    {
+      "id": "event-find-cache",
+      "type": "find",
+      "actors": 1,
+      "skill": "survival",
+      "weight": 2
+    },
+    {
+      "id": "event-quiet-memory",
+      "type": "quiet",
+      "actors": 1,
+      "weight": 1.5,
+      "phase": "night"
     }
   ]
 }

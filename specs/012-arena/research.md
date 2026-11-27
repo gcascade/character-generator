@@ -116,3 +116,20 @@ shuffle(list), roll() }`). Each use gets its own stream: `createRandom(`${seed}:
   chain shirt, cloak), consumables (healing potion, rations, smoke bomb, throwing knives). Each has bonuses and tags
   used by event conditions.
 - **Rationale**: matches the maintainer's examples (survivalist, sword, wand) within a fantasy setting (no pistol).
+
+## R11. Couples
+
+- **Decision**: bonds per pair grow with care (+2 team heal, +2 protection), alliances (+3), sparing (+2), sharing,
+  banter (+1) and feasts (+2 per pair). From 3, two contestants of different sides who are not in a couple can form
+  one (high weight, so it happens soon after): both take the side `couple:<id>`, leave alliances, and win or lose
+  together. Former teammates may show jealousy; partners protect and sacrifice themselves for each other.
+- **Measured**: about one match in five forms a couple; about half of those couples win (16 contestants, 300 matches).
+
+## R12. Group events and grudges
+
+- **Decision**: group events (`actors: "group"`) gather 3–6 free contestants: a melee (each strikes a non-friend), a
+  team, alliance or couple falling on someone who is a foe of all of them, a coalition against the contestant with the
+  most defeats (who then become allies), group hazards (one roll each) and feasts (heal, bonds). Texts use list
+  placeholders `{all}`, `{others}`, `{fallen}`, `{hurt}` ("A, B and C"), phrased so that French needs no agreement
+  with the number of names. Grudges are remembered when hurt, robbed or betrayed (personal) or when a teammate or
+  partner is defeated (friend); revenge events need a grudge, reconciliation lifts it.

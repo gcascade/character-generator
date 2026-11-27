@@ -356,5 +356,8 @@
   "arena.fillSolo": "participants seuls",
   "arena.fillTeams": "équipes de {size}",
   "arena.fillMixed": "un mélange de solos et d'équipes",
-  "arena.portraits": "Portraits : {names}"
+  "arena.portraits": "Portraits : {names}",
+  "arena.winnerCouple": "Couple victorieux",
+  "arena.couple": "Couple",
+  "arena.partner": "En couple avec {name}"
 }

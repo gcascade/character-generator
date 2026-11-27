@@ -32,7 +32,11 @@ const MatchSummary: FC<MatchSummaryProps> = ({ setup, summary }) => {
   const side = setup.sides.find(
     (s) => s.id === contestant(summary.winners[0]).sideId,
   );
-  const team = side?.kind === 'team' ? side.name : undefined;
+  const team = summary.couple
+    ? summary.winners.map(nameOf).join(' & ')
+    : side?.kind === 'team'
+      ? side.name
+      : undefined;
   const champion = contestant(summary.winners[0]).character;
 
   return (
@@ -71,12 +75,16 @@ const MatchSummary: FC<MatchSummaryProps> = ({ setup, summary }) => {
                 fontSize="inherit"
                 sx={{ mr: 0.5, verticalAlign: 'middle' }}
               />
-              {team ? t('arena.winnerTeam') : t('arena.winner')}
+              {summary.couple
+                ? t('arena.winnerCouple')
+                : team
+                  ? t('arena.winnerTeam')
+                  : t('arena.winner')}
             </Typography>
             <Typography variant="h5" component="p">
               {team ?? nameOf(summary.winners[0])}
             </Typography>
-            {team && (
+            {team && !summary.couple && (
               <Typography sx={{ color: 'text.secondary' }}>
                 {summary.winners.map(nameOf).join(', ')}
               </Typography>
